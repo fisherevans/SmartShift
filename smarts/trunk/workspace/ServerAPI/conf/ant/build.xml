@@ -1,0 +1,65 @@
+<project name="ServerAPI-Build" default="deploy" basedir="../..">
+	<property file="conf/ant/build.properties"/>
+	<property name="war.file" value="${project.name}.war" />
+	<property name="war.path" value="${dist.dir}/${war.file}" />
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}/jar">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="clean">
+		<echo>Cleaning the build directory</echo>
+		<delete dir="${build.dir}"/>
+	</target>
+	<target name="init">
+		<echo>Creating the build directory</echo>
+		<mkdir dir="${build.dir}/WEB-INF/classes"/>
+		<mkdir dir="${build.dir}/WEB-INF/lib"/>
+	</target>
+	<target name="compile" depends="init">
+		<echo>Compiling the source files</echo>
+		<javac srcdir="${src.dir}" destdir="${build.dir}/WEB-INF/classes">
+			<classpath refid="classpath"/>
+		</javac>
+	</target>
+	<target name="copy" depends="compile">
+		<echo>Copying compiled sources</echo>
+		<copy todir="${build.dir}/WEB-INF/classes">
+			<fileset dir="${conf.dir}/hibernate"/>
+		</copy>
+		<copy todir="${build.dir}/WEB-INF">
+			<fileset dir="${conf.dir}/web"/>
+		</copy>
+		<copy todir="${build.dir}">
+			<fileset dir="${web.dir}"/>
+		</copy>
+		<copy todir="${build.dir}/META-INF" file="${conf.dir}/web/context.xml"/>
+		<copy todir="${build.dir}/WEB-INF/lib">
+			<fileset dir="${lib.dir}/jar">
+				<exclude name="javax.servlet.jar" />
+			</fileset>
+		</copy>
+	</target>
+	<target name="war" depends="copy">
+		<echo>Building the war file</echo>
+		<war destfile="${war.path}" webxml="${build.dir}/WEB-INF/web.xml">
+			<fileset dir="${build.dir}"/>
+		</war>
+	</target>
+	<target name="undeploy">
+		<echo>Removing webapp from tomcat</echo>
+		<delete file="${tomcat.dir}/webapps/${war.file}" />
+	</target>
+	<target name="deploy" depends="war, undeploy">
+		<echo>Deploying war to tomcat</echo>
+		<copy todir="${tomcat.dir}/webapps" file="${war.path}"/>
+	</target>
+	<target name="explode-classes" depends="compile">
+		<echo>Exploading classes to tomcat</echo>
+		<copy todir="${tomcat.dir}/webapps/${project.name}/WEB-INF/classes">
+			<fileset dir="${build.dir}/WEB-INF/classes"/>
+		</copy>
+	</target>
+</project>
