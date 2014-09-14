@@ -1,0 +1,32 @@
+#wrapper {
+  width: 80%;
+  max-width: 800px;
+  margin: 0px auto;
+}
+
+#logo {
+  display: block;
+  width: 100%;
+  margin-top:100px;
+  margin-bottom:40px;
+}
+
+#text, #copy {
+  font-family: 'Ubuntu', sans-serif;
+  text-align: center;
+  display: block;
+  width: 80%;
+  margin: 20px auto;
+}
+
+#text {
+  font-size: 20px;
+  font-weight: 700;
+  color: #000;
+}
+
+#copy {
+  font-size: 18px;
+  font-weight: 400;
+  color: #aaa;
+}
