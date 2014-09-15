@@ -28,7 +28,7 @@ public class ListArtists {
 		Criteria cr = session.createCriteria(Artist.class);
 		List<Artist> artists = (List<Artist>)cr.list();
 
-		String out = "<h1>Artists</h1>";
+		String out = "<h1>Artists!</h1>";
 		out += "<ul>";
 		for(Artist artist : artists) {
 			out += "<li>";
