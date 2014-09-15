@@ -1,6 +1,6 @@
 <project name="ServerAPI-Libraries" default="import" basedir="../.." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 	<property file="conf/ant/build.properties"/>
-	
+
 	<path id="classpath">
 		<fileset dir="${lib.dir}/jar">
 			<include name="*.jar" />
@@ -31,11 +31,13 @@
 		        versionsId="dependency.versions">
 			<!-- PUT DEPENDENCIES HERE!!! -->
 			<!-- http://search.maven.org/ -->
-			
+
 			<dependency groupId="org.glassfish.jersey.bundles" artifactId="jaxrs-ri" version="2.12"/>
 			<dependency groupId="org.hibernate" artifactId="hibernate-core" version="4.3.6.Final"/>
 			<dependency groupId="mysql" artifactId="mysql-connector-java" version="5.1.32"/>
 			<dependency groupId="org.glassfish" artifactId="javax.servlet" version="10.0-b28"/>
+			<dependency groupId="org.apache.tomcat" artifactId="catalina-ant" version="6.0.41"/>
+			<!-- <dependency groupId="org.apache.geronimo.configs" artifactId="tomcat7-deployer" version="3.0-M1"/> -->
 
 			<!-- END DEPENDENCY LIST -->
 		</artifact:dependencies>

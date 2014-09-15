@@ -1,5 +1,5 @@
-<project name="ServerAPI-Build" default="deploy" basedir="../..">
-	<property file="conf/ant/build.properties"/>
+<project name="ServerAPI-Build" default="tomcat-deploy" basedir="../..">
+	<property file="conf/ant/build.properties" />
 	<property name="war.file" value="${project.name}.war" />
 	<property name="war.path" value="${dist.dir}/${war.file}" />
 
@@ -9,57 +9,70 @@
 		</fileset>
 	</path>
 
-	<target name="clean">
+	<taskdef name="deploy" classname="org.apache.catalina.ant.DeployTask">
+		<classpath refid="classpath" />
+	</taskdef>
+	<taskdef name="undeploy" classname="org.apache.catalina.ant.UndeployTask">
+		<classpath refid="classpath" />
+	</taskdef>
+	<taskdef name="reload" classname="org.apache.catalina.ant.ReloadTask">
+		<classpath refid="classpath" />
+	</taskdef>
+
+	<target name="build-clean">
 		<echo>Cleaning the build directory</echo>
-		<delete dir="${build.dir}"/>
+		<delete dir="${build.dir}" />
 	</target>
-	<target name="init">
-		<echo>Creating the build directory</echo>
-		<mkdir dir="${build.dir}/WEB-INF/classes"/>
-		<mkdir dir="${build.dir}/WEB-INF/lib"/>
-	</target>
-	<target name="compile" depends="init">
+	<target name="build-compile">
 		<echo>Compiling the source files</echo>
 		<javac srcdir="${src.dir}" destdir="${build.dir}/WEB-INF/classes">
-			<classpath refid="classpath"/>
+			<classpath refid="classpath" />
 		</javac>
 	</target>
-	<target name="copy" depends="compile">
+	<target name="build-package" depends="build-compile">
 		<echo>Copying compiled sources</echo>
 		<copy todir="${build.dir}/WEB-INF/classes">
-			<fileset dir="${conf.dir}/hibernate"/>
+			<fileset dir="${conf.dir}/hibernate" />
 		</copy>
 		<copy todir="${build.dir}/WEB-INF">
-			<fileset dir="${conf.dir}/web"/>
+			<fileset dir="${conf.dir}/web" />
 		</copy>
 		<copy todir="${build.dir}">
-			<fileset dir="${web.dir}"/>
+			<fileset dir="${web.dir}" />
 		</copy>
-		<copy todir="${build.dir}/META-INF" file="${conf.dir}/web/context.xml"/>
+		<copy todir="${build.dir}/META-INF" file="${conf.dir}/web/context.xml" />
 		<copy todir="${build.dir}/WEB-INF/lib">
 			<fileset dir="${lib.dir}/jar">
 				<exclude name="javax.servlet.jar" />
 			</fileset>
 		</copy>
 	</target>
-	<target name="war" depends="copy">
+	<target name="build-war" depends="build-package">
 		<echo>Building the war file</echo>
 		<war destfile="${war.path}" webxml="${build.dir}/WEB-INF/web.xml">
-			<fileset dir="${build.dir}"/>
+			<fileset dir="${build.dir}" />
 		</war>
 	</target>
-	<target name="undeploy">
-		<echo>Removing webapp from tomcat</echo>
-		<delete file="${tomcat.dir}/webapps/${war.file}" />
-	</target>
-	<target name="deploy" depends="war, undeploy">
+
+	<target name="tomcat-deploy" depends="build-war, tomcat-remove">
 		<echo>Deploying war to tomcat</echo>
-		<copy todir="${tomcat.dir}/webapps" file="${war.path}"/>
+		<property name="war.abs.path" location="${war.path}" />
+		<deploy url="${tomcat.url}"
+			username="${tomcat.user}"
+			password="${tomcat.pass}"
+			path="/${context.root}"
+			war="${war.abs.path}" />
 	</target>
-	<target name="explode-classes" depends="compile">
-		<echo>Exploading classes to tomcat</echo>
-		<copy todir="${tomcat.dir}/webapps/${project.name}/WEB-INF/classes">
-			<fileset dir="${build.dir}/WEB-INF/classes"/>
-		</copy>
+	<target name="tomcat-reload">
+		<reload url="${tomcat.url}"
+			username="${tomcat.user}"
+			password="${tomcat.pass}"
+			path="/${context.root}" />
+	</target>
+	<target name="tomcat-remove">
+		<undeploy url="${tomcat.url}"
+			username="${tomcat.user}"
+			password="${tomcat.pass}"
+			path="/${context.root}" />
 	</target>
 </project>

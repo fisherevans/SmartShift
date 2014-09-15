@@ -37,5 +37,11 @@
 	<classpathentry kind="lib" path="lib/jar/xml-apis.jar"/>
 	<classpathentry kind="lib" path="lib/jar/mysql-connector-java.jar"/>
 	<classpathentry kind="lib" path="lib/jar/javax.servlet.jar"/>
+	<classpathentry kind="lib" path="lib/jar/annotations-api.jar"/>
+	<classpathentry kind="lib" path="lib/jar/catalina-ant.jar"/>
+	<classpathentry kind="lib" path="lib/jar/catalina.jar"/>
+	<classpathentry kind="lib" path="lib/jar/coyote.jar"/>
+	<classpathentry kind="lib" path="lib/jar/juli.jar"/>
+	<classpathentry kind="lib" path="lib/jar/servlet-api.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
