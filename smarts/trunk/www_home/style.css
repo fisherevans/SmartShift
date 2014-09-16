@@ -1,3 +1,7 @@
+* {
+  font-family: 'Ubuntu', sans-serif;
+}
+
 #wrapper {
   width: 80%;
   max-width: 800px;
@@ -6,13 +10,13 @@
 
 #logo {
   display: block;
-  width: 100%;
+  width: 70%;
+  margin: 0px auto;
   margin-top:100px;
   margin-bottom:40px;
 }
 
 #text, #copy {
-  font-family: 'Ubuntu', sans-serif;
   text-align: center;
   display: block;
   width: 80%;
@@ -20,13 +24,38 @@
 }
 
 #text {
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 700;
   color: #000;
 }
 
 #copy {
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 400;
   color: #aaa;
+}
+
+.link, .link a {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0080ff;
+  text-align: center;
+}
+
+.link a:hover {
+  color: #2793ff;
+}
+
+@media screen and (max-width: 750px) {
+  #text {
+    font-size: 18px;
+  }
+
+  #copy {
+    font-size: 12px;
+  }
+
+  .link, .link a {
+    font-size: 12px;
+  }
 }
