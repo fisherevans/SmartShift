@@ -23,7 +23,14 @@
 		<echo>Cleaning the build directory</echo>
 		<delete dir="${build.dir}" />
 	</target>
-	<target name="build-compile">
+	<target name="build-init">
+		<echo>Creating sourc folders</echo>
+		<mkdir dir="${build.dir}/WEB-INF/" />
+		<mkdir dir="${build.dir}/WEB-INF/classes"/>
+		<mkdir dir="${build.dir}/WEB-INF/lib"/>
+		<mkdir dir="${build.dir}/META-INF/" />
+	</target>
+	<target name="build-compile" depends="build-init">
 		<echo>Compiling the source files</echo>
 		<javac srcdir="${src.dir}" destdir="${build.dir}/WEB-INF/classes">
 			<classpath refid="classpath" />
@@ -54,7 +61,7 @@
 		</war>
 	</target>
 
-	<target name="tomcat-deploy" depends="build-war, tomcat-remove">
+	<target name="tomcat-deploy" depends="build-war">
 		<echo>Deploying war to tomcat</echo>
 		<property name="war.abs.path" location="${war.path}" />
 		<deploy url="${tomcat.url}"
