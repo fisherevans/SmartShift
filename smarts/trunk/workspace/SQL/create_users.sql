@@ -28,10 +28,10 @@ ADD CONSTRAINT `works_artist`
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
 
-INSERT INTO `smartshift`.`artists` (`id`, `artist_name`, `date_born`, `date_died`, `gender`, `location_born`) VALUES (1, 'Leonardo da Vinci', '15-APR-1452', '2-MAY-1519', 'M', 'Vinci, Republic of Florence');
-INSERT INTO `smartshift`.`artists` (`id`, `artist_name`, `date_born`, `date_died`, `gender`, `location_born`) VALUES (2, 'Pablo Picasso', '25-OCT-1881', '8-APR-1973', 'M', 'Malaga, Spain');
-INSERT INTO `smartshift`.`artists` (`id`, `artist_name`, `date_born`, `date_died`, `gender`, `location_born`) VALUES (3, 'Vincent van Gogh', '30-MAR-1853', '29-JUL-1890', 'M', 'Zundert, Netherlands');
-INSERT INTO `smartshift`.`artists` (`id`, `artist_name`, `date_born`, `date_died`, `gender`, `location_born`) VALUES (4, 'Artemisia Gentileschi', '8-JUL-1593', '1-JAN-1639', 'F', 'Rome, Italy');
+INSERT INTO `smartshift`.`artists` (`id`, `artist_name`, `date_born`, `date_died`, `gender`, `location_born`) VALUES (1, 'Leonardo da Vinci', '1452-04-15', '1519-05-02', 'M', 'Vinci, Republic of Florence');
+INSERT INTO `smartshift`.`artists` (`id`, `artist_name`, `date_born`, `date_died`, `gender`, `location_born`) VALUES (2, 'Pablo Picasso', '1881-10-25', '1973-10-25', 'M', 'Malaga, Spain');
+INSERT INTO `smartshift`.`artists` (`id`, `artist_name`, `date_born`, `date_died`, `gender`, `location_born`) VALUES (3, 'Vincent van Gogh', '1853-10-25', '1890-10-25', 'M', 'Zundert, Netherlands');
+INSERT INTO `smartshift`.`artists` (`id`, `artist_name`, `date_born`, `date_died`, `gender`, `location_born`) VALUES (4, 'Artemisia Gentileschi', '1593-10-25', '1639-10-25', 'F', 'Rome, Italy');
 
 INSERT INTO `smartshift`.`works` (`artist_id`, `name`) VALUES ('1', 'Baptism of Christ');
 INSERT INTO `smartshift`.`works` (`artist_id`, `name`) VALUES ('1', 'Verrocchio');
