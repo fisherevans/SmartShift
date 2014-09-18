@@ -13,6 +13,11 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
+import com.nexmo.messaging.sdk.NexmoSmsClient;
+import com.nexmo.messaging.sdk.NexmoSmsClientSSL;
+import com.nexmo.messaging.sdk.SmsSubmissionResult;
+import com.nexmo.messaging.sdk.messages.TextMessage;
+
 import smartshift.api.hibernate.HibernateUtil;
 import smartshift.api.hibernate.art.Artist;
 
@@ -28,6 +33,7 @@ public class ListArtists {
 		Criteria cr = session.createCriteria(Artist.class);
 		List<Artist> artists = (List<Artist>)cr.list();
 
+		String text = "";
 		String out = "<h1>Artists!</h1>";
 		out += "<ul>";
 		for(Artist artist : artists) {
@@ -35,6 +41,7 @@ public class ListArtists {
 			out += "<a href=\"" + context.getContextPath() + "/artist/" + artist.getId() + "\">";
 			out += artist.toString() + " - " + artist.getWorks().size() + " Works";
 			out += "</a></li>";
+			text += "[" + artist.toString() + " - " + artist.getWorks().size() + " works] ";
 		}
 		out += "</ul>";
 		

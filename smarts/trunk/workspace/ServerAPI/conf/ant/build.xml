@@ -32,7 +32,7 @@
 	</target>
 	<target name="build-compile" depends="build-init">
 		<echo>Compiling the source files</echo>
-		<javac srcdir="${src.dir}" destdir="${build.dir}/WEB-INF/classes">
+		<javac srcdir="${src.dir.api}" destdir="${build.dir}/WEB-INF/classes">
 			<classpath refid="classpath" />
 		</javac>
 	</target>
