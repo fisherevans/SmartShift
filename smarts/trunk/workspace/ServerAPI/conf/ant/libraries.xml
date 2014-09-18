@@ -14,6 +14,9 @@
 
 	<target name="init">
 		<mkdir dir="${user.home}/.m2" />
+		<mkdir dir="${user.home}/.m2/non_maven/jar" />
+		<mkdir dir="${user.home}/.m2/non_maven/src" />
+		<mkdir dir="${user.home}/.m2/non_maven/javadoc" />
 		<get src="http://mirrors.ibiblio.org/apache/maven/ant-tasks/2.1.3/binaries/maven-ant-tasks-2.1.3.jar" 
     	    dest="${user.home}/.m2/maven-ant-tasks-2.1.3.jar" 
     	    verbose="true"
@@ -24,7 +27,7 @@
   	           classpathref="maven-ant-tasks.classpath" />
 	</target>
 
-	<target name="pull" depends="init">
+	<target name="maven-fetch" depends="init">
 		<artifact:dependencies filesetId="dependency.fileset"
 		        sourcesFilesetId="sources.dependency.fileset"
 		        javadocFilesetId="javadoc.dependency.fileset"
@@ -43,7 +46,22 @@
 		</artifact:dependencies>
 	</target>
 
-	<target name="import" depends="pull">
+	<target name="non-maven-fetch" depends="init">
+		<get src="${non.maven.host}/jar/nexmo-sdk.jar" 
+    	    dest="${user.home}/.m2/non_maven/jar" 
+    	    verbose="true"
+    	    usetimestamp="true"/>
+		<get src="${non.maven.host}/javadoc/nexmo-sdk-javadoc.jar" 
+    	    dest="${user.home}/.m2/non_maven/javadoc" 
+    	    verbose="true"
+    	    usetimestamp="true"/>
+	</target>
+
+	<target name="import" depends="maven-fetch, non-maven-fetch">
+		<copy todir="${lib.dir}">
+			<fileset dir="${user.home}/.m2/non_maven" />
+		</copy>
+		
 		<copy todir="${lib.dir}/jar">
 			<fileset refid="dependency.fileset" />
 			<mapper classpathref="maven-ant-tasks.classpath"
