@@ -61,7 +61,7 @@
 		</war>
 	</target>
 
-	<target name="tomcat-deploy" depends="build-war">
+	<target name="tomcat-deploy" depends="build-war, tomcat-remove">
 		<echo>Deploying war to tomcat</echo>
 		<property name="war.abs.path" location="${war.path}" />
 		<deploy url="${tomcat.url}"
@@ -77,7 +77,8 @@
 			path="/${context.root}" />
 	</target>
 	<target name="tomcat-remove">
-		<undeploy url="${tomcat.url}"
+		<undeploy failonerror="false"
+		    url="${tomcat.url}"
 			username="${tomcat.user}"
 			password="${tomcat.pass}"
 			path="/${context.root}" />
