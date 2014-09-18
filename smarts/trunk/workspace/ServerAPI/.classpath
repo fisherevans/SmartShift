@@ -208,5 +208,5 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/ServerAPI/lib/javadoc/nexmo-sdk-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="output" path="out/bin"/>
 </classpath>
