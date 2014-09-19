@@ -21,7 +21,7 @@
 
 	<target name="build-clean">
 		<echo>Cleaning the build directory</echo>
-		<delete dir="${build.dir}" />
+		<delete dir="${out.dir}" />
 	</target>
 	<target name="build-init">
 		<echo>Creating sourc folders</echo>
