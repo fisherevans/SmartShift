@@ -15,7 +15,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import smartshift.api.hibernate.HibernateUtil;
+import smartshift.api.hibernate.HibernateFactory;
 import smartshift.api.hibernate.art.Artist;
 import smartshift.api.hibernate.art.Work;
 
@@ -29,7 +29,7 @@ public class ShowArtist {
 	public String show(@PathParam("id") String stringId) {
 		try {
 			Integer id = Integer.parseInt(stringId);
-			Session session = HibernateUtil.getSessionFactory().openSession();
+			Session session = HibernateFactory.getSession("smartshift");
 			Criteria artistCr = session.createCriteria(Artist.class);
 			artistCr.add(Restrictions.eq("id", id));
 			Artist artist = (Artist) artistCr.uniqueResult();

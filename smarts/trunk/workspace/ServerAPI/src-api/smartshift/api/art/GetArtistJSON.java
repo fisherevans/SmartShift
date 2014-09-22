@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
 import smartshift.api.JsonResult;
-import smartshift.api.hibernate.HibernateUtil;
+import smartshift.api.hibernate.HibernateFactory;
 import smartshift.api.hibernate.art.Artist;
 import smartshift.api.hibernate.soa.ArtistSOA;
 import smartshift.api.util.APIResultUtil;
@@ -33,7 +33,7 @@ public class GetArtistJSON {
 	public String show(@PathParam("id") SimpleIntegerParam integerParam) {
 		logger.debug("Fetching artist for ID: " + integerParam.getOriginalValue());
 		try {
-			Session session = HibernateUtil.getSessionFactory().openSession();
+			Session session = HibernateFactory.getSession("smartshift");
 			Artist artist = ArtistSOA.getArtistById(integerParam.getInteger(), session);
 			String json = new JsonResult(artist).toJson();
 			session.close();

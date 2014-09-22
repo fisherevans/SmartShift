@@ -8,8 +8,7 @@
       
         <!-- Settings for a local HSQL (testing) database. -->  
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>  
-        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>  
-        <property name="connection.url">jdbc:mysql://localhost/smartshift</property>  
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="connection.username">smarts</property>  
         <property name="connection.password">smarts</property>  
   
