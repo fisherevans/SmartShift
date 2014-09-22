@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src-api"/>
 	<classpathentry kind="src" path="src-notifications"/>
+	<classpathentry kind="src" path="src-sql"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="lib/jar/antlr.jar"/>
 	<classpathentry kind="lib" path="lib/jar/aopalliance-repackaged.jar" sourcepath="lib/src/aopalliance-repackaged-sources.jar">
@@ -207,6 +208,32 @@
 	<classpathentry kind="lib" path="lib/jar/nexmo-sdk.jar" sourcepath="lib/src/nexmo-sdk-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/ServerAPI/lib/javadoc/nexmo-sdk-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/commons-codec.jar" sourcepath="lib/src/commons-codec-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/ServerAPI/lib/javadoc/commons-codec-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/commons-logging.jar" sourcepath="lib/src/commons-logging-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/ServerAPI/lib/javadoc/commons-logging-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/httpclient.jar" sourcepath="lib/src/httpclient-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/ServerAPI/lib/javadoc/httpclient-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/httpcore.jar"/>
+	<classpathentry kind="lib" path="lib/jar/gson.jar" sourcepath="lib/src/gson-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/ServerAPI/lib/javadoc/gson-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/log4j.jar" sourcepath="lib/src/log4j-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/ServerAPI/lib/javadoc/log4j-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="out/bin"/>
