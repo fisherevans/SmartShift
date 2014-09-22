@@ -1,38 +1,51 @@
 package smartshift.api.hibernate.art;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.*;
 
 import org.hibernate.annotations.Type;
 
+import smartshift.api.util.JsonEntity;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
+
 @Entity
 @Table(name = "artists")
-public class Artist {
+public class Artist extends JsonEntity {
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
+	@SerializedName("artistId")
+	@Expose
 	private Integer id;
 
 	@Column(name = "artist_name")
+	@Expose
 	private String artistName;
 
 	@Column(name = "date_born")
 	@Type(type = "date")
+	@Expose
 	private Date dateBorn;
 
 	@Column(name = "date_died")
 	@Type(type = "date")
+	@Expose
 	private Date dateDied;
 
 	@Column(name = "gender")
+	@Expose
 	private String gender;
 
 	@Column(name = "location_born")
+	@Expose
 	private String locationBorn;
 
 	@OneToMany(mappedBy = "artist")
+	@Expose
 	private List<Work> works;
 
 	public Integer getId() {

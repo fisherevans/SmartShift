@@ -2,23 +2,30 @@ package smartshift.api.hibernate.art;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+
+import smartshift.api.util.JsonEntity;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 @Entity
 @Table(name = "works")
-public class Work {
+public class Work extends JsonEntity {
+	
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
+	@Expose
+	@SerializedName("workId")
 	private Integer id;
 
 	@Column(name = "name")
+	@Expose
 	private String name;
 
 	@ManyToOne
