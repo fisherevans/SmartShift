@@ -10,8 +10,6 @@ import javax.ws.rs.core.MediaType;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import smartshift.api.hibernate.HibernateUtil;
-
 @Path("/hello")
 public class Helllo {
     @Context

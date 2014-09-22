@@ -13,12 +13,12 @@ public class HibernateListener implements ServletContextListener {
 
 	@Override
     public void contextInitialized(ServletContextEvent event) {  
-        HibernateUtil.getSessionFactory(); // Just call the static initializer of that class      
+        HibernateFactory.createFactories();      
     }  
 
 	@Override
     public void contextDestroyed(ServletContextEvent event) {  
-        HibernateUtil.getSessionFactory().close(); // Free all resources  
+        HibernateFactory.closeFactories();
     }
 	
 }

@@ -12,7 +12,7 @@ import javax.ws.rs.core.MediaType;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 
-import smartshift.api.hibernate.HibernateUtil;
+import smartshift.api.hibernate.HibernateFactory;
 import smartshift.api.hibernate.art.Artist;
 
 @Path("/artists")
@@ -23,7 +23,7 @@ public class ListArtists {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String list() {
-		Session session = HibernateUtil.getSessionFactory().openSession();
+		Session session = HibernateFactory.getSession("smartshift");
 		Criteria cr = session.createCriteria(Artist.class);
 		List<Artist> artists = (List<Artist>)cr.list();
 
