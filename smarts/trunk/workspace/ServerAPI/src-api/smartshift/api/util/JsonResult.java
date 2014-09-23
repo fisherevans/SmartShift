@@ -1,4 +1,4 @@
-package smartshift.api;
+package smartshift.api.util;
 
 import com.google.gson.annotations.Expose;
 

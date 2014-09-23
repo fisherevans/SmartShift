@@ -14,11 +14,11 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 
-import smartshift.api.JsonResult;
 import smartshift.api.hibernate.HibernateFactory;
 import smartshift.api.hibernate.art.Artist;
 import smartshift.api.hibernate.soa.ArtistSOA;
 import smartshift.api.util.APIResultUtil;
+import smartshift.api.util.JsonResult;
 import smartshift.api.util.params.SimpleIntegerParam;
 
 @Path("/json/artist/{id}")
