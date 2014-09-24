@@ -5,9 +5,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 /**
- * A set of utility functions for standardized ai results.
  * @author fevans
- *
+ * @version Sept 18, 2014
+ * 
+ *          A set of utility functions for standardized ai results.
  */
 public class APIResultUtil {
 	private static final JsonResult.Status ERROR = JsonResult.Status.Error;

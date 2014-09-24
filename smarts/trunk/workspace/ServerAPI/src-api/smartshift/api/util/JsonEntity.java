@@ -4,11 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 /**
- * Parent class that sets up the GSON_BUILDER for table entities. 
- * Allows entities to configure it's builder via the static {} 
- * clause to fit their needs. Adds functionality to get the 
- * GSON and JSON text.
  * @author fevans
+ * @version Sept 18, 2014
+ * 
+ *          Parent class that sets up the GSON_BUILDER for table entities.
+ *          Allows entities to configure it's builder via the static {} clause
+ *          to fit their needs. Adds functionality to get the GSON and JSON
+ *          text.
  */
 public abstract class JsonEntity {
 	private static final GsonBuilder GSON_BUILDER;
@@ -36,10 +38,9 @@ public abstract class JsonEntity {
 		return GSON_BUILDER;
 	}
 	
-	/**
-	 * The GSON object based on this object's GSON Builder
-	 * @return
-	 */
+	    /**
+     * @return the GSON object based on this object's GSON Builder
+     */
 	public Gson getGson() {
 		return GSON_BUILDER.create();
 	}

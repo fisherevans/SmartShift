@@ -1,13 +1,15 @@
 package smartshift.api.hibernate.soa;
 
 import java.util.List;
-
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-
 import smartshift.api.hibernate.art.Artist;
 
+/**
+ * @author fevans
+ * @version Sept 18, 2014
+ */
 public class ArtistSOA {
 	
 	/**
