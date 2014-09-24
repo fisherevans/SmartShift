@@ -7,14 +7,20 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import org.hibernate.Query;
-import org.hibernate.Session;
-
+/**
+ * @author fevans
+ * @version Sept 18, 2014
+ * 
+ *          A "hello, world!" style landing page
+ */
 @Path("/hello")
-public class Helllo {
+public class Hello {
     @Context
     private ServletContext context;
     
+    /**
+     * @return a "Hello, world!" string
+     */
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String sayHtmlHello() {

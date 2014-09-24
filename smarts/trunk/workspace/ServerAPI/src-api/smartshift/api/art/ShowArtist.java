@@ -1,7 +1,5 @@
 package smartshift.api.art;
 
-import java.util.List;
-
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -9,21 +7,28 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-
 import smartshift.api.hibernate.HibernateFactory;
 import smartshift.api.hibernate.art.Artist;
 import smartshift.api.hibernate.art.Work;
 
+/**
+ * @author fevans
+ * @version Sept 18, 2014
+ * 
+ *          show data for a particular artist
+ */
 @Path("/artist/{id}")
 public class ShowArtist {
     @Context
     private ServletContext context;
 
+    /**
+     * @param stringId
+     * @return a String containing all data for the artist
+     */
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String show(@PathParam("id") String stringId) {
@@ -53,5 +58,4 @@ public class ShowArtist {
 			return "<b style='color:red;'>Error! " + e.toString() + "</b>";
 		}
 	}
-
 }
