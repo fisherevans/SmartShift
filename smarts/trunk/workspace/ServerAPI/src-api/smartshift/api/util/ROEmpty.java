@@ -3,6 +3,13 @@ package smartshift.api.util;
 import java.util.Collection;
 import java.util.Iterator;
 
+/**
+ * An implementation of an empty read only collection
+ * 
+ * @author dfead
+ *
+ * @param <T> The type of the collection
+ */
 public class ROEmpty<T> implements ROCollection<T> {
 
 	@Override

@@ -5,8 +5,23 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+/**
+ * An implementation of a read only set collection
+ * 
+ * @author dfead
+ *
+ * @param <T> The type of the collection
+ */
 public class ROSet<T> implements ROCollection<T>{
+    
+    private Set<T> _set;
 
+    /**
+     * Create the read only set
+     * 
+     * @param copy the collection based on the content of the 
+     * passed collection
+     */
 	public ROSet(Set<T> copy) {
 		initSet();
 		for(T t : copy) {
@@ -18,8 +33,6 @@ public class ROSet<T> implements ROCollection<T>{
 		if(_set == null)
 			_set = new HashSet<T>();
 	}
-	
-	private Set<T> _set;
 
 	@Override
 	public boolean contains(T t) {

@@ -3,8 +3,18 @@ package smartshift.api.util;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * An iterator with an empty collection
+ * 
+ * @author dfead
+ *
+ * @param <T>
+ */
 public class EmptyIterator<T> implements Iterator<T> {
 
+    /**
+     * Create the empty iterator
+     */
 	public EmptyIterator() {
 		// do nothing
 	}
