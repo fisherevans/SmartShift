@@ -31,7 +31,7 @@ public class ArtistSOA {
 	 */
 	public static List<Artist> getAllArtists(Session session) {
 		Criteria artistCr = session.createCriteria(Artist.class);
-		return (List<Artist>) artistCr.list();
+		return artistCr.list();
 	}
 	
 }

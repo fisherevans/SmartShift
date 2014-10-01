@@ -1,4 +1,4 @@
-<project name="ServerAPI-Libraries" default="import" basedir="../.." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+<project name="Libraries" default="import" basedir="../.." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
 	<property file="conf/ant/build.properties"/>
 
 	<path id="classpath">
