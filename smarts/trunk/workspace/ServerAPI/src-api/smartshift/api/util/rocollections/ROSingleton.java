@@ -1,4 +1,4 @@
-package smartshift.api.util;
+package smartshift.api.util.rocollections;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -7,8 +7,9 @@ import java.util.Iterator;
  * An implementation of a read only collection containing one element
  * 
  * @author dfead
- *
- * @param <T> The type of the collection
+ * 
+ * @param <T>
+ *            The type of the collected element
  */
 public class ROSingleton<T> implements ROCollection<T>{
 	
@@ -22,26 +23,42 @@ public class ROSingleton<T> implements ROCollection<T>{
         _singleton = singleton;
     }
 
+    /**
+     * @see ROCollection#contains(Object)
+     */
 	@Override
 	public boolean contains(T t) {
 		return t.equals(_singleton);
 	}
 
+    /**
+     * @see ROCollection#containsAll(Collection)
+     */
 	@Override
 	public boolean containsAll(Collection<? extends T> c) {
 		return c.size()==1 && c.contains(_singleton);
 	}
 
+    /**
+     * @see ROCollection#isEmpty()
+     */
 	@Override
 	public boolean isEmpty() {
 		return false;
 	}
 
+    /**
+     * @see ROCollection#iterator()
+     */
 	@Override
 	public Iterator<T> iterator() {
 		return new SingletonIterator<T>(_singleton);
 	}
 
+    /**
+     * @return always 1
+     * @see ROCollection#size()
+     */
 	@Override
 	public int size() {
 		return 1;
