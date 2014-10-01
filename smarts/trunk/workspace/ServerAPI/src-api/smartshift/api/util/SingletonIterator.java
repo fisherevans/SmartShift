@@ -3,10 +3,23 @@ package smartshift.api.util;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
+/**
+ * An iterator that goes over a single object
+ */
 public class SingletonIterator<T> implements Iterator<T> {
 
+    private boolean _used;
+
+    private T _singleton;
+
+    /**
+     * Create the iterator
+     * 
+     * @param singleton the only object to iterate over
+     */
 	public SingletonIterator(T singleton) {
 		_singleton = singleton;
+        _used = false;
 	}
 
 	@Override
@@ -24,10 +37,10 @@ public class SingletonIterator<T> implements Iterator<T> {
 
 	@Override
 	public void remove() {
-		throw new NoSuchElementException();
+        if(_used)
+            throw new NoSuchElementException();
+        else
+            _used = true;
 	}
-
-	private boolean _used;
-	private T _singleton;
 	
 }

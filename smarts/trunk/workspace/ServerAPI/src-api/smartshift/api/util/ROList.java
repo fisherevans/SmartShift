@@ -5,6 +5,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+/**
+ * An implementation of a read only list collection
+ * 
+ * @author dfead
+ *
+ * @param <T> The type of the collection
+ */
 public class ROList<T> implements ROCollection<T> {
 	
 	private List<T> _list;
@@ -39,6 +46,9 @@ public class ROList<T> implements ROCollection<T> {
 		return _list.size();
 	}
 	
+    /**
+     * @see com.util.List#get()
+     */
 	public T get(int index) {
 		return _list.get(index);
 	}
