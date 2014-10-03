@@ -39,8 +39,8 @@
         <!-- Hibernate Annotations (and package-info.java)  
         <mapping package="org.mypackage"/>  
         -->  
-        <mapping class="smartshift.api.hibernate.art.Artist"/>  
-        <mapping class="smartshift.api.hibernate.art.Work"/>  
+        <mapping class="smartshift.common.hibernate.model.art.Artist"/>  
+        <mapping class="smartshift.common.hibernate.model.art.Work"/>  
   
     </session-factory>  
   
