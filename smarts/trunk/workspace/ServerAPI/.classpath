@@ -257,5 +257,21 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/ServerAPI/lib/javadoc/slf4j-api-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/c3p0.jar" sourcepath="lib/src/c3p0-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/ServerAPI/lib/javadoc/c3p0-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/hibernate-c3p0.jar" sourcepath="lib/src/hibernate-c3p0-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jar/mchange-commons-java.jar" sourcepath="lib/src/mchange-commons-java-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/ServerAPI/lib/javadoc/mchange-commons-java-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/slf4j-log4j12.jar" sourcepath="lib/src/slf4j-log4j12-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/ServerAPI/lib/javadoc/slf4j-log4j12-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="out/bin"/>
 </classpath>
