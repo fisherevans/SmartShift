@@ -40,3 +40,13 @@ INSERT INTO `smartshift`.`works` (`artist_id`, `name`) VALUES ('2', 'La Vie');
 INSERT INTO `smartshift`.`works` (`artist_id`, `name`) VALUES ('2', 'Woman with Mustard Pot');
 INSERT INTO `smartshift`.`works` (`artist_id`, `name`) VALUES ('4', 'Judith Slaying Holofernes');
 
+
+
+CREATE TABLE `smartshift`.`webuser` (
+  `username` VARCHAR(45) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  `password_hash` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`username`));
+ALTER TABLE `smartshift`.`webuser`
+ADD UNIQUE INDEX `webuser_email` (`email`);
+insert into `smartshift`.`webuser` (username, email, password_hash) values ("jeebs", "contact@fisherevans.com", "$2a$08$Zd2YSeBMMhv.4.av65dVZ.1TwH/KBRrJDWpOr0mKNE84Ji7YDpCbm");

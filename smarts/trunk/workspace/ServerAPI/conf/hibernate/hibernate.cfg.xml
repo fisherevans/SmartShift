@@ -35,12 +35,11 @@
   
         <!-- Hibernate XML mapping files -->  
         <!--  <mapping resource="Artist.hbm.xml"/>  -->
-      
-        <!-- Hibernate Annotations (and package-info.java)  
-        <mapping package="org.mypackage"/>  
-        -->  
+        
         <mapping class="smartshift.common.hibernate.model.art.Artist"/>  
-        <mapping class="smartshift.common.hibernate.model.art.Work"/>  
+        <mapping class="smartshift.common.hibernate.model.art.Work"/>
+        
+        <mapping class="smartshift.common.hibernate.model.test.WebUser"/>
   
     </session-factory>  
   

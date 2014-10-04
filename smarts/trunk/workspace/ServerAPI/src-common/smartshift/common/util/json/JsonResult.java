@@ -10,7 +10,7 @@ import com.google.gson.annotations.Expose;
  */
 public class JsonResult extends JsonEntity {
 	@Expose
-	private String status = Status.Success.toString();
+    private String status = JsonResultStatus.Success.toString();
 	
 	@Expose
 	private Object data = null;
@@ -23,7 +23,7 @@ public class JsonResult extends JsonEntity {
      * @param data
      *            The data object to return as JSON
      */
-	public JsonResult(Status status, Object data) {
+    public JsonResult(JsonResultStatus status, Object data) {
 		this.status = status.toString();
 		this.data = data;
 	}
@@ -50,29 +50,5 @@ public class JsonResult extends JsonEntity {
      */
 	public Object getData() {
 		return data;
-	}
-	
-	/**
-	 * The set of predefined result statuses
-	 * @author fevans
-	 */
-	public enum Status {
-        /** */
-		Error("error"),
-        /** */
-		Success("success");
-		
-		private String stringValue;
-		
-		Status(String stringValue) {
-			this.stringValue = stringValue;
-		}
-		
-        /**
-         * @return a string representation of the status
-         */
-		public String toString() {
-			return stringValue;
-		}
 	}
 }
