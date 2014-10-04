@@ -4,9 +4,7 @@ import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import smartshift.common.hibernate.HibernateFactory;
@@ -35,7 +33,6 @@ public class GetArtistJSON {
      *         integerParam
      */
 	@GET
-	@Produces(MediaType.TEXT_PLAIN)
 	public String show(@PathParam("id") SimpleIntegerParam integerParam) {
 		logger.debug("Fetching artist for ID: " + integerParam.getOriginalValue());
 		try {

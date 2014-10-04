@@ -6,6 +6,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import org.apache.log4j.Logger;
 
 /**
  * @author fevans
@@ -15,6 +16,9 @@ import javax.ws.rs.core.MediaType;
  */
 @Path("/hello")
 public class Hello {
+
+    private static final Logger logger = Logger.getLogger(Hello.class);
+
     @Context
     private ServletContext context;
     
@@ -24,6 +28,7 @@ public class Hello {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public String sayHtmlHello() {
+        logger.error("Hey.....");
 		return "Welcome to: " + context.getContextPath();
 	}
 }

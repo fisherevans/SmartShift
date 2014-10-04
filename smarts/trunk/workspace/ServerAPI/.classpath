@@ -5,7 +5,6 @@
 	<classpathentry kind="src" path="src-notifications"/>
 	<classpathentry kind="src" path="src-sql"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="output" path="out/bin"/>
 	<classpathentry kind="lib" path="lib/jar/antlr.jar"/>
 	<classpathentry kind="lib" path="lib/jar/aopalliance-repackaged.jar" sourcepath="lib/src/aopalliance-repackaged-sources.jar">
 		<attributes>
@@ -238,4 +237,10 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/ServerAPI/lib/javadoc/log4j-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/jbcrypt.jar" sourcepath="lib/src/jbcrypt-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/ServerAPI/lib/javadoc/jbcrypt-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="out/bin"/>
 </classpath>
