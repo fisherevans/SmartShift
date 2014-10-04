@@ -37,6 +37,7 @@
 
 			<dependency groupId="org.glassfish.jersey.bundles" artifactId="jaxrs-ri" version="2.12"/>
 			<dependency groupId="org.hibernate" artifactId="hibernate-core" version="4.3.6.Final"/>
+			<dependency groupId="org.hibernate" artifactId="hibernate-ehcache" version="4.3.6.Final"/>
 			<dependency groupId="mysql" artifactId="mysql-connector-java" version="5.1.32"/>
 			<dependency groupId="org.glassfish" artifactId="javax.servlet" version="10.0-b28"/>
 			<dependency groupId="org.apache.tomcat" artifactId="catalina-ant" version="6.0.41"/>
@@ -44,7 +45,6 @@
 			<dependency groupId="com.google.code.gson" artifactId="gson" version="2.2.4"/>
 			<dependency groupId="log4j" artifactId="log4j" version="1.2.17"/>
 			<dependency groupId="org.mindrot" artifactId="jbcrypt" version="0.3m"/>
-			<dependency groupId="net.sf.ehcache" artifactId="ehcache-core" version="2.5.1"/>
 			 
 			<!-- END DEPENDENCY LIST -->
 		</artifact:dependencies>

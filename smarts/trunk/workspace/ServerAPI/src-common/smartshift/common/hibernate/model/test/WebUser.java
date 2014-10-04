@@ -4,6 +4,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -13,6 +15,7 @@ import com.google.gson.annotations.SerializedName;
  */
 @Entity
 @Table(name = "webuser")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class WebUser {
     @Id
     @Column(name = "username")
