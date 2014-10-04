@@ -247,6 +247,11 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/ServerAPI/lib/javadoc/ehcache-core-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/hibernate-ehcache.jar" sourcepath="lib/src/hibernate-ehcache-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/ServerAPI/lib/src/hibernate-ehcache-sources.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="lib/jar/slf4j-api.jar" sourcepath="lib/src/slf4j-api-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/ServerAPI/lib/javadoc/slf4j-api-javadoc.jar!/"/>
