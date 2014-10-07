@@ -8,7 +8,7 @@ import com.google.gson.annotations.Expose;
  * 
  *          The standard return data structure of JSON requests
  */
-public class JsonResult extends JsonEntity {
+public class JsonResult {
 	@Expose
     private String status = JsonResultStatus.Success.toString();
 	
@@ -51,4 +51,9 @@ public class JsonResult extends JsonEntity {
 	public Object getData() {
 		return data;
 	}
+
+    public static String create(Object entity) {
+        JsonResult result = new JsonResult(entity);
+        return GsonFactory.toJson(result);
+    }
 }

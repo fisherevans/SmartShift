@@ -7,7 +7,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import smartshift.common.util.json.JsonEntity;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -17,7 +18,8 @@ import com.google.gson.annotations.SerializedName;
  */
 @Entity
 @Table(name = "works")
-public class Work extends JsonEntity {
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Work {
 	
 	@Id
 	@GeneratedValue

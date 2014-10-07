@@ -1,8 +1,6 @@
 package smartshift.common.hibernate.dao.test;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Restrictions;
 import smartshift.common.hibernate.model.test.WebUser;
 
 /**
@@ -18,8 +16,6 @@ public class WebUserDAO {
      * @return The webuser with given username - null if none found
      */
     public static WebUser getWebUser(String username, Session session) {
-        Criteria userCr = session.createCriteria(WebUser.class);
-        userCr.add(Restrictions.eq("username", username));
-        return (WebUser) userCr.uniqueResult();
+        return (WebUser) session.get(WebUser.class, username);
     }
 }

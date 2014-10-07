@@ -8,8 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
-import smartshift.common.util.json.JsonEntity;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -21,38 +22,39 @@ import com.google.gson.annotations.SerializedName;
  */
 @Entity
 @Table(name = "artists")
-public class Artist extends JsonEntity {
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Artist {
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
-	@SerializedName("artistId")
-	@Expose
+    @SerializedName("artistId")
+    @Expose
 	private Integer id;
 
 	@Column(name = "artist_name")
-	@Expose
+    @Expose
 	private String artistName;
 
 	@Column(name = "date_born")
 	@Type(type = "date")
-	@Expose
+    @Expose
 	private Date dateBorn;
 
 	@Column(name = "date_died")
 	@Type(type = "date")
-	@Expose
+    @Expose
 	private Date dateDied;
 
 	@Column(name = "gender")
-	@Expose
+    @Expose
 	private String gender;
 
 	@Column(name = "location_born")
-	@Expose
+    @Expose
 	private String locationBorn;
 
 	@OneToMany(mappedBy = "artist")
-	@Expose
+    @Expose
 	private List<Work> works;
 
     /**
