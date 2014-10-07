@@ -18,6 +18,7 @@
         <property name="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
         <property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
         <property name="hibernate.cache.use_query_cache=">true</property>
+        <property name="hibernate.cache.use_second_level_cache">true</property>
   
         <!-- Use the C3P0 connection pool. -->  
 		<property name="hibernate.c3p0.min_size">1</property>

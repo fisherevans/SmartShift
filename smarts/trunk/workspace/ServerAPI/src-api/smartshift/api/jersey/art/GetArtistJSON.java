@@ -37,8 +37,8 @@ public class GetArtistJSON {
 		logger.debug("Fetching artist for ID: " + integerParam.getOriginalValue());
 		try {
 			Session session = HibernateFactory.getSession("smartshift");
-			Artist artist = ArtistDAO.getArtistById(integerParam.getInteger(), session);
-			String json = new JsonResult(artist).toJson();
+            Artist artist = ArtistDAO.getArtistById(integerParam.getInteger(), session);
+            String json = JsonResult.create(artist);
 			session.close();
 			return json;
 		} catch (Exception e) {

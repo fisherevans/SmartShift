@@ -1,5 +1,6 @@
 package smartshift.common.hibernate.model.test;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,6 +17,7 @@ import com.google.gson.annotations.SerializedName;
 @Entity
 @Table(name = "webuser")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@Cacheable
 public class WebUser {
     @Id
     @Column(name = "username")

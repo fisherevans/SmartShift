@@ -49,7 +49,7 @@ public class APIResultFactory {
      * @return The throwable WebApplicationException
      */
     public static WebApplicationException getException(JsonResultStatus apiStatus, Status status, String errorMessage) {
-        String json = new JsonResult(apiStatus, errorMessage).toJson();
+        String json = GsonFactory.toJson(new JsonResult(apiStatus, errorMessage));
         WebApplicationException e = new WebApplicationException(Response.status(status).entity(json).build());
         return e;
     }
