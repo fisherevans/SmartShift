@@ -27,11 +27,12 @@ public class Artist {
 	@Id
 	@GeneratedValue
 	@Column(name = "id")
-    @SerializedName("artistId")
+    @SerializedName("id")
     @Expose
 	private Integer id;
 
 	@Column(name = "artist_name")
+    @SerializedName("name")
     @Expose
 	private String artistName;
 
@@ -54,7 +55,6 @@ public class Artist {
 	private String locationBorn;
 
 	@OneToMany(mappedBy = "artist")
-    @Expose
 	private List<Work> works;
 
     /**
