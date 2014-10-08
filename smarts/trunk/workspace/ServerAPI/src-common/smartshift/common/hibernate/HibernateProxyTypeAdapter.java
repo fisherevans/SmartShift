@@ -10,9 +10,11 @@ import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 
 /**
- * This TypeAdapter will intitialize Hibernate proxied objects
+ * This TypeAdapter will initialize Hibernate proxied objects
  * 
- * @author D. Fisher Evans <contact@fisherevans.com>
+ * See http://stackoverflow.com/questions/13459718/could-not-serialize-object-cause-of-hibernateproxy
+ * 
+ * @author D. Fisher Evans <contact@fisherevans.com>, Flavio
  */
 public class HibernateProxyTypeAdapter extends TypeAdapter<HibernateProxy> {
 

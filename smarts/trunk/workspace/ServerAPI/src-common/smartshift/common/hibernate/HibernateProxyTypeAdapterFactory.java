@@ -14,6 +14,10 @@ import com.google.gson.reflect.TypeToken;
  */
 public class HibernateProxyTypeAdapterFactory implements TypeAdapterFactory {
 
+    /**
+     * @see com.google.gson.TypeAdapterFactory#create(com.google.gson.Gson,
+     * com.google.gson.reflect.TypeToken)
+     */
     @Override
     @SuppressWarnings("unchecked")
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {

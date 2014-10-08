@@ -1,5 +1,6 @@
 package smartshift.common.util.json;
 
+import javax.ws.rs.core.Response.Status;
 import smartshift.common.hibernate.HibernateProxyTypeAdapter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -47,5 +48,28 @@ public class GsonFactory {
      */
     public static String toJson(Object object) {
         return getGson().toJson(object);
+    }
+
+    /**
+     * Uses this object's GSON Builder to generate the JSON encapsulated by the
+     * standard JsonResult object
+     * 
+     * @param object The object to turn into json
+     * @return the JSON
+     */
+    public static String toJsonResult(Object object) {
+        return getGson().toJson(new JsonResult(object));
+    }
+
+    /**
+     * Uses this object's GSON Builder to generate the JSON encapsulated by the
+     * standard JsonResult object
+     * 
+     * @param status The HTTP status of the result
+     * @param object The object to turn into json
+     * @return the JSON
+     */
+    public static String toJsonResult(Status status, Object object) {
+        return getGson().toJson(new JsonResult(status, object));
     }
 }
