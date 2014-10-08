@@ -1,5 +1,6 @@
 package smartshift.api.jersey.art;
 
+import java.util.List;
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -8,14 +9,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response.Status;
 import org.apache.log4j.Logger;
-import org.hibernate.ObjectNotFoundException;
-import org.hibernate.Session;
-import smartshift.common.hibernate.HibernateFactory;
-import smartshift.common.hibernate.dao.ArtistDAO;
 import smartshift.common.hibernate.model.art.Artist;
-import smartshift.common.util.json.APIResultFactory;
+import smartshift.common.util.jersey.ServiceMethods;
 import smartshift.common.util.json.GsonFactory;
 import smartshift.common.util.params.SimpleIntegerParam;
 
@@ -25,6 +21,7 @@ import smartshift.common.util.params.SimpleIntegerParam;
  * 
  *          A page to access the JSON for an artist
  */
+@Path("/json/artist/")
 public class ArtistMethods {
 	private static Logger logger = Logger.getLogger(ArtistMethods.class);
 
@@ -32,33 +29,32 @@ public class ArtistMethods {
 	private ServletContext context;
 
     /**
-     * @param integerParam
+     * Gets the artist corresponding to an id
+     * 
+     * @param integerParam id of artist to lookup
      * @return a JSON String holding data for the artist whose ID matches
-     *         integerParam
+     * @throws WebApplicationException
      */
-    @Path("/json/artist/{id}")
+    @Path("{id}")
     @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getArtistById(@PathParam("id") SimpleIntegerParam integerParam) throws WebApplicationException {
-		logger.debug("Fetching artist for ID: " + integerParam.getOriginalValue());
-        Session session = null;
-        String json = null;
-		try {
-            session = HibernateFactory.getSession("smartshift");
-            Artist artist = ArtistDAO.getArtistById(integerParam.getInteger(), session);
-            json = GsonFactory.toJsonResult(artist);
-        } catch(ObjectNotFoundException e) {
-            String result = "Artist not found with the ID of " + integerParam.getInteger();
-            logger.error(result);
-            throw APIResultFactory.getException(Status.BAD_REQUEST, result);
-        } catch(Exception e) {
-            logger.error("Failed to fetch Artist", e);
-            throw APIResultFactory.getException(Status.INTERNAL_SERVER_ERROR);
-        } finally {
-            logger.error("Closing session...");
-            if(session != null)
-                session.close();
-        }
-        return json;
-	}
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getArtist(@PathParam("id") SimpleIntegerParam integerParam) throws WebApplicationException {
+        logger.debug("Fetching artist for ID: " + integerParam.getInteger());
+        Object artist = ServiceMethods.getUniqueObjectJson(Artist.class, integerParam.getInteger());
+        return GsonFactory.toJsonResult(artist);
+    }
+
+    /**
+     * Adds an artist with the passed properties
+     * 
+     * @param artistRequest object
+     * @return a JSON String holding data for the newly created artist
+     * integerParam
+     */
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public String getArtist() throws WebApplicationException {
+        List<Object> artists = ServiceMethods.getObjectListJson(Artist.class);
+        return GsonFactory.toJsonResult(artists);
+    }
 }

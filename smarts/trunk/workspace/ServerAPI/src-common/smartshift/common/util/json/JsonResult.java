@@ -38,7 +38,7 @@ public class JsonResult {
     public JsonResult(Status statusObject, Object result) {
         this.statusObject = statusObject;
         this.result = result;
-        this.status = statusObject.getStatusCode() + ":" + statusObject.getReasonPhrase();
+        this.status = statusObject.getStatusCode() + " " + statusObject.getReasonPhrase();
 	}
 	
     /**
