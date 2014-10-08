@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import smartshift.common.util.properties.AppProperties;
 
 /**
  * @author fevans
@@ -18,9 +19,6 @@ public class HibernateFactory {
     /** the logger */
 	public static Logger logger = Logger.getLogger(HibernateFactory.class);
 	
-    /** the database's url */
-	public static final String BASE_URL = "jdbc:mysql://localhost/";
-	
     /** an array of db names */
 	public static final String[] DATABASES = new String[] { "smartshift" };
 	
@@ -30,10 +28,11 @@ public class HibernateFactory {
      * set up the hibernate connection
      */
 	public synchronized static void createFactories() {
+        String baseUrl = AppProperties.getProperty("database.url");
 		closeFactories();
 		Configuration baseConfig =  new Configuration().configure();
 		for(String database:DATABASES) {
-			baseConfig.getProperties().setProperty("hibernate.connection.url", BASE_URL + database);
+            baseConfig.getProperties().setProperty("hibernate.connection.url", baseUrl + database);
 			baseConfig.configure();
 			SessionFactory factory = baseConfig.buildSessionFactory();
 			factories.put(database, factory);

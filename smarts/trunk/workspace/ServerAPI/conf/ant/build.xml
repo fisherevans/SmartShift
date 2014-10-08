@@ -52,8 +52,9 @@
     <copy todir="${build.dir}/${project.name}">
       <fileset dir="${conf.dir}/web/${project.name}" />
     </copy>
-  	<mkdir dir="${build.dir}/${project.name}/WEB-INF/lib" />
   	<mkdir dir="${build.dir}/${project.name}/WEB-INF/classes" />
+  	<mkdir dir="${build.dir}/${project.name}/WEB-INF/classes/res" />
+  	<mkdir dir="${build.dir}/${project.name}/WEB-INF/lib" />
   </target>
 
   <target name="build-compile" depends="build-init">
@@ -76,6 +77,10 @@
         <exclude name="javax.servlet.jar" />
         <exclude name="servlet-api.jar" />
       </fileset>
+    </copy>
+    <copy todir="${build.dir}/${project.name}/WEB-INF/classes/res">
+        <fileset dir="${res.dir}/common" />
+        <fileset dir="${res.dir}/${project.name}" />
     </copy>
   </target>
 

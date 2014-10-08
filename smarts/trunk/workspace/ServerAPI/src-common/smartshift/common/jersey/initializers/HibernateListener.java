@@ -1,7 +1,8 @@
-package smartshift.common.hibernate;
+package smartshift.common.jersey.initializers;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import smartshift.common.hibernate.HibernateFactory;
 
 /**
  * @author fevans
@@ -15,15 +16,15 @@ public class HibernateListener implements ServletContextListener {
      * a context has been initialized, init hibernate factories
      */
 	@Override
-    public void contextInitialized(ServletContextEvent event) {  
-        HibernateFactory.createFactories();      
+    public void contextInitialized(ServletContextEvent event) {
+        HibernateFactory.createFactories();
     }  
 
     /**
      * a context has been destroyed, close hibernate factories
      */
 	@Override
-    public void contextDestroyed(ServletContextEvent event) {  
+    public void contextDestroyed(ServletContextEvent event) {
         HibernateFactory.closeFactories();
     }
 }
