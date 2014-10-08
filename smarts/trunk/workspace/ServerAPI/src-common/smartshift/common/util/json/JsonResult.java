@@ -1,5 +1,6 @@
 package smartshift.common.util.json;
 
+import javax.ws.rs.core.Response.Status;
 import com.google.gson.annotations.Expose;
 
 /**
@@ -9,11 +10,22 @@ import com.google.gson.annotations.Expose;
  *          The standard return data structure of JSON requests
  */
 public class JsonResult {
-	@Expose
-    private String status = JsonResultStatus.Success.toString();
+    private Status statusObject;
+
+    @Expose
+    private String status;
 	
 	@Expose
-	private Object data = null;
+    private Object result;
+
+    /**
+     * Creates a standard data structure
+     * 
+     * @param data the data object to return as JSON
+     */
+    public JsonResult(Object data) {
+        this(Status.OK, data);
+    }
 	
 	    /**
      * Creates a standard data structure, with status
@@ -23,36 +35,27 @@ public class JsonResult {
      * @param data
      *            The data object to return as JSON
      */
-    public JsonResult(JsonResultStatus status, Object data) {
-		this.status = status.toString();
-		this.data = data;
-	}
-	
-    /**
-     * Creates a standard data structure
-     * 
-     * @param data
-     *            the data object to return as JSON
-     */
-	public JsonResult(Object data) {
-		this.data = data;
+    public JsonResult(Status statusObject, Object result) {
+        this.statusObject = statusObject;
+        this.result = result;
+        this.status = statusObject.getStatusCode() + ":" + statusObject.getReasonPhrase();
 	}
 	
     /**
      * @return the result's status
      */
-	public String getStatus() {
-		return status;
+    public Status getStatusObject() {
+        return statusObject;
 	}
 	
     /**
      * @return the result's data
      */
-	public Object getData() {
-		return data;
+    public Object getResult() {
+        return result;
 	}
 
-    public static String create(Object entity) {
+    public static String ok(Object entity) {
         JsonResult result = new JsonResult(entity);
         return GsonFactory.toJson(result);
     }

@@ -4,6 +4,7 @@ import java.io.IOException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 import org.apache.log4j.Logger;
 import smartshift.common.hibernate.model.test.WebUser;
@@ -28,15 +29,15 @@ public class AuthFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext containerRequest) throws IOException, WebApplicationException {
         String auth = containerRequest.getHeaderString("Authorization");
         if(auth == null)
-            throw APIResultFactory.getUnauthorizedErrorException();
+            throw APIResultFactory.getException(Status.UNAUTHORIZED);
         String[] authData = BasicAuth.decode(auth);
         if(authData == null || authData.length != 2)
-            throw APIResultFactory.getUnauthorizedErrorException();
+            throw APIResultFactory.getException(Status.UNAUTHORIZED);
         String username = authData[0];
         String password = authData[1];
         WebUser user = Authentication.checkAuth(username, password);
         if(user == null)
-            throw APIResultFactory.getUnauthorizedErrorException();
+            throw APIResultFactory.getException(Status.UNAUTHORIZED);
     }
 
 }

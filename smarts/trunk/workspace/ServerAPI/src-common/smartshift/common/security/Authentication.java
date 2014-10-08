@@ -1,6 +1,7 @@
 package smartshift.common.security;
 
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.core.Response.Status;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.mindrot.jbcrypt.BCrypt;
@@ -39,7 +40,7 @@ public class Authentication {
             session.close();
         } catch(Exception e) {
             logger.error("Failed to fetch WebUser", e);
-            throw APIResultFactory.getInternalErrorException();
+            throw APIResultFactory.getException(Status.INTERNAL_SERVER_ERROR);
         }
         return user;
     }
