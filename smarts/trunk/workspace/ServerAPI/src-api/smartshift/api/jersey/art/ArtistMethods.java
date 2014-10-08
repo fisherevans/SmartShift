@@ -25,9 +25,8 @@ import smartshift.common.util.params.SimpleIntegerParam;
  * 
  *          A page to access the JSON for an artist
  */
-@Path("/json/artist/{id}")
-public class GetArtistJSON {
-	private static Logger logger = Logger.getLogger(GetArtistJSON.class);
+public class ArtistMethods {
+	private static Logger logger = Logger.getLogger(ArtistMethods.class);
 
 	@Context
 	private ServletContext context;
@@ -37,7 +36,8 @@ public class GetArtistJSON {
      * @return a JSON String holding data for the artist whose ID matches
      *         integerParam
      */
-	@GET
+    @Path("/json/artist/{id}")
+    @GET
     @Produces(MediaType.TEXT_PLAIN)
     public String getArtistById(@PathParam("id") SimpleIntegerParam integerParam) throws WebApplicationException {
 		logger.debug("Fetching artist for ID: " + integerParam.getOriginalValue());
