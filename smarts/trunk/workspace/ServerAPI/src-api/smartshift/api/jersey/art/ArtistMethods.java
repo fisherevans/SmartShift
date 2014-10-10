@@ -11,7 +11,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import org.apache.log4j.Logger;
 import smartshift.common.hibernate.model.art.Artist;
-import smartshift.common.util.jersey.ServiceMethods;
+import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.json.GsonFactory;
 import smartshift.common.util.params.SimpleIntegerParam;
 
@@ -40,21 +40,19 @@ public class ArtistMethods {
     @Produces(MediaType.APPLICATION_JSON)
     public String getArtist(@PathParam("id") SimpleIntegerParam integerParam) throws WebApplicationException {
         logger.debug("Fetching artist for ID: " + integerParam.getInteger());
-        Object artist = ServiceMethods.getUniqueObjectJson(Artist.class, integerParam.getInteger());
+        Object artist = GenericHibernateUtil.getUniqueObjectJson(Artist.class, integerParam.getInteger());
         return GsonFactory.toJsonResult(artist);
     }
 
     /**
-     * Adds an artist with the passed properties
+     * Returns all artists as an array
      * 
-     * @param artistRequest object
-     * @return a JSON String holding data for the newly created artist
-     * integerParam
+     * @return a JSON String holding all artists
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getArtist() throws WebApplicationException {
-        List<Object> artists = ServiceMethods.getObjectListJson(Artist.class);
+    public String getArtists() throws WebApplicationException {
+        List<Object> artists = GenericHibernateUtil.getObjectListJson(Artist.class);
         return GsonFactory.toJsonResult(artists);
     }
 }
