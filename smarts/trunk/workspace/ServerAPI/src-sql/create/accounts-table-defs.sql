@@ -7,14 +7,15 @@ CREATE TABLE `Accounts`.`User` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`username` VARCHAR(50) NOT NULL,
 	`pass` VARCHAR(256) NOT NULL,
-	`email` VARCHAR(256) UNIQUE NOT NULL,
+	`email` VARCHAR(256) NOT NULL,
 	`fName` VARCHAR(60) NULL,
 	`lName` VARCHAR(60) NULL,
 	`createTS` DATE NOT NULL,
 	`imgID` INT NULL,
 	`inactive` TINYINT(1) NOT NULL DEFAULT 0,
 	`flags` INT(10) NOT NULL DEFAULT 0,
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	UNIQUE (`email`)
 )
 
 CREATE TABLE `Accounts`.`ContactMethod` (
