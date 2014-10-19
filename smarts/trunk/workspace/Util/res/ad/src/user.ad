@@ -1,0 +1,42 @@
+/user/checkAuth
+  GET - Simple confirmation to check credentials
+    RETURNS
+      200 - If the credentials are valid
+      401 - If the credentials are invalid
+/user/_username_
+  PARAMS
+    username - A username
+  GET - Gets a users information
+    RETURNS
+      200 - With the requested user information
+        {
+          "username":"The username returned"
+        }
+      401 - If you are not authorized, or the requested user does not exist
+  POST - Updates a user account
+    TAKES
+      {
+        "email":"A new, valid email address (if changing)",
+        "password":"A new password (if changing)"
+      }
+    RETURNS
+      200 - If the user information was updated
+      400 - If the user informaton could not be updated
+        {
+          "message":STRING
+        }
+      401 - If you're credentials are not authorized
+/user
+  PUT - Registers a new user account
+    TAKES
+      {
+        "username":STRING,
+        "email":STRING,
+        "password":STRING
+      }
+    RETURNS
+      201 - If the user is registered. Still needs to verify via email.
+      400 - If the registration failed
+        {
+          "message":"An error message"
+        }
