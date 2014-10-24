@@ -16,13 +16,16 @@ public class CorsFilter implements ContainerResponseFilter {
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
         if(ALLOW_ORIGIN == null)
             ALLOW_ORIGIN = AppProperties.getProperty("cors.allowOrigin", "localhost");
-          
-          MultivaluedMap<String, Object> headers = responseContext.getHeaders();
-          headers.add("Access-Control-Allow-Origin", "ALLOW_ORIGIN");
-          headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
-          String requestHead = requestContext.getHeaderString("Access-Control-Request-Headers");
-          if(requestHead != null && requestHead.length() != 0) {
+        MultivaluedMap<String, Object> headers = responseContext.getHeaders();
+        String requestOrigin = requestContext.getHeaders().getFirst("origin");
+        if(requestOrigin != null) {
+            headers.add("Access-Control-Allow-Origin", requestOrigin);
+        }
+        headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        headers.add("Access-Control-Allow-Credentials", "true");
+        String requestHead = requestContext.getHeaders().getFirst("Access-Control-Request-Headers");
+        if(requestHead != null && requestHead.length() != 0) {
             headers.add("Access-Control-Allow-Headers", requestHead);
-          }
+        }
     }
 }
