@@ -1,13 +1,18 @@
-package smartshift.common.security;
+package smartshift.common.jersey.filters;
 
 import java.io.IOException;
+
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
+
 import org.apache.log4j.Logger;
+
 import smartshift.common.hibernate.model.test.WebUser;
+import smartshift.common.security.Authentication;
+import smartshift.common.security.BasicAuth;
 import smartshift.common.util.json.APIResultFactory;
 
 /**
