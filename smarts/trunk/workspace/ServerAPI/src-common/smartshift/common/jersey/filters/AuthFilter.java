@@ -32,7 +32,7 @@ public class AuthFilter implements ContainerRequestFilter {
      */
     @Override
     public void filter(ContainerRequestContext containerRequest) throws IOException, WebApplicationException {
-        String auth = containerRequest.getHeaderString("Authorization");
+        String auth = containerRequest.getHeaders().getFirst("Authorization");
         if(auth == null)
             throw APIResultFactory.getException(Status.UNAUTHORIZED);
         String[] authData = BasicAuth.decode(auth);
