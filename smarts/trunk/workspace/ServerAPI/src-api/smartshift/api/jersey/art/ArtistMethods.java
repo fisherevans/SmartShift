@@ -1,6 +1,7 @@
 package smartshift.api.jersey.art;
 
 import java.util.List;
+
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -9,7 +10,11 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
+
 import org.apache.log4j.Logger;
+
 import smartshift.common.hibernate.model.art.Artist;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.json.GsonFactory;
@@ -51,8 +56,10 @@ public class ArtistMethods {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String getArtists() throws WebApplicationException {
+    public Response getArtists() throws WebApplicationException {
         List<Object> artists = GenericHibernateUtil.getObjectListJson(Artist.class);
-        return GsonFactory.toJsonResult(artists);
+        ResponseBuilder response = Response.ok(GsonFactory.toJsonResult(artists));
+        response.header("Access-Control-Allow-Origin", "*");
+        return response.build();
     }
 }
