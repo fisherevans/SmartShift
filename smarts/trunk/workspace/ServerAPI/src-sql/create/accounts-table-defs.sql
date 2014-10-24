@@ -8,7 +8,7 @@ DROP TABLE IF EXISTS `Accounts`.`User`;
 CREATE TABLE `Accounts`.`User` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`username` VARCHAR(50) NOT NULL,
-	`pass` VARCHAR(256) NOT NULL,
+	`passHash` VARCHAR(256) NOT NULL,
 	`email` VARCHAR(256) NOT NULL,
 	`fName` VARCHAR(60) NULL,
 	`lName` VARCHAR(60) NULL,
