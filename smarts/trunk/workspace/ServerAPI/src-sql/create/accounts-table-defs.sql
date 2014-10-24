@@ -12,7 +12,7 @@ CREATE TABLE `Accounts`.`User` (
 	`email` VARCHAR(256) NOT NULL,
 	`fName` VARCHAR(60) NULL,
 	`lName` VARCHAR(60) NULL,
-	`createTS` DATE NOT NULL,
+	`createTS` DATETIME NOT NULL,
 	`imgID` INT NULL,
 	`inactive` TINYINT(1) NOT NULL DEFAULT 0,
 	`flags` INT(10) NOT NULL DEFAULT 0,
@@ -68,7 +68,7 @@ DROP TABLE IF EXISTS `Accounts`.`Build`;
 CREATE TABLE `Accounts`.`Build` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`version` VARCHAR(20) NOT NULL,
-	`createTS` DATE NOT NULL,
+	`createTS` DATETIME NOT NULL,
 	`sqlDir` VARCHAR(256) NOT NULL,
 	PRIMARY KEY (`id`)
 );
@@ -102,7 +102,7 @@ CREATE TABLE `Accounts`.`UserBusiness` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`userID` INT NOT NULL,
 	`busID` INT NOT NULL,
-	`joinTS` DATE NOT NULL,
+	`joinTS` DATETIME NOT NULL,
 	PRIMARY KEY (`id`),
 	UNIQUE(`userID`, `busID`)
 );
