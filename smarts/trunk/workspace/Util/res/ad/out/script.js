@@ -38,5 +38,7 @@ function resizeContent(body, bodyContent) {
 
 function navTo(aName) {
   var aTag = $("a[name='"+ aName +"']");
-  $('html,body').animate({scrollTop: aTag.offset().top-10},'fast');
+  if(typeof aTag.offset() != 'undefined') {
+    $('html,body').animate({scrollTop: aTag.offset().top-10},'fast');
+  }
 }
