@@ -1,5 +1,5 @@
 <project name="Libraries" default="import" basedir=".." xmlns:artifact="antlib:org.apache.maven.artifact.ant">
-	<property file="ant/libraries.properties"/>
+	<property file="ant/ant.properties"/>
 
 	<path id="classpath">
 		<fileset dir="${lib.dir}/jar">
