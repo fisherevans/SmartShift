@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+  <classpathentry kind="src" path="src"/>
+  <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+  <classpathentry kind="output" path="bin"/>
+  <classpathentry kind="lib" path="/Build/lib/jar/antlr.jar"/>
+  <classpathentry kind="lib" path="/Build/lib/jar/aopalliance-repackaged.jar" sourcepath="/Build/lib/src/aopalliance-repackaged-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/aopalliance-repackaged-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/dom4j.jar" sourcepath="/Build/lib/src/dom4j-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/dom4j-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/hibernate-commons-annotations.jar" sourcepath="/Build/lib/src/hibernate-commons-annotations-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/hibernate-commons-annotations-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/hibernate-core.jar" sourcepath="/Build/lib/src/hibernate-core-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/hibernate-core-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/hibernate-jpa-2.1-api.jar" sourcepath="/Build/lib/src/hibernate-jpa-2.1-api-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/hibernate-jpa-2.1-api-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/hk2-api.jar" sourcepath="/Build/lib/src/hk2-api-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/hk2-api-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/hk2-locator.jar" sourcepath="/Build/lib/src/hk2-locator-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/hk2-locator-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/hk2-utils.jar" sourcepath="/Build/lib/src/hk2-utils-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/hk2-utils-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jandex.jar" sourcepath="/Build/lib/src/jandex-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jandex-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/javassist.jar" sourcepath="/Build/lib/src/javassist-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/javassist-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/javax.annotation-api.jar" sourcepath="/Build/lib/src/javax.annotation-api-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/javax.annotation-api-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/javax.inject.jar" sourcepath="/Build/lib/src/javax.inject-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/javax.inject-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/javax.ws.rs-api-sources.jar" sourcepath="/Build/lib/src/javax.ws.rs-api-sources-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/javax.ws.rs-api-sources-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/javax.ws.rs-api.jar" sourcepath="/Build/lib/src/javax.ws.rs-api-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/javax.ws.rs-api-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jaxrs-ri.jar" sourcepath="/Build/lib/src/jaxrs-ri-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jaxrs-ri-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jboss-logging-annotations.jar" sourcepath="/Build/lib/src/jboss-logging-annotations-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jboss-logging-annotations-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jboss-logging.jar" sourcepath="/Build/lib/src/jboss-logging-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jboss-logging-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jboss-transaction-api_1.2_spec.jar" sourcepath="/Build/lib/src/jboss-transaction-api_1.2_spec-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jboss-transaction-api_1.2_spec-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jersey-client-sources.jar" sourcepath="/Build/lib/src/jersey-client-sources-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jersey-client-sources-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jersey-client.jar" sourcepath="/Build/lib/src/jersey-client-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jersey-client-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jersey-common-sources.jar" sourcepath="/Build/lib/src/jersey-common-sources-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jersey-common-sources-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jersey-common.jar" sourcepath="/Build/lib/src/jersey-common-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jersey-common-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jersey-container-servlet-core-sources.jar" sourcepath="/Build/lib/src/jersey-container-servlet-core-sources-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jersey-container-servlet-core-sources-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jersey-container-servlet-core.jar" sourcepath="/Build/lib/src/jersey-container-servlet-core-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jersey-container-servlet-core-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jersey-container-servlet-sources.jar" sourcepath="/Build/lib/src/jersey-container-servlet-sources-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jersey-container-servlet-sources-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jersey-container-servlet.jar" sourcepath="/Build/lib/src/jersey-container-servlet-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jersey-container-servlet-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jersey-guava.jar" sourcepath="/Build/lib/src/jersey-guava-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jersey-guava-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jersey-server-sources.jar" sourcepath="/Build/lib/src/jersey-server-sources-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jersey-server-sources-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jersey-server.jar" sourcepath="/Build/lib/src/jersey-server-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jersey-server-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/osgi-resource-locator.jar" sourcepath="/Build/lib/src/osgi-resource-locator-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/osgi-resource-locator-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/validation-api.jar" sourcepath="/Build/lib/src/validation-api-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/validation-api-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/xml-apis.jar" sourcepath="/Build/lib/src/xml-apis-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/xml-apis-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/mysql-connector-java.jar" sourcepath="/Build/lib/src/mysql-connector-java-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/mysql-connector-java-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/javax.servlet.jar" sourcepath="/Build/lib/src/javax.servlet-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/javax.servlet-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/annotations-api.jar" sourcepath="/Build/lib/src/annotations-api-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/annotations-api-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/catalina-ant.jar" sourcepath="/Build/lib/src/catalina-ant-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/catalina-ant-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/catalina.jar" sourcepath="/Build/lib/src/catalina-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/catalina-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/coyote.jar" sourcepath="/Build/lib/src/coyote-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/coyote-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/juli.jar" sourcepath="/Build/lib/src/juli-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/juli-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/servlet-api.jar" sourcepath="/Build/lib/src/servlet-api-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/servlet-api-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/nexmo-sdk.jar" sourcepath="/Build/lib/src/nexmo-sdk-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/nexmo-sdk-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/commons-codec.jar" sourcepath="/Build/lib/src/commons-codec-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/commons-codec-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/commons-logging.jar" sourcepath="/Build/lib/src/commons-logging-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/commons-logging-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/httpclient.jar" sourcepath="/Build/lib/src/httpclient-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/httpclient-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/httpcore.jar" sourcepath="/Build/lib/src/httpcore-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/httpcore-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/gson.jar" sourcepath="/Build/lib/src/gson-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/gson-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/log4j.jar" sourcepath="/Build/lib/src/log4j-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/log4j-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/jbcrypt.jar" sourcepath="/Build/lib/src/jbcrypt-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jbcrypt-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/ehcache-core.jar" sourcepath="/Build/lib/src/ehcache-core-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/ehcache-core-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/hibernate-ehcache.jar" sourcepath="/Build/lib/src/hibernate-ehcache-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/src/hibernate-ehcache-sources.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/slf4j-api.jar" sourcepath="/Build/lib/src/slf4j-api-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/slf4j-api-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/c3p0.jar" sourcepath="/Build/lib/src/c3p0-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/c3p0-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/hibernate-c3p0.jar" sourcepath="/Build/lib/src/hibernate-c3p0-sources.jar"/>
+  <classpathentry kind="lib" path="/Build/lib/jar/mchange-commons-java.jar" sourcepath="/Build/lib/src/mchange-commons-java-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/mchange-commons-java-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/slf4j-log4j12.jar" sourcepath="/Build/lib/src/slf4j-log4j12-sources.jar">
+    <attributes>
+      <attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/slf4j-log4j12-javadoc.jar!/"/>
+    </attributes>
+  </classpathentry>
+  <classpathentry kind="lib" path="/Build/lib/jar/commons-httpclient.jar" sourcepath="/Build/lib/src/commons-httpclient-sources.jar"/>
+</classpath>
