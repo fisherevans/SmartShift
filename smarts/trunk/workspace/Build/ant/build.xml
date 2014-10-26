@@ -1,7 +1,7 @@
 <project name="Build" default="tomcat-deploy" basedir="..">
 	<property file="ant/ant.properties" />
 	<property name="project.name" value="api" />
-	<property name="project.folder" value="${api.folder}" />
+	<property name="project.dir" value="${api.dir}" />
 
 	<property name="war.file" value="smarts-${project.name}.war" />
 	<property name="war.path" value="${dist.dir}/${war.file}" />
@@ -32,7 +32,8 @@
 		<echo>Creating the base WAR folder structure</echo>
 		<mkdir dir="${build.dir}/${project.name}" />
 		<copy todir="${build.dir}/${project.name}">
-			<fileset dir="${project.folder}/web}" />
+			<fileset dir="${common.dir}/web" />
+			<fileset dir="${project.dir}/web" />
 		</copy>
 		<mkdir dir="${build.dir}/${project.name}/WEB-INF/classes" />
 		<mkdir dir="${build.dir}/${project.name}/WEB-INF/classes/res" />
@@ -43,8 +44,8 @@
 		<echo>Compiling the java files</echo>
 		<javac destdir="${build.dir}/${project.name}/WEB-INF/classes" verbose="false" debug="${build.debug}" debuglevel="lines,vars,source">
 			<classpath refid="classpath" />
-			<src path="${src.folder}/src" />
-			<src path="${project.folder}/src" />
+			<src path="${common.dir}/src" />
+			<src path="${project.dir}/src" />
 		</javac>
 	</target>
 
@@ -56,9 +57,9 @@
 				<exclude name="servlet-api.jar" />
 			</fileset>
 		</copy>
-		<concat destfile="${build.dir}/${project.name}/WEB-INF/classes/res" append="false">
-		<filelist dir="${common.folder}" files="app.properties"/>
-			<filelist dir="${project.folder}" files="app.properties"/>
+		<copy file="${common.dir}/app.properties" todir="${build.dir}/${project.name}/WEB-INF/classes" />
+		<concat destfile="${build.dir}/${project.name}/WEB-INF/classes/app.properties" append="true">
+			<filelist dir="${project.dir}" files="app.properties"/>
 		</concat>
 	</target>
 
@@ -71,25 +72,14 @@
 
 	<target name="tomcat-deploy" depends="build-war, tomcat-remove">
 		<echo>Deploying WAR file to tomcat</echo>
-		<deploy url="${tomcat.url}"
-            username="${tomcat.user}"
-            password="${tomcat.pass}"
-            path="/${project.name}"
-            war="${war.abs.path}" />
+		<deploy url="${tomcat.url}" username="${tomcat.user}" password="${tomcat.pass}" path="/${project.name}" war="${war.abs.path}" />
 	</target>
 
 	<target name="tomcat-reload">
-		<reload url="${tomcat.url}"
-            username="${tomcat.user}"
-            password="${tomcat.pass}"
-            path="/${project.name}" />
+		<reload url="${tomcat.url}" username="${tomcat.user}" password="${tomcat.pass}" path="/${project.name}" />
 	</target>
 
 	<target name="tomcat-remove">
-		<undeploy failonerror="false"
-              url="${tomcat.url}"
-              username="${tomcat.user}"
-              password="${tomcat.pass}"
-              path="/${project.name}" />
+		<undeploy failonerror="false" url="${tomcat.url}" username="${tomcat.user}" password="${tomcat.pass}" path="/${project.name}" />
 	</target>
 </project>
