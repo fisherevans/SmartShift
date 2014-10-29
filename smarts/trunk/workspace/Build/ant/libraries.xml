@@ -48,7 +48,10 @@
 			<dependency groupId="log4j" artifactId="log4j" version="1.2.17"/>
 			<dependency groupId="org.mindrot" artifactId="jbcrypt" version="0.3m"/>
 			<dependency groupId="commons-httpclient" artifactId="commons-httpclient" version="3.1"/>
-			 
+			<dependency groupId="commons-net" artifactId="commons-net" version="3.3"/>
+			<dependency groupId="ant-contrib" artifactId="ant-contrib" version="1.0b3"/>
+			<dependency groupId="oro" artifactId="oro" version="2.0.8"/>
+
 			<!-- END DEPENDENCY LIST -->
 		</artifact:dependencies>
 	</target>

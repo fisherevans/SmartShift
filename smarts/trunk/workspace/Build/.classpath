@@ -273,5 +273,13 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/jar/commons-httpclient.jar" sourcepath="lib/src/commons-httpclient-sources.jar"/>
+	<classpathentry kind="lib" path="lib/jar/ant-contrib.jar"/>
+	<classpathentry kind="lib" path="lib/jar/ant.jar"/>
+	<classpathentry kind="lib" path="lib/jar/commons-net.jar" sourcepath="lib/src/commons-net-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/commons-net-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/jar/oro.jar" sourcepath="lib/src/oro-sources.jar"/>
 	<classpathentry kind="output" path="out/bin"/>
 </classpath>
