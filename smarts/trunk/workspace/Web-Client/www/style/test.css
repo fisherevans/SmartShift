@@ -1,0 +1,15 @@
+* {
+  font-family: monospace;
+  font-size: 14px;
+}
+
+.label {
+  width: 150px;
+  display: inline-block;
+}
+
+.box {
+  padding: 10px;
+  color: #666;
+  font-size: 12px;
+}
