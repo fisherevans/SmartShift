@@ -33,7 +33,7 @@
 	<target name="ftp-deploy" depends="build-zip">
 		<echo>Deploying WWW file to apache</echo>
 		<ftp action="mkdir" remotedir="${project.name}" server="${ftp.server}" userid="${ftp.user}" password="${ftp.pass}" />
-		<ftp server="${ftp.server}" remotedir="${project.name}" userid="${ftp.user}" password="${ftp.pass}">
+		<ftp server="${ftp.server}" remotedir="${project.name}" userid="${ftp.user}" password="${ftp.pass}" depends="yes">
 			<fileset dir="${build.dir}/${project.name}" />
 		</ftp>
 	</target>
