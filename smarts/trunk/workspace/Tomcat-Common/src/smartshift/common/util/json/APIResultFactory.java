@@ -12,6 +12,10 @@ import javax.ws.rs.core.Response.Status;
  */
 public class APIResultFactory {
 
+    public static WebApplicationException getInvalidCredentialsException() {
+        return getException(Status.UNAUTHORIZED, "Invalid credentials!");
+    }
+
     /**
      * Gets a WebApplicationException containing the passed status and the
      * standard return object format
