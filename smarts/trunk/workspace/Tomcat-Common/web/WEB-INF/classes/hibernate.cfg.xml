@@ -46,7 +46,20 @@
         <!-- Hibernate XML mapping files -->  
         <!--  <mapping resource="Artist.hbm.xml"/>  -->
         
-        <mapping class="smartshift.common.hibernate.model.accounts.User"/>
+		<mapping class="smartshift.common.hibernate.model.accounts.ApplicationTip"/>
+		<mapping class="smartshift.common.hibernate.model.accounts.Build"/>
+		<mapping class="smartshift.common.hibernate.model.accounts.Business"/>
+		<mapping class="smartshift.common.hibernate.model.accounts.BusinessPreference"/>
+		<mapping class="smartshift.common.hibernate.model.accounts.ContactMethod"/>
+		<mapping class="smartshift.common.hibernate.model.accounts.Image"/>
+		<mapping class="smartshift.common.hibernate.model.accounts.Preference"/>
+		<mapping class="smartshift.common.hibernate.model.accounts.Server"/>
+		<mapping class="smartshift.common.hibernate.model.accounts.Session"/>
+		<mapping class="smartshift.common.hibernate.model.accounts.SystemProperty"/>
+		<mapping class="smartshift.common.hibernate.model.accounts.User"/>
+		<mapping class="smartshift.common.hibernate.model.accounts.UserBusiness"/>
+		<mapping class="smartshift.common.hibernate.model.accounts.UserBusinessPreference"/>
+		<mapping class="smartshift.common.hibernate.model.accounts.UserContactMethod"/>
   
     </session-factory>  
   

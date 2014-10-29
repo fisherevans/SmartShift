@@ -1,27 +1,36 @@
 package smartshift.common.hibernate.model.accounts;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import javax.persistence.Cacheable;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import smartshift.common.util.collections.ROList;
 
 /**
  * @author fevans
  * @version Oct 26, 2014
  */
 @Entity
-@Table(name = "user", schema = "Accounts")
+@Table(name = "User", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
 public class User {
     @Id
-    @Column(name = "id")
     @GeneratedValue
+    @Column(name = "id", nullable = false)
     private Integer id;
 
     @Column(name = "username", nullable = false, length = 50)
@@ -41,15 +50,24 @@ public class User {
 
     @Column(name = "createTS", nullable = false)
     private Date createTimestamp = new Date();
-
-    @Column(name = "imgID")
-    private Integer imageId;
+    
+    @ManyToOne
+    @JoinColumn(name = "imgID")
+    private Image image;
 
     @Column(name = "inactive", nullable = false)
     private Boolean inactive = false;
 
     @Column(name = "flags", nullable = false)
     private Integer flags = 0;
+
+    @ElementCollection
+    @CollectionTable(name = "UserContactMethod", joinColumns = @JoinColumn(name = "userID"))
+    @MapKeyJoinColumn(name = "cMethodID")
+    private Map<ContactMethod, UserContactMethodRelationData> contactMethods;
+    
+    @ManyToMany(mappedBy="users")
+    private List<Business> businesses;
 
     public User() {
     }
@@ -116,12 +134,12 @@ public class User {
         this.createTimestamp = createTimestamp;
     }
 
-    public Integer getImageId() {
-        return imageId;
+    public Image getImage() {
+        return image;
     }
 
-    public void setImageId(Integer imageId) {
-        this.imageId = imageId;
+    public void setImage(Image image) {
+        this.image = image;
     }
 
     public Boolean getInactive() {
@@ -138,5 +156,9 @@ public class User {
 
     public void setFlags(Integer flags) {
         this.flags = flags;
+    }
+    
+    public ROList<Business> getBusineses() {
+        return new ROList<Business>(businesses);
     }
 }
