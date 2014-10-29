@@ -1,0 +1,40 @@
+<project name="Apache" default="ftp-deploy" basedir="..">
+	<property file="ant/ant.properties" />
+
+	<property name="project.name" value="client" />
+	<property name="project.dir" value="../Web-Client" />
+
+	<property name="zip.file" value="${project.name}.zip" />
+	<property name="zip.path" value="${dist.dir}/${zip.file}" />
+	<property name="zip.path.abs" location="${zip.path}" />
+
+	<target name="build-clean">
+		<echo>Cleaning the build directory</echo>
+		<delete dir="${out.dir}" />
+	</target>
+
+	<target name="build-init">
+		<echo>Creating the base WWW folder structure</echo>
+		<mkdir dir="${build.dir}/${project.name}" />
+	</target>
+
+	<target name="build-package" depends="build-init">
+		<echo>Packaging required files into the build directory</echo>
+		<copy todir="${build.dir}/${project.name}">
+			<fileset dir="${project.dir}/www" />
+		</copy>
+	</target>
+
+	<target name="build-zip" depends="build-package">
+		<echo>Creating the ZIP archive file</echo>
+		<zip destfile="${zip.path}" basedir="${build.dir}/${project.name}" />
+	</target>
+
+	<target name="ftp-deploy" depends="build-zip">
+		<echo>Deploying WWW file to apache</echo>
+		<ftp action="mkdir" remotedir="${project.name}" server="${ftp.server}" userid="${ftp.user}" password="${ftp.pass}" />
+		<ftp server="${ftp.server}" remotedir="${project.name}" userid="${ftp.user}" password="${ftp.pass}">
+			<fileset dir="${build.dir}/${project.name}" />
+		</ftp>
+	</target>
+</project>

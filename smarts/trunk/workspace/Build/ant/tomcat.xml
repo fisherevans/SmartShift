@@ -1,11 +1,12 @@
-<project name="Build" default="tomcat-deploy" basedir="..">
+<project name="Tomcat" default="tomcat-deploy" basedir="..">
 	<property file="ant/ant.properties" />
-	<property name="project.name" value="api" />
-	<property name="project.dir" value="${api.dir}" />
+	<property file="${build.tomcat.props}" />
 
-	<property name="war.file" value="smarts-${project.name}.war" />
+	<property name="war.file" value="${project.name}.war" />
 	<property name="war.path" value="${dist.dir}/${war.file}" />
 	<property name="war.abs.path" location="${war.path}" />
+
+	<property name="project.dir" location="../${project.name}" />
 
 	<path id="classpath">
 		<fileset dir="${lib.dir}/jar">
@@ -28,7 +29,27 @@
 		<delete dir="${out.dir}" />
 	</target>
 
+	<target name="prep-api">
+		<echo>Creating the required property file for API builds</echo>
+		<echo message="project.name=Tomcat-API" file="${build.tomcat.props}" />
+	</target>
+
+	<target name="prep-notifications">
+		<echo>Creating the required property file for Notification builds</echo>
+		<echo message="project.name=Tomcat-Notifications" file="${build.tomcat.props}" />
+	</target>
+
 	<target name="build-init">
+		<fail message="Project name is not set. Run a prep target!">
+			<condition>
+				<or>
+					<equals arg1="${project.name}" arg2="" />
+					<not>
+						<isset property="project.name" />
+					</not>
+				</or>
+			</condition>
+		</fail>
 		<echo>Creating the base WAR folder structure</echo>
 		<mkdir dir="${build.dir}/${project.name}" />
 		<copy todir="${build.dir}/${project.name}">
@@ -59,7 +80,7 @@
 		</copy>
 		<copy file="${common.dir}/app.properties" todir="${build.dir}/${project.name}/WEB-INF/classes" />
 		<concat destfile="${build.dir}/${project.name}/WEB-INF/classes/app.properties" append="true">
-			<filelist dir="${project.dir}" files="app.properties"/>
+			<filelist dir="${project.dir}" files="app.properties" />
 		</concat>
 	</target>
 
