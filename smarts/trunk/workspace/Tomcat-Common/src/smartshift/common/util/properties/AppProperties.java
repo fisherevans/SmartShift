@@ -5,7 +5,7 @@ import java.util.Properties;
 import org.apache.log4j.Logger;
 
 public class AppProperties {
-    private static final String PROPERTIES_FILE = "res/app.properties";
+    private static final String PROPERTIES_FILE = "app.properties";
 
     private static final Logger logger = Logger.getLogger(AppProperties.class);
 

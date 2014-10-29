@@ -6,8 +6,8 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.mindrot.jbcrypt.BCrypt;
 import smartshift.common.hibernate.HibernateFactory;
-import smartshift.common.hibernate.dao.test.WebUserDAO;
-import smartshift.common.hibernate.model.test.WebUser;
+import smartshift.common.hibernate.dao.accounts.UserDAO;
+import smartshift.common.hibernate.model.accounts.User;
 import smartshift.common.util.json.APIResultFactory;
 
 /**
@@ -26,20 +26,20 @@ public class Authentication {
      * null if not
      * @throws WebApplicationException If any error occurs
      */
-    public static WebUser checkAuth(String username, String password) throws WebApplicationException {
-        WebUser user = null;
+    public static User checkAuth(String username, String password) throws WebApplicationException {
+        User user = null;
         try {
-            Session session = HibernateFactory.getSession("smartshift");
+            Session session = HibernateFactory.getSession("Accounts");
             logger.debug("Fetching web user with the username of: " + username);
-            WebUser tempUser = WebUserDAO.getWebUser(username, session);
+            User tempUser = UserDAO.getUser(session, username);
             if(tempUser != null) {
-                if(BCrypt.checkpw(password, tempUser.getPasswordHash())) {
+                if(BCrypt.checkpw(password, tempUser.getPassHash())) {
                     user = tempUser;
                 }
             }
             session.close();
         } catch(Exception e) {
-            logger.error("Failed to fetch WebUser", e);
+            logger.error("Failed to fetch User", e);
             throw APIResultFactory.getException(Status.INTERNAL_SERVER_ERROR);
         }
         return user;

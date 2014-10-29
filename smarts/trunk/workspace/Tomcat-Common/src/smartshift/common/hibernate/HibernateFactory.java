@@ -20,7 +20,7 @@ public class HibernateFactory {
 	public static Logger logger = Logger.getLogger(HibernateFactory.class);
 	
     /** an array of db names */
-	public static final String[] DATABASES = new String[] { "smartshift" };
+	public static final String[] DATABASES = new String[] { "Accounts" };
 	
 	private final static Map<String, SessionFactory> factories = new HashMap<>();
 	

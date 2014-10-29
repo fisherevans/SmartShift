@@ -26,8 +26,8 @@ public class Hello {
      * @return a "Hello, world!" string
      */
 	@GET
-    @Produces(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
 	public String sayHtmlHello() {
-		return "Welcome to: " + context.getContextPath();
+		return "{\"message\":\"Welcome to: " + context.getContextPath() +"\"}";
 	}
 }

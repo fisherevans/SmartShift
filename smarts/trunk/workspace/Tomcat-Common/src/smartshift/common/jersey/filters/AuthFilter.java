@@ -1,16 +1,14 @@
 package smartshift.common.jersey.filters;
 
 import java.io.IOException;
-
+import javax.ws.rs.HttpMethod;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
-
 import org.apache.log4j.Logger;
-
-import smartshift.common.hibernate.model.test.WebUser;
+import smartshift.common.hibernate.model.accounts.User;
 import smartshift.common.security.Authentication;
 import smartshift.common.security.BasicAuth;
 import smartshift.common.util.json.APIResultFactory;
@@ -32,17 +30,22 @@ public class AuthFilter implements ContainerRequestFilter {
      */
     @Override
     public void filter(ContainerRequestContext containerRequest) throws IOException, WebApplicationException {
+        // http://stackoverflow.com/questions/18499465/cors-and-http-basic-auth
+        // http://stackoverflow.com/questions/19234892/xmlhttprequest-based-cors-call-with-basic-auth-fails-in-firefox-and-chrome
+        // Ignore Options Requests - preflight browsers
+        if(containerRequest.getMethod().equalsIgnoreCase(HttpMethod.OPTIONS))
+            return;
         String auth = containerRequest.getHeaders().getFirst("Authorization");
         if(auth == null)
-            throw APIResultFactory.getException(Status.UNAUTHORIZED);
+            throw APIResultFactory.getInvalidCredentialsException();
         String[] authData = BasicAuth.decode(auth);
         if(authData == null || authData.length != 2)
-            throw APIResultFactory.getException(Status.UNAUTHORIZED);
+            throw APIResultFactory.getInvalidCredentialsException();
         String username = authData[0];
         String password = authData[1];
-        WebUser user = Authentication.checkAuth(username, password);
+        User user = Authentication.checkAuth(username, password);
         if(user == null)
-            throw APIResultFactory.getException(Status.UNAUTHORIZED);
+            throw APIResultFactory.getInvalidCredentialsException();
     }
 
 }

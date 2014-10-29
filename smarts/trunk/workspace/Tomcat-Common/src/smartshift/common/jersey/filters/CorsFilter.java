@@ -10,12 +10,8 @@ import smartshift.common.util.properties.AppProperties;
 
 @Provider
 public class CorsFilter implements ContainerResponseFilter {
-    private static String ALLOW_ORIGIN = null;
-
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
-        if(ALLOW_ORIGIN == null)
-            ALLOW_ORIGIN = AppProperties.getProperty("cors.allowOrigin", "localhost");
         MultivaluedMap<String, Object> headers = responseContext.getHeaders();
         String requestOrigin = requestContext.getHeaders().getFirst("origin");
         if(requestOrigin != null) {

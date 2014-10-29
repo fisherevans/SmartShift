@@ -46,10 +46,7 @@
         <!-- Hibernate XML mapping files -->  
         <!--  <mapping resource="Artist.hbm.xml"/>  -->
         
-        <mapping class="smartshift.common.hibernate.model.art.Artist"/>  
-        <mapping class="smartshift.common.hibernate.model.art.Work"/>
-        
-        <mapping class="smartshift.common.hibernate.model.test.WebUser"/>
+        <mapping class="smartshift.common.hibernate.model.accounts.User"/>
   
     </session-factory>  
   
