@@ -2,7 +2,6 @@ package smartshift.common.util.hibernate;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.validation.ConstraintViolationException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response.Status;
 import org.apache.log4j.Logger;
@@ -12,6 +11,7 @@ import org.hibernate.ObjectNotFoundException;
 import org.hibernate.PropertyValueException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
+import org.hibernate.exception.ConstraintViolationException;
 import smartshift.common.hibernate.HibernateFactory;
 import smartshift.common.hibernate.model.accounts.User;
 import smartshift.common.util.json.APIResultFactory;
@@ -64,10 +64,6 @@ public class GenericHibernateUtil {
         } catch(Exception e) {
             logger.error("Failed to fetch the list of " + clazz.getCanonicalName(), e);
             throw APIResultFactory.getException(Status.INTERNAL_SERVER_ERROR);
-        } finally {
-            logger.debug("Closing session...");
-            if(session != null)
-                session.close();
         }
         if(objects == null)
             throw APIResultFactory.getException(Status.INTERNAL_SERVER_ERROR);
@@ -83,16 +79,10 @@ public class GenericHibernateUtil {
             throw APIResultFactory.getException(Status.BAD_REQUEST, "Invalid property value: " + e.getPropertyName());
         } catch(ConstraintViolationException e) {
             logger.error("Failed to add object " + object.getClass().toString(), e);
-            throw APIResultFactory.getException(Status.CONFLICT, e.getMessage());
+            throw APIResultFactory.getException(Status.BAD_REQUEST, e.getCause().getMessage());
         } catch(Exception e) {
             logger.error("Failed to add object " + object.getClass().toString(), e);
             throw APIResultFactory.getException(Status.INTERNAL_SERVER_ERROR);
-        } finally {
-            if(session != null) {
-                if(session.getTransaction().isActive())
-                    session.getTransaction().commit();
-                session.close();
-            }
         }
     }
 }
