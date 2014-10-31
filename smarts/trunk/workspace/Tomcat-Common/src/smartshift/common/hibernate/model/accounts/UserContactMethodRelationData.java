@@ -9,8 +9,7 @@ public class UserContactMethodRelationData {
     @Column(name="cMethodVal")
     private String value;
 
-    public UserContactMethodRelationData(String value) {
-        this.value = value;
+    public UserContactMethodRelationData() {
     }
 
     public String getValue() {

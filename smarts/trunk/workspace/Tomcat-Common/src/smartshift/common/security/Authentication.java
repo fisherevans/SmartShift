@@ -18,6 +18,8 @@ import smartshift.common.util.json.APIResultFactory;
  */
 public class Authentication {
     private static Logger logger = Logger.getLogger(Authentication.class);
+    
+    public static String SALT = "$WF3f3wfWFw4ge4gW$G%E";
 
     /**
      * @param username the username of the basic auth
@@ -29,15 +31,13 @@ public class Authentication {
     public static User checkAuth(String username, String password) throws WebApplicationException {
         User user = null;
         try {
-            Session session = HibernateFactory.getSession("Accounts");
             logger.debug("Fetching web user with the username of: " + username);
-            User tempUser = UserDAO.getUser(session, username);
+            User tempUser = UserDAO.getUserByUsername(username);
             if(tempUser != null) {
                 if(BCrypt.checkpw(password, tempUser.getPassHash())) {
                     user = tempUser;
                 }
             }
-            session.close();
         } catch(Exception e) {
             logger.error("Failed to fetch User", e);
             throw APIResultFactory.getException(Status.INTERNAL_SERVER_ERROR);

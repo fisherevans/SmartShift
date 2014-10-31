@@ -16,7 +16,7 @@ $(document).ready(function() {
 });
 
 function displayResult(request) {
-  $("#time").text("Took " + (Date.now() - start) + "ms");
+  $("#time").text("Took " + (Date.now() - start) + "ms - HTTP " + request.status);
   $("#responseRaw").text(request.responseText);
   $("#response").html(request.responseText);
   $("#sendButton").prop("disabled",false);

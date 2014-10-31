@@ -41,4 +41,9 @@ public class APIResultFactory {
         WebApplicationException e = new WebApplicationException(Response.status(status).entity(json).build());
         return e;
     }
+
+    public static Response getOK(Object result) {
+        String json = GsonFactory.toJson(new JsonResult(Status.OK, result));
+        return Response.ok(json).build();
+    }
 }
