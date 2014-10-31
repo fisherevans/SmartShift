@@ -78,6 +78,16 @@
   margin-bottom: 10px;
 }
 
+.appWindowBg {
+  position:absolute;
+  background-color: #fff;
+  top: 0px;
+  left: 80px;
+  right: 0px;
+  bottom: 0px;
+  z-index: 4;
+}
+
 .appWindow {
   position:absolute;
   background-color: #fff;
