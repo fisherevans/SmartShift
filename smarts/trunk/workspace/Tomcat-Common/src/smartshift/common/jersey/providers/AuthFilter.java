@@ -1,4 +1,4 @@
-package smartshift.common.jersey.filters;
+package smartshift.common.jersey.providers;
 
 import java.io.IOException;
 import javax.ws.rs.HttpMethod;
@@ -30,6 +30,7 @@ public class AuthFilter implements ContainerRequestFilter {
      */
     @Override
     public void filter(ContainerRequestContext containerRequest) throws IOException, WebApplicationException {
+        logger.debug("AuthFilter.filter()");
         // http://stackoverflow.com/questions/18499465/cors-and-http-basic-auth
         // http://stackoverflow.com/questions/19234892/xmlhttprequest-based-cors-call-with-basic-auth-fails-in-firefox-and-chrome
         // Ignore Options Requests - preflight browsers

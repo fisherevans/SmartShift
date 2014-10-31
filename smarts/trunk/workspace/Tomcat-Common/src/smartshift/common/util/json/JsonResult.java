@@ -16,7 +16,7 @@ public class JsonResult {
     private String status;
 	
 	@Expose
-    private Object result;
+    private Object data;
 
     /**
      * Creates a standard data structure
@@ -35,9 +35,9 @@ public class JsonResult {
      * @param data
      *            The data object to return as JSON
      */
-    public JsonResult(Status statusObject, Object result) {
+    public JsonResult(Status statusObject, Object data) {
         this.statusObject = statusObject;
-        this.result = result;
+        this.data = data;
         this.status = statusObject.getStatusCode() + " " + statusObject.getReasonPhrase();
 	}
 	
@@ -51,12 +51,12 @@ public class JsonResult {
     /**
      * @return the result's data
      */
-    public Object getResult() {
-        return result;
+    public Object getData() {
+        return data;
 	}
 
     public static String ok(Object entity) {
-        JsonResult result = new JsonResult(entity);
-        return GsonFactory.toJson(result);
+        JsonResult data = new JsonResult(entity);
+        return GsonFactory.toJson(data);
     }
 }

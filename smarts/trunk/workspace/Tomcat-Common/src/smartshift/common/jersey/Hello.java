@@ -28,6 +28,7 @@ public class Hello {
 	@GET
     @Produces(MediaType.APPLICATION_JSON)
 	public String sayHtmlHello() {
+	    logger.debug("Hello.sayHello()");
 		return "{\"message\":\"Welcome to: " + context.getContextPath() +"\"}";
 	}
 }

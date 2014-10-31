@@ -23,6 +23,8 @@ public class HibernateFactory {
 	public static final String[] DATABASES = new String[] { "Accounts" };
 	
 	private final static Map<String, SessionFactory> factories = new HashMap<>();
+
+    public static final String ACCOUNTS = "Accounts";
 	
     /**
      * set up the hibernate connection

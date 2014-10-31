@@ -15,8 +15,15 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.mindrot.jbcrypt.BCrypt;
+import com.google.gson.annotations.Expose;
+import smartshift.common.security.Authentication;
 import smartshift.common.util.collections.ROList;
 
 /**
@@ -71,6 +78,14 @@ public class User {
 
     public User() {
     }
+    
+    public User(AddRequest request) {
+        username = request.username;
+        email = request.email;
+        passHash = BCrypt.hashpw(request.password, BCrypt.gensalt());
+        firstName = request.firstName;
+        lastName = request.lastName;
+    }
 
     public User(String username, String passHash, String email) {
         this.username = username;
@@ -78,6 +93,16 @@ public class User {
         this.email = email;
     }
 
+    public GsonObject getGsonObject() {
+        GsonObject obj = new GsonObject();
+        obj.id = id;
+        obj.username = username;
+        obj.email = email;
+        obj.firstName = firstName;
+        obj.lastName = lastName;
+        return obj;
+    }
+    
     public Integer getId() {
         return id;
     }
@@ -160,5 +185,31 @@ public class User {
     
     public ROList<Business> getBusineses() {
         return new ROList<Business>(businesses);
+    }
+    
+    public static class AddRequest {
+        @Expose
+        String username;
+        @Expose
+        String email;
+        @Expose
+        String password;
+        @Expose
+        String firstName;
+        @Expose
+        String lastName;
+    }
+    
+    public static class GsonObject {
+        @Expose
+        Integer id;
+        @Expose
+        String username;
+        @Expose
+        String email;
+        @Expose
+        String firstName;
+        @Expose
+        String lastName;
     }
 }
