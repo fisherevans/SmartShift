@@ -1,4 +1,5 @@
 var server = "http://localhost:8080/Tomcat-API/";
+var start;
 
 $(document).ready(function() {
   $("#actionPre").text(server);
@@ -9,12 +10,15 @@ $(document).ready(function() {
     var method = $("#method").val();
     var action = $("#action").val();
     var dataText = $("#data").val();
+    start = Date.now();
     callAPIAsync(username, password, method, action, dataText, displayResult, displayResult);
   });
 });
 
 function displayResult(request) {
-  $("#response").text(request.responseText);
+  $("#time").text("Took " + (Date.now() - start) + "ms");
+  $("#responseRaw").text(request.responseText);
+  $("#response").html(request.responseText);
   $("#sendButton").prop("disabled",false);
 }
 
@@ -32,5 +36,6 @@ function callAPIAsync(username, password, method, action, dataText, sucFunction,
   }
   request.open(method, fullAction, true);
   request.setRequestHeader("Authorization", basicAuth); 
+  request.setRequestHeader("Content-Type", "application/json"); 
   request.send(dataText);
 }

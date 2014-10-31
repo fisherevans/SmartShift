@@ -13,3 +13,9 @@
   color: #666;
   font-size: 12px;
 }
+
+textarea {
+  width: 450px;
+  height: 150px;
+  margin-left:20px;
+}

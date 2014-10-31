@@ -8,19 +8,25 @@
     <script src="script/test.js"></script>
 	</head>
 	<body>
-    <div class="label">Username:</div><input type="text" id="username" value="testuser" /><br><br>
-    <div class="label">Password:</div><input type="password" id="password" value="password" /><br><br>
-    <div class="label">Method:</div><select id="method">
-      <option value="GET" selected>GET</option>
-      <option value="POST">POST</option>
-      <option value="DELETE">DELETE</option>
-      <option value="PUT">PUT</option>
-    </select><br><br>
-    <div class="label">Action:</div><span id="actionPre"></span><input type="text" id="action" value="hello" /><br><br>
-    <div class="label">Body</div><br>
-    <textarea id="data"></textarea><br><br>
-    <button id="sendButton">Send Request</button><br><br><br><br>
+    <table><tr><td>
+      <div class="label">Username:</div><input type="text" id="username" value="testuser" /><br><br>
+      <div class="label">Password:</div><input type="password" id="password" value="password" /><br><br>
+      <div class="label">Method:</div><select id="method">
+        <option value="GET" selected>GET</option>
+        <option value="POST">POST</option>
+        <option value="DELETE">DELETE</option>
+        <option value="PUT">PUT</option>
+      </select><br><br>
+      <div class="label">Action:</div><span id="actionPre"></span><input type="text" id="action" value="hello" /><br><br>
+    </td><td>
+      <div class="label">Body</div><br>
+      <textarea id="data"></textarea><br><br>
+    </td></tr></table>
+    <button id="sendButton">Send Request</button><br><br>
+    <span id="time">&nbsp;</span><br><br>
+    Response RAW:<br>
+    <pre id="responseRaw" class="box"></pre><br><br><br>
     Response:<br>
-    <pre id="response" class="box"></pre><br><br>
+    <div id="response" class="box"></div><br><br>
 	</body>
 </html>
