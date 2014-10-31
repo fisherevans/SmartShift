@@ -7,6 +7,15 @@
   font-size: 0;
   overflow: visible;
   z-index: 10;
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+}
+
+.navPane * {
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
 }
 
 .navElement {
@@ -291,9 +300,9 @@
 }
 
 .fadeNav {
-    -webkit-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease;
-       -moz-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease;
-        -ms-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease;
-         -o-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease;
-            transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease;
+    -webkit-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
+       -moz-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
+        -ms-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
+         -o-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
+            transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
 }
