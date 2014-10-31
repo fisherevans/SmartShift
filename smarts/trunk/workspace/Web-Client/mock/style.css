@@ -1,0 +1,15 @@
+html {
+  overflow: -moz-scrollbars-vertical; 
+  overflow-y: scroll;
+}
+
+* {
+  margin: 0px;
+  padding: 0px;
+  font-family: "Ubuntu", sans-serif;
+  font-size: 14px;
+}
+
+body {
+  background-color: #282828;
+}

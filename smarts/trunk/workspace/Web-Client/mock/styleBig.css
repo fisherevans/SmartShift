@@ -1,0 +1,226 @@
+.navPane {
+  position: absolute;
+  top:0px;
+  left:0px;
+  width: 80px;
+  text-align: center;
+  font-size: 0;
+}
+
+.navElement {
+  display:inline-block;
+  width: 60px;
+  height: 60px;
+  background-color: #0080ff;
+  margin: 5px 10px;
+  margin-left: 0px;
+  padding: 0px;
+  padding-left: 10px;
+  border-radius: 0px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+  cursor: pointer;
+}
+
+.navElement.current {
+  display:inline-block;
+  background-color: #fff;
+  margin: 5px 10px;
+  margin-right: 0px;
+  padding: 0px;
+  padding-right: 10px;
+  border-radius: 0px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.navIcon {
+  width: 60px;
+  height: 60px;
+  font-size: 38px;
+  line-height: 60px;
+  color:#fff;
+}
+
+.navElement.current .navIcon {
+  color:#0080ff;
+}
+
+.navLogo {
+  display:inline-block;
+  width: 60px;
+  height: 71px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.appWindow {
+  position:absolute;
+  background-color: #fff;
+  top: 0px;
+  left: 80px;
+  right: 0px;
+  bottom: 0px;
+  min-height: 600px;
+  max-width: 1400px;
+}
+
+.appWindow .contentBlock {
+  position:absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: #fff;
+}
+
+.quickSchedule {
+  position: absolute;
+  top:20px;
+  left: 20px;
+  right: 20px;
+  height: 120px;
+}
+
+.leftDash {
+  position: absolute;
+  top: 160px;
+  left: 20px;
+  bottom: 20px;
+  right: 60%;
+}
+
+.rightDash {
+  position: absolute;
+  top: 160px;
+  right: 20px;
+  bottom: 20px;
+  left: 40%;
+}
+
+.newsFeed {
+  background-color: #aaaaaa;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+
+.rightTopDash {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  top: 0px;
+}
+
+.rightBottomDash {
+  position: absolute;
+  width: 100%;
+  height: 50%;
+  top: 50%;
+}
+
+.quickRequests {
+  background-color: #aaaaaa;
+  position: absolute;
+  top: 0px;
+  left: 20px;
+  right: 0px;
+  bottom: 10px;
+}
+
+.quickMessages {
+  background-color: #aaaaaa;
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  right: 0px;
+  bottom: 0px;
+}
+
+.chatThreadsBox {
+  position: absolute;
+  top:20px;
+  left:20px;
+  bottom:20px;
+  width: 400px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  overflow-y: scroll;
+}
+
+.chatThread {
+  width: 100%;
+  height: 80px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  background-color: #f0f0f0;
+}
+
+.chatThread.current {
+  background-color: #e0e0e0;
+}
+
+.chatThread:hover {
+  background-color: #f8f8f8;
+}
+
+.chatThreadPicture {
+  width: 50px;
+  height: 50px;
+  margin: 14px;
+  border: 1px #282828 solid;
+}
+
+.chatThreadText {
+  height:60px;
+  width: 350px;
+  margin-top:-70px;
+  margin-left:80px;
+}
+
+.chatThreadName {
+  font-size: 14px;
+  font-weight: 700;
+  color:#282828;
+}
+
+.chatThreadPreview {
+  font-size: 12px;
+  font-weight: 400;
+  color:#555;
+  padding: 5px 0px;
+  white-space: nowrap;
+}
+
+.chatThreadPreview .sender {
+  font-size: 12px;
+  font-weight: 400;
+  color:#282828;
+}
+
+.chatThreadTime {
+  font-size: 12px;
+  font-weight: 400;
+  color:#888;
+}
+
+.chatThreadLine {
+  width: 80%;
+  height: 1px;
+  margin: 0px auto;
+  background-color: #ccc;
+}
+
+.currentChatBox {
+  position: absolute;
+  top:20px;
+  right:20px;
+  bottom:20px;
+  left: 440px;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  overflow-y: scroll;
+}
