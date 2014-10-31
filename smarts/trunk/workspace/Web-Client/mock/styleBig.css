@@ -5,9 +5,12 @@
   width: 80px;
   text-align: center;
   font-size: 0;
+  overflow: visible;
+  z-index: 10;
 }
 
 .navElement {
+  position: relative;
   display:inline-block;
   width: 60px;
   height: 60px;
@@ -20,6 +23,27 @@
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   cursor: pointer;
+  overflow: hidden;
+}
+
+.navElement:not(.current):not(.noScroll):hover {
+  padding-left: 80px;
+}
+
+.navLabel {
+  position: absolute;
+  width: 100px;
+  height: 60px;
+  top:0px;
+  left:-110px;
+  color:#fff;
+  line-height: 60px;
+  font-size: 14px;
+  text-align: right;
+}
+
+.navElement:not(.current):not(.noScroll):hover .navLabel {
+  left:-20px;
 }
 
 .navElement.current {
@@ -63,6 +87,13 @@
   bottom: 0px;
   min-height: 600px;
   max-width: 1400px;
+  z-index: 5;
+  overflow: hidden;
+  opacity: 1.0;
+}
+
+.appWindow.hidden {
+  opacity: 0.0;
 }
 
 .appWindow .contentBlock {
@@ -223,4 +254,36 @@
   background-color: #f0f0f0;
   border: 1px solid #ccc;
   overflow-y: scroll;
+}
+
+.fadeLeft {
+    -webkit-transition: left 0.25s ease;
+       -moz-transition: left 0.25s ease;
+        -ms-transition: left 0.25s ease;
+         -o-transition: left 0.25s ease;
+            transition: left 0.25s ease;
+}
+
+.fadeOpacity {
+    -webkit-transition: opacity 0.25s ease;
+       -moz-transition: opacity 0.25s ease;
+        -ms-transition: opacity 0.25s ease;
+         -o-transition: opacity 0.25s ease;
+            transition: opacity 0.25s ease;
+}
+
+.fadeMaxs {
+    -webkit-transition: max-width 0.25s ease, max-height 0.25s ease;
+       -moz-transition: max-width 0.25s ease, max-height 0.25s ease;
+        -ms-transition: max-width 0.25s ease, max-height 0.25s ease;
+         -o-transition: max-width 0.25s ease, max-height 0.25s ease;
+            transition: max-width 0.25s ease, max-height 0.25s ease;
+}
+
+.fadeNav {
+    -webkit-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease;
+       -moz-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease;
+        -ms-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease;
+         -o-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease;
+            transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease;
 }

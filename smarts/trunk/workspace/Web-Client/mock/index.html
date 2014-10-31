@@ -7,27 +7,34 @@
         <link href="style.css" rel="stylesheet" />
         <link href='styleSmall.css' rel='stylesheet' type='text/css' media="(max-width:700px)">
         <link href='styleBig.css' rel='stylesheet' type='text/css' media="(min-width:701px)">
+        <script src="jquery-2.1.1.min.js"></script>
+        <script src="script.js"></script>
     </head>
     <body>
       <div class="navPane">
         <img class="navLogo" src="logo.png" />
-        <div class="navElement">
+        <div class="navElement fadeNav">
+          <div class="navLabel fadeLeft">News Feed</div>
           <div class="navIcon icon-newspaper"></div>
         </div>
-        <div class="navElement current">
+        <div class="navElement fadeNav">
+          <div class="navLabel fadeLeft">Messages</div>
           <div class="navIcon icon-chat"></div>
         </div>
-        <div class="navElement">
+        <div class="navElement fadeNav">
+          <div class="navLabel fadeLeft">Requests</div>
           <div class="navIcon icon-drawer"></div>
         </div>
-        <div class="navElement">
+        <div class="navElement fadeNav">
+          <div class="navLabel fadeLeft">Schedule</div>
           <div class="navIcon icon-calendar"></div>
         </div>
-        <div class="navElement">
+        <div class="navElement fadeNav">
+          <div class="navLabel fadeLeft">Settings</div>
           <div class="navIcon icon-cog"></div>
         </div>
       </div>
-      <div class="appWindow chat">
+      <div class="appWindow chat fadeOpacity">
         <div class="chatThreadsBox">
           <div class="chatThreads">
             <div class="chatThread">
