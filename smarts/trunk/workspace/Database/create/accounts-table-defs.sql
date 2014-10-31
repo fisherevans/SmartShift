@@ -10,14 +10,13 @@ CREATE TABLE `Accounts`.`User` (
 	`username` VARCHAR(50) NOT NULL,
 	`passHash` VARCHAR(256) NOT NULL,
 	`email` VARCHAR(256) NOT NULL,
-	`fName` VARCHAR(60) NULL,
-	`lName` VARCHAR(60) NULL,
 	`createTS` DATETIME NOT NULL,
 	`imgID` INT NULL,
 	`inactive` TINYINT(1) NOT NULL DEFAULT 0,
 	`flags` INT(10) NOT NULL DEFAULT 0,
 	PRIMARY KEY (`id`),
-	UNIQUE (`email`)
+	UNIQUE (`email`),
+	UNIQUE (`username`)
 );
 
 DROP TABLE IF EXISTS `Accounts`.`ContactMethod`;
@@ -31,12 +30,14 @@ DROP TABLE IF EXISTS `Accounts`.`Business`;
 CREATE TABLE `Accounts`.`Business` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(256) NOT NULL,
+	`groupID` INT NULL,
 	`buildID` INT NOT NULL,
 	`servID` INT NOT NULL,
 	`imgID` INT NULL,
 	`inactive` TINYINT(0) NOT NULL DEFAULT 0,
 	`flags` INT(10) NOT NULL DEFAULT 0,
-	PRIMARY KEY (`id`)
+	PRIMARY KEY (`id`),
+	UNIQUE (`groupID`)
 );
 
 DROP TABLE IF EXISTS `Accounts`.`Image`;
