@@ -44,3 +44,7 @@
 .icon-calendar:before {
 	content: "\e603";
 }
+
+.icon-add:before {
+	content: "\e602";
+}
