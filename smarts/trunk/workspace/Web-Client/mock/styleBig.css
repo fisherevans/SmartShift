@@ -197,6 +197,92 @@
   width: 400px;
   background-color: #f0f0f0;
   border: 1px solid #ccc;
+}
+
+.newChatThread {
+  position: absolute;
+  top:0px;
+  left:0px;
+  right: 0px;
+  height: 109px;
+  border-bottom: 1px solid #ccc;
+}
+
+.chatNewButton {
+  background-color: #0080ff;
+  position: absolute;
+  top:20px;
+  left:20px;
+  right:20px;
+  height: 30px;
+  line-height: 0px;
+  text-align: center;
+  color:#fff;
+  cursor: pointer;
+}
+
+.chatNewButton div {
+  display: inline-block;
+  height: 2px;
+  margin: 14px 4px;
+  line-height: 0px;
+  font-weight: 700;
+  vertical-align: middle;
+}
+
+.chatNewButton .icon-add {
+  padding-right: 3px;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.chatSearchWrapper {
+  position: absolute;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  height: 20px;
+  top: 60px;
+  left: 20px;
+  right: 100px;
+  height: 30px;
+  line-height: 30px;
+  padding: 0px;
+}
+
+.chatSearch {
+  width: 97%;
+  height: 97%;
+  border: 0px;
+  padding: 0 1.5%;
+}
+
+.chatSearchButton {
+  background-color: #fff;
+  position: absolute;
+  top:60px;
+  right:20px;
+  height: 30px;
+  width: 70px;
+  line-height: 30px;
+  text-align: center;
+  color:#0080ff;
+  font-weight: 700;
+  border: 1px solid #0080ff;
+  cursor: pointer;
+}
+
+.chatSearchButton:hover {
+  border-color: #0070e1;
+  color: #0070e1;
+  background-color: #DEEEFF;
+}
+
+.chatThreads {
+  position: absolute;
+  top:110px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
   overflow-y: scroll;
 }
 
@@ -264,7 +350,7 @@
   background-color: #ccc;
 }
 
-.currentChatBox {
+.chatBox {
   position: absolute;
   top:20px;
   right:20px;
@@ -272,7 +358,153 @@
   left: 440px;
   background-color: #f0f0f0;
   border: 1px solid #ccc;
+}
+
+.chatActions {
+  position: absolute;
+  bottom: 20px;
+  left:20px;
+  right:20px;
+  height:70px;
+}
+
+.chatInputWrapper {
+  position: absolute;
+  top:0px;
+  bottom:0px;
+  left:0px;
+  right: 120px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+}
+
+.chatInput {
+  background-color: #fff;
+  border: 0px;
+  width: 99%;
+  height: 99%;
+  padding: 1%;
+  resize: none; 
+}
+
+.chatSend {
+  position: absolute;
+  top:0px;
+  height:30px;
+  right:0px;
+  width: 100px;
+  color: #fff;
+  background-color: #0080ff;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 30px;
+  text-align: center;
+  cursor: pointer;
+}
+
+.chatEnterSend {
+  position: absolute;
+  top:40px;
+  height:30px;
+  right:0px;
+  width: 100px;
+  color: #888;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 30px;
+  text-align: left;
+  vertical-align: middle;
+  white-space: nowrap;
+  color: #888;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.chatEnterSend input {
+  margin-right: 5px;
+}
+
+.chatMessagesWrapper {
   overflow-y: scroll;
+  position: absolute;
+  top: 20px;
+  bottom: 110px;
+  left:20px;
+  right:20px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  display: table-cell;
+  vertical-align: bottom;
+}
+
+.chatMessages {
+  overflow-y: visible;
+}
+
+.chatMessage {
+  position: relative;
+  padding:10px 20px;
+  display: block;
+}
+
+.chatMessage.alt {
+  background-color: #f8f8f8;
+}
+
+.messagePicture {
+  position: absolute;
+  top:10px;
+  left: 20px;
+  width:50px;
+  height:50px;
+  border: 1px #282828 solid;
+}
+
+.messageSender {
+  position: absolute;
+  top:10px;
+  left: 90px;
+  text-align: left;
+  height: 20px;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.messageTime {
+  position: absolute;
+  top:10px;
+  right: 20px;
+  text-align: right;
+  height: 20px;
+}
+
+.messageTime .date {
+  font-size: 12px;
+  line-height: 20px;
+  padding-right: 5px;
+  color: #ccc;
+}
+
+.messageTime .time {
+  font-size: 14px;
+  color: #888;
+  line-height: 20px;
+}
+
+.messageTexts {
+  position: relative;
+  display: block;
+  margin-top: 20px;
+  text-align: left;
+  margin-left: 70px;
+}
+
+.messageText {
+  padding-top: 5px;
+}
+
+.dBlueHover:hover {
+  background-color: #0070e1;
 }
 
 .fadeLeft {
@@ -281,6 +513,14 @@
         -ms-transition: left 0.25s ease;
          -o-transition: left 0.25s ease;
             transition: left 0.25s ease;
+}
+
+.fadeColors {
+    -webkit-transition: color 0.25s ease, background-color 0.25s ease;
+       -moz-transition: color 0.25s ease, background-color 0.25s ease;
+        -ms-transition: color 0.25s ease, background-color 0.25s ease;
+         -o-transition: color 0.25s ease, background-color 0.25s ease;
+            transition: color 0.25s ease, background-color 0.25s ease;
 }
 
 .fadeOpacity {
