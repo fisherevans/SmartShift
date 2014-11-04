@@ -87,6 +87,23 @@
   display: inline-block;
 }
 
+.requires {
+  display: block;
+  margin: 10px;
+  padding: 10px;
+  background-color:#f0f0f0;
+}
+
+.requires-label {
+  font-size: 14px;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.requires-list {
+  padding-top:5px;
+}
+
 .params {
   display: block;
   margin: 10px;
