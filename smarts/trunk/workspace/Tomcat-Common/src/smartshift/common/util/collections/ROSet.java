@@ -13,7 +13,7 @@ import java.util.Set;
  * @param <T>
  *            The type of the collected elements
  */
-public class ROSet<T> implements ROCollection<T>{
+public class ROSet<T> extends ROCollection<T> {
     
     private Set<T> _set;
 

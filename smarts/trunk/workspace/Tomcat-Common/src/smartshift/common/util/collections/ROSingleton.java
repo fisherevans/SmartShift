@@ -11,7 +11,7 @@ import java.util.Iterator;
  * @param <T>
  *            The type of the collected element
  */
-public class ROSingleton<T> implements ROCollection<T>{
+public class ROSingleton<T> extends ROCollection<T> {
 	
     private T _singleton;
 	
