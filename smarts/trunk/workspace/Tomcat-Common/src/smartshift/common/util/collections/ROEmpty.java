@@ -11,7 +11,7 @@ import java.util.Iterator;
  * @param <T>
  *            The type of the collected elements
  */
-public class ROEmpty<T> implements ROCollection<T> {
+public class ROEmpty<T> extends ROCollection<T> {
 
     /**
      * @return always false

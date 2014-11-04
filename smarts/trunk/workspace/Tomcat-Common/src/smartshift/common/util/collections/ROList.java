@@ -13,7 +13,7 @@ import java.util.List;
  * @param <T>
  *            The type of the collected elements
  */
-public class ROList<T> implements ROCollection<T> {
+public class ROList<T> extends ROCollection<T> {
 	
 	private List<T> _list;
 
