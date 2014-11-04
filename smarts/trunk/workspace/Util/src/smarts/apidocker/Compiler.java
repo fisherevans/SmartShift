@@ -72,7 +72,7 @@ public class Compiler {
                         } else {
                             String contentSplit[] = content.split(" - ");
                             Method method = Method.getMethod(contentSplit[0]);
-                            body = new MethodBody(contentSplit[1]);
+                            body = new MethodBody(contentSplit.length > 1 ? contentSplit[1] : "");
                             path.addMethodBody(method, body);
                         }
                     } else if(4 == indentLength) { // TAKES / RETURNS
@@ -80,6 +80,8 @@ public class Compiler {
                             mode = ParseMode.Takes;
                         else if(content.equalsIgnoreCase("RETURNS"))
                             mode = ParseMode.Returns;
+                        else if(content.equalsIgnoreCase("REQUIRES"))
+                            mode = ParseMode.Requires;
                         else if(mode == ParseMode.Params) {
                             String contentSplit[] = content.split(" - ");
                             path.addParamDescription(contentSplit[0], contentSplit[1]);
@@ -94,6 +96,10 @@ public class Compiler {
                             body.addResponse(code, response);
                         } else if(8 <= indentLength) { // RETURNS CONTENT
                             response.appendExampleResponse(line.substring(RETURN_SUB));
+                        }
+                    } else if(mode == ParseMode.Requires) {
+                        if(6 == indentLength) {
+                            body.getRequires().add(content);
                         }
                     }
 				}
@@ -153,14 +159,25 @@ public class Compiler {
                     out.println("      </div>"); // end params
                 }
                 
-                out.println("      <div class='takes box'>");
-                out.println("        <div class='takes-label'>Takes</div>");
-                if(body.getTakes() != null && body.getTakes().length() > 0) {
-                    out.println("<pre class='takes-content box'><code class='json'>" + body.getTakes() + "</code></pre>");
-                } else {
-                    out.println("<pre class='takes-content box'>\nTakes nothing...</pre>");
+                if(body.getRequires().size() > 0) {
+                    out.println("      <div class='requires box'>");
+                    out.println("        <div class='requires-label'>Requires</div>");
+                    out.println("          <div class='requires-list'>");
+                    String delim = "";
+                    for(String requires:body.getRequires()) {
+                        out.println(delim + requires);
+                        delim = ", ";
+                    }
+                    out.println("        </div>"); // end requires list
+                    out.println("      </div>"); // end requires
                 }
-                out.println("      </div>"); // end takes
+                
+                if(body.getTakes() != null && body.getTakes().length() > 0) {
+                    out.println("      <div class='takes box'>");
+                    out.println("        <div class='takes-label'>Takes</div>");
+                    out.println("<pre class='takes-content box'><code class='json'>" + body.getTakes() + "</code></pre>");
+                    out.println("      </div>"); // end takes
+                }
                 
                 out.println("      <div class='returns box'>");
                 out.println("        <div class='returns-label'>Returns</div>");
@@ -171,8 +188,6 @@ public class Compiler {
                     out.println("          <div class='response-description'>" + response.getDescription() + "</div>");
                     if(response.getExampleResponse() != null && response.getExampleResponse().length() > 0) {
                         out.println("<pre class='response-content box'><code class='json'>" + response.getExampleResponse() + "</code></pre>");
-                    } else {
-                        out.println("<pre class='response-content box'>\nReturns nothing...</pre>");
                     }
                     out.println("        </div>"); // end response
                 }
@@ -186,6 +201,6 @@ public class Compiler {
 	}
 	
 	private enum ParseMode {
-	    Params, Takes, Returns;
+	    Params, Takes, Returns, Requires;
 	}
 }

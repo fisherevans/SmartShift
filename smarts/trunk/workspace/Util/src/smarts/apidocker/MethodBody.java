@@ -1,17 +1,21 @@
 package smarts.apidocker;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class MethodBody {
 	private String _description = null;
     private Map<Integer, Response> _responses = null;
 	private String _takes = "";
+	private List<String> _requires;
 	
 	public MethodBody(String description) {
 	    _description = description;
         _responses = new HashMap<>();
+        _requires = new ArrayList<String>();
     }
     
     public Collection<Integer> getCodes() {
@@ -44,5 +48,9 @@ public class MethodBody {
 	
 	public String getTakes() {
 	    return _takes;
+	}
+	
+	public List<String> getRequires() {
+	    return _requires;
 	}
 }
