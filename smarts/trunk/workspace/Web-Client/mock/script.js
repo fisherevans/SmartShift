@@ -1,15 +1,22 @@
+var nav
 var navAvailable = true;
 $(document).ready(function() {
   $(".navElement:not(.current)").on("click", function() {
     if(navAvailable) {
       navAvailable = false;
+      var navEle = $(this);
+      var navWin = $($(this).data("window-class"));
+      console.log(navEle);
+      console.log(navWin);
+
       $(this).addClass("noScroll");
       $(".appWindow").addClass("hidden");
       $(".navElement").removeClass("current");
-      $(this).delay(250).queue(function() {
-        $(this).removeClass("noScroll");
-        $(".appWindow").removeClass("hidden");
-        $(this).addClass("current");
+
+      $(document).delay(250).queue(function() {
+        navEle.removeClass("noScroll");
+        navWin.removeClass("hidden");
+        navEle.addClass("current");
         $(this).dequeue();
       }).delay(250).queue(function() {
         navAvailable = true;
