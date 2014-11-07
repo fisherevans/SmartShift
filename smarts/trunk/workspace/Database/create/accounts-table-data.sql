@@ -1,53 +1,21 @@
 INSERT INTO `Accounts`.`ContactMethod` (`name`) VALUES ('email');
 INSERT INTO `Accounts`.`ContactMethod` (`name`) VALUES ('phone');
-
--- USER 1
-INSERT INTO `Accounts`.`User` (`username`, `passHash`, `email`, `createTS`)
-VALUES ('testuser', '$2a$10$HxaCFIvtTGuv038oOpL1muLiZZLpjm8MOT2ymDjoYrPYyf3007bym', 'contact+test@fisherevans.com', NOW());
-
--- USER 2
-INSERT INTO `Accounts`.`User` (`username`, `passHash`, `email`, `createTS`)
-VALUES ('fisher', '$2a$10$HxaCFIvtTGuv038oOpL1muLiZZLpjm8MOT2ymDjoYrPYyf3007bym', 'contact+fisher@fisherevans.com', NOW());
-
--- USER 3
-INSERT INTO `Accounts`.`User` (`username`, `passHash`, `email`, `createTS`)
-VALUES ('lisa', '$2a$10$HxaCFIvtTGuv038oOpL1muLiZZLpjm8MOT2ymDjoYrPYyf3007bym', 'contact+lisa@fisherevans.com', NOW());
+INSERT INTO `accounts`.`nextid` (`id`, `name`, `nextID`) VALUES (1, 'employee', '10');
 
 
--- BUILD 1
-INSERT INTO `Accounts`.`Build` (`version`, `createTS`, `sqlDir`)
-VALUES ('1.0', NOW(), 'idk what this is');
+INSERT INTO `accounts`.`user` (`id`, `username`, `passHash`, `email`, `createTS`) VALUES ('1', 'testuser', '$2a$10$HxaCFIvtTGuv038oOpL1muLiZZLpjm8MOT2ymDjoYrPYyf3007bym', 'test@email.com', NOW());
+INSERT INTO `accounts`.`user` (`id`, `username`, `passHash`, `email`, `createTS`) VALUES ('2', 'fisher', '$2a$10$HxaCFIvtTGuv038oOpL1muLiZZLpjm8MOT2ymDjoYrPYyf3007bym', 'fisher@email.com', NOW());
+INSERT INTO `accounts`.`user` (`id`, `username`, `passHash`, `email`, `createTS`) VALUES ('3', 'drew', '$2a$10$HxaCFIvtTGuv038oOpL1muLiZZLpjm8MOT2ymDjoYrPYyf3007bym', 'drew@email.com', NOW());
+INSERT INTO `accounts`.`user` (`id`, `username`, `passHash`, `email`, `createTS`) VALUES ('4', 'charlie', '$2a$10$HxaCFIvtTGuv038oOpL1muLiZZLpjm8MOT2ymDjoYrPYyf3007bym', 'charlie@email.com', NOW());
 
--- SERV 1
-INSERT INTO `Accounts`.`Server` (`hostname`, `ipAddr`)
-VALUES ('localhost', '127.0.0.1');
+INSERT INTO `accounts`.`build` (`id`, `version`, `createTS`) VALUES ('1', '1', NOW());
 
+INSERT INTO `accounts`.`server` (`id`, `hostname`, `ipAddr`) VALUES ('1', 'localhost', '127.0.0.1');
 
--- BUSI 1
-INSERT INTO `Accounts`.`Business` (`name`, `buildID`, `servID`)
-VALUES ('ABC Corp.', 1, 1);
+INSERT INTO `accounts`.`business` (`id`, `name`, `buildID`, `servID`) VALUES (1, 'ABC Corp.', '1', '1');
+INSERT INTO `accounts`.`business` (`id`, `name`, `buildID`, `servID`) VALUES (2, 'Silph Co.', '1', '1');
 
--- BUSI 2
-INSERT INTO `Accounts`.`Business` (`name`, `buildID`, `servID`)
-VALUES ('Smart Tools', 1, 1);
-
-
--- TestUser - ABC
-INSERT INTO `Accounts`.`UserBusiness` (`userID`, `busID`, `joinTS`)
-VALUES (1, 1, NOW());
-
--- Fisher - ABC
-INSERT INTO `Accounts`.`UserBusiness` (`userID`, `busID`, `joinTS`)
-VALUES (2, 1, NOW());
-
--- Fisher - Smart
-INSERT INTO `Accounts`.`UserBusiness` (`userID`, `busID`, `joinTS`)
-VALUES (2, 2, NOW());
-
--- Lisa - Smart
-INSERT INTO `Accounts`.`UserBusiness` (`userID`, `busID`, `joinTS`)
-VALUES (2, 2, NOW());
-
-
-
-
+INSERT INTO `accounts`.`userbusiness` (`userID`, `busID`, `joinTS`) VALUES ('1', '1', NOW());
+INSERT INTO `accounts`.`userbusiness` (`userID`, `busID`, `joinTS`) VALUES ('2', '1', NOW());
+INSERT INTO `accounts`.`userbusiness` (`userID`, `busID`, `joinTS`) VALUES ('2', '2', NOW());
+INSERT INTO `accounts`.`userbusiness` (`userID`, `busID`, `joinTS`) VALUES ('3', '2', NOW());

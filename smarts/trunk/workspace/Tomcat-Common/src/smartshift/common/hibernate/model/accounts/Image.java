@@ -27,8 +27,8 @@ public class Image {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "url", nullable = false, length = 256)
-    private String url;
+    @Column(name = "uri", nullable = false, length = 256)
+    private String uri;
 
     @Column(name = "alt", nullable = false, length = 256)
     private String alternativeText;
@@ -57,12 +57,12 @@ public class Image {
         this.id = id;
     }
 
-    public String getUrl() {
-        return url;
+    public String getUri() {
+        return uri;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public String getAlternativeText() {
