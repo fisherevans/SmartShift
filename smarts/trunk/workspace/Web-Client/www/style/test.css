@@ -14,6 +14,10 @@
   font-size: 12px;
 }
 
+#action {
+	width: 400px;
+}
+
 textarea {
   width: 450px;
   height: 150px;

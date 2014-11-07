@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import com.google.gson.annotations.Expose;
 
 /**
  * An implementation of a read only list collection
@@ -14,7 +15,7 @@ import java.util.List;
  *            The type of the collected elements
  */
 public class ROList<T> extends ROCollection<T> {
-	
+	@Expose
 	private List<T> _list;
 
     /**
