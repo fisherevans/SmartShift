@@ -43,6 +43,7 @@
 		<mapping class="smartshift.common.hibernate.model.accounts.ApplicationTip"/>
 		<mapping class="smartshift.common.hibernate.model.accounts.Build"/>
 		<mapping class="smartshift.common.hibernate.model.accounts.Business"/>
+		<mapping class="smartshift.common.hibernate.model.accounts.Address"/>
 		<mapping class="smartshift.common.hibernate.model.accounts.BusinessPreference"/>
 		<mapping class="smartshift.common.hibernate.model.accounts.ContactMethod"/>
 		<mapping class="smartshift.common.hibernate.model.accounts.Image"/>

@@ -27,12 +27,19 @@ import smartshift.common.util.collections.ROList;
 @Cacheable
 public class Business {
     @Id
+    @Expose
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Expose
     @Column(name = "name", nullable = false, length = 256)
     private String name;
+
+    @Expose
+    @ManyToOne
+    @JoinColumn(name = "addressID")
+    private Address address;
 
     @ManyToOne
     @JoinColumn(name = "buildID", nullable = false)
@@ -42,10 +49,12 @@ public class Business {
     @JoinColumn(name = "servID", nullable = false)
     private Server server;
 
+    @Expose
     @ManyToOne
     @JoinColumn(name = "imgID")
     private Image image;
 
+    @Expose
     @Column(name = "inactive", nullable = false)
     private Boolean inactive = false;
 
@@ -64,14 +73,6 @@ public class Business {
 
     public Business() {
     }
-    
-    public GsonObject getGsonObject() {
-        GsonObject obj = new GsonObject();
-        obj.id = id;
-        obj.name = name;
-        obj.image = image == null ? null : image.getGsonObject();
-        return obj;
-    }
 
     public Integer getId() {
         return id;
@@ -87,6 +88,14 @@ public class Business {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Build getBuild() {
@@ -131,14 +140,5 @@ public class Business {
 
     public ROList<User> getUsers() {
         return new ROList<User>(users);
-    }
-    
-    public static class GsonObject {
-        @Expose
-        public Integer id;
-        @Expose
-        public String name;
-        @Expose
-        public Image.GsonObject image;
     }
 }

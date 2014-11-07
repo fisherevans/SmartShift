@@ -1,7 +1,9 @@
 package smartshift.accounts.jersey;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
@@ -53,9 +55,9 @@ public class UserActions {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserBusinesses(@Context HttpServletRequest request) {
         User user = (User) request.getAttribute("user");
-        List<Business.GsonObject> businesses = new ArrayList<>();
+        Map<Integer, Business> businesses = new HashMap<>();
         for(Business business:user.getBusineses())
-            businesses.add(business.getGsonObject());
+            businesses.put(business.getId(), business);
         return APIResultFactory.getOK(businesses);
     }
     
@@ -65,16 +67,16 @@ public class UserActions {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserBusiness(@Context HttpServletRequest request, @PathParam("businessID") SimpleIntegerParam businessID) {
         User user = (User) request.getAttribute("user");
-        Business.GsonObject businessObj = null;
-        for(Business business:user.getBusineses()) {
-            if(business.getId().equals(businessID.getInteger())) {
-                businessObj = business.getGsonObject();
+        Business business = null;
+        for(Business tempBusiness:user.getBusineses()) {
+            if(tempBusiness.getId().equals(businessID.getInteger())) {
+                business = tempBusiness;
                 break;
             }
         }
-        if(businessObj == null)
+        if(business == null)
             return APIResultFactory.getResponse(Status.NOT_FOUND, "User is not linked to this business or this business does not exist.");
-        return APIResultFactory.getOK(businessObj);
+        return APIResultFactory.getOK(business);
     }
     
     @Path("/contactMethod")
