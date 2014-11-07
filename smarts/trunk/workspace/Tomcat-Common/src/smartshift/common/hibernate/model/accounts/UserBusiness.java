@@ -7,11 +7,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author fevans
@@ -39,6 +41,9 @@ public class UserBusiness implements Serializable {
 
     @Column(name = "joinTS", nullable = false)
     private Date joinTimestamp;
+    
+    @OneToMany(mappedBy = "userBusiness")
+    private List<UserBusinessPreference> userBusinessPreferences;
 
     public UserBusiness() {
     }

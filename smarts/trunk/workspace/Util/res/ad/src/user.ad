@@ -1,4 +1,4 @@
-/user
+/user/self
   GET - Gets basic information for this user
     REQUIRES
       Basic Authentication
@@ -11,7 +11,7 @@
         }
       401 - The Basic Authentication credentials are invalid
 /user/register
-  GET - Registers a new user
+  PUT - Registers a new user
     TAKES
       {
         "username":"The username",

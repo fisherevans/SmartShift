@@ -47,6 +47,7 @@ public class AuthFilter implements ContainerRequestFilter {
         User user = Authentication.checkAuth(username, password);
         if(user == null)
             throw APIResultFactory.getInvalidCredentialsException();
+        containerRequest.setProperty("user", user);
     }
 
 }

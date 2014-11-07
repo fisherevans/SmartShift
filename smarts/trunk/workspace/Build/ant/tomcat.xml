@@ -2,11 +2,11 @@
 	<property file="ant/ant.properties" />
 	<property file="${build.tomcat.props}" />
 
-	<property name="war.file" value="${project.name}.war" />
+	<property name="war.file" value="${project.prefix}${project.context}.war" />
 	<property name="war.path" value="${dist.dir}/${war.file}" />
 	<property name="war.abs.path" location="${war.path}" />
 
-	<property name="project.dir" location="../${project.name}" />
+	<property name="project.dir" location="../${project.prefix}${project.name}" />
 
 	<path id="classpath">
 		<fileset dir="${lib.dir}/jar">
@@ -29,14 +29,19 @@
 		<delete dir="${out.dir}" />
 	</target>
 
-	<target name="prep-api">
-		<echo>Creating the required property file for API builds</echo>
-		<echo message="project.name=Tomcat-API" file="${build.tomcat.props}" />
+	<target name="prep-accounts">
+		<echo>Creating the required property file for Accounts builds</echo>
+		<echo message="project.name=Tomcat-Accounts&#xa;project.context=accounts" file="${build.tomcat.props}" append="false" />
+	</target>
+
+	<target name="prep-business">
+		<echo>Creating the required property file for Business builds</echo>
+		<echo message="project.name=Tomcat-Business&#xa;project.context=business" file="${build.tomcat.props}" append="false" />
 	</target>
 
 	<target name="prep-notifications">
 		<echo>Creating the required property file for Notification builds</echo>
-		<echo message="project.name=Tomcat-Notifications" file="${build.tomcat.props}" />
+		<echo message="project.name=Tomcat-Notifications&#xa;project.context=notifications" file="${build.tomcat.props}" append="false" />
 	</target>
 
 	<target name="build-init">
@@ -51,56 +56,56 @@
 			</condition>
 		</fail>
 		<echo>Creating the base WAR folder structure</echo>
-		<mkdir dir="${build.dir}/${project.name}" />
-		<copy todir="${build.dir}/${project.name}">
-			<fileset dir="${common.dir}/web" />
-			<fileset dir="${project.dir}/web" />
+		<mkdir dir="${build.dir}/${project.prefix}${project.name}" />
+		<copy todir="${build.dir}/${project.prefix}${project.name}">
+			<fileset dir="${project.prefix}${common.dir}/web" />
+			<fileset dir="${project.prefix}${project.dir}/web" />
 		</copy>
-		<mkdir dir="${build.dir}/${project.name}/WEB-INF/classes" />
-		<mkdir dir="${build.dir}/${project.name}/WEB-INF/classes/res" />
-		<mkdir dir="${build.dir}/${project.name}/WEB-INF/lib" />
+		<mkdir dir="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes" />
+		<mkdir dir="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes/res" />
+		<mkdir dir="${build.dir}/${project.prefix}${project.name}/WEB-INF/lib" />
 	</target>
 
 	<target name="build-compile" depends="build-init">
 		<echo>Compiling the java files</echo>
-		<javac destdir="${build.dir}/${project.name}/WEB-INF/classes" verbose="false" debug="${build.debug}" debuglevel="lines,vars,source">
+		<javac destdir="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes" verbose="false" debug="${build.debug}" debuglevel="lines,vars,source">
 			<classpath refid="classpath" />
-			<src path="${common.dir}/src" />
-			<src path="${project.dir}/src" />
+			<src path="${project.prefix}${common.dir}/src" />
+			<src path="${project.prefix}${project.dir}/src" />
 		</javac>
 	</target>
 
 	<target name="build-package" depends="build-compile">
 		<echo>Packaging required files into the build directory</echo>
-		<copy todir="${build.dir}/${project.name}/WEB-INF/lib">
+		<copy todir="${build.dir}/${project.prefix}${project.name}/WEB-INF/lib">
 			<fileset dir="${lib.dir}/jar">
 				<exclude name="javax.servlet.jar" />
 				<exclude name="servlet-api.jar" />
 			</fileset>
 		</copy>
-		<copy file="${common.dir}/app.properties" todir="${build.dir}/${project.name}/WEB-INF/classes" />
-		<concat destfile="${build.dir}/${project.name}/WEB-INF/classes/app.properties" append="true">
-			<filelist dir="${project.dir}" files="app.properties" />
+		<copy file="${project.prefix}${common.dir}/app.properties" todir="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes" />
+		<concat destfile="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes/app.properties" append="true">
+			<filelist dir="${project.prefix}${project.dir}" files="app.properties" />
 		</concat>
 	</target>
 
 	<target name="build-war" depends="build-package">
 		<echo>Creating the WAR deployment file</echo>
-		<war destfile="${war.path}" webxml="${build.dir}/${project.name}/WEB-INF/web.xml">
-			<fileset dir="${build.dir}/${project.name}" />
+		<war destfile="${war.path}" webxml="${build.dir}/${project.prefix}${project.name}/WEB-INF/web.xml">
+			<fileset dir="${build.dir}/${project.prefix}${project.name}" />
 		</war>
 	</target>
 
 	<target name="tomcat-deploy" depends="build-war, tomcat-remove">
 		<echo>Deploying WAR file to tomcat</echo>
-		<deploy url="${tomcat.url}" username="${tomcat.user}" password="${tomcat.pass}" path="/${project.name}" war="${war.abs.path}" />
+		<deploy url="${tomcat.url}" username="${tomcat.user}" password="${tomcat.pass}" path="/${project.context}" war="${war.abs.path}" />
 	</target>
 
 	<target name="tomcat-reload">
-		<reload url="${tomcat.url}" username="${tomcat.user}" password="${tomcat.pass}" path="/${project.name}" />
+		<reload url="${tomcat.url}" username="${tomcat.user}" password="${tomcat.pass}" path="/${project.context}" />
 	</target>
 
 	<target name="tomcat-remove">
-		<undeploy failonerror="false" url="${tomcat.url}" username="${tomcat.user}" password="${tomcat.pass}" path="/${project.name}" />
+		<undeploy failonerror="false" url="${tomcat.url}" username="${tomcat.user}" password="${tomcat.pass}" path="/${project.context}" />
 	</target>
 </project>

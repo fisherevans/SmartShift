@@ -10,9 +10,11 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import com.google.gson.annotations.Expose;
 import smartshift.common.util.collections.ROList;
 
 /**
@@ -56,8 +58,19 @@ public class Business {
         joinColumns={@JoinColumn(name="busID", referencedColumnName="id")},
         inverseJoinColumns={@JoinColumn(name="userID", referencedColumnName="id")})
     private List<User> users;
+    
+    @OneToMany(mappedBy = "business")
+    private List<BusinessPreference> businessPreferences;
 
     public Business() {
+    }
+    
+    public GsonObject getGsonObject() {
+        GsonObject obj = new GsonObject();
+        obj.id = id;
+        obj.name = name;
+        obj.image = image == null ? null : image.getGsonObject();
+        return obj;
     }
 
     public Integer getId() {
@@ -118,5 +131,14 @@ public class Business {
 
     public ROList<User> getUsers() {
         return new ROList<User>(users);
+    }
+    
+    public static class GsonObject {
+        @Expose
+        public Integer id;
+        @Expose
+        public String name;
+        @Expose
+        public Image.GsonObject image;
     }
 }

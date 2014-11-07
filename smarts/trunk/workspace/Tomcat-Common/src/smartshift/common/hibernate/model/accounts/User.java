@@ -14,7 +14,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -49,12 +52,6 @@ public class User {
     @Column(name = "email", nullable = false, length = 256)
     private String email;
 
-    @Column(name = "fName", length = 60)
-    private String firstName;
-
-    @Column(name = "lName", length = 60)
-    private String lastName;
-
     @Column(name = "createTS", nullable = false)
     private Date createTimestamp = new Date();
     
@@ -75,6 +72,9 @@ public class User {
     
     @ManyToMany(mappedBy="users")
     private List<Business> businesses;
+    
+    @OneToMany(mappedBy = "user")
+    private List<UserBusiness> userBusinesses;
 
     public User() {
     }
@@ -83,8 +83,6 @@ public class User {
         username = request.username;
         email = request.email;
         passHash = BCrypt.hashpw(request.password, BCrypt.gensalt());
-        firstName = request.firstName;
-        lastName = request.lastName;
     }
 
     public User(String username, String passHash, String email) {
@@ -97,10 +95,32 @@ public class User {
         GsonObject obj = new GsonObject();
         obj.id = id;
         obj.username = username;
-        obj.email = email;
-        obj.firstName = firstName;
-        obj.lastName = lastName;
         return obj;
+    }
+
+    public MultivaluedMap<Integer, UserContactMethod.GsonObject> getUserContactMethodsGsonObjectMap() {
+        MultivaluedMap<Integer, UserContactMethod.GsonObject> map = new MultivaluedHashMap<>();
+        for(ContactMethod method:contactMethods.keySet()) {
+            UserContactMethod.GsonObject obj = new UserContactMethod.GsonObject();
+            obj.methodID = method.getId();
+            obj.methodName = method.getName();
+            obj.value = contactMethods.get(method).getValue();
+            map.add(method.getId(), obj);
+        }
+        return map;
+    }
+
+    public UserContactMethod.GsonObject getUserContactMethodsGsonObject(Integer methodID) {
+        for(ContactMethod method:contactMethods.keySet()) {
+            if(method.getId().equals(methodID)) {
+                UserContactMethod.GsonObject obj = new UserContactMethod.GsonObject();
+                obj.methodID = method.getId();
+                obj.methodName = method.getName();
+                obj.value = contactMethods.get(method).getValue();
+                return obj;
+            }
+        }
+        return null;
     }
     
     public Integer getId() {
@@ -133,22 +153,6 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public Date getCreateTimestamp() {
@@ -194,10 +198,6 @@ public class User {
         String email;
         @Expose
         String password;
-        @Expose
-        String firstName;
-        @Expose
-        String lastName;
     }
     
     public static class GsonObject {
@@ -205,11 +205,5 @@ public class User {
         Integer id;
         @Expose
         String username;
-        @Expose
-        String email;
-        @Expose
-        String firstName;
-        @Expose
-        String lastName;
     }
 }
