@@ -25,7 +25,6 @@ public class UserDAO {
     public static User getUserByUsername(String username) {
         Session session = HibernateFactory.getSession(HibernateFactory.ACCOUNTS);
         User user = GenericHibernateUtil.uniqueByCriterea(session, User.class, Restrictions.eq("username", username));
-        session.close();
         return user;
     }
     

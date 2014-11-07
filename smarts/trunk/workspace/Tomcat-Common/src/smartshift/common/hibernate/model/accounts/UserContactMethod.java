@@ -10,6 +10,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import com.google.gson.annotations.Expose;
 
 /**
  * @author fevans
@@ -74,5 +75,14 @@ public class UserContactMethod implements Serializable {
             return other.getUser().getId() == getUser().getId() && other.getContactMethod().getId() == getContactMethod().getId();
         }
         return false;
+    }
+    
+    public static class GsonObject {
+        @Expose
+        Integer methodID;
+        @Expose
+        String methodName;
+        @Expose
+        String value;
     }
 }

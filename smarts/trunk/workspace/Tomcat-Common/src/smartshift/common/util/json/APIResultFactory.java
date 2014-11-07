@@ -43,7 +43,11 @@ public class APIResultFactory {
     }
 
     public static Response getOK(Object result) {
-        String json = GsonFactory.toJson(new JsonResult(Status.OK, result));
+        return getResponse(Status.OK, result);
+    }
+
+    public static Response getResponse(Status status, Object result) {
+        String json = GsonFactory.toJson(new JsonResult(status, result));
         return Response.ok(json).build();
     }
 }

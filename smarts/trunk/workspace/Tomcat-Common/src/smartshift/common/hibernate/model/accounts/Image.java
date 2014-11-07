@@ -10,6 +10,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import com.google.gson.annotations.Expose;
 import smartshift.common.util.collections.ROList;
 
 /**
@@ -39,6 +40,13 @@ public class Image {
     private List<User> users;
 
     public Image() {
+    }
+    
+    public GsonObject getGsonObject() {
+        GsonObject obj = new GsonObject();
+        obj.id = id;
+        obj.alternativeText = alternativeText;
+        return obj;
     }
 
     public Integer getId() {
@@ -71,5 +79,12 @@ public class Image {
     
     public ROList<User> getUsers() {
         return new ROList<User>(users);
+    }
+    
+    public static class GsonObject {
+        @Expose
+        public Integer id;
+        @Expose
+        public String alternativeText;
     }
 }

@@ -4,9 +4,18 @@ CREATE DATABASE Accounts;
 GRANT ALL PRIVILEGES ON Accounts.* TO 'smarts'@'localhost';
 COMMIT;
 
+DROP TABLE IF EXISTS `Accounts`.`NextID`;
+CREATE TABLE `Accounts`.`NextID` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(50) NOT NULL,
+	`nextID` INT NOT NULL DEFAULT 0,
+	PRIMARY KEY (`id`),
+	UNIQUE (`name`)
+);
+
 DROP TABLE IF EXISTS `Accounts`.`User`;
 CREATE TABLE `Accounts`.`User` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`username` VARCHAR(50) NOT NULL,
 	`passHash` VARCHAR(256) NOT NULL,
 	`email` VARCHAR(256) NOT NULL,
@@ -17,6 +26,17 @@ CREATE TABLE `Accounts`.`User` (
 	PRIMARY KEY (`id`),
 	UNIQUE (`email`),
 	UNIQUE (`username`)
+);
+
+DROP TABLE IF EXISTS `Accounts`.`Registration`;
+CREATE TABLE `Accounts`.`Registration` (
+	`employeeID` INT NOT NULL AUTO_INCREMENT,
+	`businessID` INT NOT NULL,
+	`verificationCode` VARCHAR(256) NOT NULL,
+	`email` VARCHAR(256) NOT NULL,
+	`createTS` DATETIME NOT NULL DEFAULT NOW(),
+	PRIMARY KEY (`employeeID`, `businessID`),
+	UNIQUE (`email`)
 );
 
 DROP TABLE IF EXISTS `Accounts`.`ContactMethod`;
@@ -34,16 +54,32 @@ CREATE TABLE `Accounts`.`Business` (
 	`buildID` INT NOT NULL,
 	`servID` INT NOT NULL,
 	`imgID` INT NULL,
+	`addressID` INT NULL,
 	`inactive` TINYINT(0) NOT NULL DEFAULT 0,
 	`flags` INT(10) NOT NULL DEFAULT 0,
 	PRIMARY KEY (`id`),
 	UNIQUE (`groupID`)
 );
 
+DROP TABLE IF EXISTS `Accounts`.`Address`;
+CREATE TABLE `Accounts`.`Address` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`street1` VARCHAR(256) NULL,
+	`street2` VARCHAR(256) NULL,
+	`city` VARCHAR(50) NULL,
+	`subDivision` VARCHAR(50) NULL,
+	`country` VARCHAR(50) NULL,
+	`postalCode` VARCHAR(10) NULL,
+	`phoneNumber` VARCHAR(11) NULL,
+	PRIMARY KEY (`id`)
+);
+
+
+
 DROP TABLE IF EXISTS `Accounts`.`Image`;
 CREATE TABLE `Accounts`.`Image` (
 	`id` INT NOT NULL AUTO_INCREMENT,
-	`url` VARCHAR(256) NOT NULL,
+	`uri` VARCHAR(256) NOT NULL,
 	`alt` VARCHAR(256) NOT NULL,
 	PRIMARY KEY (`id`)
 );
@@ -154,6 +190,11 @@ ADD CONSTRAINT `business_server`
 ADD CONSTRAINT `business_build`
 	FOREIGN KEY (`buildID`)
 	REFERENCES `Accounts`.`Business`(`id`)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION,
+ADD CONSTRAINT `business_address`
+	FOREIGN KEY (`addressID`)
+	REFERENCES `Accounts`.`Address`(`id`)
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION
 ;
