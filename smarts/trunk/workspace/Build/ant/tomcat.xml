@@ -7,6 +7,9 @@
 	<property name="war.abs.path" location="${war.path}" />
 
 	<property name="project.dir" location="../${project.prefix}${project.name}" />
+	<property name="common.dir" location="../${project.prefix}${common.name}" />
+	<property name="client.dir" location="../${project.prefix}${client.name}" />
+
 
 	<path id="classpath">
 		<fileset dir="${lib.dir}/jar">
@@ -58,8 +61,8 @@
 		<echo>Creating the base WAR folder structure</echo>
 		<mkdir dir="${build.dir}/${project.prefix}${project.name}" />
 		<copy todir="${build.dir}/${project.prefix}${project.name}">
-			<fileset dir="${project.prefix}${common.dir}/web" />
-			<fileset dir="${project.prefix}${project.dir}/web" />
+			<fileset dir="${common.dir}/web" />
+			<fileset dir="${project.dir}/web" />
 		</copy>
 		<mkdir dir="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes" />
 		<mkdir dir="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes/res" />
@@ -70,8 +73,8 @@
 		<echo>Compiling the java files</echo>
 		<javac destdir="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes" verbose="false" debug="${build.debug}" debuglevel="lines,vars,source">
 			<classpath refid="classpath" />
-			<src path="${project.prefix}${common.dir}/src" />
-			<src path="${project.prefix}${project.dir}/src" />
+			<src path="${common.dir}/src" />
+			<src path="${project.dir}/src" />
 		</javac>
 	</target>
 
@@ -83,9 +86,9 @@
 				<exclude name="servlet-api.jar" />
 			</fileset>
 		</copy>
-		<copy file="${project.prefix}${common.dir}/app.properties" todir="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes" />
+		<copy file="${common.dir}/app.properties" todir="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes" />
 		<concat destfile="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes/app.properties" append="true">
-			<filelist dir="${project.prefix}${project.dir}" files="app.properties" />
+			<filelist dir="${project.dir}" files="app.properties" />
 		</concat>
 	</target>
 
