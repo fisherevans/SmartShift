@@ -1,3 +1,5 @@
+DROP USER 'smarts'@'localhost';
+FLUSH PRIVILEGES;
 CREATE USER 'smarts'@'localhost' IDENTIFIED BY 'smarts';
 DROP DATABASE IF EXISTS Accounts;
 CREATE DATABASE Accounts;
@@ -19,7 +21,7 @@ CREATE TABLE `Accounts`.`User` (
 	`username` VARCHAR(50) NOT NULL,
 	`passHash` VARCHAR(256) NOT NULL,
 	`email` VARCHAR(256) NOT NULL,
-	`createTS` DATETIME NOT NULL,
+	`createTS` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`imgID` INT NULL,
 	`inactive` TINYINT(1) NOT NULL DEFAULT 0,
 	`flags` INT(10) NOT NULL DEFAULT 0,
@@ -34,7 +36,7 @@ CREATE TABLE `Accounts`.`Registration` (
 	`businessID` INT NOT NULL,
 	`verificationCode` VARCHAR(256) NOT NULL,
 	`email` VARCHAR(256) NOT NULL,
-	`createTS` DATETIME NOT NULL DEFAULT NOW(),
+	`createTS` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`employeeID`, `businessID`),
 	UNIQUE (`email`)
 );
@@ -74,8 +76,6 @@ CREATE TABLE `Accounts`.`Address` (
 	PRIMARY KEY (`id`)
 );
 
-
-
 DROP TABLE IF EXISTS `Accounts`.`Image`;
 CREATE TABLE `Accounts`.`Image` (
 	`id` INT NOT NULL AUTO_INCREMENT,
@@ -105,7 +105,7 @@ DROP TABLE IF EXISTS `Accounts`.`Build`;
 CREATE TABLE `Accounts`.`Build` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`version` VARCHAR(20) NOT NULL,
-	`createTS` DATETIME NOT NULL,
+	`createTS` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	`sqlDir` VARCHAR(256) NOT NULL,
 	PRIMARY KEY (`id`)
 );
@@ -139,7 +139,7 @@ CREATE TABLE `Accounts`.`UserBusiness` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`userID` INT NOT NULL,
 	`busID` INT NOT NULL,
-	`joinTS` DATETIME NOT NULL,
+	`joinTS` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
 	UNIQUE(`userID`, `busID`)
 );
