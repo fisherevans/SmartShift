@@ -57,7 +57,6 @@ public class Business {
     @JoinColumn(name = "addressID")
     private Address address;
 
-    @Expose
     @Column(name = "inactive", nullable = false)
     private Boolean inactive = false;
 
