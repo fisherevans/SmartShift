@@ -23,7 +23,7 @@ public class SimpleIntegerParam {
             this.originalValue = originalValue;
             this.integer = new Integer(originalValue);
         } catch(IllegalArgumentException e) {
-            throw APIResultFactory.getException(Status.BAD_REQUEST, "Invalid integer: " + originalValue);
+            throw new WebApplicationException(APIResultFactory.getResponse(Status.BAD_REQUEST, null, "Invalid integer: " + originalValue));
         }
     }
 

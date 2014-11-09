@@ -2,6 +2,7 @@ package smartshift.common.util.hibernate;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.ws.rs.NotFoundException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response.Status;
 import org.apache.log4j.Logger;
@@ -12,6 +13,8 @@ import org.hibernate.PropertyValueException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.exception.ConstraintViolationException;
+import smartshift.common.hibernate.DBError;
+import smartshift.common.hibernate.DBException;
 import smartshift.common.hibernate.HibernateFactory;
 import smartshift.common.hibernate.model.accounts.User;
 import smartshift.common.util.json.APIResultFactory;
@@ -30,10 +33,8 @@ public class GenericHibernateUtil {
             object = (T) session.load(clazz, id);
         } catch(Exception e) {
             logger.error("Failed to fetch unique by id " + clazz.getCanonicalName(), e);
-            throw APIResultFactory.getException(Status.INTERNAL_SERVER_ERROR);
+            throw new WebApplicationException(APIResultFactory.getResponse(Status.INTERNAL_SERVER_ERROR));
         }
-        if(object == null)
-            throw APIResultFactory.getException(Status.NOT_FOUND);
         return object;
     }
     
@@ -46,10 +47,8 @@ public class GenericHibernateUtil {
             object = (T) crit.uniqueResult();
         } catch(Exception e) {
             logger.error("Failed to fetch unique with crits " + clazz.getCanonicalName(), e);
-            throw APIResultFactory.getException(Status.INTERNAL_SERVER_ERROR);
+            throw new WebApplicationException(APIResultFactory.getResponse(Status.INTERNAL_SERVER_ERROR));
         }
-        if(object == null)
-            throw APIResultFactory.getException(Status.NOT_FOUND);
         return object;
     }
     
@@ -63,26 +62,24 @@ public class GenericHibernateUtil {
             objects = criteria.list();
         } catch(Exception e) {
             logger.error("Failed to fetch the list of " + clazz.getCanonicalName(), e);
-            throw APIResultFactory.getException(Status.INTERNAL_SERVER_ERROR);
+            throw new WebApplicationException(APIResultFactory.getResponse(Status.INTERNAL_SERVER_ERROR));
         }
-        if(objects == null)
-            throw APIResultFactory.getException(Status.INTERNAL_SERVER_ERROR);
         return objects;
     }
     
-    public static void save(Session session, Object object) {
+    public static void save(Session session, Object object) throws DBException {
         try {
             session.getTransaction().begin();
             session.save(object);
         } catch(PropertyValueException e) {
             logger.error("Failed to add object " + object.getClass().toString(), e);
-            throw APIResultFactory.getException(Status.BAD_REQUEST, "Invalid property value: " + e.getPropertyName());
+            throw new DBException(DBError.BadData, "Invalid property value: " + e.getPropertyName());
         } catch(ConstraintViolationException e) {
             logger.error("Failed to add object " + object.getClass().toString(), e);
-            throw APIResultFactory.getException(Status.BAD_REQUEST, e.getCause().getMessage());
+            throw new DBException(DBError.ConstraintError, e.getCause().getMessage());
         } catch(Exception e) {
             logger.error("Failed to add object " + object.getClass().toString(), e);
-            throw APIResultFactory.getException(Status.INTERNAL_SERVER_ERROR);
+            throw new WebApplicationException(APIResultFactory.getResponse(Status.INTERNAL_SERVER_ERROR));
         }
     }
 }

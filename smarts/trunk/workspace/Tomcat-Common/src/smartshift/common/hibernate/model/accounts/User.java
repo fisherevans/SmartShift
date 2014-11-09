@@ -38,23 +38,27 @@ import smartshift.common.util.collections.ROList;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
 public class User {
+    @Expose
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Expose
     @Column(name = "username", nullable = false, length = 50)
     private String username;
 
     @Column(name = "passHash", nullable = false, length = 256)
     private String passHash;
 
+    @Expose
     @Column(name = "email", nullable = false, length = 256)
     private String email;
 
     @Column(name = "createTS", nullable = false)
     private Date createTimestamp = new Date();
-    
+
+    @Expose
     @ManyToOne
     @JoinColumn(name = "imgID")
     private Image image;
@@ -70,11 +74,8 @@ public class User {
     @MapKeyJoinColumn(name = "cMethodID")
     private Map<ContactMethod, UserContactMethodRelationData> contactMethods;
     
-    @ManyToMany(mappedBy="users")
-    private List<Business> businesses;
-    
     @OneToMany(mappedBy = "user")
-    private List<UserBusiness> userBusinesses;
+    private List<UserBusinessEmployee> userBusinessEmployees;
 
     public User() {
     }
@@ -89,13 +90,6 @@ public class User {
         this.username = username;
         this.passHash = passHash;
         this.email = email;
-    }
-
-    public GsonObject getGsonObject() {
-        GsonObject obj = new GsonObject();
-        obj.id = id;
-        obj.username = username;
-        return obj;
     }
 
     public MultivaluedMap<Integer, UserContactMethod.GsonObject> getUserContactMethodsGsonObjectMap() {
@@ -187,10 +181,14 @@ public class User {
         this.flags = flags;
     }
     
-    public ROList<Business> getBusineses() {
-        return new ROList<Business>(businesses);
+    public Map<ContactMethod, UserContactMethodRelationData> getContactMethods() {
+        return contactMethods;
     }
-    
+
+    public List<UserBusinessEmployee> getUserBusinessEmployees() {
+        return userBusinessEmployees;
+    }
+
     public static class AddRequest {
         @Expose
         String username;
@@ -198,12 +196,5 @@ public class User {
         String email;
         @Expose
         String password;
-    }
-    
-    public static class GsonObject {
-        @Expose
-        Integer id;
-        @Expose
-        String username;
     }
 }

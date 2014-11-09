@@ -35,11 +35,9 @@ public class Business {
     @Expose
     @Column(name = "name", nullable = false, length = 256)
     private String name;
-
-    @Expose
-    @ManyToOne
-    @JoinColumn(name = "addressID")
-    private Address address;
+    
+    @Column(name = "groupID")
+    private Integer groupID;
 
     @ManyToOne
     @JoinColumn(name = "buildID", nullable = false)
@@ -55,6 +53,11 @@ public class Business {
     private Image image;
 
     @Expose
+    @ManyToOne
+    @JoinColumn(name = "addressID")
+    private Address address;
+
+    @Expose
     @Column(name = "inactive", nullable = false)
     private Boolean inactive = false;
 
@@ -63,7 +66,7 @@ public class Business {
     
     @ManyToMany
     @JoinTable(
-        name="UserBusiness",
+        name="UserBusinessEmployee",
         joinColumns={@JoinColumn(name="busID", referencedColumnName="id")},
         inverseJoinColumns={@JoinColumn(name="userID", referencedColumnName="id")})
     private List<User> users;

@@ -16,18 +16,17 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @version Oct 26, 2014
  */
 @Entity
-@Table(name = "UserBusinessPreference", schema = "Accounts")
+@Table(name = "UserBusinessEmployeePreference", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class UserBusinessPreference implements Serializable {
+public class UserBusinessEmployeePreference implements Serializable {
     private static final long serialVersionUID = -3072730232222834616L;
-
 
     @Id
     @ManyToOne
-    @JoinColumn(name = "userBusID", nullable = false)
-    private UserBusiness userBusiness;
-    
+    @JoinColumn(name = "userBusEmpID", nullable = false)
+    private UserBusinessEmployee userBusinessEmployee;
+
     @Id
     @ManyToOne
     @JoinColumn(name = "prefID", nullable = false)
@@ -36,15 +35,15 @@ public class UserBusinessPreference implements Serializable {
     @Column(name = "prefVal", length = 256)
     private String value;
 
-    public UserBusinessPreference() {
+    public UserBusinessEmployeePreference() {
     }
 
-    public UserBusiness getUserBusiness() {
-        return userBusiness;
+    public UserBusinessEmployee getUserBusinessEmployee() {
+        return userBusinessEmployee;
     }
 
-    public void setUserBusiness(UserBusiness userBusiness) {
-        this.userBusiness = userBusiness;
+    public void setUserBusinessEmployee(UserBusinessEmployee userBusiness) {
+        this.userBusinessEmployee = userBusiness;
     }
 
     public Preference getPreference() {
@@ -65,14 +64,14 @@ public class UserBusinessPreference implements Serializable {
 
     @Override
     public int hashCode() {
-        return userBusiness.getId().hashCode()*preference.getId().hashCode();
+        return userBusinessEmployee.getId().hashCode() * preference.getId().hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof UserBusinessPreference) {
-            UserBusinessPreference other = (UserBusinessPreference) obj;
-            return other.getUserBusiness().getId() == getUserBusiness().getId() && other.getPreference().getId() == getPreference().getId();
+        if(obj instanceof UserBusinessEmployeePreference) {
+            UserBusinessEmployeePreference other = (UserBusinessEmployeePreference) obj;
+            return other.getUserBusinessEmployee().getId() == getUserBusinessEmployee().getId() && other.getPreference().getId() == getPreference().getId();
         }
         return false;
     }

@@ -30,6 +30,7 @@ import smartshift.common.hibernate.dao.accounts.UserDAO;
 import smartshift.common.hibernate.model.accounts.Business;
 import smartshift.common.hibernate.model.accounts.ContactMethod;
 import smartshift.common.hibernate.model.accounts.User;
+import smartshift.common.hibernate.model.accounts.UserBusinessEmployee;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.json.APIResultFactory;
 import smartshift.common.util.json.GsonFactory;
@@ -46,7 +47,7 @@ public class UserActions {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUser(@Context HttpServletRequest request) {
         User user = (User) request.getAttribute("user");
-        return APIResultFactory.getOK(user.getGsonObject());
+        return APIResultFactory.getResponse(Status.OK, user);
     }
     
     @Path("/business")
@@ -56,9 +57,9 @@ public class UserActions {
     public Response getUserBusinesses(@Context HttpServletRequest request) {
         User user = (User) request.getAttribute("user");
         Map<Integer, Business> businesses = new HashMap<>();
-        for(Business business:user.getBusineses())
-            businesses.put(business.getId(), business);
-        return APIResultFactory.getOK(businesses);
+        for(UserBusinessEmployee ube:user.getUserBusinessEmployees())
+            businesses.put(ube.getBusiness().getId(), ube.getBusiness());
+        return APIResultFactory.getResponse(Status.OK, businesses);
     }
     
     @Path("/business/{businessID}")
@@ -68,15 +69,15 @@ public class UserActions {
     public Response getUserBusiness(@Context HttpServletRequest request, @PathParam("businessID") SimpleIntegerParam businessID) {
         User user = (User) request.getAttribute("user");
         Business business = null;
-        for(Business tempBusiness:user.getBusineses()) {
-            if(tempBusiness.getId().equals(businessID.getInteger())) {
-                business = tempBusiness;
+        for(UserBusinessEmployee ube:user.getUserBusinessEmployees()) {
+            if(ube.getBusiness().getId().equals(businessID.getInteger())) {
+                business = ube.getBusiness();
                 break;
             }
         }
         if(business == null)
-            return APIResultFactory.getResponse(Status.NOT_FOUND, "User is not linked to this business or this business does not exist.");
-        return APIResultFactory.getOK(business);
+            return APIResultFactory.getResponse(Status.NO_CONTENT, null, "User is not linked to this business or this business does not exist.");
+        return APIResultFactory.getResponse(Status.OK, business);
     }
     
     @Path("/contactMethod")
@@ -85,7 +86,7 @@ public class UserActions {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getContactMethods(@Context HttpServletRequest request) {
         User user = (User) request.getAttribute("user");
-        return APIResultFactory.getOK(user.getUserContactMethodsGsonObjectMap());
+        return APIResultFactory.getResponse(Status.OK, user.getUserContactMethodsGsonObjectMap());
     }
     
     @Path("/contactMethod/{contactMethodID}")
@@ -94,6 +95,6 @@ public class UserActions {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getContactMethod(@Context HttpServletRequest request, @PathParam("contactMethodID") SimpleIntegerParam contactMethodID) {
         User user = (User) request.getAttribute("user");
-        return APIResultFactory.getOK(user.getUserContactMethodsGsonObject(contactMethodID.getInteger()));
+        return APIResultFactory.getResponse(Status.OK, user.getUserContactMethodsGsonObject(contactMethodID.getInteger()));
     }
 }

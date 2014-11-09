@@ -6,8 +6,12 @@
       200 - User information
         {
           "username":"The username",
-          "lastLogin":"Last time they logged in",
-          "lastLoginIP":"Last IP they logged in from"
+          "email":"email@google.com",
+          "image":{
+            "id":imagesID,
+            "uri":"Some hash",
+            "alt":"Alt text"
+          }
         }
       401 - The Basic Authentication credentials are invalid
 /user/register
@@ -16,21 +20,25 @@
       {
         "username":"The username",
         "password":"new password",
+        "email":"matching email address",
         "code":"Registration code"
       }
     RETURNS
-      200 - User was registered.
-      400 - Username is taken or the password is invalid.
-      401 - Bad registration code.
-/user/session/{businessID}
+      201 - User was registered.
+      400 - Username is taken, the password is invalid.
+      401 - Bad registration code or email
+/user/session/{businessID}/{employeeID}
   PARAMS
     businessID - The id of a business
+    employeeID - The id of an employee
   PUT - Creates a new session token
     REQUIRES
       Basic Authentication
     RETURNS
-      200 - A session was created
+      201 - A session was created
         {
+          "businessID":businessID,
+          "employeeID":employeeID,
           "sessionID":"Some session id",
           "server":"someserver.domain",
           "timeout":timeoutInSeconds
@@ -57,12 +65,19 @@
           businessID:{ 
             "id":businessID,
             "name":"Business Name",
-            "city":"City Location",
-            "state":"State Location",
-            "phoneNumber":"Phone Number",
+            "server":"some.domain",
             "img":{
               "id":imageID,
               "alt":"Alternate text"
+            },
+            "address":{
+              "street1": "101 Loop Lane",
+              "street2": "Suite 8",
+              "city": "Somewhere",
+              "subDivision": "In Cali",
+              "country": "USA",
+              "postalCode": "12345",
+              "phoneNumber": "18885551234"
             }
           },
           ...
@@ -79,12 +94,19 @@
         { 
           "id":businessID,
           "name":"Business Name",
-          "city":"City Location",
-          "state":"State Location",
-          "phoneNumber":"Phone Number",
+          "server":"some.domain",
           "img":{
             "id":imageID,
             "alt":"Alternate text"
+          },
+          "address":{
+            "street1": "101 Loop Lane",
+            "street2": "Suite 8",
+            "city": "Somewhere",
+            "subDivision": "In Cali",
+            "country": "USA",
+            "postalCode": "12345",
+            "phoneNumber": "18885551234"
           }
         }
       400 - The business id is invalid, or the user does not have access to it
@@ -179,7 +201,11 @@
     RETURNS
       200 - A Map<PreferenceID, Value>
         {
-          preferenceID:"preference value",
+          preferenceID:{
+            "id":preferenceID,
+            "name":"preference name",
+            "value":"preference value",
+          }
           ...
         }
       401 - The Basic Authentication credentials are invalid
@@ -211,12 +237,19 @@
             businessID:{ 
               "id":businessID,
               "name":"Business Name",
-              "city":"City Location",
-              "state":"State Location",
-              "phoneNumber":"Phone Number",
+              "server":"some.domain",
               "img":{
                 "id":imageID,
                 "alt":"Alternate text"
+              },
+              "address":{
+                "street1": "101 Loop Lane",
+                "street2": "Suite 8",
+                "city": "Somewhere",
+                "subDivision": "In Cali",
+                "country": "USA",
+                "postalCode": "12345",
+                "phoneNumber": "18885551234"
               }
             },
             ...
@@ -244,7 +277,11 @@
           },
           "preferences":{
             businessID:{
-              preferenceID:"preference value",
+              preferenceID:{
+                "id":preferenceID,
+                "name":"preference name",
+                "value":"preference value",
+              },
               ...
             },
             ...

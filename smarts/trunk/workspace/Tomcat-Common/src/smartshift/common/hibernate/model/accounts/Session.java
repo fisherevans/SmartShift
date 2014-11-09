@@ -1,5 +1,6 @@
 package smartshift.common.hibernate.model.accounts;
 
+import java.util.Date;
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,11 +27,14 @@ public class Session {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "userBusID", nullable = false)
-    private UserBusiness userBusiness;
+    @JoinColumn(name = "userBusEmpID", nullable = false)
+    private UserBusinessEmployee userBusinessEmployee;
 
     @Column(name = "sessionKey", nullable = false, length = 256)
     private String sessionKey;
+    
+    @Column(name = "lastActivityTS", nullable = false)
+    private Date lastActivityTimestamp = new Date();
 
     public Session() {
     }
@@ -43,12 +47,12 @@ public class Session {
         this.id = id;
     }
 
-    public UserBusiness getUserBusiness() {
-        return userBusiness;
+    public UserBusinessEmployee getUserBusinessEmployee() {
+        return userBusinessEmployee;
     }
 
-    public void setUserBusiness(UserBusiness userBusiness) {
-        this.userBusiness = userBusiness;
+    public void setUserBusinessEmployee(UserBusinessEmployee userBusinessEmployee) {
+        this.userBusinessEmployee = userBusinessEmployee;
     }
 
     public String getSessionKey() {
@@ -57,5 +61,13 @@ public class Session {
 
     public void setSessionKey(String sessionKey) {
         this.sessionKey = sessionKey;
+    }
+
+    public Date getLastActivityTimestamp() {
+        return lastActivityTimestamp;
+    }
+
+    public void setLastActivityTimestamp(Date lastActivityTimestamp) {
+        this.lastActivityTimestamp = lastActivityTimestamp;
     }
 }

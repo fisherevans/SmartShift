@@ -22,14 +22,17 @@ import smartshift.common.util.collections.ROList;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
 public class Image {
+    @Expose
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
 
+    @Expose
     @Column(name = "uri", nullable = false, length = 256)
     private String uri;
 
+    @Expose
     @Column(name = "alt", nullable = false, length = 256)
     private String alternativeText;
 
@@ -40,13 +43,6 @@ public class Image {
     private List<User> users;
 
     public Image() {
-    }
-    
-    public GsonObject getGsonObject() {
-        GsonObject obj = new GsonObject();
-        obj.id = id;
-        obj.alternativeText = alternativeText;
-        return obj;
     }
 
     public Integer getId() {
@@ -79,12 +75,5 @@ public class Image {
     
     public ROList<User> getUsers() {
         return new ROList<User>(users);
-    }
-    
-    public static class GsonObject {
-        @Expose
-        public Integer id;
-        @Expose
-        public String alternativeText;
     }
 }
