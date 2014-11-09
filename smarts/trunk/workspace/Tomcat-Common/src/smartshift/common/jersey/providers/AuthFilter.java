@@ -38,15 +38,15 @@ public class AuthFilter implements ContainerRequestFilter {
             return;
         String auth = containerRequest.getHeaders().getFirst("Authorization");
         if(auth == null)
-            throw APIResultFactory.getInvalidCredentialsException();
+            throw new WebApplicationException(APIResultFactory.getInvalidCredentialsResponse());
         String[] authData = BasicAuth.decode(auth);
         if(authData == null || authData.length != 2)
-            throw APIResultFactory.getInvalidCredentialsException();
+            throw new WebApplicationException(APIResultFactory.getInvalidCredentialsResponse());
         String username = authData[0];
         String password = authData[1];
         User user = Authentication.checkAuth(username, password);
         if(user == null)
-            throw APIResultFactory.getInvalidCredentialsException();
+            throw new WebApplicationException(APIResultFactory.getInvalidCredentialsResponse());
         containerRequest.setProperty("user", user);
     }
 

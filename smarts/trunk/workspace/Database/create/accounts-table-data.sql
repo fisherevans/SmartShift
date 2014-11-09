@@ -12,7 +12,9 @@ INSERT INTO `Accounts`.`Build` (`id`, `version`) VALUES ('1', '1');
 
 INSERT INTO `Accounts`.`Server` (`id`, `hostname`, `ipAddr`) VALUES ('1', 'localhost', '127.0.0.1');
 
-INSERT INTO `Accounts`.`Business` (`id`, `name`, `buildID`, `servID`) VALUES (1, 'Babcock & Sons', '1', '1');
+INSERT INTO `accounts`.`address` (`id`, `street1`, `street2`, `city`, `subDivision`, `country`, `postalCode`, `phoneNumber`) VALUES ('1', '101 Loop Lane', 'Suite 8', 'Somewhere', 'In Cali', 'USA', '12345', '18885551234');
+
+INSERT INTO `Accounts`.`Business` (`id`, `name`, `addressID`, `buildID`, `servID`) VALUES (1, 'Babcock & Sons', '1', '1', '1');
 INSERT INTO `Accounts`.`Business` (`id`, `name`, `buildID`, `servID`) VALUES (2, 'ABC Corp.', '1', '1');
 INSERT INTO `Accounts`.`Business` (`id`, `name`, `buildID`, `servID`) VALUES (3, 'Silph Co.', '1', '1');
 

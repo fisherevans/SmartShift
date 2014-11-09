@@ -17,6 +17,9 @@ public class JsonResult {
 	
 	@Expose
     private Object data;
+	
+	@Expose
+	private String message;
 
     /**
      * Creates a standard data structure
@@ -26,8 +29,8 @@ public class JsonResult {
     public JsonResult(Object data) {
         this(Status.OK, data);
     }
-	
-	    /**
+    
+    /**
      * Creates a standard data structure, with status
      * 
      * @param status
@@ -36,10 +39,15 @@ public class JsonResult {
      *            The data object to return as JSON
      */
     public JsonResult(Status statusObject, Object data) {
+        this(statusObject, data, null);
+    }
+    
+    public JsonResult(Status statusObject, Object data, String message) {
         this.statusObject = statusObject;
         this.data = data;
+        this.message = message;
         this.status = statusObject.getStatusCode() + " " + statusObject.getReasonPhrase();
-	}
+    }
 	
     /**
      * @return the result's status
@@ -54,6 +62,14 @@ public class JsonResult {
     public Object getData() {
         return data;
 	}
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
     public static String ok(Object entity) {
         JsonResult data = new JsonResult(entity);

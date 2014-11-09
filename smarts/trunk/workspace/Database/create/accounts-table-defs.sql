@@ -1,19 +1,12 @@
 DROP USER 'smarts'@'localhost';
 FLUSH PRIVILEGES;
 CREATE USER 'smarts'@'localhost' IDENTIFIED BY 'smarts';
+
+-- Database
 DROP DATABASE IF EXISTS Accounts;
 CREATE DATABASE Accounts;
 GRANT ALL PRIVILEGES ON Accounts.* TO 'smarts'@'localhost';
 COMMIT;
-
-DROP TABLE IF EXISTS `Accounts`.`NextID`;
-CREATE TABLE `Accounts`.`NextID` (
-	`id` INT NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(50) NOT NULL,
-	`nextID` INT NOT NULL DEFAULT 0,
-	PRIMARY KEY (`id`),
-	UNIQUE (`name`)
-);
 
 DROP TABLE IF EXISTS `Accounts`.`User`;
 CREATE TABLE `Accounts`.`User` (
@@ -32,12 +25,14 @@ CREATE TABLE `Accounts`.`User` (
 
 DROP TABLE IF EXISTS `Accounts`.`Registration`;
 CREATE TABLE `Accounts`.`Registration` (
-	`employeeID` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL AUTO_INCREMENT,
 	`businessID` INT NOT NULL,
+	`employeeID` INT NOT NULL,
 	`verificationCode` VARCHAR(256) NOT NULL,
 	`email` VARCHAR(256) NOT NULL,
 	`createTS` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	PRIMARY KEY (`employeeID`, `businessID`),
+	PRIMARY KEY (`id`),
+	UNIQUE (`businessID`, `employeeID`),
 	UNIQUE (`email`)
 );
 
@@ -134,21 +129,23 @@ CREATE TABLE `Accounts`.`UserContactMethod` (
 	PRIMARY KEY (`userID`, `cMethodID`)
 );
 
-DROP TABLE IF EXISTS `Accounts`.`UserBusiness`;
-CREATE TABLE `Accounts`.`UserBusiness` (
+DROP TABLE IF EXISTS `Accounts`.`UserBusinessEmployee`;
+CREATE TABLE `Accounts`.`UserBusinessEmployee` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`userID` INT NOT NULL,
 	`busID` INT NOT NULL,
+	`empID` INT NOT NULL,
 	`joinTS` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
-	UNIQUE(`userID`, `busID`)
+	UNIQUE(`userID`, `busID`, `empID`)
 );
 
 DROP TABLE IF EXISTS `Accounts`.`Session`;
 CREATE TABLE `Accounts`.`Session` (
 	`id` INT NOT NULL AUTO_INCREMENT,
-	`userBusID` INT NOT NULL,
+	`userBusEmpID` INT NOT NULL,
 	`sessionKey` VARCHAR(256) NOT NULL,
+	`lastActivityTS` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`)
 );
 
@@ -160,12 +157,12 @@ CREATE TABLE `Accounts`.`BusinessPreference` (
 	PRIMARY KEY (`busID`, `prefID`)
 );
 
-DROP TABLE IF EXISTS `Accounts`.`UserBusinessPreference`;
-CREATE TABLE `Accounts`.`UserBusinessPreference` (
-	`userBusID` INT NOT NULL,
+DROP TABLE IF EXISTS `Accounts`.`UserBusinessEmployeePreference`;
+CREATE TABLE `Accounts`.`UserBusinessEmployeePreference` (
+	`userBusEmpID` INT NOT NULL,
 	`prefID` INT NOT NULL,
 	`prefVal` VARCHAR(256),
-	PRIMARY KEY (`userBusID`, `prefID`)
+	PRIMARY KEY (`userBusEmpID`, `prefID`)
 );
 
 ALTER TABLE `Accounts`.`User` 
@@ -233,13 +230,13 @@ ADD CONSTRAINT `usercontactmethod_cmethod`
 	ON UPDATE NO ACTION
 ;
 	
-ALTER TABLE `Accounts`.`UserBusiness`
-ADD CONSTRAINT `userbusiness_user`
+ALTER TABLE `Accounts`.`UserBusinessEmployee`
+ADD CONSTRAINT `userbusinessemp_user`
 	FOREIGN KEY (`userID`)
 	REFERENCES `Accounts`.`User`(`id`)
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION,
-ADD CONSTRAINT `userbusiness_business`
+ADD CONSTRAINT `userbusinessemp_business`
 	FOREIGN KEY (`busID`)
 	REFERENCES `Accounts`.`Business`(`id`)
 	ON DELETE NO ACTION
@@ -249,8 +246,8 @@ ADD CONSTRAINT `userbusiness_business`
 
 ALTER TABLE `Accounts`.`Session`
 ADD CONSTRAINT `session_userbusiness`
-	FOREIGN KEY (`userBusID`)
-	REFERENCES `Accounts`.`UserBusiness`(`id`)
+	FOREIGN KEY (`userBusEmpID`)
+	REFERENCES `Accounts`.`UserBusinessEmployee`(`id`)
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION
 ;
@@ -270,15 +267,15 @@ ADD CONSTRAINT `businesspreference_preference`
 	ON UPDATE NO ACTION
 ;	
 
-ALTER TABLE `Accounts`.`UserBusinessPreference`
-ADD INDEX `i_ubusinesspreference_bus` (`userBusID`),
-ADD INDEX `i_ubusinesspreference_pref` (`prefID`),
-ADD CONSTRAINT `userbusinesspreference_userbus`
-	FOREIGN KEY (`userBusID`)
-	REFERENCES `Accounts`.`UserBusiness`(`id`)
+ALTER TABLE `Accounts`.`UserBusinessEmployeePreference`
+ADD INDEX `i_ubusinessemppreference_bus` (`userBusEmpID`),
+ADD INDEX `i_ubusinessemppreference_pref` (`prefID`),
+ADD CONSTRAINT `userbusinessemppreference_userbus`
+	FOREIGN KEY (`userBusEmpID`)
+	REFERENCES `Accounts`.`UserBusinessEmployee`(`id`)
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION,
-ADD CONSTRAINT `userbusinesspreference_preference`
+ADD CONSTRAINT `userbusinessemppreference_preference`
 	FOREIGN KEY (`prefID`)
 	REFERENCES `Accounts`.`Preference`(`id`)
 	ON DELETE NO ACTION

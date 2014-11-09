@@ -7,6 +7,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import org.apache.log4j.Logger;
 import smartshift.common.util.json.APIResultFactory;
 
@@ -31,6 +32,6 @@ public class Hello {
     @Produces(MediaType.APPLICATION_JSON)
 	public Response sayHtmlHello() {
 	    logger.debug("Hello.sayHello()");
-		return APIResultFactory.getOK("Welcome to: " + context.getContextPath());
+		return APIResultFactory.getResponse(Status.OK, "Welcome to: " + context.getContextPath());
 	}
 }

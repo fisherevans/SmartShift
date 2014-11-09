@@ -40,7 +40,7 @@ public class Authentication {
             }
         } catch(Exception e) {
             logger.error("Failed to fetch User", e);
-            throw APIResultFactory.getException(Status.INTERNAL_SERVER_ERROR);
+            throw new WebApplicationException(APIResultFactory.getResponse(Status.INTERNAL_SERVER_ERROR, null, "Invalid credentials"));
         }
         return user;
     }

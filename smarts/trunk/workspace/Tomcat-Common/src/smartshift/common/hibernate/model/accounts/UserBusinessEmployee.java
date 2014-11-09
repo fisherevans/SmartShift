@@ -11,6 +11,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import smartshift.common.util.collections.ROList;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -20,10 +21,10 @@ import java.util.List;
  * @version Oct 26, 2014
  */
 @Entity
-@Table(name = "UserBusiness", schema = "Accounts")
+@Table(name = "UserBusinessEmployee", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class UserBusiness implements Serializable {
+public class UserBusinessEmployee implements Serializable {
     private static final long serialVersionUID = 9019038361957129848L;
 
     @Id
@@ -37,15 +38,18 @@ public class UserBusiness implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "busID", nullable = false)
-    private User business;
+    private Business business;
+    
+    @Column(name = "empID", nullable = false)
+    private Integer employeeID;
 
     @Column(name = "joinTS", nullable = false)
     private Date joinTimestamp;
     
-    @OneToMany(mappedBy = "userBusiness")
-    private List<UserBusinessPreference> userBusinessPreferences;
+    @OneToMany(mappedBy = "userBusinessEmployee")
+    private List<UserBusinessEmployeePreference> userBusinessEmployeePreferences;
 
-    public UserBusiness() {
+    public UserBusinessEmployee() {
     }
 
     public Integer getId() {
@@ -64,12 +68,20 @@ public class UserBusiness implements Serializable {
         this.user = user;
     }
 
-    public User getBusiness() {
+    public Business getBusiness() {
         return business;
     }
 
-    public void setBusiness(User business) {
+    public void setBusiness(Business business) {
         this.business = business;
+    }
+
+    public Integer getEmployeeID() {
+        return employeeID;
+    }
+
+    public void setEmployeeID(Integer employeeID) {
+        this.employeeID = employeeID;
     }
 
     public Date getJoinTimestamp() {
@@ -80,6 +92,10 @@ public class UserBusiness implements Serializable {
         this.joinTimestamp = joinTimestamp;
     }
 
+    public ROList<UserBusinessEmployeePreference> getUserBusinessEmployeePreferences() {
+        return new ROList<UserBusinessEmployeePreference>(userBusinessEmployeePreferences);
+    }
+
     @Override
     public int hashCode() {
         return user.getId().hashCode()*business.getId().hashCode();
@@ -87,8 +103,8 @@ public class UserBusiness implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof UserBusiness) {
-            UserBusiness other = (UserBusiness) obj;
+        if(obj instanceof UserBusinessEmployee) {
+            UserBusinessEmployee other = (UserBusinessEmployee) obj;
             return other.getUser().getId() == user.getId() && other.getBusiness().getId() == business.getId();
         }
         return false;
