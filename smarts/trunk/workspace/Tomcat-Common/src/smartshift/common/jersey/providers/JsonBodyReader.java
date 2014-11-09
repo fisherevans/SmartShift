@@ -41,7 +41,7 @@ public class JsonBodyReader<T> implements MessageBodyReader<T>, MessageBodyWrite
             return gson.fromJson(reader, type);
         } catch(Exception e) {
             logger.warn("Failed to parse JSON object", e);
-            throw APIResultFactory.getException(Status.INTERNAL_SERVER_ERROR, "Failed to parse JSON Object");
+            throw new WebApplicationException(APIResultFactory.getResponse(Status.BAD_REQUEST, null, "Invalid JSON"));
         }
     }
 

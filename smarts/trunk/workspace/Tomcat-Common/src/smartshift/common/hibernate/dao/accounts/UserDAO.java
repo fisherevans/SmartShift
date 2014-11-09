@@ -8,6 +8,7 @@ import org.hibernate.Criteria;
 import org.hibernate.PropertyValueException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
+import smartshift.common.hibernate.DBException;
 import smartshift.common.hibernate.HibernateFactory;
 import smartshift.common.hibernate.model.accounts.User;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
@@ -46,7 +47,7 @@ public class UserDAO {
         return users;
     }
     
-    public static User addUser(User.AddRequest addRequest) {
+    public static User addUser(User.AddRequest addRequest) throws DBException {
         Session session = HibernateFactory.getSession(HibernateFactory.ACCOUNTS);
         User user = new User(addRequest);
         GenericHibernateUtil.save(session, user);

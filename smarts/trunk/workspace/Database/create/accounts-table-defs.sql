@@ -38,7 +38,7 @@ CREATE TABLE `Accounts`.`Registration` (
 
 DROP TABLE IF EXISTS `Accounts`.`ContactMethod`;
 CREATE TABLE `Accounts`.`ContactMethod` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`name` VARCHAR(60),
 	PRIMARY KEY (`id`)
 );
@@ -116,7 +116,7 @@ CREATE TABLE `Accounts`.`SystemProperty` (
 
 DROP TABLE IF EXISTS `Accounts`.`Preference`;
 CREATE TABLE `Accounts`.`Preference` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`name` VARCHAR(256),
 	PRIMARY KEY (`id`)
 );

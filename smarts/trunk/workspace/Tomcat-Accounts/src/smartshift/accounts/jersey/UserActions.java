@@ -58,7 +58,8 @@ public class UserActions {
         User user = (User) request.getAttribute("user");
         Map<Integer, Business> businesses = new HashMap<>();
         for(UserBusinessEmployee ube:user.getUserBusinessEmployees())
-            businesses.put(ube.getBusiness().getId(), ube.getBusiness());
+            if(ube.getBusiness() != null && ube.getBusiness().getInactive() == false)
+                businesses.put(ube.getBusiness().getId(), ube.getBusiness());
         return APIResultFactory.getResponse(Status.OK, businesses);
     }
     
@@ -70,9 +71,11 @@ public class UserActions {
         User user = (User) request.getAttribute("user");
         Business business = null;
         for(UserBusinessEmployee ube:user.getUserBusinessEmployees()) {
-            if(ube.getBusiness().getId().equals(businessID.getInteger())) {
-                business = ube.getBusiness();
-                break;
+            if(ube.getBusiness() != null && ube.getBusiness().getInactive() == false) {
+                if(ube.getBusiness().getId().equals(businessID.getInteger())) {
+                    business = ube.getBusiness();
+                    break;
+                }
             }
         }
         if(business == null)
