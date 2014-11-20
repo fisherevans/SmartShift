@@ -18,20 +18,36 @@ import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
 import org.apache.log4j.Logger;
 import com.google.gson.Gson;
-import smartshift.common.jersey.Hello;
 import smartshift.common.util.json.APIResultFactory;
 import smartshift.common.util.json.GsonFactory;
 
+/**
+ * Reads json text and creates a Gson json object.
+ * 
+ * Writes json test from Gson json object
+ * 
+ * @author D. Fisher Evans <contact@fisherevans.com>
+ *
+ * @param <T>
+ */
 @Provider
 public class JsonBodyReader<T> implements MessageBodyReader<T>, MessageBodyWriter<T> {
 
     private static final Logger logger = Logger.getLogger(JsonBodyReader.class);
+    
+    
+    /**
+     * @see javax.ws.rs.ext.MessageBodyReader#isReadable(java.lang.Class, java.lang.reflect.Type, java.lang.annotation.Annotation[], javax.ws.rs.core.MediaType)
+     */
     @Override
     public boolean isReadable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
         logger.debug("JsonBodyReader.isReadable()");
         return mediaType.equals(MediaType.APPLICATION_JSON_TYPE);
     }
 
+    /**
+     * @see javax.ws.rs.ext.MessageBodyReader#readFrom(java.lang.Class, java.lang.reflect.Type, java.lang.annotation.Annotation[], javax.ws.rs.core.MediaType, javax.ws.rs.core.MultivaluedMap, java.io.InputStream)
+     */
     @Override
     public T readFrom(Class<T> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, String> httpHeaders, InputStream entityStream) throws IOException, WebApplicationException {
         logger.debug("JsonBodyReader.readFrom()");
@@ -45,16 +61,25 @@ public class JsonBodyReader<T> implements MessageBodyReader<T>, MessageBodyWrite
         }
     }
 
+    /**
+     * @see javax.ws.rs.ext.MessageBodyWriter#isWriteable(java.lang.Class, java.lang.reflect.Type, java.lang.annotation.Annotation[], javax.ws.rs.core.MediaType)
+     */
     @Override
     public boolean isWriteable(Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
         return mediaType.equals(MediaType.APPLICATION_JSON_TYPE);
     }
 
+    /**
+     * @see javax.ws.rs.ext.MessageBodyWriter#getSize(java.lang.Object, java.lang.Class, java.lang.reflect.Type, java.lang.annotation.Annotation[], javax.ws.rs.core.MediaType)
+     */
     @Override
     public long getSize(T t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType) {
         return -1;
     }
 
+    /**
+     * @see javax.ws.rs.ext.MessageBodyWriter#writeTo(java.lang.Object, java.lang.Class, java.lang.reflect.Type, java.lang.annotation.Annotation[], javax.ws.rs.core.MediaType, javax.ws.rs.core.MultivaluedMap, java.io.OutputStream)
+     */
     @Override
     public void writeTo(T t, Class<?> type, Type genericType, Annotation[] annotations, MediaType mediaType, MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream) throws IOException, WebApplicationException {
         OutputStreamWriter writer = new OutputStreamWriter(entityStream, "UTF-8");

@@ -5,6 +5,7 @@ import javax.ws.rs.HttpMethod;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 import org.apache.log4j.Logger;
@@ -20,7 +21,6 @@ import smartshift.common.util.json.APIResultFactory;
  */
 @Provider
 public class AuthFilter implements ContainerRequestFilter {
-
     private static final Logger logger = Logger.getLogger(AuthFilter.class);
 
     /**
@@ -30,24 +30,37 @@ public class AuthFilter implements ContainerRequestFilter {
      */
     @Override
     public void filter(ContainerRequestContext containerRequest) throws IOException, WebApplicationException {
-        logger.debug("AuthFilter.filter()");
+        logger.debug("AuthFilter.filter() Enter");
         // http://stackoverflow.com/questions/18499465/cors-and-http-basic-auth
         // http://stackoverflow.com/questions/19234892/xmlhttprequest-based-cors-call-with-basic-auth-fails-in-firefox-and-chrome
         // Ignore Options Requests - preflight browsers
         if(containerRequest.getMethod().equalsIgnoreCase(HttpMethod.OPTIONS))
             return;
+        logger.debug("AuthFilter.filter() Not a OPTIONS request");
         String auth = containerRequest.getHeaders().getFirst("Authorization");
         if(auth == null)
-            throw new WebApplicationException(APIResultFactory.getInvalidCredentialsResponse());
+            throw new WebApplicationException(getInvalidCredentialsResponse());
+        logger.debug("AuthFilter.filter() Auth header found");
         String[] authData = BasicAuth.decode(auth);
         if(authData == null || authData.length != 2)
-            throw new WebApplicationException(APIResultFactory.getInvalidCredentialsResponse());
+            throw new WebApplicationException(getInvalidCredentialsResponse());
+        logger.debug("AuthFilter.filter() valid header value");
         String username = authData[0];
         String password = authData[1];
         User user = Authentication.checkAuth(username, password);
         if(user == null)
-            throw new WebApplicationException(APIResultFactory.getInvalidCredentialsResponse());
+            throw new WebApplicationException(getInvalidCredentialsResponse());
+        logger.debug("AuthFilter.filter() User found");
         containerRequest.setProperty("user", user);
     }
 
+
+    /**
+     * Gets a premade response for invalid credentials
+     * @return the response
+     */
+    public static Response getInvalidCredentialsResponse() {
+        logger.debug("AuthFilter.getInvalidCredentialsResponse() Enter");
+        return APIResultFactory.getResponse(Status.UNAUTHORIZED, null, "Invalid credentials!");
+    }
 }

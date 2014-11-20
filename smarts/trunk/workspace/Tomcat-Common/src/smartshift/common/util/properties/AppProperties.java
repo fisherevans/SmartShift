@@ -4,11 +4,19 @@ import java.io.InputStream;
 import java.util.Properties;
 import org.apache.log4j.Logger;
 
+/**
+ * Static properties system. The properties are based on a java properties file that is loaded at runtime
+ * @author D. Fisher Evans <contact@fisherevans.com>
+ *
+ */
 public class AppProperties {
     private static final String PROPERTIES_FILE = "app.properties";
 
     private static final Logger logger = Logger.getLogger(AppProperties.class);
 
+    /**
+     * The properties map
+     */
     private static Properties properties = new Properties();
 
     /**
@@ -51,5 +59,14 @@ public class AppProperties {
         if(properties == null)
             return null;
         return properties.getProperty(key, defaultValue);
+    }
+    
+    /**
+     * Checks if a property is set
+     * @param key the key to check
+     * @return true if the key exists
+     */
+    public static boolean exists(String key) {
+        return properties.containsKey(key);
     }
 }

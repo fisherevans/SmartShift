@@ -10,19 +10,19 @@ import com.google.gson.annotations.Expose;
  *          The standard return data structure of JSON requests
  */
 public class JsonResult {
+    /** The HTTP status object */
     private Status statusObject;
-
-    @Expose
-    private String status;
 	
+    /** The data object to return to the client */
 	@Expose
     private Object data;
 	
+	/** The text message describing the result */
 	@Expose
 	private String message;
 
     /**
-     * Creates a standard data structure
+     * Creates a standard data structure, with a 200 response and a data object
      * 
      * @param data the data object to return as JSON
      */
@@ -33,8 +33,8 @@ public class JsonResult {
     /**
      * Creates a standard data structure, with status
      * 
-     * @param status
-     *            The status of the result
+     * @param statusObject
+     *            The http status of the result
      * @param data
      *            The data object to return as JSON
      */
@@ -42,11 +42,21 @@ public class JsonResult {
         this(statusObject, data, null);
     }
     
+    /**
+     * Creates a standard data structure, with status
+     * 
+     * @param statusObject
+     *            The http status of the result
+     * @param data
+     *            The data object to return as JSON
+     * @param message
+     *            The text message to return
+     */
     public JsonResult(Status statusObject, Object data, String message) {
         this.statusObject = statusObject;
         this.data = data;
         this.message = message;
-        this.status = statusObject.getStatusCode() + " " + statusObject.getReasonPhrase();
+        // this.status = statusObject.getStatusCode() + " " + statusObject.getReasonPhrase();
     }
 	
     /**
@@ -62,15 +72,26 @@ public class JsonResult {
     public Object getData() {
         return data;
 	}
-
+    
+    /**
+     * @return the message
+     */
     public String getMessage() {
         return message;
     }
 
+    /**
+     * @param message the message to set
+     */
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * A helper enerates the JSON text of the data passes
+     * @param entity the entity to encode
+     * @return the json text
+     */
     public static String ok(Object entity) {
         JsonResult data = new JsonResult(entity);
         return GsonFactory.toJson(data);

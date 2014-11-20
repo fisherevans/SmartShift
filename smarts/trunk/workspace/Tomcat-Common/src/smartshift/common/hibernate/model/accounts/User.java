@@ -1,6 +1,7 @@
 package smartshift.common.hibernate.model.accounts;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Cacheable;
@@ -68,22 +69,14 @@ public class User {
 
     @Column(name = "flags", nullable = false)
     private Integer flags = 0;
-
-    @ElementCollection
-    @CollectionTable(name = "UserContactMethod", joinColumns = @JoinColumn(name = "userID"))
-    @MapKeyJoinColumn(name = "cMethodID")
-    private Map<ContactMethod, UserContactMethodRelationData> contactMethods;
+    
+    @OneToMany(mappedBy = "user")
+    private List<UserContactMethod> userContactMethods;
     
     @OneToMany(mappedBy = "user")
     private List<UserBusinessEmployee> userBusinessEmployees;
 
     public User() {
-    }
-    
-    public User(AddRequest request) {
-        username = request.username;
-        email = request.email;
-        passHash = BCrypt.hashpw(request.password, BCrypt.gensalt());
     }
 
     public User(String username, String passHash, String email) {
@@ -91,32 +84,11 @@ public class User {
         this.passHash = passHash;
         this.email = email;
     }
-
-    public MultivaluedMap<Integer, UserContactMethod.GsonObject> getUserContactMethodsGsonObjectMap() {
-        MultivaluedMap<Integer, UserContactMethod.GsonObject> map = new MultivaluedHashMap<>();
-        for(ContactMethod method:contactMethods.keySet()) {
-            UserContactMethod.GsonObject obj = new UserContactMethod.GsonObject();
-            obj.methodID = method.getId();
-            obj.methodName = method.getName();
-            obj.value = contactMethods.get(method).getValue();
-            map.add(method.getId(), obj);
-        }
-        return map;
-    }
-
-    public UserContactMethod.GsonObject getUserContactMethodsGsonObject(Integer methodID) {
-        for(ContactMethod method:contactMethods.keySet()) {
-            if(method.getId().equals(methodID)) {
-                UserContactMethod.GsonObject obj = new UserContactMethod.GsonObject();
-                obj.methodID = method.getId();
-                obj.methodName = method.getName();
-                obj.value = contactMethods.get(method).getValue();
-                return obj;
-            }
-        }
-        return null;
-    }
     
+    public List<UserContactMethod> getUserContactMethods() {
+        return userContactMethods;
+    }
+
     public Integer getId() {
         return id;
     }
@@ -180,21 +152,8 @@ public class User {
     public void setFlags(Integer flags) {
         this.flags = flags;
     }
-    
-    public Map<ContactMethod, UserContactMethodRelationData> getContactMethods() {
-        return contactMethods;
-    }
 
     public List<UserBusinessEmployee> getUserBusinessEmployees() {
         return userBusinessEmployees;
-    }
-
-    public static class AddRequest {
-        @Expose
-        String username;
-        @Expose
-        String email;
-        @Expose
-        String password;
     }
 }

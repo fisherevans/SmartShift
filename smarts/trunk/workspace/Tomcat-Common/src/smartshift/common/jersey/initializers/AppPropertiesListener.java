@@ -3,12 +3,13 @@ package smartshift.common.jersey.initializers;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import smartshift.common.util.properties.AppProperties;
+import smartshift.common.util.properties.StaticProperties;
 
 /**
  * @author fevans
  * @version Sept 18, 2014
  * 
- *          the listener for hibernate
+ *          the listener for app properties
  */
 public class AppPropertiesListener implements ServletContextListener {  
 
@@ -18,6 +19,7 @@ public class AppPropertiesListener implements ServletContextListener {
 	@Override
     public void contextInitialized(ServletContextEvent event) {   
         AppProperties.loadProperties();
+        StaticProperties.initialize();
     }  
 
     /**

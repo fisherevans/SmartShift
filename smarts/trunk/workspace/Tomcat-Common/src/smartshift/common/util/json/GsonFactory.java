@@ -2,26 +2,33 @@ package smartshift.common.util.json;
 
 import javax.ws.rs.core.Response.Status;
 import smartshift.common.hibernate.HibernateProxyTypeAdapter;
+import smartshift.common.util.properties.AppProperties;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+/**
+ * This factory dictates how the json coming in and going out are formatted and parsed
+ * @author D. Fisher Evans <contact@fisherevans.com>
+ *
+ */
 public class GsonFactory {
-    private static final GsonBuilder GSON_BUILDER;
-
-    private static final Boolean USE_PRETTY_PRINT = true;
-
-    private static final Boolean REQUIRE_EXPOSE = true;
+    /**
+     * The builder that creates the base GSON reader
+     */
+    private static GsonBuilder gsonBuilder = null;
 
     private static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ss:SS'Z'";
 
-    static {
-        GSON_BUILDER = new GsonBuilder();
-        GSON_BUILDER.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
-        GSON_BUILDER.setDateFormat(DATE_FORMAT);
-        if(USE_PRETTY_PRINT)
-            GSON_BUILDER.setPrettyPrinting();
-        if(REQUIRE_EXPOSE)
-            GSON_BUILDER.excludeFieldsWithoutExposeAnnotation();
+    /**
+     * Initialize the factory. Requires App Properties to be initialized first
+     */
+    public static void initialize() {
+        gsonBuilder = new GsonBuilder();
+        gsonBuilder.registerTypeAdapterFactory(HibernateProxyTypeAdapter.FACTORY);
+        gsonBuilder.setDateFormat(DATE_FORMAT);
+        gsonBuilder.excludeFieldsWithoutExposeAnnotation();
+        if(AppProperties.getProperty("gson.prettyPrint").equalsIgnoreCase("true"))
+            gsonBuilder.setPrettyPrinting();
     }
 
     /**
@@ -30,14 +37,14 @@ public class GsonFactory {
      * @return the GSON Builder
      */
     protected static GsonBuilder getGsonBuilder() {
-        return GSON_BUILDER;
+        return gsonBuilder;
     }
 
     /**
      * @return the GSON object based on this object's GSON Builder
      */
     public static Gson getGson() {
-        return GSON_BUILDER.create();
+        return gsonBuilder.create();
     }
 
     /**
