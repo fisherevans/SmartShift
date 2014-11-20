@@ -86,8 +86,9 @@
 				<exclude name="servlet-api.jar" />
 			</fileset>
 		</copy>
-		<copy file="${common.dir}/app.properties" todir="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes" />
-		<concat destfile="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes/app.properties" append="true">
+		<touch file="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes/app.properties" />
+		<concat destfile="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes/app.properties" append="false" fixlastline="yes">
+			<filelist dir="${common.dir}" files="app.properties" />
 			<filelist dir="${project.dir}" files="app.properties" />
 		</concat>
 	</target>
