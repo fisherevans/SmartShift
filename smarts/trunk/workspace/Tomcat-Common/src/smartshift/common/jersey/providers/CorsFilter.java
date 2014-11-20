@@ -8,12 +8,18 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.Provider;
 import org.apache.log4j.Logger;
-import smartshift.common.util.properties.AppProperties;
 
+/**
+ * @author D. Fisher Evans <contact@fisherevans.com>
+ */
 @Provider
 public class CorsFilter implements ContainerResponseFilter {
 
     private static final Logger logger = Logger.getLogger(CorsFilter.class);
+    
+    /**
+     * @see javax.ws.rs.container.ContainerResponseFilter#filter(javax.ws.rs.container.ContainerRequestContext, javax.ws.rs.container.ContainerResponseContext)
+     */
     @Override
     public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
         logger.debug("CorsFilter.filter()");

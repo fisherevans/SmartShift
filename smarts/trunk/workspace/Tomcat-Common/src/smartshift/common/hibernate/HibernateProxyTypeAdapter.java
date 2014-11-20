@@ -18,19 +18,32 @@ import com.google.gson.stream.JsonWriter;
  */
 public class HibernateProxyTypeAdapter extends TypeAdapter<HibernateProxy> {
 
+    /**
+     * The factory for this adapter
+     */
     public static final HibernateProxyTypeAdapterFactory FACTORY = new HibernateProxyTypeAdapterFactory();
 
     private final Gson context;
 
+    /**
+     * Generate the adapter
+     * @param context the gson context to base it on
+     */
     public HibernateProxyTypeAdapter(Gson context) {
         this.context = context;
     }
 
+    /**
+     * read an object
+     */
     @Override
     public HibernateProxy read(JsonReader in) throws IOException {
         throw new UnsupportedOperationException("Not supported");
     }
 
+    /**
+     * write a json object, intiializing any hibernate objects
+     */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     @Override
     public void write(JsonWriter out, HibernateProxy value) throws IOException {

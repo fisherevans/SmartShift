@@ -1,103 +1,113 @@
 package smartshift.accounts.jersey;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Request;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
-import net.sf.ehcache.hibernate.HibernateUtil;
 import org.apache.log4j.Logger;
-import org.hibernate.Criteria;
-import org.hibernate.PropertyValueException;
-import org.hibernate.Session;
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import smartshift.common.hibernate.HibernateFactory;
-import smartshift.common.hibernate.dao.accounts.UserDAO;
+import smartshift.common.bo.ContactMethodBO;
+import smartshift.common.hibernate.dao.accounts.BusinessDAO;
+import smartshift.common.hibernate.dao.accounts.ContactMethodDAO;
 import smartshift.common.hibernate.model.accounts.Business;
-import smartshift.common.hibernate.model.accounts.ContactMethod;
 import smartshift.common.hibernate.model.accounts.User;
-import smartshift.common.hibernate.model.accounts.UserBusinessEmployee;
-import smartshift.common.util.hibernate.GenericHibernateUtil;
-import smartshift.common.util.json.APIResultFactory;
-import smartshift.common.util.json.GsonFactory;
+import smartshift.common.jersey.ActionBase;
 import smartshift.common.util.params.SimpleIntegerParam;
 
+/**
+ * Jersey actions for user methods
+ * @author D. Fisher Evans <contact@fisherevans.com>
+ */
 @Provider
 @Path("/user")
-public class UserActions {
-    private static Logger logger = Logger.getLogger(UserActions.class);
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public class UserActions extends ActionBase {
+    private static final Logger logger = Logger.getLogger(UserActions.class);
 
+    /**
+     * Message to be returned if a business is not found;
+     */
+    private static final String MSG_204_BUSINESS = "User is not linked to this business or this business does not exist.";
+
+    /**
+     * Message to be returned if a contact method is not found;
+     */
+    private static final String MSG_204_CONTACT_METHOD = "A contact method with this id is not linked to this user.";
+
+    /**
+     * Gets the basic information for the authenticated user
+     * @return HTTP Response with the user object
+     */
+    @GET
     @Path("/self")
-    @GET
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getUser(@Context HttpServletRequest request) {
-        User user = (User) request.getAttribute("user");
-        return APIResultFactory.getResponse(Status.OK, user);
+    public Response getUser() {
+        logger.debug("UserActions.getUser() Enter");
+        return getObjectResponse(Status.OK, getRequestUser());
     }
-    
+
+    /**
+     * Gets a map of businesses for the authenticated user <businessID, business>
+     * @return HTTP Response with the business map
+     */
+    @GET
     @Path("/business")
-    @GET
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserBusinesses(@Context HttpServletRequest request) {
-        User user = (User) request.getAttribute("user");
-        Map<Integer, Business> businesses = new HashMap<>();
-        for(UserBusinessEmployee ube:user.getUserBusinessEmployees())
-            if(ube.getBusiness() != null && ube.getBusiness().getInactive() == false)
-                businesses.put(ube.getBusiness().getId(), ube.getBusiness());
-        return APIResultFactory.getResponse(Status.OK, businesses);
+    public Response getUserBusinessesAction() {
+        logger.debug("UserActions.getUserBusinessesAction() Enter");
+        Map<Integer, Business> businesses = BusinessDAO.getUserBusinessMap(getRequestUser());
+        logger.debug("UserActions.getUserBusinessesAction() found " + businesses.size() + " businesses");
+        return getObjectResponse(Status.OK, businesses);
     }
-    
+
+    /**
+     * Gets a business that a user have access to via businessID
+     * @param businessID the businessID to look up
+     * @return HTTP Response with the business, or a 204 if the user doesn't have access
+     */
+    @GET
     @Path("/business/{businessID}")
-    @GET
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserBusiness(@Context HttpServletRequest request, @PathParam("businessID") SimpleIntegerParam businessID) {
-        User user = (User) request.getAttribute("user");
-        Business business = null;
-        for(UserBusinessEmployee ube:user.getUserBusinessEmployees()) {
-            if(ube.getBusiness() != null && ube.getBusiness().getInactive() == false) {
-                if(ube.getBusiness().getId().equals(businessID.getInteger())) {
-                    business = ube.getBusiness();
-                    break;
-                }
-            }
+    public Response getUserBusiness(@PathParam("businessID") SimpleIntegerParam businessID) {
+        logger.debug("UserActions.getUserBusiness() Enter");
+        Business business = BusinessDAO.getUserBusiness(getRequestUser(), businessID.getInteger());
+        if(business == null) {
+            logger.debug("UserActions.getUserBusiness() No business found for id " + businessID.getOriginalValue());
+            return getMessageResponse(Status.NO_CONTENT, MSG_204_BUSINESS);
         }
-        if(business == null)
-            return APIResultFactory.getResponse(Status.NO_CONTENT, null, "User is not linked to this business or this business does not exist.");
-        return APIResultFactory.getResponse(Status.OK, business);
+        return getObjectResponse(Status.OK, business);
     }
-    
+
+    /**
+     * Gets a map of contact methods for the authenticated user <contactMethodID, contactMethod>
+     * @return HTTP Response with the map of contact methods
+     */
+    @GET
     @Path("/contactMethod")
-    @GET
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getContactMethods(@Context HttpServletRequest request) {
-        User user = (User) request.getAttribute("user");
-        return APIResultFactory.getResponse(Status.OK, user.getUserContactMethodsGsonObjectMap());
+    public Response getContactMethods() {
+        logger.debug("UserActions.getContactMethods() Enter");
+        Map<Integer, ContactMethodBO> contactMethods = ContactMethodDAO.getUserContactMethodMap(getRequestUser());
+        return getObjectResponse(Status.OK, contactMethods);
     }
-    
-    @Path("/contactMethod/{contactMethodID}")
+
+    /**
+     * Gets a contact method for the authenticated user
+     * @param contactMethodID the contact method id to look up
+     * @return HTTP Response with the contact method. 204 if not found
+     */
     @GET
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getContactMethod(@Context HttpServletRequest request, @PathParam("contactMethodID") SimpleIntegerParam contactMethodID) {
-        User user = (User) request.getAttribute("user");
-        return APIResultFactory.getResponse(Status.OK, user.getUserContactMethodsGsonObject(contactMethodID.getInteger()));
+    @Path("/contactMethod/{contactMethodID}")
+    public Response getContactMethod(@PathParam("contactMethodID") SimpleIntegerParam contactMethodID) {
+        logger.debug("UserActions.getUsergetContactMethod() Enter");
+        User user = getRequestUser();
+        ContactMethodBO contactMethod = ContactMethodDAO.getUserContactMethod(user, contactMethodID.getInteger());
+        if(contactMethod == null) {
+            logger.debug("UserActions.getUsergetContactMethod() No countact method found for id " + contactMethodID.getOriginalValue());
+            return getMessageResponse(Status.NO_CONTENT, MSG_204_CONTACT_METHOD);
+        }
+        return getObjectResponse(Status.OK, contactMethod);
     }
 }

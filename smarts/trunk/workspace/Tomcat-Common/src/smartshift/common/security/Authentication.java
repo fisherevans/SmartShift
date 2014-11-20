@@ -3,9 +3,7 @@ package smartshift.common.security;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response.Status;
 import org.apache.log4j.Logger;
-import org.hibernate.Session;
 import org.mindrot.jbcrypt.BCrypt;
-import smartshift.common.hibernate.HibernateFactory;
 import smartshift.common.hibernate.dao.accounts.UserDAO;
 import smartshift.common.hibernate.model.accounts.User;
 import smartshift.common.util.json.APIResultFactory;
@@ -18,8 +16,6 @@ import smartshift.common.util.json.APIResultFactory;
  */
 public class Authentication {
     private static Logger logger = Logger.getLogger(Authentication.class);
-    
-    public static String SALT = "$WF3f3wfWFw4ge4gW$G%E";
 
     /**
      * @param username the username of the basic auth
@@ -40,7 +36,7 @@ public class Authentication {
             }
         } catch(Exception e) {
             logger.error("Failed to fetch User", e);
-            throw new WebApplicationException(APIResultFactory.getResponse(Status.INTERNAL_SERVER_ERROR));
+            throw new WebApplicationException(APIResultFactory.getResponse(Status.INTERNAL_SERVER_ERROR, null, null));
         }
         return user;
     }
