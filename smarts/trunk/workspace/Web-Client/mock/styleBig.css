@@ -507,6 +507,94 @@
   background-color: #0070e1;
 }
 
+/* Schedule */
+
+.scheduleWindowWrapper {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  right: 20px;
+  bottom: 20px;
+  overflow-y: scroll;
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+}
+
+.groupSchedule {
+  position: relative;
+  width: 100%;
+}
+
+.leftBox {
+  width: 100px;
+  font-weight: 700;
+  display:block;
+  float:left;
+  text-align: center;
+  vertical-align: middle;
+  border-bottom: 1px solid #ccc;
+}
+
+.rightBox {
+  position: relative;
+  border-left: 1px solid #ccc;
+  display:block;
+  overflow-x: hidden;
+  border-bottom: 1px solid #ccc;
+}
+
+.scheduleBox {
+  margin: 4px;
+}
+
+.scheduleShift {
+  position: relative;
+  display: block;
+  height: 30px;
+  border: 1px solid #ccc;
+  margin: 4px 0px;
+  overflow: hidden;
+}
+
+.shiftLeft, .shiftRight {
+  position: absolute;
+  height: 30px;
+  font-weight: 700;
+  font-size: 10px;
+  line-height: 30px;
+  color:#444;
+}
+
+.shiftLeft {
+  left:10px;
+  text-align: left;
+}
+
+.shiftRight {
+  right:10px;
+  text-align: right;
+}
+
+.shiftActions {
+  width: 100%;
+  text-align: center;
+  height: 30px;
+}
+
+.shiftAction {
+  display: inline-block;
+  height: 30px;
+  line-height: 30px;
+}
+
+.left50percent {
+  left: 50%;
+}
+
+.width50percent {
+  width: 50%;
+}
+
 .noInputLines {
   border: none;
   overflow: auto;

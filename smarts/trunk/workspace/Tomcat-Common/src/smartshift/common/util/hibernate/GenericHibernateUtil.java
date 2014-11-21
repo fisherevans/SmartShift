@@ -24,7 +24,7 @@ public class GenericHibernateUtil {
     private static Logger logger = Logger.getLogger(GenericHibernateUtil.class);
 
     /**
-     * Fetches a unique object from the database by ID
+     * Fetches a unique object from the database by ID using the get method
      * @param <T> The type of object
      * @param session the session to use
      * @param clazz the class of the object (should be same as Type)
@@ -32,13 +32,30 @@ public class GenericHibernateUtil {
      * @return the fetched object
      * @throws WebApplicationException if the object is not found
      */
-    @SuppressWarnings("unchecked")
     public static <T> T unique(Session session, Class<T> clazz, Serializable id) throws WebApplicationException {
+        return unique(session, clazz, id, false);
+    }
+
+    /**
+     * Fetches a unique object from the database by ID
+     * @param <T> The type of object
+     * @param session the session to use
+     * @param clazz the class of the object (should be same as Type)
+     * @param id the primary ID of the object
+     * @param loadFromCache use the hibernate load, else get
+     * @return the fetched object
+     * @throws WebApplicationException if the object is not found
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T unique(Session session, Class<T> clazz, Serializable id, boolean loadFromCache) throws WebApplicationException {
         // TODO load should only be used if we know the object exists
         T object = null;
         try {
             // Unchecked
-            object = (T) session.load(clazz, id);
+            if(loadFromCache)
+                object = (T) session.load(clazz, id);
+            else
+                object = (T) session.get(clazz, id);
         } catch(Exception e) {
             logger.error("Failed to fetch unique by id " + clazz.getCanonicalName(), e);
             throw new WebApplicationException(getInternalError("Failed to fetch object"));
@@ -52,7 +69,7 @@ public class GenericHibernateUtil {
      * @param session the session to use
      * @param clazz the class of the object (should be same as Type)
      * @param criterions an array of Hibernate critereons to base this query on
-     * @return the fetched object
+     * @return the fetched object, null if not found
      * @throws WebApplicationException if the object is not found
      */
     @SuppressWarnings("unchecked")
@@ -115,6 +132,28 @@ public class GenericHibernateUtil {
             throw new DBException(DBError.ConstraintError, e.getCause().getMessage());
         } catch(Exception e) {
             logger.error("Failed to add object " + object.getClass().toString(), e);
+            throw new WebApplicationException(getInternalError("Failed to save or update object"));
+        }
+    }
+    
+    /**
+     * deletes an existing object
+     * @param session the session to use
+     * @param object the existing object to delete
+     * @throws DBException If the request is bad
+     */
+    public static void delete(Session session, Object object) throws DBException {
+        try {
+            session.getTransaction().begin();
+            session.delete(object);
+        } catch(PropertyValueException e) {
+            logger.error("Failed to delete object " + object.getClass().toString(), e);
+            throw new DBException(DBError.BadData, "Invalid property value: " + e.getPropertyName());
+        } catch(ConstraintViolationException e) {
+            logger.error("Failed to delete object " + object.getClass().toString(), e);
+            throw new DBException(DBError.ConstraintError, e.getCause().getMessage());
+        } catch(Exception e) {
+            logger.error("Failed to delete object " + object.getClass().toString(), e);
             throw new WebApplicationException(getInternalError("Failed to save or update object"));
         }
     }
