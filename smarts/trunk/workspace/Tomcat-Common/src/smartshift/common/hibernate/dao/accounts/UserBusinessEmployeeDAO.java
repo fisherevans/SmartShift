@@ -1,12 +1,8 @@
 package smartshift.common.hibernate.dao.accounts;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import smartshift.common.hibernate.model.accounts.Business;
 import smartshift.common.hibernate.model.accounts.User;
 import smartshift.common.hibernate.model.accounts.UserBusinessEmployee;
-import smartshift.common.util.hibernate.GenericHibernateUtil;
 
 /**
  * The data access object for the User Business Employee Relationship

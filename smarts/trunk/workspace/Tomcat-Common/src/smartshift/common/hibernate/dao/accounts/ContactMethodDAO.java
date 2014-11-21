@@ -3,7 +3,7 @@ package smartshift.common.hibernate.dao.accounts;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import smartshift.common.bo.ContactMethodBO;
+import smartshift.common.cache.bo.accounts.ContactMethodBO;
 import smartshift.common.hibernate.model.accounts.ContactMethod;
 import smartshift.common.hibernate.model.accounts.User;
 import smartshift.common.hibernate.model.accounts.UserContactMethod;

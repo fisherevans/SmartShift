@@ -11,7 +11,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 import org.apache.log4j.Logger;
-import smartshift.common.bo.ContactMethodBO;
+import smartshift.common.cache.bo.accounts.ContactMethodBO;
 import smartshift.common.hibernate.dao.accounts.BusinessDAO;
 import smartshift.common.hibernate.dao.accounts.ContactMethodDAO;
 import smartshift.common.hibernate.model.accounts.Business;
