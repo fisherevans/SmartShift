@@ -9,7 +9,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 import org.apache.log4j.Logger;
-import smartshift.common.hibernate.model.accounts.User;
+import smartshift.common.hibernate.model.accounts.UserModel;
 import smartshift.common.security.Authentication;
 import smartshift.common.security.BasicAuth;
 import smartshift.common.util.json.APIResultFactory;
@@ -47,7 +47,7 @@ public class AuthFilter implements ContainerRequestFilter {
         logger.debug("AuthFilter.filter() valid header value");
         String username = authData[0];
         String password = authData[1];
-        User user = Authentication.checkAuth(username, password);
+        UserModel user = Authentication.checkAuth(username, password);
         if(user == null)
             throw new WebApplicationException(getInvalidCredentialsResponse());
         logger.debug("AuthFilter.filter() User found");

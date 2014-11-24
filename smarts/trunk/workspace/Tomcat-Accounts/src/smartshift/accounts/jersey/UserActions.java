@@ -14,8 +14,8 @@ import org.apache.log4j.Logger;
 import smartshift.common.cache.bo.accounts.ContactMethodBO;
 import smartshift.common.hibernate.dao.accounts.BusinessDAO;
 import smartshift.common.hibernate.dao.accounts.ContactMethodDAO;
-import smartshift.common.hibernate.model.accounts.Business;
-import smartshift.common.hibernate.model.accounts.User;
+import smartshift.common.hibernate.model.accounts.BusinessModel;
+import smartshift.common.hibernate.model.accounts.UserModel;
 import smartshift.common.jersey.ActionBase;
 import smartshift.common.util.params.SimpleIntegerParam;
 
@@ -59,7 +59,7 @@ public class UserActions extends ActionBase {
     @Path("/business")
     public Response getUserBusinessesAction() {
         logger.debug("UserActions.getUserBusinessesAction() Enter");
-        Map<Integer, Business> businesses = BusinessDAO.getUserBusinessMap(getRequestUser());
+        Map<Integer, BusinessModel> businesses = BusinessDAO.getUserBusinessMap(getRequestUser());
         logger.debug("UserActions.getUserBusinessesAction() found " + businesses.size() + " businesses");
         return getObjectResponse(Status.OK, businesses);
     }
@@ -73,7 +73,7 @@ public class UserActions extends ActionBase {
     @Path("/business/{businessID}")
     public Response getUserBusiness(@PathParam("businessID") SimpleIntegerParam businessID) {
         logger.debug("UserActions.getUserBusiness() Enter");
-        Business business = BusinessDAO.getUserBusiness(getRequestUser(), businessID.getInteger());
+        BusinessModel business = BusinessDAO.getUserBusiness(getRequestUser(), businessID.getInteger());
         if(business == null) {
             logger.debug("UserActions.getUserBusiness() No business found for id " + businessID.getOriginalValue());
             return getMessageResponse(Status.NO_CONTENT, MSG_204_BUSINESS);
@@ -102,7 +102,7 @@ public class UserActions extends ActionBase {
     @Path("/contactMethod/{contactMethodID}")
     public Response getContactMethod(@PathParam("contactMethodID") SimpleIntegerParam contactMethodID) {
         logger.debug("UserActions.getUsergetContactMethod() Enter");
-        User user = getRequestUser();
+        UserModel user = getRequestUser();
         ContactMethodBO contactMethod = ContactMethodDAO.getUserContactMethod(user, contactMethodID.getInteger());
         if(contactMethod == null) {
             logger.debug("UserActions.getUsergetContactMethod() No countact method found for id " + contactMethodID.getOriginalValue());

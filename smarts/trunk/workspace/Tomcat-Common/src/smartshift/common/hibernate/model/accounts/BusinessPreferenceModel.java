@@ -19,38 +19,38 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "UserPreference", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class BusinessPreference implements Serializable {
+public class BusinessPreferenceModel implements Serializable {
     private static final long serialVersionUID = 1738459159424484410L;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "busID", nullable = false)
-    private Business business;
+    private BusinessModel business;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "prefID", nullable = false)
-    private Preference preference;
+    private PreferenceModel preference;
 
     @Column(name = "prefVal", length = 256)
     private String value;
 
-    public BusinessPreference() {
+    public BusinessPreferenceModel() {
     }
 
-    public Business getBusiness() {
+    public BusinessModel getBusiness() {
         return business;
     }
 
-    public void setBusiness(Business business) {
+    public void setBusiness(BusinessModel business) {
         this.business = business;
     }
 
-    public Preference getPreference() {
+    public PreferenceModel getPreference() {
         return preference;
     }
 
-    public void setPreference(Preference preference) {
+    public void setPreference(PreferenceModel preference) {
         this.preference = preference;
     }
 
@@ -69,8 +69,8 @@ public class BusinessPreference implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof BusinessPreference) {
-            BusinessPreference other = (BusinessPreference) obj;
+        if(obj instanceof BusinessPreferenceModel) {
+            BusinessPreferenceModel other = (BusinessPreferenceModel) obj;
             return other.getBusiness().getId() == getBusiness().getId() && other.getPreference().getId() == getPreference().getId();
         }
         return false;

@@ -24,7 +24,7 @@ import java.util.List;
 @Table(name = "UserBusinessEmployee", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class UserBusinessEmployee implements Serializable {
+public class UserBusinessEmployeeModel implements Serializable {
     private static final long serialVersionUID = 9019038361957129848L;
 
     @Id
@@ -34,11 +34,11 @@ public class UserBusinessEmployee implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "userID", nullable = false)
-    private User user;
+    private UserModel user;
 
     @ManyToOne
     @JoinColumn(name = "busID", nullable = false)
-    private Business business;
+    private BusinessModel business;
     
     @Column(name = "empID", nullable = false)
     private Integer employeeID;
@@ -47,9 +47,9 @@ public class UserBusinessEmployee implements Serializable {
     private Date joinTimestamp;
     
     @OneToMany(mappedBy = "userBusinessEmployee")
-    private List<UserBusinessEmployeePreference> userBusinessEmployeePreferences;
+    private List<UserBusinessEmployeePreferenceModel> userBusinessEmployeePreferences;
 
-    public UserBusinessEmployee() {
+    public UserBusinessEmployeeModel() {
     }
 
     public Integer getId() {
@@ -60,19 +60,19 @@ public class UserBusinessEmployee implements Serializable {
         this.id = id;
     }
 
-    public User getUser() {
+    public UserModel getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserModel user) {
         this.user = user;
     }
 
-    public Business getBusiness() {
+    public BusinessModel getBusiness() {
         return business;
     }
 
-    public void setBusiness(Business business) {
+    public void setBusiness(BusinessModel business) {
         this.business = business;
     }
 
@@ -92,8 +92,8 @@ public class UserBusinessEmployee implements Serializable {
         this.joinTimestamp = joinTimestamp;
     }
 
-    public ROList<UserBusinessEmployeePreference> getUserBusinessEmployeePreferences() {
-        return new ROList<UserBusinessEmployeePreference>(userBusinessEmployeePreferences);
+    public ROList<UserBusinessEmployeePreferenceModel> getUserBusinessEmployeePreferences() {
+        return new ROList<UserBusinessEmployeePreferenceModel>(userBusinessEmployeePreferences);
     }
 
     @Override
@@ -103,8 +103,8 @@ public class UserBusinessEmployee implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof UserBusinessEmployee) {
-            UserBusinessEmployee other = (UserBusinessEmployee) obj;
+        if(obj instanceof UserBusinessEmployeeModel) {
+            UserBusinessEmployeeModel other = (UserBusinessEmployeeModel) obj;
             return other.getUser().getId() == user.getId() && other.getBusiness().getId() == business.getId();
         }
         return false;

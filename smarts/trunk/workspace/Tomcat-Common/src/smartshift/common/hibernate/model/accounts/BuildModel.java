@@ -21,7 +21,7 @@ import smartshift.common.util.collections.ROList;
 @Table(name = "Build", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class Build {
+public class BuildModel {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -37,10 +37,10 @@ public class Build {
     private String sqlDirectory;
     
     @OneToMany(mappedBy = "build")
-    private List<Business> businesses;
+    private List<BusinessModel> businesses;
 
 
-    public Build() {
+    public BuildModel() {
     }
 
     public Integer getId() {
@@ -75,7 +75,7 @@ public class Build {
         this.sqlDirectory = sqlDirectory;
     }
     
-    public ROList<Business> getBusinesses() {
-        return new ROList<Business>(businesses);
+    public ROList<BusinessModel> getBusinesses() {
+        return new ROList<BusinessModel>(businesses);
     }
 }

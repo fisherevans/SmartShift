@@ -25,7 +25,7 @@ import smartshift.common.util.collections.ROList;
 @Table(name = "Business", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class Business {
+public class BusinessModel {
     @Id
     @Expose
     @GeneratedValue
@@ -41,21 +41,21 @@ public class Business {
 
     @ManyToOne
     @JoinColumn(name = "buildID", nullable = false)
-    private Build build;
+    private BuildModel build;
 
     @ManyToOne
     @JoinColumn(name = "servID", nullable = false)
-    private Server server;
+    private ServerModel server;
 
     @Expose
     @ManyToOne
     @JoinColumn(name = "imgID")
-    private Image image;
+    private ImageModel image;
 
     @Expose
     @ManyToOne
     @JoinColumn(name = "addressID")
-    private Address address;
+    private AddressModel address;
 
     @Column(name = "inactive", nullable = false)
     private Boolean inactive = false;
@@ -68,12 +68,12 @@ public class Business {
         name="UserBusinessEmployee",
         joinColumns={@JoinColumn(name="busID", referencedColumnName="id")},
         inverseJoinColumns={@JoinColumn(name="userID", referencedColumnName="id")})
-    private List<User> users;
+    private List<UserModel> users;
     
     @OneToMany(mappedBy = "business")
-    private List<BusinessPreference> businessPreferences;
+    private List<BusinessPreferenceModel> businessPreferences;
 
-    public Business() {
+    public BusinessModel() {
     }
 
     public Integer getId() {
@@ -92,35 +92,35 @@ public class Business {
         this.name = name;
     }
 
-    public Address getAddress() {
+    public AddressModel getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(AddressModel address) {
         this.address = address;
     }
 
-    public Build getBuild() {
+    public BuildModel getBuild() {
         return build;
     }
 
-    public void setBuild(Build build) {
+    public void setBuild(BuildModel build) {
         this.build = build;
     }
 
-    public Server getServer() {
+    public ServerModel getServer() {
         return server;
     }
 
-    public void setServer(Server server) {
+    public void setServer(ServerModel server) {
         this.server = server;
     }
 
-    public Image getImage() {
+    public ImageModel getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
+    public void setImage(ImageModel image) {
         this.image = image;
     }
 
@@ -140,7 +140,7 @@ public class Business {
         this.flags = flags;
     }
 
-    public ROList<User> getUsers() {
-        return new ROList<User>(users);
+    public ROList<UserModel> getUsers() {
+        return new ROList<UserModel>(users);
     }
 }

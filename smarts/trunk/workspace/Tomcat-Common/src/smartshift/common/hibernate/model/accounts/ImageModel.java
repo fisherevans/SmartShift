@@ -21,7 +21,7 @@ import smartshift.common.util.collections.ROList;
 @Table(name = "Image", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class Image {
+public class ImageModel {
     @Expose
     @Id
     @GeneratedValue
@@ -37,12 +37,12 @@ public class Image {
     private String alternativeText;
 
     @OneToMany(mappedBy = "image")
-    private List<Business> businesses;
+    private List<BusinessModel> businesses;
 
     @OneToMany(mappedBy = "image")
-    private List<User> users;
+    private List<UserModel> users;
 
-    public Image() {
+    public ImageModel() {
     }
 
     public Integer getId() {
@@ -69,11 +69,11 @@ public class Image {
         this.alternativeText = alternativeText;
     }
     
-    public ROList<Business> getBusinesses() {
-        return new ROList<Business>(businesses);
+    public ROList<BusinessModel> getBusinesses() {
+        return new ROList<BusinessModel>(businesses);
     }
     
-    public ROList<User> getUsers() {
-        return new ROList<User>(users);
+    public ROList<UserModel> getUsers() {
+        return new ROList<UserModel>(users);
     }
 }

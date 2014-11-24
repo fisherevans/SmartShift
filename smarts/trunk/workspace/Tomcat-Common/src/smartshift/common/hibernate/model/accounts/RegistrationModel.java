@@ -21,7 +21,7 @@ import smartshift.common.util.collections.ROList;
 @Table(name = "Registration", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class Registration {
+public class RegistrationModel {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -45,7 +45,7 @@ public class Registration {
     @Column(name = "createTS", nullable = false)
     private Date createTimestamp = new Date();
 
-    public Registration() {
+    public RegistrationModel() {
     }
 
     public Integer getId() {

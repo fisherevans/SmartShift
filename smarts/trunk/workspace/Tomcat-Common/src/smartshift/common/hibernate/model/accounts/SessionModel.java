@@ -20,7 +20,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "Session", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class Session {
+public class SessionModel {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -28,7 +28,7 @@ public class Session {
 
     @ManyToOne
     @JoinColumn(name = "userBusEmpID", nullable = false)
-    private UserBusinessEmployee userBusinessEmployee;
+    private UserBusinessEmployeeModel userBusinessEmployee;
 
     @Column(name = "sessionKey", nullable = false, length = 256)
     private String sessionKey;
@@ -36,7 +36,7 @@ public class Session {
     @Column(name = "lastActivityTS", nullable = false)
     private Date lastActivityTimestamp = new Date();
 
-    public Session() {
+    public SessionModel() {
     }
 
     public Integer getId() {
@@ -47,11 +47,11 @@ public class Session {
         this.id = id;
     }
 
-    public UserBusinessEmployee getUserBusinessEmployee() {
+    public UserBusinessEmployeeModel getUserBusinessEmployee() {
         return userBusinessEmployee;
     }
 
-    public void setUserBusinessEmployee(UserBusinessEmployee userBusinessEmployee) {
+    public void setUserBusinessEmployee(UserBusinessEmployeeModel userBusinessEmployee) {
         this.userBusinessEmployee = userBusinessEmployee;
     }
 

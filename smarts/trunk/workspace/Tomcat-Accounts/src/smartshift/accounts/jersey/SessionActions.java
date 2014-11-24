@@ -14,8 +14,8 @@ import org.apache.log4j.Logger;
 import com.google.gson.annotations.Expose;
 import smartshift.common.hibernate.dao.accounts.SessionDAO;
 import smartshift.common.hibernate.dao.accounts.UserBusinessEmployeeDAO;
-import smartshift.common.hibernate.model.accounts.Session;
-import smartshift.common.hibernate.model.accounts.UserBusinessEmployee;
+import smartshift.common.hibernate.model.accounts.SessionModel;
+import smartshift.common.hibernate.model.accounts.UserBusinessEmployeeModel;
 import smartshift.common.jersey.ActionBase;
 
 /**
@@ -86,8 +86,8 @@ public class SessionActions extends ActionBase {
             logger.debug("SessionActions.createSession() Invalid request");
             return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_CREATE_400);
         }
-        UserBusinessEmployee ube = UserBusinessEmployeeDAO.getUBE(getRequestUser(), sessionRequest.businessID, sessionRequest.employeeID);
-        Session session = SessionDAO.createSession(ube);
+        UserBusinessEmployeeModel ube = UserBusinessEmployeeDAO.getUBE(getRequestUser(), sessionRequest.businessID, sessionRequest.employeeID);
+        SessionModel session = SessionDAO.createSession(ube);
         if(session == null) {
             logger.debug("SessionActions.createSession() Failed to create session");
             return getMessageResponse(Status.INTERNAL_SERVER_ERROR, MSG_SESSION_CREATE_501);
@@ -107,8 +107,8 @@ public class SessionActions extends ActionBase {
             logger.debug("SessionActions.deleteSession() Invalid request");
             return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_DELETE_400);
         }
-        UserBusinessEmployee ube = UserBusinessEmployeeDAO.getUBE(getRequestUser(), sessionRequest.businessID, sessionRequest.employeeID);
-        Session session = SessionDAO.getSession(ube, sessionRequest.sessionKey);
+        UserBusinessEmployeeModel ube = UserBusinessEmployeeDAO.getUBE(getRequestUser(), sessionRequest.businessID, sessionRequest.employeeID);
+        SessionModel session = SessionDAO.getSession(ube, sessionRequest.sessionKey);
         if(session == null) {
             logger.debug("SessionActions.deleteSession() Session not found");
             return getMessageResponse(Status.NO_CONTENT, MSG_SESSION_204);
@@ -133,8 +133,8 @@ public class SessionActions extends ActionBase {
             logger.debug("SessionActions.keepAliveSession() Invalid request");
             return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_KA_400);
         }
-        UserBusinessEmployee ube = UserBusinessEmployeeDAO.getUBE(getRequestUser(), sessionRequest.businessID, sessionRequest.employeeID);
-        Session session = SessionDAO.getSession(ube, sessionRequest.sessionKey);
+        UserBusinessEmployeeModel ube = UserBusinessEmployeeDAO.getUBE(getRequestUser(), sessionRequest.businessID, sessionRequest.employeeID);
+        SessionModel session = SessionDAO.getSession(ube, sessionRequest.sessionKey);
         if(session == null) {
             logger.debug("SessionActions.keepAliveSession() Session not found");
             return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_204);

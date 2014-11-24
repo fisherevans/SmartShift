@@ -1,7 +1,7 @@
 package smartshift.common.cache.bo.accounts;
 
 import com.google.gson.annotations.Expose;
-import smartshift.common.hibernate.model.accounts.UserContactMethod;
+import smartshift.common.hibernate.model.accounts.UserContactMethodModel;
 
 /**
  * The business object for a contact method. Belongs to a user
@@ -30,7 +30,7 @@ public class ContactMethodBO {
      * Creates a contact method business object based on a USerContactMEthod data model
      * @param ucm the model to base thos bo one
      */
-    public ContactMethodBO(UserContactMethod ucm) {
+    public ContactMethodBO(UserContactMethodModel ucm) {
         this(ucm.getContactMethod().getId(), ucm.getContactMethod().getName(), ucm.getContactMethodValue());
     }
     

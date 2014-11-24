@@ -1,8 +1,8 @@
 package smartshift.common.hibernate.dao.accounts;
 
-import smartshift.common.hibernate.model.accounts.Business;
-import smartshift.common.hibernate.model.accounts.User;
-import smartshift.common.hibernate.model.accounts.UserBusinessEmployee;
+import smartshift.common.hibernate.model.accounts.BusinessModel;
+import smartshift.common.hibernate.model.accounts.UserModel;
+import smartshift.common.hibernate.model.accounts.UserBusinessEmployeeModel;
 
 /**
  * The data access object for the User Business Employee Relationship
@@ -18,9 +18,9 @@ public class UserBusinessEmployeeDAO extends BaseAccountsDAO {
      * @param employeeID the employee id
      * @return the ube object. null if not found
      */
-    public static UserBusinessEmployee getUBE(User user, Integer businessID, Integer employeeID) {
-        for(UserBusinessEmployee ube:user.getUserBusinessEmployees()) {
-            Business b = ube.getBusiness();
+    public static UserBusinessEmployeeModel getUBE(UserModel user, Integer businessID, Integer employeeID) {
+        for(UserBusinessEmployeeModel ube:user.getUserBusinessEmployees()) {
+            BusinessModel b = ube.getBusiness();
             Integer e = ube.getEmployeeID();
             if(b != null && businessID.equals(b.getId()) && e != null && employeeID.equals(e))
                 return ube;

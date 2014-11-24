@@ -5,8 +5,8 @@ import java.util.Date;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
 import smartshift.common.hibernate.DBException;
-import smartshift.common.hibernate.model.accounts.Session;
-import smartshift.common.hibernate.model.accounts.UserBusinessEmployee;
+import smartshift.common.hibernate.model.accounts.SessionModel;
+import smartshift.common.hibernate.model.accounts.UserBusinessEmployeeModel;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 
 /**
@@ -33,9 +33,9 @@ public class SessionDAO extends BaseAccountsDAO {
      * @param key the key string
      * @return the session object, null if it doesn't exist
      */
-    public static Session getSession(UserBusinessEmployee ube, String key) {
+    public static SessionModel getSession(UserBusinessEmployeeModel ube, String key) {
         logger.debug("getSession() Enter");
-        Session session = GenericHibernateUtil.uniqueByCriterea(getAccountsSession(), Session.class,
+        SessionModel session = GenericHibernateUtil.uniqueByCriterea(getAccountsSession(), SessionModel.class,
                 Restrictions.eq("userBusinessEmployee", ube), Restrictions.eq("sessionKey", key));
         return session;
     }
@@ -45,7 +45,7 @@ public class SessionDAO extends BaseAccountsDAO {
      * @param session the session the update
      * @return true if the session was updated
      */
-    public static boolean updateSessionTimestamp(Session session) {
+    public static boolean updateSessionTimestamp(SessionModel session) {
         logger.debug("updateSessionTimestamp() Enter, use now");
         return updateSessionTimestamp(session, new Date());
     }
@@ -56,7 +56,7 @@ public class SessionDAO extends BaseAccountsDAO {
      * @param ts the new time stamp
      * @return true if the session updated
      */
-    public static boolean updateSessionTimestamp(Session session, Date ts) {
+    public static boolean updateSessionTimestamp(SessionModel session, Date ts) {
         logger.debug("updateSessionTimestamp() Enter");
         session.setLastActivityTimestamp(ts);
         try {
@@ -73,10 +73,10 @@ public class SessionDAO extends BaseAccountsDAO {
      * @param ube the user business employee relationship for this session
      * @return the new session
      */
-    public static Session createSession(UserBusinessEmployee ube) {
+    public static SessionModel createSession(UserBusinessEmployeeModel ube) {
         logger.debug("createSession() Enter");
         try {
-            Session session = new Session();
+            SessionModel session = new SessionModel();
             session.setSessionKey(generateSessionKey(ube));
             session.setUserBusinessEmployee(ube);
             GenericHibernateUtil.save(getAccountsSession(), session);
@@ -92,7 +92,7 @@ public class SessionDAO extends BaseAccountsDAO {
      * @param session the session to destroy
      * @return true if the session was destroyed
      */
-    public static boolean destroySession(Session session) {
+    public static boolean destroySession(SessionModel session) {
         logger.debug("destroySession() Enter");
         try {
             GenericHibernateUtil.delete(getAccountsSession(), session);
@@ -107,7 +107,7 @@ public class SessionDAO extends BaseAccountsDAO {
      * Generate a new session key unique to the user business employee relationship
      * @param ube the relationship to use
      */
-    private static String generateSessionKey(UserBusinessEmployee ube) {
+    private static String generateSessionKey(UserBusinessEmployeeModel ube) {
         logger.debug("generateSessionKey() Enter");
         String key = "";
         do {
