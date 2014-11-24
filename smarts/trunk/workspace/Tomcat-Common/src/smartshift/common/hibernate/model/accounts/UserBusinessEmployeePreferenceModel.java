@@ -19,38 +19,38 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "UserBusinessEmployeePreference", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class UserBusinessEmployeePreference implements Serializable {
+public class UserBusinessEmployeePreferenceModel implements Serializable {
     private static final long serialVersionUID = -3072730232222834616L;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "userBusEmpID", nullable = false)
-    private UserBusinessEmployee userBusinessEmployee;
+    private UserBusinessEmployeeModel userBusinessEmployee;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "prefID", nullable = false)
-    private Preference preference;
+    private PreferenceModel preference;
 
     @Column(name = "prefVal", length = 256)
     private String value;
 
-    public UserBusinessEmployeePreference() {
+    public UserBusinessEmployeePreferenceModel() {
     }
 
-    public UserBusinessEmployee getUserBusinessEmployee() {
+    public UserBusinessEmployeeModel getUserBusinessEmployee() {
         return userBusinessEmployee;
     }
 
-    public void setUserBusinessEmployee(UserBusinessEmployee userBusiness) {
+    public void setUserBusinessEmployee(UserBusinessEmployeeModel userBusiness) {
         this.userBusinessEmployee = userBusiness;
     }
 
-    public Preference getPreference() {
+    public PreferenceModel getPreference() {
         return preference;
     }
 
-    public void setPreference(Preference preference) {
+    public void setPreference(PreferenceModel preference) {
         this.preference = preference;
     }
 
@@ -69,8 +69,8 @@ public class UserBusinessEmployeePreference implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof UserBusinessEmployeePreference) {
-            UserBusinessEmployeePreference other = (UserBusinessEmployeePreference) obj;
+        if(obj instanceof UserBusinessEmployeePreferenceModel) {
+            UserBusinessEmployeePreferenceModel other = (UserBusinessEmployeePreferenceModel) obj;
             return other.getUserBusinessEmployee().getId() == getUserBusinessEmployee().getId() && other.getPreference().getId() == getPreference().getId();
         }
         return false;

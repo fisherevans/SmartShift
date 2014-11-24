@@ -14,7 +14,7 @@ import com.google.gson.annotations.Expose;
 @Table(name = "Address", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class Address {
+public class AddressModel {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -48,7 +48,7 @@ public class Address {
     @Column(name = "phoneNumber", length = 11)
     private String phoneNumber;
     
-    public Address() {
+    public AddressModel() {
         
     }
 

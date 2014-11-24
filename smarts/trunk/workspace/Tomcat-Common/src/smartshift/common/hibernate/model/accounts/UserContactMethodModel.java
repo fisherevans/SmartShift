@@ -20,38 +20,38 @@ import com.google.gson.annotations.Expose;
 @Table(name = "UserContactMethod", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class UserContactMethod implements Serializable {
+public class UserContactMethodModel implements Serializable {
     private static final long serialVersionUID = -1657900056377969311L;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "userID", nullable = false)
-    private User user;
+    private UserModel user;
 
     @Id
     @ManyToOne
     @JoinColumn(name = "cMethodID", nullable = false)
-    private ContactMethod contactMethod;
+    private ContactMethodModel contactMethod;
 
     @Column(name = "cMethodVal", length = 60)
     private String contactMethodValue;
 
-    public UserContactMethod() {
+    public UserContactMethodModel() {
     }
 
-    public User getUser() {
+    public UserModel getUser() {
         return user;
     }
 
-    public void setUser(User user) {
+    public void setUser(UserModel user) {
         this.user = user;
     }
 
-    public ContactMethod getContactMethod() {
+    public ContactMethodModel getContactMethod() {
         return contactMethod;
     }
 
-    public void setContactMethod(ContactMethod contactMethod) {
+    public void setContactMethod(ContactMethodModel contactMethod) {
         this.contactMethod = contactMethod;
     }
 
@@ -70,8 +70,8 @@ public class UserContactMethod implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof UserContactMethod) {
-            UserContactMethod other = (UserContactMethod) obj;
+        if(obj instanceof UserContactMethodModel) {
+            UserContactMethodModel other = (UserContactMethodModel) obj;
             return other.getUser().getId() == getUser().getId() && other.getContactMethod().getId() == getContactMethod().getId();
         }
         return false;

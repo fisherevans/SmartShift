@@ -20,7 +20,7 @@ import smartshift.common.util.collections.ROList;
 @Table(name = "Server", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class Server {
+public class ServerModel {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -33,12 +33,12 @@ public class Server {
     private String ipAddress;
     
     @OneToMany(mappedBy = "server")
-    private List<Business> businesses;
+    private List<BusinessModel> businesses;
     
     @OneToMany(mappedBy = "server")
-    private List<SystemProperty> systemProperties;
+    private List<SystemPropertyModel> systemProperties;
 
-    public Server() {
+    public ServerModel() {
     }
 
     public Integer getId() {
@@ -65,11 +65,11 @@ public class Server {
         this.ipAddress = ipAddress;
     }
     
-    public ROList<Business> getBusinesses() {
-        return new ROList<Business>(businesses);
+    public ROList<BusinessModel> getBusinesses() {
+        return new ROList<BusinessModel>(businesses);
     }
     
-    public ROList<SystemProperty> getSystemProperties() {
-        return new ROList<SystemProperty>(systemProperties);
+    public ROList<SystemPropertyModel> getSystemProperties() {
+        return new ROList<SystemPropertyModel>(systemProperties);
     }
 }

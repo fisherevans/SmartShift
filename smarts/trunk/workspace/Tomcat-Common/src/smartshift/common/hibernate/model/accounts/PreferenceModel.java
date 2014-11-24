@@ -17,7 +17,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "Preference", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class Preference {
+public class PreferenceModel {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -26,7 +26,7 @@ public class Preference {
     @Column(name = "name", length = 256)
     private String name;
 
-    public Preference() {
+    public PreferenceModel() {
     }
 
     public Integer getId() {

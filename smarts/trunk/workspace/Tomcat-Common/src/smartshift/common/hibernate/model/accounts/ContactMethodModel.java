@@ -17,7 +17,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @Table(name = "ContactMethod", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class ContactMethod {
+public class ContactMethodModel {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -26,7 +26,7 @@ public class ContactMethod {
     @Column(name = "name", length = 60)
     private String name;
 
-    public ContactMethod() {
+    public ContactMethodModel() {
     }
 
     public Integer getId() {

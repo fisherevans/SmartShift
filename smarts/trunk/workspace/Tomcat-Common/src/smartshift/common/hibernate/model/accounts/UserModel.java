@@ -38,7 +38,7 @@ import smartshift.common.util.collections.ROList;
 @Table(name = "User", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class User {
+public class UserModel {
     @Expose
     @Id
     @GeneratedValue
@@ -62,7 +62,7 @@ public class User {
     @Expose
     @ManyToOne
     @JoinColumn(name = "imgID")
-    private Image image;
+    private ImageModel image;
 
     @Column(name = "inactive", nullable = false)
     private Boolean inactive = false;
@@ -71,21 +71,21 @@ public class User {
     private Integer flags = 0;
     
     @OneToMany(mappedBy = "user")
-    private List<UserContactMethod> userContactMethods;
+    private List<UserContactMethodModel> userContactMethods;
     
     @OneToMany(mappedBy = "user")
-    private List<UserBusinessEmployee> userBusinessEmployees;
+    private List<UserBusinessEmployeeModel> userBusinessEmployees;
 
-    public User() {
+    public UserModel() {
     }
 
-    public User(String username, String passHash, String email) {
+    public UserModel(String username, String passHash, String email) {
         this.username = username;
         this.passHash = passHash;
         this.email = email;
     }
     
-    public List<UserContactMethod> getUserContactMethods() {
+    public List<UserContactMethodModel> getUserContactMethods() {
         return userContactMethods;
     }
 
@@ -129,11 +129,11 @@ public class User {
         this.createTimestamp = createTimestamp;
     }
 
-    public Image getImage() {
+    public ImageModel getImage() {
         return image;
     }
 
-    public void setImage(Image image) {
+    public void setImage(ImageModel image) {
         this.image = image;
     }
 
@@ -153,7 +153,7 @@ public class User {
         this.flags = flags;
     }
 
-    public List<UserBusinessEmployee> getUserBusinessEmployees() {
+    public List<UserBusinessEmployeeModel> getUserBusinessEmployees() {
         return userBusinessEmployees;
     }
 }

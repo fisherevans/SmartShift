@@ -16,27 +16,26 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @version Oct 26, 2014
  */
 @Entity
-@Table(name = "ApplicationTip", schema = "Accounts")
+@Table(name = "SystemProperty", schema = "Accounts")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
-public class ApplicationTip {
+public class SystemPropertyModel {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
-
+    
     @ManyToOne
-    @JoinColumn(name = "minBuildID", nullable = false)
-    private Build minBuild;
+    @JoinColumn(name = "servID", nullable = false)
+    private ServerModel server;
 
-    @ManyToOne
-    @JoinColumn(name = "maxBuildID", nullable = false)
-    private Build maxBuild;
+    @Column(name = "name", nullable = false, length = 256)
+    private String name;
 
-    @Column(name = "tip", nullable = false, length = 256)
-    private String tip;
+    @Column(name = "propVal", length = 256)
+    private String value;
 
-    public ApplicationTip() {
+    public SystemPropertyModel() {
     }
 
     public Integer getId() {
@@ -47,27 +46,27 @@ public class ApplicationTip {
         this.id = id;
     }
 
-    public Build getMinBuild() {
-        return minBuild;
+    public ServerModel getServer() {
+        return server;
     }
 
-    public void setMinBuild(Build minBuild) {
-        this.minBuild = minBuild;
+    public void setServer(ServerModel server) {
+        this.server = server;
     }
 
-    public Build getMaxBuild() {
-        return maxBuild;
+    public String getName() {
+        return name;
     }
 
-    public void setMaxBuild(Build maxBuild) {
-        this.maxBuild = maxBuild;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getTip() {
-        return tip;
+    public String getValue() {
+        return value;
     }
 
-    public void setTip(String tip) {
-        this.tip = tip;
+    public void setValue(String value) {
+        this.value = value;
     }
 }
