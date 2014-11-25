@@ -17,7 +17,7 @@ import com.google.gson.annotations.Expose;
  * @version Oct 26, 2014
  */
 @Entity
-@Table(name = "UserContactMethod", schema = "Accounts")
+@Table(name = "UserContactMethod")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
 public class UserContactMethodModel implements Serializable {
