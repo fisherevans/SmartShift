@@ -18,7 +18,7 @@ import smartshift.common.util.collections.ROList;
  * @version Oct 26, 2014
  */
 @Entity
-@Table(name = "Build", schema = "Accounts")
+@Table(name = "Build")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
 public class BuildModel {

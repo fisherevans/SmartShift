@@ -11,7 +11,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import com.google.gson.annotations.Expose;
 
 @Entity
-@Table(name = "Address", schema = "Accounts")
+@Table(name = "Address")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
 public class AddressModel {

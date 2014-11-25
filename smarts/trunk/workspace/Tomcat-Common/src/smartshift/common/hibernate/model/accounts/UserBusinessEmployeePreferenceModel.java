@@ -16,7 +16,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @version Oct 26, 2014
  */
 @Entity
-@Table(name = "UserBusinessEmployeePreference", schema = "Accounts")
+@Table(name = "UserBusinessEmployeePreference")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
 public class UserBusinessEmployeePreferenceModel implements Serializable {

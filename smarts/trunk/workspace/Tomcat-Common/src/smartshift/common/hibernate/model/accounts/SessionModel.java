@@ -17,7 +17,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * @version Oct 26, 2014
  */
 @Entity
-@Table(name = "Session", schema = "Accounts")
+@Table(name = "Session")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
 public class SessionModel {

@@ -21,7 +21,7 @@ import java.util.List;
  * @version Oct 26, 2014
  */
 @Entity
-@Table(name = "UserBusinessEmployee", schema = "Accounts")
+@Table(name = "UserBusinessEmployee")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @Cacheable
 public class UserBusinessEmployeeModel implements Serializable {
