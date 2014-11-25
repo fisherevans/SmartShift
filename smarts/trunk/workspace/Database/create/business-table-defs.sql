@@ -1,3 +1,11 @@
+-- Database
+DROP DATABASE IF EXISTS Business_ID;
+CREATE DATABASE Business_ID;
+GRANT ALL PRIVILEGES ON Business_ID.* TO 'smarts'@'localhost';
+COMMIT;
+
+USE Business_ID;
+
 CREATE TABLE `Group` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`parentID` INT NULL,
@@ -103,9 +111,9 @@ CREATE TABLE `Shift` (
 
 CREATE TABLE `SchedTemplateVersion` (
 	`id` INT NOT NULL AUTO_INCREMENT,
-	`schedTempID` NOT NULL,
+	`schedTempID` INT NOT NULL,
 	`name` VARCHAR(60) NULL,
-	`createTS` DATETIME NOT NULL,
+	`createTS` TIMESTAMP NOT NULL,
 	`version` INT NOT NULL,
 	PRIMARY KEY (`id`)
 );
@@ -123,11 +131,11 @@ CREATE TABLE `RoleSchedule` (
 	PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `RoleSchedShift` ()
+CREATE TABLE `RoleSchedShift` (
 	`roleSchedID` INT NOT NULL,
 	`shiftID` INT NOT NULL,
 	PRIMARY KEY(`roleSchedID`, `shiftID`)
-)
+);
 
 CREATE TABLE `EmpSchedule` (
 	`id` INT NOT NULL AUTO_INCREMENT,
@@ -159,7 +167,7 @@ CREATE TABLE `CompoundContent` (
 	`id` INT NOT NULL,
 	`seqNum` INT NOT NULL,
 	`childID` INT NOT NULL,
-	PRIMARY KEY (`compoundID`, `seqNum`)
+	PRIMARY KEY (`id`, `seqNum`)
 );
 
 CREATE TABLE `StyledContent` (
@@ -215,7 +223,7 @@ ADD CONSTRAINT `group_parent`
 
 ALTER TABLE `Employee`
 ADD CONSTRAINT `employee_grp`
-	FOREIGN KEY (`defGrpID`)
+	FOREIGN KEY (`defaultGrpID`)
 	REFERENCES `Group`(`id`)
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION
@@ -334,23 +342,24 @@ ADD CONSTRAINT `empsched_emp`
 	ON UPDATE NO ACTION
 ;
 
-ALTER TABLE `EmpSchedShift`
-ADD CONSTRAINT `empschedshift_sched`
-	FOREIGN KEY (`empSchedID`)
-	REFERENCES `EmpSchedule` (`id`)
-	ON DELETE NO ACTION
-	ON UPDATE NO ACTION,
-ADD CONSTRAINT `empschedshift_shift`
-	FOREIGN KEY (`shiftID`)
-	REFERENCES `Shift` (`id`)
-	ON DELETE NO ACTION
-	ON UPDATE NO ACTION,
-ADD CONSTRAINT `empschedshift_role`
-	FOREIGN KEY (`grpRoleID`)
-	REFERENCES `GroupRole` (`id`)
-	ON DELETE NO ACTION
-	ON UPDATE NO ACTION
-;
+--   I think this table is old and no longer exists
+--  ALTER TABLE `EmpSchedShift`
+--  ADD CONSTRAINT `empschedshift_sched`
+--  	FOREIGN KEY (`empSchedID`)
+--  	REFERENCES `EmpSchedule` (`id`)
+--  	ON DELETE NO ACTION
+--  	ON UPDATE NO ACTION,
+--  ADD CONSTRAINT `empschedshift_shift`
+--  	FOREIGN KEY (`shiftID`)
+--  	REFERENCES `Shift` (`id`)
+--  	ON DELETE NO ACTION
+--  	ON UPDATE NO ACTION,
+--  ADD CONSTRAINT `empschedshift_role`
+--  	FOREIGN KEY (`grpRoleID`)
+--  	REFERENCES `GroupRole` (`id`)
+--  	ON DELETE NO ACTION
+--  	ON UPDATE NO ACTION
+--  ;
 
 ALTER TABLE `RoleSchedule`
 ADD CONSTRAINT `rolesched_sched`
@@ -393,7 +402,7 @@ ADD CONSTRAINT `compoundcontent_content`
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION,
 ADD CONSTRAINT `compoundcontent_child`
-	FOREIGN KEY (`child`)
+	FOREIGN KEY (`childID`)
 	REFERENCES `Content` (`id`)
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION
@@ -447,6 +456,11 @@ ALTER TABLE `MessageDelivery`
 ADD CONSTRAINT `mdelivery_recipient`
 	FOREIGN KEY (`recipientID`)
 	REFERENCES `Employee` (`id`)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION,
+ADD CONSTRAINT `mdelivery_message`
+	FOREIGN KEY (`messageID`)
+	REFERENCES `Message` (`id`)
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION
 ;

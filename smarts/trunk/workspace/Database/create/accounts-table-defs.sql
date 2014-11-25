@@ -186,7 +186,7 @@ ADD CONSTRAINT `business_server`
 	ON UPDATE NO ACTION,
 ADD CONSTRAINT `business_build`
 	FOREIGN KEY (`buildID`)
-	REFERENCES `Accounts`.`Business`(`id`)
+	REFERENCES `Accounts`.`Build`(`id`)
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION,
 ADD CONSTRAINT `business_address`
@@ -281,3 +281,12 @@ ADD CONSTRAINT `userbusinessemppreference_preference`
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION
 ;	
+
+
+ALTER TABLE `Accounts`.`Registration`
+ADD CONSTRAINT `registration_business`
+	FOREIGN KEY (`businessID`)
+	REFERENCES `Accounts`.`Business`(`id`)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION
+;
