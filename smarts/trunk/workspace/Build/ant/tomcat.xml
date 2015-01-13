@@ -88,8 +88,8 @@
 		</copy>
 		<touch file="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes/app.properties" />
 		<concat destfile="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes/app.properties" append="false" fixlastline="yes">
-			<filelist dir="${common.dir}" files="app.properties" />
-			<filelist dir="${project.dir}" files="app.properties" />
+			<filelist dir="${common.dir}" files="common.properties" />
+			<filelist dir="${project.dir}" files="${project.context}.properties" />
 		</concat>
 	</target>
 
