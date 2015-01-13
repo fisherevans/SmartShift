@@ -1,32 +1,387 @@
 <!DOCTYPE html>
-<html>
-	<head>
-    <title>AJAX Test</title>
-    <link href="style/test.css" rel="stylesheet" />
-    <script src="lib/jquery/jquery-2.1.1.js"></script>
-    <script src="script/logger.js"></script>
-    <script src="script/test.js"></script>
-	</head>
-	<body>
-    <table><tr><td>
-      <div class="label">Username:</div><input type="text" id="username" value="testuser" /><br><br>
-      <div class="label">Password:</div><input type="password" id="password" value="password" /><br><br>
-      <div class="label">Method:</div><select id="method">
-        <option value="GET" selected>GET</option>
-        <option value="POST">POST</option>
-        <option value="DELETE">DELETE</option>
-        <option value="PUT">PUT</option>
-      </select><br><br>
-      <div class="label">Action:</div><span id="actionPre"></span><input width="400px" type="text" id="action" value="http://localhost:8080/accounts/hello" /><br><br>
-    </td><td>
-      <div class="label">Body</div><br>
-      <textarea id="data"></textarea><br><br>
-    </td></tr></table>
-    <button id="sendButton">Send Request</button><br><br>
-    <span id="time">&nbsp;</span><br><br>
-    Response RAW:<br>
-    <pre id="responseRaw" class="box"></pre><br><br><br>
-    Response:<br>
-    <div id="response" class="box"></div><br><br>
-	</body>
+<html lang="en" ng-app="smartsApp">
+    <head>
+        <title>Smart Shift | SampleLayout</title>
+        <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
+        <link href="styleIcomoon.css" rel="stylesheet" />
+        <link href="style.css" rel="stylesheet" />
+        <link href='styleSmall.css' rel='stylesheet' type='text/css' media="(max-width:700px)">
+        <link href='styleBig.css' rel='stylesheet' type='text/css' media="(min-width:701px)">
+        
+    </head>
+    <body ng-controller="MainController as main">
+      <div class="navPane">
+        <img class="navLogo" src="logo.png" />
+        <div class="navElement fadeNav" ng-class="{ current: main.isSet(1) }"data-window-class=".newsfeedWindow" 
+        		ng-click="main.setTab(1)">
+          <div class="navLabel fadeLeft">News Feed</div>
+          <div class="navIcon icon-newspaper"></div>
+        </div>
+        <div class="navElement fadeNav" ng-class="{ current: main.isSet(2) }" data-window-class=".chatWindow" 
+        		ng-click="main.setTab(2)">
+          <div class="navLabel fadeLeft">Messages</div>
+          <div class="navIcon icon-chat"></div>
+        </div>
+        <div class="navElement fadeNav" ng-class="{ current: main.isSet(3) }" data-window-class=".requestsWindow" 
+        		ng-click="main.setTab(3)">
+          <div class="navLabel fadeLeft">Requests</div>
+          <div class="navIcon icon-drawer"></div>
+        </div>
+        <div class="navElement fadeNav" ng-class="{ current: main.isSet(4) }" data-window-class=".scheduleWindow" 
+        		ng-click="main.setTab(4)">
+          <div class="navLabel fadeLeft">Schedule</div>
+          <div class="navIcon icon-calendar"></div>
+        </div>
+        <div class="navElement fadeNav" ng-class="{ current: main.isSet(5) }" data-window-class=".settingsWindow" 
+        		ng-click="main.setTab(5)">
+          <div class="navLabel fadeLeft">Settings</div>
+          <div class="navIcon icon-cog"></div>
+        </div>
+      </div>
+      <div class="appWindowBg"></div>
+      <div class="appWindow newsfeedWindowWindow fadeOpacity" ng-class="{ hidden: !main.isSet(1)}">
+        <div class="contentBlock mainContent dash">
+                <h1>News Feed</h1>
+        
+          <div class="quickSchedule">
+          </div>
+          <div class="leftDash">
+            <div class="newsFeed">
+            </div>
+          </div>
+          <div class="rightDash">
+            <div class="rightTopDash">
+              <div class="quickRequests">
+              </div>
+            </div>
+            <div class="rightBottomDash">
+              <div class="quickMessages">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="appWindow chatWindow fadeOpacity" ng-class="{ hidden: !main.isSet(2)}"
+      		ng-controller="ChatController as chatCtrl">
+        <div class="chatThreadsBox">
+          <div class="chatThreads">
+            <div class="chatThread" ng-repeat="thread in chatCtrl.threads">
+              <img class="chatThreadPicture" src="fisher.png" />
+              <div class="chatThreadText">
+                <div class="chatThreadName">{{thread.name}}</div>
+                <div class="chatThreadPreview"><span class="sender">{{thread.sender}}: </span>{{thread.text}}</div>
+                <div class="chatThreadTime">{{thread.time}}</div>
+              </div>
+			 <div class="chatThreadLine"></div>
+            </div>
+          </div>
+          <div class="newChatThread">
+            <div class="chatNewButton fadeColors dBlueHover"><div class="icon-add"></div><div>New Chat</div></div>
+            <div class="chatSearchWrapper">
+              <input type="text" class="chatSearch noInputLines" />
+            </div>
+            <div class="chatSearchButton fadeColors">Search</div>
+          </div>
+        </div>
+        <div class="chatBox">
+          <div class="chatMessagesWrapper">
+            <div class="chatMessages">
+              <div class="chatMessage">
+                <img src="fisher.png" class="messagePicture" />
+                <div class="messageSender">You</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">7:30pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Jan 3rd</span><span class="time">2:12am</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Jun 5th</span><span class="time">9:59pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage">
+                <img src="fisher.png" class="messagePicture" />
+                <div class="messageSender">You</div>
+                <div class="messageTime"><span class="date">Jul 1st</span><span class="time">12:59pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Aug 1st</span><span class="time">1:30am</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text. This is another one. And it has a btit more text. This is another one. And it has a btit more text. This is another one. And it has a btit more text.</div>
+                </div>
+              </div>
+              <div class="chatMessage">
+                <img src="fisher.png" class="messagePicture" />
+                <div class="messageSender">You</div>
+                <div class="messageTime"><span class="date">Aug 1st</span><span class="time">4:37pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Yesterday</span><span class="time">7:01pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Today</span><span class="time">4:07pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage">
+                <img src="fisher.png" class="messagePicture" />
+                <div class="messageSender">You</div>
+                <div class="messageTime"><span class="date">Today</span><span class="time">5:01am</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text. This is another one. And it has a btit more text. This is another one. And it has a btit more text. This is another one. And it has a btit more text.</div>
+                </div>
+              </div>
+              <div class="chatMessage">
+                <img src="fisher.png" class="messagePicture" />
+                <div class="messageSender">You</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage">
+                <img src="fisher.png" class="messagePicture" />
+                <div class="messageSender">You</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text. This is another one. And it has a btit more text. This is another one. And it has a btit more text. This is another one. And it has a btit more text.</div>
+                </div>
+              </div>
+              <div class="chatMessage">
+                <img src="fisher.png" class="messagePicture" />
+                <div class="messageSender">You</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage">
+                <img src="fisher.png" class="messagePicture" />
+                <div class="messageSender">You</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text. This is another one. And it has a btit more text. This is another one. And it has a btit more text. This is another one. And it has a btit more text.</div>
+                </div>
+              </div>
+              <div class="chatMessage">
+                <img src="fisher.png" class="messagePicture" />
+                <div class="messageSender">You</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage">
+                <img src="fisher.png" class="messagePicture" />
+                <div class="messageSender">You</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text. This is another one. And it has a btit more text. This is another one. And it has a btit more text. This is another one. And it has a btit more text.</div>
+                </div>
+              </div>
+              <div class="chatMessage">
+                <img src="fisher.png" class="messagePicture" />
+                <div class="messageSender">You</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage">
+                <img src="fisher.png" class="messagePicture" />
+                <div class="messageSender">You</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text.</div>
+                  <div class="messageText">Sup.</div>
+                </div>
+              </div>
+              <div class="chatMessage alt">
+                <img src="lisa.png" class="messagePicture" />
+                <div class="messageSender">Lisa</div>
+                <div class="messageTime"><span class="date">Dec 13th, 2013</span><span class="time">1:03pm</span></div>
+                <div class="messageTexts">
+                  <div class="messageText">This is a message.</div>
+                  <div class="messageText">This is another one. And it has a btit more text. This is another one. And it has a btit more text. This is another one. And it has a btit more text. This is another one. And it has a btit more text.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="chatActions">
+            <div class="chatInputWrapper">
+              <textarea class="chatInput noInputLines"></textarea>
+            </div>
+            <div class="chatSend fadeColors dBlueHover">SEND</div>
+            <div class="chatEnterSend"><input type="checkbox" checked/>Send on Enter</div>
+          </div>
+        </div>
+      </div>
+      <script src="jquery-2.1.1.min.js"></script>
+      <script src="lib/angular/angular.js"></script>
+	  <script src="js/app.js"></script>
+      
+    </body>
 </html>
