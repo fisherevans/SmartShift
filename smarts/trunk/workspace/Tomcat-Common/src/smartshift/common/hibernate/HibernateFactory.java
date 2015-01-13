@@ -39,45 +39,54 @@ public class HibernateFactory {
 	 * The map of hibernate factories <schema, session facory>
 	 */
 	private final static Map<String, SessionFactory> factories = new HashMap<>();
+
+    private static Configuration baseConfig;
+    private static String baseURL;
 	
-    /**
-     * set up the hibernate connection
-     */
-	public synchronized static void createFactories() {
-	    if(!AppProperties.exists(DB_URL_PROP) || AppProperties.exists(DB_SCHEMAS_PROP))
-	        logger.fatal("Database properties are not set!");
-        String baseUrl = "jdbc:mysql://" + AppProperties.getProperty(DB_URL_PROP) + "/";
+	/**
+	 * Initialized the DB factories based on the tables found in the app properties
+	 */
+	public synchronized static void initialize() {
+        if(!AppProperties.exists(DB_URL_PROP) || AppProperties.exists(DB_SCHEMAS_PROP))
+            logger.fatal("Database properties are not set!");
+	    baseConfig =  new Configuration().configure();
+	    baseURL = "jdbc:mysql://" + AppProperties.getProperty(DB_URL_PROP) + "/";
         String[] schemas = AppProperties.getProperty(DB_SCHEMAS_PROP).split(DB_SCHEMAS_DELIM);
-		closeFactories();
-		Configuration baseConfig =  new Configuration().configure();
-		StandardServiceRegistryBuilder ssrb;
-		for(String schema:schemas) {
-            baseConfig.getProperties().setProperty("hibernate.connection.url", baseUrl + schema);
-            ssrb = new StandardServiceRegistryBuilder().applySettings(baseConfig.getProperties());
-			SessionFactory factory = baseConfig.buildSessionFactory(ssrb.build());
-			factories.put(schema, factory);
-		}
+        for(String schema:schemas) {
+            createFactory(schema);
+        }
+	}
+	
+	/**
+	 * Creates a DB factory based on a schema
+	 * @param schema the schema to connect to
+	 */
+	public synchronized static void createFactory(String schema) {
+        baseConfig.getProperties().setProperty("hibernate.connection.url", baseURL + schema);
+        StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(baseConfig.getProperties());
+        SessionFactory factory = baseConfig.buildSessionFactory(ssrb.build());
+        factories.put(schema, factory);
 	}
 	
     /**
-     * @param database
-     * @return the hibernate factory for the given database
+     * @param schema
+     * @return the hibernate factory for the given schema
      */
-	public synchronized static SessionFactory getFactory(String database) {
-		return factories.get(database);
+	public synchronized static SessionFactory getFactory(String schema) {
+		return factories.get(schema);
 	}
 	
     /**
-     * @param database
+     * @param schema
      * @return a hibernate db session
      */
-	public synchronized static Session getSession(String database) {
-		SessionFactory factory = getFactory(database);
+	public synchronized static Session getSession(String schema) {
+		SessionFactory factory = getFactory(schema);
 		if(factory == null) {
-			logger.info("Failed to retrieve Hibernate Session for DB: " + database);
+			logger.info("Failed to retrieve Hibernate Session for DB: " + schema);
 			return null;
 		}
-		return factory.openSession();
+		return factory.withOptions().tenantIdentifier(schema).openSession();
 	}
 	
     /**
