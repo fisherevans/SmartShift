@@ -53,6 +53,7 @@
 			<dependency groupId="oro" artifactId="oro" version="2.0.8"/>
 			<dependency groupId="org.codehaus.jackson" artifactId="jackson-mapper-asl" version="1.9.13"/>
 			<dependency groupId="org.codehaus.jackson" artifactId="jackson-jaxrs" version="1.9.13"/>
+			<dependency groupId="org.quartz-scheduler" artifactId="quartz" version="2.2.1"/>
 			<!-- END DEPENDENCY LIST -->
 		</artifact:dependencies>
 	</target>
