@@ -11,7 +11,15 @@
 	</listener>
 	
 	<listener>
+		<listener-class>smartshift.common.jersey.initializers.GsonFactoryListener</listener-class>
+	</listener>
+	
+	<listener>
 		<listener-class>smartshift.common.jersey.initializers.HibernateListener</listener-class>
+	</listener>
+	
+	<listener>
+		<listener-class>smartshift.business.jersey.initializers.BusinessRMIListener</listener-class>
 	</listener>
 
 	<servlet>

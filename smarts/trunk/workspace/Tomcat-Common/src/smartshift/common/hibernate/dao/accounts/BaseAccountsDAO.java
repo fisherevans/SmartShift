@@ -2,7 +2,7 @@ package smartshift.common.hibernate.dao.accounts;
 
 import org.hibernate.Session;
 import smartshift.common.hibernate.HibernateFactory;
-import smartshift.common.util.properties.StaticProperties;
+import smartshift.common.util.properties.AppConstants;
 
 /**
  * Base data acess object for accounts
@@ -15,6 +15,6 @@ public class BaseAccountsDAO {
      * @return the session
      */
     public static Session getAccountsSession() {
-        return HibernateFactory.getSession(StaticProperties.DB_ACCOUNTS_SCHEMA);
+        return HibernateFactory.getSession(AppConstants.DB_ACCOUNTS_SCHEMA);
     }
 }
