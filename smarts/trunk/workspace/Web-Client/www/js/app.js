@@ -1,10 +1,58 @@
 
 'use strict'
 
-var app = angular.module('smartsApp', []);
+var app = angular.module('smartsApp', ['ngRoute']);
 
-app.controller('MainController', function(){
-	this.currentTab = 1;
+app.config(function($routeProvider, $locationProvider){
+	$routeProvider
+		.when('/newsfeed', {
+			templateUrl: '/templates/newsfeed.html',
+			controller: 'NewsfeedController',
+			controllerAs: 'newsfeedCtrl'
+		})
+		.when('/messages', {
+			templateUrl: '/templates/messages.html',
+			controller: 'MessagesController',
+			controllerAs: 'messagesCtrl'
+		})
+		.when('/requests', {
+			templateUrl: '/templates/requests.html',
+			controller: 'RequestsController',
+			controllerAs: 'requestsCtrl'
+		})
+		.when('/schedule', {
+			templateUrl: '/templates/schedule.html',
+			controller: 'ScheduleController',
+			controllerAs: 'scheduleCtrl'
+		})
+		.when('/settings', {
+			templateUrl: 'templates/settings.html',
+			controller: 'SettingsController',
+			controllerAs: 'settingsCtrl'
+		})
+		.otherwise({
+			redirectTo: '/newsfeed'
+		})
+
+});
+
+app.controller('TabController', function($location){
+	this.currentTab = (function(){switch($location.path()){
+		case '/messages':
+			return 2;
+			break;
+		case '/requests':
+			return 3;
+			break;
+		case '/schedule':
+			return 4;
+			break;
+		case '/settings':
+			return 5;
+			break;
+		default :
+			return 1;
+	}})();
 	this.navAvailable = true;
 	this.setTab = function(tab){
 		if(this.navAvailable){
@@ -14,17 +62,31 @@ app.controller('MainController', function(){
 		}
 	};
 	this.isSet = function(tab){
-		console.log("Is set: " + tab);
 		return this.currentTab === tab;
 	};
-	
+
 });
 
-app.controller('ChatController', function(){
+app.controller('NewsfeedController', function($location){
+	this.route = $location.path();
+});
+
+app.controller('MessagesController', function(){
 	this.threads = threads;
 
 });
 
+app.controller('RequestsController', function($location){
+	this.route = $location.path();
+});
+
+app.controller('ScheduleController', function($location){
+	this.route = $location.path();
+});
+
+app.controller('SettingsController', function($location){
+	this.route = $location.path();
+});
 var threads = [{
 		name: "Charlie Babcock",
 		text: "Fuck Eclipse",
@@ -36,7 +98,7 @@ var threads = [{
 		sender: "You",
 		time: "A few seconds ago"
 	},{
-		name: "Fisher Evens",
+		name: "Fisher Evans",
 		text: "Here is some text. Here is some more text",
 		sender: "Fisher",
 		time: "Just now"

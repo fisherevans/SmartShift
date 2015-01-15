@@ -1,7 +1,7 @@
 .navPane {
   position: absolute;
-  top:0px;
-  left:0px;
+  top:0;
+  left:0;
   width: 80px;
   text-align: center;
   font-size: 0;
@@ -25,12 +25,10 @@
   height: 60px;
   background-color: #0080ff;
   margin: 5px 10px;
-  margin-left: 0px;
-  padding: 0px;
+  margin-left: 0;
+  padding: 0;
   padding-left: 10px;
-  border-radius: 0px;
-  border-top-right-radius: 5px;
-  border-bottom-right-radius: 5px;
+  border-radius: 0 5px 5px 0;
   cursor: pointer;
   overflow: hidden;
 }
@@ -43,7 +41,7 @@
   position: absolute;
   width: 100px;
   height: 60px;
-  top:0px;
+  top:0;
   left:-110px;
   color:#fff;
   line-height: 60px;
