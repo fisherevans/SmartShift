@@ -44,7 +44,7 @@ public class ROFilteredCollection<T> extends ROCollection<T> {
      */
     @Override
     public Iterator<T> iterator() {
-        return new FilteredIterator<T>(_filter, _collected.iterator());
+        return new ROIterator<T>(new FilteredIterator<T>(_filter, _collected.iterator()));
     }
 
     /**
