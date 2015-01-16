@@ -22,16 +22,25 @@ public class BusinessService extends BaseRemote implements BusinessServiceInterf
         super();
     }
 
+    /**
+     * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#getCost()
+     */
     @Override
     public double getCost() throws RemoteException {
         return 100.01;
     }
 
+    /**
+     * @see smartshift.common.rmi.interfaces.BaseRemoteInterface#connected(java.lang.String, int)
+     */
     @Override
     public void connected(String clientHostname, int clientPort) throws RemoteException {
         System.out.println("Business:" + AppConstants.CONTEXT_PATH + " says - " + clientHostname + ":" + clientPort + " has connected.");
     }
 
+    /**
+     * @see smartshift.common.rmi.interfaces.BaseRemoteInterface#disconnecting(java.lang.String, int)
+     */
     @Override
     public void disconnecting(String clientHostname, int clientPort) throws RemoteException {
         System.out.println("Business:" + AppConstants.CONTEXT_PATH + " says - " + clientHostname + ":" + clientPort + " is disconnecting.");
