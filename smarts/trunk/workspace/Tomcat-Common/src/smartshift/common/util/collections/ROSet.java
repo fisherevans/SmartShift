@@ -67,7 +67,7 @@ public class ROSet<T> extends ROCollection<T> {
      */
 	@Override
 	public Iterator<T> iterator() {
-		return _set.iterator();
+		return new ROIterator<T>(_set.iterator());
 	}
 
     /**

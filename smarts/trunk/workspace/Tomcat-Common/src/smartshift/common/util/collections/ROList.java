@@ -66,7 +66,7 @@ public class ROList<T> extends ROCollection<T> {
      */
 	@Override
 	public Iterator<T> iterator() {
-		return _list.iterator();
+	    return new ROIterator<T>(_list.iterator());
 	}
 
     /**

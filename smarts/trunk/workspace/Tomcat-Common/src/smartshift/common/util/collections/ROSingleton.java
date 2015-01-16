@@ -52,7 +52,7 @@ public class ROSingleton<T> extends ROCollection<T> {
      */
 	@Override
 	public Iterator<T> iterator() {
-		return new SingletonIterator<T>(_singleton);
+		return new ROIterator<T>(new SingletonIterator<T>(_singleton));
 	}
 
     /**
