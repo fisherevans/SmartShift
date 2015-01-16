@@ -1,11 +1,11 @@
 DROP USER 'smarts'@'localhost';
 FLUSH PRIVILEGES;
-CREATE USER 'smarts'@'localhost' IDENTIFIED BY 'smarts';
+CREATE USER 'smarts'@'%' IDENTIFIED BY 'smarts';
 
 -- Database
 DROP DATABASE IF EXISTS Accounts;
 CREATE DATABASE Accounts;
-GRANT ALL PRIVILEGES ON Accounts.* TO 'smarts'@'localhost';
+GRANT ALL PRIVILEGES ON Accounts.* TO 'smarts'@'%';
 COMMIT;
 
 DROP TABLE IF EXISTS `Accounts`.`User`;
@@ -19,8 +19,8 @@ CREATE TABLE `Accounts`.`User` (
 	`inactive` TINYINT(1) NOT NULL DEFAULT 0,
 	`flags` INT(10) NOT NULL DEFAULT 0,
 	PRIMARY KEY (`id`),
-	UNIQUE (`email`),
-	UNIQUE (`username`)
+	-- UNIQUE (`email`),
+	-- UNIQUE (`username`)
 );
 
 DROP TABLE IF EXISTS `Accounts`.`Registration`;
@@ -33,7 +33,7 @@ CREATE TABLE `Accounts`.`Registration` (
 	`createTS` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
 	UNIQUE (`businessID`, `employeeID`),
-	UNIQUE (`email`)
+	-- UNIQUE (`email`)
 );
 
 DROP TABLE IF EXISTS `Accounts`.`ContactMethod`;
