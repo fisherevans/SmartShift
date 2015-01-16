@@ -21,6 +21,9 @@ public class AccountsConnectionJob implements Job {
      */
     public AccountsConnectionJob() { }
     
+    /**
+     * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
+     */
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
 
