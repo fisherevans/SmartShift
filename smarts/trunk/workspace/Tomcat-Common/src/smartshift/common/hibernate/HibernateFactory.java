@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import smartshift.common.util.properties.AppConstants;
 import smartshift.common.util.properties.AppProperties;
 
 /**
@@ -17,44 +18,19 @@ import smartshift.common.util.properties.AppProperties;
  *          and annotation
  */
 public class HibernateFactory {
-    @SuppressWarnings("javadoc")
-    public static Logger logger = Logger.getLogger(HibernateFactory.class);
-    
-    /**
-     * The property key for the db server
-     */
-    public static final String DB_URL_PROP = "database.server";
-
-    /**
-     * The property key for the schema list
-     */
-    public static final String DB_SCHEMAS_PROP = "database.schemas";
-    
-    /**
-     * The delimiter separating schema's
-     */
-    public static final String DB_SCHEMAS_DELIM = ",";
+    private static Logger logger = Logger.getLogger(HibernateFactory.class);
 	
 	/**
 	 * The map of hibernate factories <schema, session facory>
 	 */
 	private final static Map<String, SessionFactory> factories = new HashMap<>();
-
-    private static Configuration baseConfig;
-    private static String baseURL;
 	
 	/**
 	 * Initialized the DB factories based on the tables found in the app properties
 	 */
 	public synchronized static void initialize() {
-        if(!AppProperties.exists(DB_URL_PROP) || AppProperties.exists(DB_SCHEMAS_PROP))
-            logger.fatal("Database properties are not set!");
-	    baseConfig =  new Configuration().configure();
-	    baseURL = "jdbc:mysql://" + AppProperties.getProperty(DB_URL_PROP) + "/";
-        String[] schemas = AppProperties.getProperty(DB_SCHEMAS_PROP).split(DB_SCHEMAS_DELIM);
-        for(String schema:schemas) {
+        for(String schema:AppConstants.DB_SCHEMA_INITIAL_SET)
             createFactory(schema);
-        }
 	}
 	
 	/**
@@ -62,9 +38,9 @@ public class HibernateFactory {
 	 * @param schema the schema to connect to
 	 */
 	public synchronized static void createFactory(String schema) {
-        baseConfig.getProperties().setProperty("hibernate.connection.url", baseURL + schema);
-        StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(baseConfig.getProperties());
-        SessionFactory factory = baseConfig.buildSessionFactory(ssrb.build());
+	    Configuration cfg = MultiTenantConnectionProviderImpl.getConnectionConfiguration(schema);
+        StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties());
+        SessionFactory factory = cfg.buildSessionFactory(ssrb.build());
         factories.put(schema, factory);
 	}
 	

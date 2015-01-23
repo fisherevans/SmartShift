@@ -23,8 +23,6 @@ import smartshift.common.util.collections.ROList;
  */
 @Entity
 @Table(name = "Business")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class BusinessModel {
     @Id
     @Expose

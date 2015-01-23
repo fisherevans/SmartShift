@@ -9,9 +9,24 @@ import java.rmi.RemoteException;
  */
 public interface BusinessServiceInterface extends BaseRemoteInterface {
     /**
-     * A test method
-     * @return some number
+     * Adds a user sessions to the business service
+     * @param username the username for the session
+     * @param sessionId  the session id
+     * @param timoutPeriod the time in ms the sessions should expire in
      * @throws RemoteException
      */
-    public double getCost() throws RemoteException;
+    public void addUserSession(String username, String sessionId, long timoutPeriod) throws RemoteException;
+    
+    /**
+     * Removes the given sessions id
+     * @param sessionId the sessions id to remove
+     * @return true if a sessions was removed
+     */
+    public boolean removeUserSession(String sessionId);
+    
+    /**
+     * Invalidate all current user sessions
+     * @return the number of sessions invalidated
+     */
+    public int invalidateAllUserSessions();
 }

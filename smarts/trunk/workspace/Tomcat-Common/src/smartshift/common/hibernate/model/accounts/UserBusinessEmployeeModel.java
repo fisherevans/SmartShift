@@ -22,8 +22,6 @@ import java.util.List;
  */
 @Entity
 @Table(name = "UserBusinessEmployee")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class UserBusinessEmployeeModel implements Serializable {
     private static final long serialVersionUID = 9019038361957129848L;
 

@@ -31,8 +31,8 @@ public class BusinessRMIListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent event) {   
         try {
-            RMIServer.start(AppConstants.RMI_LOCAL_PORT);
-            RMIServer.create(BusinessService.class, AppConstants.RMI_LOCAL_SERVICE_NAME);
+            RMIServer.start(AppConstants.RMI_BUSINESS_PORT);
+            RMIServer.create(BusinessService.class, AppConstants.RMI_BUSINESS_SERVICE_NAME);
 
             JobDetail job = JobBuilder.newJob(AccountsConnectionJob.class)
                 .withIdentity("accountsConnectionJob", "accountsConnectionGroup").build();

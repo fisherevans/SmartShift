@@ -18,8 +18,6 @@ import com.google.gson.annotations.Expose;
  */
 @Entity
 @Table(name = "UserContactMethod")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class UserContactMethodModel implements Serializable {
     private static final long serialVersionUID = -1657900056377969311L;
 

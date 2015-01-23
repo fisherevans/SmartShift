@@ -36,8 +36,6 @@ import smartshift.common.util.collections.ROList;
  */
 @Entity
 @Table(name = "User")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class UserModel {
     @Expose
     @Id

@@ -171,4 +171,37 @@ public class AppProperties {
             return defaultValue;
         }
     }
+
+    /**
+     * Gets the Long value of a property
+     * 
+     * @see java.util.Properties#getProperty(String)
+     * @param key The key of the property to get
+     * @return the Long value of the property. Null if the property is not set.
+     */
+    public static Long getLongProperty(String key) {
+        return getLongProperty(key, null);
+    }
+
+    /**
+     * Gets the Long value of a property
+     * 
+     * @see java.util.Properties#getProperty(String, String)
+     * @param key the key of the property to get
+     * @param defaultValue If the property is not set, return this value
+     * @return The Long vale set property, or the default if not found
+     */
+    public static Long getLongProperty(String key, Long defaultValue) {
+        if(properties == null)
+            return defaultValue;
+        String prop = properties.getProperty(key, defaultValue.toString());
+        if(prop == null)
+            return defaultValue;
+        try {
+            return new Long(prop);
+        } catch(Exception e) {
+            logger.warn("Failed to fetch " + key + " as Long");
+            return defaultValue;
+        }
+    }
 }

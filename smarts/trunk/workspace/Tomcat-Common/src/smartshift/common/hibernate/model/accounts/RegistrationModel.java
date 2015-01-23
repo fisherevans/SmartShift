@@ -19,8 +19,6 @@ import smartshift.common.util.collections.ROList;
  */
 @Entity
 @Table(name = "Registration")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class RegistrationModel {
     @Id
     @GeneratedValue

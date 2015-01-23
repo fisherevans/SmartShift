@@ -18,8 +18,6 @@ import smartshift.common.util.collections.ROList;
  */
 @Entity
 @Table(name = "Server")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class ServerModel {
     @Id
     @GeneratedValue

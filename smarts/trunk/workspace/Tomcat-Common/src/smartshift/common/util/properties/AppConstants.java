@@ -25,24 +25,46 @@ public class AppConstants {
     public static String CONTEXT_PATH;
 
     // PROPERTY-BASED STUFF
+
+    /** The auth type to use: user/session */
+    public static String AUTH_TYPE;
+    
+    /** The hostname (including port) of db server */
+    public static String DB_SERVER_HOSTNAME;
+    
+    /** The default schema when asking for a session */
+    public static String DB_SCHEMA_DEFAULT;
+    
+    /** The initial set of schemas to connect to */
+    public static String[] DB_SCHEMA_INITIAL_SET;
     
     /** The schema for the Accounts Database */
-    public static String DB_ACCOUNTS_SCHEMA;
+    public static String DB_SCHEMA_ACCOUNTS;
+    
+    /** The schema for the local Business Database */
+    public static String DB_SCHEMA_BUSINESS_BASE;
+    
+    
+    
+    /** The rmi port for the business applications */
+    public static Integer RMI_BUSINESS_PORT;
 
-    /** The local rmi port */
-    public static Integer RMI_LOCAL_PORT;
+    /** The accounts rmi port */
+    public static Integer RMI_ACCOUNTS_PORT;
 
-    /** The local rmi service name */
-    public static String RMI_LOCAL_SERVICE_NAME;
+    /** The business rmi service name */
+    public static String RMI_BUSINESS_SERVICE_NAME;
+
+    /** The accounts rmi service name */
+    public static String RMI_ACCOUNTS_SERVICE_NAME;
 
     /** The rmi hostname for the accounts applications */
     public static String RMI_ACCOUNTS_HOSTNAME;
     
-    /** The rmi port for the accounts applications */
-    public static Integer RMI_ACCOUNTS_PORT;
     
-    /** The rmi service name for the accounts applications */
-    public static String RMI_ACCOUNTS_SERVICE_NAME;
+    
+    /** Time in ms that sessions expire in */
+    public static long SESSION_TIMEOUT;
 
     /**
      * Initialized static variables
@@ -59,14 +81,22 @@ public class AppConstants {
         CONTEXT_PATH = servletContext.getContextPath().replaceAll("^/", "");
 
         // from properties
-        DB_ACCOUNTS_SCHEMA = AppProperties.getProperty("database.schema.accounts");
+        AUTH_TYPE = AppProperties.getProperty("app.authType");
         
-        RMI_LOCAL_PORT = AppProperties.getIntegerProperty("rmi.port", -1);
-        RMI_LOCAL_SERVICE_NAME = AppProperties.getProperty("rmi.serviceName");
+        DB_SERVER_HOSTNAME = AppProperties.getProperty("database.server.hostname");
+        DB_SCHEMA_DEFAULT = AppProperties.getProperty("database.schema.default");
+        DB_SCHEMA_ACCOUNTS = AppProperties.getProperty("database.schema.accounts");
+        DB_SCHEMA_BUSINESS_BASE = AppProperties.getProperty("database.schema.business.base");
+        DB_SCHEMA_INITIAL_SET = AppProperties.getProperty("database.schema.initialSet").split(",");
+
+        RMI_BUSINESS_PORT = AppProperties.getIntegerProperty("rmi.business.port", -1);
+        RMI_ACCOUNTS_PORT = AppProperties.getIntegerProperty("rmi.accounts.port", -1);
+        RMI_BUSINESS_SERVICE_NAME = AppProperties.getProperty("rmi.business.serviceName");
+        RMI_ACCOUNTS_SERVICE_NAME = AppProperties.getProperty("rmi.accounts.serviceName");
         
         RMI_ACCOUNTS_HOSTNAME = AppProperties.getProperty("rmi.accounts.hostname");
-        RMI_ACCOUNTS_PORT = AppProperties.getIntegerProperty("rmi.accounts.port", -1);
-        RMI_ACCOUNTS_SERVICE_NAME = AppProperties.getProperty("rmi.accounts.serviceName");
+        
+        SESSION_TIMEOUT = AppProperties.getLongProperty("sesson.timeout", 15L*60L*1000L); // default to 15 minutes
         
         printValues();
     }
