@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -13,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
@@ -37,38 +35,25 @@ import smartshift.common.util.collections.ROList;
  * @version Oct 26, 2014
  */
 @Entity
-@Table(name = "Employee")
-public class EmployeeModel {
+@Table(name = "Role")
+public class RoleModel {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "fName", length = 50)
-    private String firstName;
-
-    @Column(name = "lName", length = 50)
-    private String lastName;
-
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "defaultGrpID")
-    private GroupModel defaultGroup;
+    @Column(name = "name", length = 45)
+    private String name;
     
-    @ManyToMany(cascade=CascadeType.ALL)
-    @JoinTable(
-        name="GroupRoleEmployee",
-        joinColumns={@JoinColumn(name="empID", referencedColumnName="id")},
-        inverseJoinColumns={@JoinColumn(name="grpRoleID", referencedColumnName="id")})
+    @OneToMany(mappedBy = "role")
     private List<GroupRoleModel> groupRoles;
 
-    public EmployeeModel() {
+    public RoleModel() {
     }
 
-    public EmployeeModel(String firstName, String lastName, GroupModel defaultGroup) {
+    public RoleModel(String name) {
         super();
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.defaultGroup = defaultGroup;
+        this.name = name;
     }
 
     /**
@@ -86,45 +71,17 @@ public class EmployeeModel {
     }
 
     /**
-     * @return the firstName
+     * @return the name
      */
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param firstName the firstName to set
+     * @param name the name to set
      */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * @return the lastName
-     */
-    public String getLastName() {
-        return lastName;
-    }
-
-    /**
-     * @param lastName the lastName to set
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    /**
-     * @return the defaultGroup
-     */
-    public GroupModel getDefaultGroup() {
-        return defaultGroup;
-    }
-
-    /**
-     * @param defaultGroup the defaultGroup to set
-     */
-    public void setDefaultGroup(GroupModel defaultGroup) {
-        this.defaultGroup = defaultGroup;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -133,4 +90,5 @@ public class EmployeeModel {
     public List<GroupRoleModel> getGroupRoles() {
         return groupRoles;
     }
+    
 }
