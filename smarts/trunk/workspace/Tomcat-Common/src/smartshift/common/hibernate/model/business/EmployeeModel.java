@@ -50,6 +50,9 @@ public class EmployeeModel {
     @Expose
     @Column(name = "lName", length = 50)
     private String lastName;
+    
+    @Column(name = "defaultGrpID")
+    private Integer defaultGroup;
 
     public EmployeeModel() {
     }
@@ -99,5 +102,13 @@ public class EmployeeModel {
      */
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Integer getDefaultGroup() {
+        return defaultGroup;
+    }
+
+    public void setDefaultGroup(Integer defaultGroup) {
+        this.defaultGroup = defaultGroup;
     }
 }
