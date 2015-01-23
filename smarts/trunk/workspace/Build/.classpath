@@ -241,16 +241,6 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/jbcrypt-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="lib/jar/ehcache-core.jar" sourcepath="lib/src/ehcache-core-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/ehcache-core-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="lib/jar/hibernate-ehcache.jar" sourcepath="lib/src/hibernate-ehcache-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/src/hibernate-ehcache-sources.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="lib/jar/slf4j-api.jar" sourcepath="lib/src/slf4j-api-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/slf4j-api-javadoc.jar!/"/>
@@ -259,12 +249,6 @@
 	<classpathentry exported="true" kind="lib" path="lib/jar/c3p0.jar" sourcepath="lib/src/c3p0-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/c3p0-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry exported="true" kind="lib" path="lib/jar/hibernate-c3p0.jar" sourcepath="lib/src/hibernate-c3p0-sources.jar"/>
-	<classpathentry exported="true" kind="lib" path="lib/jar/mchange-commons-java.jar" sourcepath="lib/src/mchange-commons-java-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/mchange-commons-java-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry exported="true" kind="lib" path="lib/jar/slf4j-log4j12.jar" sourcepath="lib/src/slf4j-log4j12-sources.jar">
@@ -299,6 +283,12 @@
 	<classpathentry exported="true" kind="lib" path="lib/jar/quartz.jar" sourcepath="lib/src/quartz-sources.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/quartz-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="lib/jar/hibernate-c3p0.jar" sourcepath="lib/src/hibernate-c3p0-sources.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jar/mchange-commons-java.jar" sourcepath="lib/src/mchange-commons-java-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/mchange-commons-java-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="out/bin"/>

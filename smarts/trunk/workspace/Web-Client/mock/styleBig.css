@@ -115,6 +115,10 @@
   opacity: 0.0;
 }
 
+.appWindow.noDisplay {
+  display: none;
+}
+
 .appWindow .contentBlock {
   position:absolute;
   top: 0px;
