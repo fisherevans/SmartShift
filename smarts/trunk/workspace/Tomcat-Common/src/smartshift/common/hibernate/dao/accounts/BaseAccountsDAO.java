@@ -15,6 +15,6 @@ public class BaseAccountsDAO {
      * @return the session
      */
     public static Session getAccountsSession() {
-        return HibernateFactory.getSession(AppConstants.DB_ACCOUNTS_SCHEMA);
+        return HibernateFactory.getSession(AppConstants.DB_SCHEMA_ACCOUNTS);
     }
 }

@@ -15,8 +15,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "Preference")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class PreferenceModel {
     @Id
     @GeneratedValue

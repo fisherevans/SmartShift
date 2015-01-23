@@ -14,6 +14,6 @@ public class BaseBusinessDAO {
      * @return the session
      */
     public static Session getBusinessSession() {
-        return HibernateFactory.getSession(AppConstants.DB_LOCAL_BUSINESS_SCHEMA);
+        return HibernateFactory.getSession(AppConstants.DB_SCHEMA_BUSINESS_BASE);
     }
 }

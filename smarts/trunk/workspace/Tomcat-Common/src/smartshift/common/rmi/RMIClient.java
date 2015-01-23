@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import smartshift.common.rmi.interfaces.BaseRemoteInterface;
-import smartshift.common.util.properties.AppConstants;
 
 /**
  * @author D. Fisher Evans <contact@fisherevans.com>
@@ -81,7 +80,7 @@ public class RMIClient {
             throw new IllegalStateException("RMI Client already conntected to " + serverHostname + ":" + port + "/" + serviceName);
         service = (BaseRemoteInterface) registryServices.registry.lookup(serviceName);
         registryServices.services.put(serviceName, service);
-        service.connected(AppConstants.HOSTNAME, AppConstants.RMI_LOCAL_PORT);
+        //service.connected(AppConstants.HOSTNAME, AppConstants.RMI_LOCAL_PORT);
         logger.info("RMI Service connectected to: " + serverHostname + ":" + port + "/" + serviceName);
         return service;
     }
@@ -95,8 +94,8 @@ public class RMIClient {
      */
     public static void disconnectService(String serverHostname, int port, String serviceName) throws RemoteException {
         RegistryServices registryServices = getRegistryServices(serverHostname, port);
-        BaseRemoteInterface service = registryServices.services.get(serviceName);
-        service.disconnecting(AppConstants.HOSTNAME, AppConstants.RMI_LOCAL_PORT);
+        //BaseRemoteInterface service = registryServices.services.get(serviceName);
+        //service.disconnecting(AppConstants.HOSTNAME, AppConstants.RMI_LOCAL_PORT);
         registryServices.services.remove(serviceName);
         logger.info("RMI Service disconnectected from: " + serverHostname + ":" + port + "/" + serviceName);
     }

@@ -12,8 +12,6 @@ import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name = "Address")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class AddressModel {
     @Id
     @GeneratedValue

@@ -18,8 +18,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "Session")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class SessionModel {
     @Id
     @GeneratedValue

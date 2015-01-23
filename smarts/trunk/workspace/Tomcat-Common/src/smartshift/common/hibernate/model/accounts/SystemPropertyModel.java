@@ -17,8 +17,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "SystemProperty")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class SystemPropertyModel {
     @Id
     @GeneratedValue

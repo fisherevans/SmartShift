@@ -22,7 +22,7 @@ public class AccountsService extends BaseRemote implements AccountsServiceInterf
     public AccountsService() throws RemoteException {
         super();
     }
-
+    
     /**
      * @see smartshift.common.rmi.interfaces.AccountsServiceInterface#hello()
      */

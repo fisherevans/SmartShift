@@ -17,8 +17,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "UserBusinessEmployeePreference")
-@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@Cacheable
 public class UserBusinessEmployeePreferenceModel implements Serializable {
     private static final long serialVersionUID = -3072730232222834616L;
 
