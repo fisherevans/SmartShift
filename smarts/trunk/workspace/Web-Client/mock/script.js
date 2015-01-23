@@ -14,7 +14,9 @@ $(document).ready(function() {
       $(".navElement").removeClass("current");
 
       $(document).delay(250).queue(function() {
+        $(".appWindow").addClass("noDisplay");
         navEle.removeClass("noScroll");
+        navWin.removeClass("noDisplay");
         navWin.removeClass("hidden");
         navEle.addClass("current");
         $(this).dequeue();

@@ -1,10 +1,10 @@
 -- Database
-DROP DATABASE IF EXISTS Business_ID;
-CREATE DATABASE Business_ID;
-GRANT ALL PRIVILEGES ON Business_ID.* TO 'smarts'@'localhost';
+DROP DATABASE IF EXISTS Business_1;
+CREATE DATABASE Business_1;
+GRANT ALL PRIVILEGES ON Business_1.* TO 'smarts'@'localhost';
 COMMIT;
 
-USE Business_ID;
+USE Business_1;
 
 CREATE TABLE `Group` (
 	`id` INT NOT NULL AUTO_INCREMENT,
