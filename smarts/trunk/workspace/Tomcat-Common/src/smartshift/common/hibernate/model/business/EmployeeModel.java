@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Cacheable;
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -12,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
@@ -37,29 +39,36 @@ import smartshift.common.util.collections.ROList;
 @Entity
 @Table(name = "Employee")
 public class EmployeeModel {
-    @Expose
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Expose
     @Column(name = "fName", length = 50)
     private String firstName;
 
-    @Expose
     @Column(name = "lName", length = 50)
     private String lastName;
+
+    @ManyToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "defaultGrpID")
+    private GroupModel defaultGroup;
     
-    @Column(name = "defaultGrpID")
-    private Integer defaultGroup;
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(
+        name="GroupRoleEmployee",
+        joinColumns={@JoinColumn(name="empID", referencedColumnName="id")},
+        inverseJoinColumns={@JoinColumn(name="grpRoleID", referencedColumnName="id")})
+    private List<GroupRoleModel> groupRoles;
 
     public EmployeeModel() {
     }
 
-    public EmployeeModel(String firstName, String lastName) {
+    public EmployeeModel(String firstName, String lastName, GroupModel defaultGroup) {
+        super();
         this.firstName = firstName;
         this.lastName = lastName;
+        this.defaultGroup = defaultGroup;
     }
 
     /**
@@ -104,11 +113,24 @@ public class EmployeeModel {
         this.lastName = lastName;
     }
 
-    public Integer getDefaultGroup() {
+    /**
+     * @return the defaultGroup
+     */
+    public GroupModel getDefaultGroup() {
         return defaultGroup;
     }
 
-    public void setDefaultGroup(Integer defaultGroup) {
+    /**
+     * @param defaultGroup the defaultGroup to set
+     */
+    public void setDefaultGroup(GroupModel defaultGroup) {
         this.defaultGroup = defaultGroup;
+    }
+
+    /**
+     * @return the groupRoles
+     */
+    public List<GroupRoleModel> getGroupRoles() {
+        return groupRoles;
     }
 }

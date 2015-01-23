@@ -123,7 +123,7 @@ public class GenericHibernateUtil {
     public static void save(Session session, Object object) throws DBException {
         try {
             session.getTransaction().begin();
-            session.save(object);
+            session.saveOrUpdate(object);
         } catch(PropertyValueException e) {
             logger.error("Failed to add object " + object.getClass().toString(), e);
             throw new DBException(DBError.BadData, "Invalid property value: " + e.getPropertyName());

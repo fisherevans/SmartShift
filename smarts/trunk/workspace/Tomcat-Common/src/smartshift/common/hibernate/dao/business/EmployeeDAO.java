@@ -4,6 +4,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.hibernate.model.business.EmployeeModel;
+import smartshift.common.hibernate.model.business.GroupModel;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 
 /**
@@ -47,11 +48,12 @@ public class EmployeeDAO extends BaseBusinessDAO {
      * @return the created EmployeeModel
      * @throws DBException if there was an error creating the EmployeeModel
      */
-    public static EmployeeModel addEmployee(String firstName, String lastName) throws DBException {
+    public static EmployeeModel addEmployee(String firstName, String lastName, GroupModel defaultGroup) throws DBException {
         logger.debug("EmployeeDAO.addEmployeeModel() Enter");
         EmployeeModel employeeModel = new EmployeeModel();
         employeeModel.setFirstName(firstName);
         employeeModel.setLastName(lastName);
+        employeeModel.setDefaultGroup(defaultGroup);
         GenericHibernateUtil.save(getBusinessSession(), employeeModel);
         logger.debug("EmployeeDAO.addEmployeeModel() Success");
         return employeeModel;
