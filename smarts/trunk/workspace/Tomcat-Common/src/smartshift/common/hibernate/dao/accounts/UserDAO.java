@@ -4,7 +4,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
 import org.mindrot.jbcrypt.BCrypt;
-import com.google.gson.annotations.Expose;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.hibernate.model.accounts.UserModel;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
@@ -69,43 +68,20 @@ public class UserDAO extends BaseAccountsDAO {
     
     /**
      * Add a UserModel
-     * @param request the add UserModel requesy
+     * @param username 
+     * @param email 
+     * @param password 
      * @return the created UserModel
      * @throws DBException if there was an error creating the UserModel
      */
-    public static UserModel addUser(AddRequest request) throws DBException {
+    public static UserModel addUser(String username, String email, String password) throws DBException {
         logger.debug("UserModelDAO.addUserModel() Enter");
         UserModel UserModel = new UserModel();
-        UserModel.setUsername(request.username);
-        UserModel.setEmail(request.email);
-        UserModel.setPassHash(BCrypt.hashpw(request.password, BCrypt.gensalt()));
+        UserModel.setUsername(username);
+        UserModel.setEmail(email);
+        UserModel.setPassHash(BCrypt.hashpw(password, BCrypt.gensalt()));
         GenericHibernateUtil.save(getAccountsSession(), UserModel);
         logger.debug("UserModelDAO.addUserModel() Success");
         return UserModel;
-    }
-
-    /**
-     * The object used to create a UserModel
-     * @author D. Fisher Evans <contact@fisherevans.com>
-     *
-     */
-    public static class AddRequest {
-        /**
-         * The new unique UserModelname
-         */
-        @Expose
-        String username;
-        
-        /**
-         * The new unique email
-         */
-        @Expose
-        String email;
-        
-        /**
-         * The new password in plain text
-         */
-        @Expose
-        String password;
     }
 }
