@@ -8,7 +8,6 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import smartshift.common.util.properties.AppConstants;
-import smartshift.common.util.properties.AppProperties;
 
 /**
  * @author fevans

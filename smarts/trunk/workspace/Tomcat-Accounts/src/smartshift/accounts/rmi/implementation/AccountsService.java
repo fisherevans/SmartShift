@@ -32,18 +32,18 @@ public class AccountsService extends BaseRemote implements AccountsServiceInterf
     }
 
     /**
-     * @see smartshift.common.rmi.interfaces.BaseRemoteInterface#connected(java.lang.String, int)
+     * @see smartshift.common.rmi.interfaces.AccountsServiceInterface#businessConnected(java.lang.String, int)
      */
     @Override
-    public void connected(String clientHostname, int clientPort) throws RemoteException {
+    public void businessConnected(String clientHostname, int clientPort) throws RemoteException {
         logger.info("Accounts:" + AppConstants.CONTEXT_PATH + " says - " + clientHostname + ":" + clientPort + " has connected.");
     }
 
     /**
-     * @see smartshift.common.rmi.interfaces.BaseRemoteInterface#disconnecting(java.lang.String, int)
+     * @see smartshift.common.rmi.interfaces.AccountsServiceInterface#businessDisconnecting(java.lang.String, int)
      */
     @Override
-    public void disconnecting(String clientHostname, int clientPort) throws RemoteException {
+    public void businessDisconnecting(String clientHostname, int clientPort) throws RemoteException {
         logger.info("Accounts:" + AppConstants.CONTEXT_PATH + " says - " + clientHostname + ":" + clientPort + " is disconnecting.");
     }
 }

@@ -21,7 +21,7 @@ public interface AccountsServiceInterface extends BaseRemoteInterface {
      * @param clientPort the client rmi port to connect to
      * @throws RemoteException If any exception is thrown
      */
-    public void connected(String clientHostname, int clientPort) throws RemoteException;
+    public void businessConnected(String clientHostname, int clientPort) throws RemoteException;
 
     /**
      * Called by the client informing the server is disconnecting
@@ -29,5 +29,5 @@ public interface AccountsServiceInterface extends BaseRemoteInterface {
      * @param clientPort the client rmi port connected
      * @throws RemoteException If any exception is thrown
      */
-    public void disconnecting(String clientHostname, int clientPort) throws RemoteException;
+    public void businessDisconnecting(String clientHostname, int clientPort) throws RemoteException;
 }
