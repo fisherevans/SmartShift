@@ -40,7 +40,7 @@ public class BusinessService extends BaseRemote implements BusinessServiceInterf
     }
 
     /**
-     * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#invalidateSession(java.lang.String)
+     * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#removeUserSession(java.lang.String)
      */
     @Override
     public boolean removeUserSession(String sessionId) {
@@ -48,7 +48,7 @@ public class BusinessService extends BaseRemote implements BusinessServiceInterf
     }
 
     /**
-     * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#invalidateAllSessions()
+     * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#invalidateAllUserSessions()
      */
     @Override
     public int invalidateAllUserSessions() {

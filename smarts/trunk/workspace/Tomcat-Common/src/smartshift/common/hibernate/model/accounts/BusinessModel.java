@@ -33,6 +33,9 @@ public class BusinessModel {
     @Expose
     @Column(name = "name", nullable = false, length = 256)
     private String name;
+
+    @Column(name = "description", nullable = true, length = 512)
+    private String description;
     
     @Column(name = "groupID")
     private Integer groupID;
@@ -88,6 +91,20 @@ public class BusinessModel {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * @return the description
+     */
+    public String getDescription() {
+        return description;
+    }
+
+    /**
+     * @param description the description to set
+     */
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public AddressModel getAddress() {

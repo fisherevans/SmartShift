@@ -47,6 +47,7 @@ DROP TABLE IF EXISTS `Accounts`.`Business`;
 CREATE TABLE `Accounts`.`Business` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(256) NOT NULL,
+	`description` VARCHAR(512) NOT NULL,
 	`groupID` INT NULL,
 	`buildID` INT NOT NULL,
 	`servID` INT NOT NULL,

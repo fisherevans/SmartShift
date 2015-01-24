@@ -3,8 +3,6 @@ package smartshift.common.hibernate.dao.business;
 import java.util.List;
 import org.apache.log4j.Logger;
 import smartshift.common.hibernate.DBException;
-import smartshift.common.hibernate.model.business.EmployeeModel;
-import smartshift.common.hibernate.model.business.GroupModel;
 import smartshift.common.hibernate.model.business.RoleModel;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 
@@ -35,17 +33,16 @@ public class RoleDAO extends BaseBusinessDAO {
      * Get all EmployeeModels
      * @return the list of EmployeeModels
      */
-    public static List<RoleModel> getRoleModels() {
-        logger.debug("RoleDAO.getRoleModels() Enter");
+    public static List<RoleModel> getRole() {
+        logger.debug("RoleDAO.getRole() Enter");
         List<RoleModel> roleModels = GenericHibernateUtil.list(getBusinessSession(), RoleModel.class);
-        logger.debug("RoleDAO.getRoleModels() Got RoleModel count: " + roleModels.size());
+        logger.debug("RoleDAO.getRole() Got RoleModel count: " + roleModels.size());
         return roleModels;
     }
     
     /**
      * Add a EmployeeModel
-     * @param firstName 
-     * @param lastName 
+     * @param name 
      * @return the created EmployeeModel
      * @throws DBException if there was an error creating the EmployeeModel
      */

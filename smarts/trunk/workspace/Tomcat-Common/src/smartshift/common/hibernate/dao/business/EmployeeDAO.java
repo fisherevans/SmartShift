@@ -24,9 +24,9 @@ public class EmployeeDAO extends BaseBusinessDAO {
      * @return the EmployeeModel - null if not found
      */
     public static EmployeeModel getEmployeeById(Integer id) {
-        logger.debug("EmployeeDAO.getEmployeeModelById() Enter - " + id);
+        logger.debug("EmployeeDAO.getEmployeeById() Enter - " + id);
         EmployeeModel employeeModel = GenericHibernateUtil.unique(getBusinessSession(), EmployeeModel.class, id);
-        logger.debug("EmployeeDAO.getEmployeeModelById() Got " + (employeeModel == null ? "null" : employeeModel.getFirstName() + " " + employeeModel.getLastName()));
+        logger.debug("EmployeeDAO.getEmployeeById() Got " + (employeeModel == null ? "null" : employeeModel.getFirstName() + " " + employeeModel.getLastName()));
         return employeeModel;
     }
     
@@ -34,10 +34,10 @@ public class EmployeeDAO extends BaseBusinessDAO {
      * Get all EmployeeModels
      * @return the list of EmployeeModels
      */
-    public static List<EmployeeModel> getEmployees() {
-        logger.debug("EmployeeDAO.getEmployeeModels() Enter");
+    public static List<EmployeeModel> getEmployee() {
+        logger.debug("EmployeeDAO.getEmployee() Enter");
         List<EmployeeModel> employeeModels = GenericHibernateUtil.list(getBusinessSession(), EmployeeModel.class);
-        logger.debug("EmployeeDAO.getEmployeeModels() Got EmployeeModel count: " + employeeModels.size());
+        logger.debug("EmployeeDAO.getEmployee() Got EmployeeModel count: " + employeeModels.size());
         return employeeModels;
     }
     
@@ -45,17 +45,18 @@ public class EmployeeDAO extends BaseBusinessDAO {
      * Add a EmployeeModel
      * @param firstName 
      * @param lastName 
+     * @param defaultGroup 
      * @return the created EmployeeModel
      * @throws DBException if there was an error creating the EmployeeModel
      */
     public static EmployeeModel addEmployee(String firstName, String lastName, GroupModel defaultGroup) throws DBException {
-        logger.debug("EmployeeDAO.addEmployeeModel() Enter");
+        logger.debug("EmployeeDAO.addEmployee() Enter");
         EmployeeModel employeeModel = new EmployeeModel();
         employeeModel.setFirstName(firstName);
         employeeModel.setLastName(lastName);
         employeeModel.setDefaultGroup(defaultGroup);
         GenericHibernateUtil.save(getBusinessSession(), employeeModel);
-        logger.debug("EmployeeDAO.addEmployeeModel() Success");
+        logger.debug("EmployeeDAO.addEmployee() Success");
         return employeeModel;
     }
 }
