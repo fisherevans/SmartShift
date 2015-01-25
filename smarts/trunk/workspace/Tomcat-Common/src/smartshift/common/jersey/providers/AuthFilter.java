@@ -12,6 +12,8 @@ import org.apache.log4j.Logger;
 import smartshift.common.hibernate.model.accounts.UserModel;
 import smartshift.common.security.Authentication;
 import smartshift.common.security.BasicAuth;
+import smartshift.common.security.session.UserSession;
+import smartshift.common.security.session.UserSessionManager;
 import smartshift.common.util.json.APIResultFactory;
 import smartshift.common.util.properties.AppConstants;
 
@@ -53,10 +55,10 @@ public class AuthFilter implements ContainerRequestFilter {
             throw new WebApplicationException(getInvalidCredentialsResponse());
         logger.debug("AuthFilter.filter() valid header value");
         String username = authData[0];
-        String password = authData[1];
+        String authString = authData[1];
         switch(getAuthType()) {
             case USER_AUTH: {
-                UserModel user = Authentication.checkAuth(username, password);
+                UserModel user = Authentication.checkAuth(username, authString);
                 if(user == null)
                     throw new WebApplicationException(getInvalidCredentialsResponse());
                 logger.debug("AuthFilter.filter() User found");
@@ -64,7 +66,11 @@ public class AuthFilter implements ContainerRequestFilter {
                 break;
             }
             case SESSION_AUTH: {
-                // TODO
+                UserSession session = UserSessionManager.getSession(authString, true);
+                if(session == null)
+                    throw new WebApplicationException(getInvalidCredentialsResponse());
+                logger.debug("AuthFilter.filter() Session found");
+                containerRequest.setProperty("userSession", session);
                 break;
             }
         }
@@ -82,10 +88,13 @@ public class AuthFilter implements ContainerRequestFilter {
     
     private int getAuthType() {
         if(_authType == -1) {
-            if(AppConstants.AUTH_TYPE.equalsIgnoreCase("user"))
+            if(AppConstants.AUTH_TYPE.equalsIgnoreCase("user")) {
+                logger.info("AuthFilter.getAuthType() Using ---USER--- Authentication");
                 _authType = USER_AUTH;
-            else if(AppConstants.AUTH_TYPE.equalsIgnoreCase("session"))
+            } else if(AppConstants.AUTH_TYPE.equalsIgnoreCase("session")) {
+                logger.info("AuthFilter.getAuthType() Using ---SESSION--- Authentication");
                 _authType = SESSION_AUTH;
+            }
         }
         return _authType;
     }

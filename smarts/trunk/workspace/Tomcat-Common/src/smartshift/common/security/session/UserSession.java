@@ -12,6 +12,9 @@ public class UserSession {
     /** The identifying session id */
     public final String sessionID;
     
+    /** The identifying buisness id */
+    public final Integer businesID;
+    
     /** The timeout in milliseconds */
     public final long timeOutPeriod;
     
@@ -22,22 +25,25 @@ public class UserSession {
      * Creates the session with a last activty of now
      * @param username the username
      * @param sessionID the session identifier
+     * @param businesID the business id
      * @param timeOutPeriod the timeout period in ms
      */
-    public UserSession(String username, String sessionID, long timeOutPeriod) {
-        this(username, sessionID, timeOutPeriod, System.currentTimeMillis());
+    public UserSession(String username, String sessionID, Integer businesID, long timeOutPeriod) {
+        this(username, sessionID, businesID, timeOutPeriod, System.currentTimeMillis());
     }
     
     /**
      * Initializes a session with the given initial time
      * @param username the username
      * @param sessionID the session identifier
+     * @param businesID the business id
      * @param timeOutPeriod the timeout period in ms
      * @param lastActivity the initial last activity
      */
-    public UserSession(String username, String sessionID, long timeOutPeriod, long lastActivity) {
+    public UserSession(String username, String sessionID, Integer businesID, long timeOutPeriod, long lastActivity) {
         this.username = username;
         this.sessionID = sessionID;
+        this.businesID = businesID;
         this.timeOutPeriod = timeOutPeriod;
         _lastActivity = lastActivity;
     }

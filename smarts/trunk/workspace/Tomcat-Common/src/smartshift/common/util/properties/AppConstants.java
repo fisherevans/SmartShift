@@ -74,7 +74,9 @@ public class AppConstants {
     public static void initialize(ServletContext servletContext) {
         // Not from properties
         try {
-            HOSTNAME = InetAddress.getLocalHost().getHostName();
+            HOSTNAME = AppProperties.getProperty("app.hostnameOverride");
+            if(HOSTNAME == null || HOSTNAME.trim().length() == 0)
+                HOSTNAME = InetAddress.getLocalHost().getHostName();
         } catch(UnknownHostException e) {
             logger.error("Failed to get hostname", e);
         }

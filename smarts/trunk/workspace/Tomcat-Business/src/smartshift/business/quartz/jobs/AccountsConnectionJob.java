@@ -1,11 +1,13 @@
 package smartshift.business.quartz.jobs;
 
+import java.rmi.RemoteException;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import smartshift.common.rmi.RMIClient;
 import smartshift.common.rmi.RMIConnectionUtil;
+import smartshift.common.rmi.interfaces.AccountsServiceInterface;
 import smartshift.common.util.properties.AppConstants;
 
 /**
@@ -26,7 +28,6 @@ public class AccountsConnectionJob implements Job {
      */
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-
         try {
             String host = AppConstants.RMI_ACCOUNTS_HOSTNAME;
             int port = AppConstants.RMI_ACCOUNTS_PORT;
@@ -39,6 +40,13 @@ public class AccountsConnectionJob implements Job {
             } else {
                 connectionInGoodStanding = false;
                 RMIClient.stopClient(host, port);
+            }
+            try {
+                AccountsServiceInterface as = (AccountsServiceInterface) RMIClient.getService(host, port, serviceName);
+                as.businessConnected(AppConstants.HOSTNAME, AppConstants.RMI_BUSINESS_PORT);
+            } catch(RemoteException e) {
+                logger.error("Failed to notify accounts application. Assuming no businesses were registered!!!");
+                connectionInGoodStanding = false;
             }
         } catch(Exception e) {
             logger.error("An unexpected error occured", e);

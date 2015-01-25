@@ -3,6 +3,7 @@ package smartshift.business.rmi.implementation;
 import java.rmi.RemoteException;
 import org.apache.log4j.Logger;
 import org.dom4j.IllegalAddException;
+import smartshift.common.hibernate.BusinessConnectionManager;
 import smartshift.common.rmi.BaseRemote;
 import smartshift.common.rmi.interfaces.BusinessServiceInterface;
 import smartshift.common.security.session.UserSession;
@@ -25,12 +26,12 @@ public class BusinessService extends BaseRemote implements BusinessServiceInterf
     }
 
     /**
-     * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#addUserSession(java.lang.String, java.lang.String, long)
+     * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#addUserSession(java.lang.String, java.lang.String, java.lang.Integer, long)
      */
     @Override
-    public void addUserSession(String username, String sessionId, long timoutPeriod) throws RemoteException {
+    public void addUserSession(String username, String sessionId, Integer businessID, long timoutPeriod) throws RemoteException {
         logger.info("Adding session: " + sessionId);
-        UserSession session = new UserSession(username, sessionId, timoutPeriod);
+        UserSession session = new UserSession(username, sessionId, businessID, timoutPeriod);
         try {
             UserSessionManager.addSession(session);
         } catch(IllegalAddException e) {
@@ -43,15 +44,23 @@ public class BusinessService extends BaseRemote implements BusinessServiceInterf
      * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#removeUserSession(java.lang.String)
      */
     @Override
-    public boolean removeUserSession(String sessionId) {
+    public boolean removeUserSession(String sessionId) throws RemoteException {
         return UserSessionManager.removeSession(sessionId) != null;
     }
 
     /**
-     * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#invalidateAllUserSessions()
+     * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#invalidateAllUserSessions(java.lang.Integer)
      */
     @Override
-    public int invalidateAllUserSessions() {
-        return UserSessionManager.invalidateAllSessions();
+    public int invalidateAllUserSessions(Integer businessID) throws RemoteException {
+        return UserSessionManager.invalidateAllSessions(businessID);
+    }
+
+    /**
+     * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#connectBusinessSchema(java.lang.Integer, java.lang.String)
+     */
+    @Override
+    public void connectBusinessSchema(Integer businessID, String businessName) throws RemoteException {
+        BusinessConnectionManager.connectBusinessSchema(businessID, businessName);
     }
 }
