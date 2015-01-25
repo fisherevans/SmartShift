@@ -31,10 +31,17 @@ public class UserSessionManager {
     /**
      * gets a session from the system
      * @param sessionID the session id to fetch
+     * @param requireActive if true,
      * @return the user session obect - null if none exist with the id given
      */
-    public static synchronized UserSession getSession(String sessionID) {
-        return sessions.get(sessionID);
+    public static synchronized UserSession getSession(String sessionID, boolean requireActive) {
+        UserSession session = sessions.get(sessionID);
+        if(requireActive &&  !session.stillActive()) {
+            logger.info("Session is inactive: " + sessionID);
+            removeSession(sessionID);
+            return null;
+        }
+        return session;
     }
 
     /**
@@ -63,7 +70,7 @@ public class UserSessionManager {
      * @return true if the session is valid, false if not
      */
     public static synchronized boolean validationSessionInfo(String username, String sessionId, boolean updateSession) {
-        UserSession session = getSession(sessionId);
+        UserSession session = getSession(sessionId, false);
         if(session == null || !session.username.equals(username))
             return false;
         if(!session.stillActive()) {
@@ -96,16 +103,19 @@ public class UserSessionManager {
     
     /**
      * Removes ALL sessions from the system 
+     * @param businessID the business id of the sessions to close. pass null to invalidate all
      * @return the number of sessions removed
      */
-    public static synchronized int invalidateAllSessions() {
+    public static synchronized int invalidateAllSessions(Integer businessID) {
         int sessionsRemoved = 0;
         String sessionList = "";
         for(Iterator<Map.Entry<String, UserSession>> it = sessions.entrySet().iterator(); it.hasNext(); ) {
           Map.Entry<String, UserSession> entry = it.next();
-          sessionList += entry.getValue() != null ? entry.getValue().sessionID + ", " : "null, ";
-          sessionsRemoved++;
-          it.remove();
+          if(businessID == null || entry.getValue().businesID == businessID) {
+              sessionList += entry.getValue() != null ? entry.getValue().sessionID + ", " : "null, ";
+              sessionsRemoved++;
+              it.remove();
+          }
         }
         logger.info("Removed " + sessionsRemoved + " sessions with invalidateAllSessions(): " + sessionList);
         return sessionsRemoved;
