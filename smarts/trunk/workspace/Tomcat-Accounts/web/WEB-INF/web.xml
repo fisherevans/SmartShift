@@ -5,7 +5,7 @@
 	id="WebApp_ID" version="3.0">
 	
 	<display-name>accounts</display-name>
-
+	
 	<listener>
 		<listener-class>smartshift.common.jersey.initializers.AppPropertiesListener</listener-class>
 	</listener>
