@@ -19,9 +19,10 @@ public interface AccountsServiceInterface extends BaseRemoteInterface {
      * Called by the client informing the server i has connected
      * @param clientHostname The hostname of the client connected to the server
      * @param clientPort the client rmi port to connect to
+     * @param developmentBusinesses Any business to register this server under
      * @throws RemoteException If any exception is thrown
      */
-    public void businessConnected(String clientHostname, int clientPort) throws RemoteException;
+    public void businessConnected(String clientHostname, int clientPort, Integer ... developmentBusinesses) throws RemoteException;
 
     /**
      * Called by the client informing the server is disconnecting

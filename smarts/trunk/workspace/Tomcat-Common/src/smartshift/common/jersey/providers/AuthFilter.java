@@ -39,29 +39,30 @@ public class AuthFilter implements ContainerRequestFilter {
      */
     @Override
     public void filter(ContainerRequestContext containerRequest) throws IOException, WebApplicationException {
-        logger.debug("AuthFilter.filter() Enter");
+        logger.debug("filter() Enter");
         // http://stackoverflow.com/questions/18499465/cors-and-http-basic-auth
         // http://stackoverflow.com/questions/19234892/xmlhttprequest-based-cors-call-with-basic-auth-fails-in-firefox-and-chrome
         // Ignore Options Requests - preflight browsers
         if(containerRequest.getMethod().equalsIgnoreCase(HttpMethod.OPTIONS))
             return;
-        logger.debug("AuthFilter.filter() Not a OPTIONS request");
+        logger.debug("filter() Not a OPTIONS request");
         String auth = containerRequest.getHeaders().getFirst("Authorization");
         if(auth == null)
             throw new WebApplicationException(getInvalidCredentialsResponse());
-        logger.debug("AuthFilter.filter() Auth header found");
+        logger.debug("filter() Auth header found");
         String[] authData = BasicAuth.decode(auth);
         if(authData == null || authData.length != 2)
             throw new WebApplicationException(getInvalidCredentialsResponse());
-        logger.debug("AuthFilter.filter() valid header value");
+        logger.debug("filter() valid header value");
         String username = authData[0];
         String authString = authData[1];
+        logger.info(String.format("Processing: %s %s (%s)", containerRequest.getMethod(), containerRequest.getUriInfo().getPath(), username));
         switch(getAuthType()) {
             case USER_AUTH: {
                 UserModel user = Authentication.checkAuth(username, authString);
                 if(user == null)
                     throw new WebApplicationException(getInvalidCredentialsResponse());
-                logger.debug("AuthFilter.filter() User found");
+                logger.debug("filter() User found");
                 containerRequest.setProperty("user", user);
                 break;
             }
@@ -69,7 +70,7 @@ public class AuthFilter implements ContainerRequestFilter {
                 UserSession session = UserSessionManager.getSession(authString, true);
                 if(session == null)
                     throw new WebApplicationException(getInvalidCredentialsResponse());
-                logger.debug("AuthFilter.filter() Session found");
+                logger.debug("filter() Session found");
                 containerRequest.setProperty("userSession", session);
                 break;
             }

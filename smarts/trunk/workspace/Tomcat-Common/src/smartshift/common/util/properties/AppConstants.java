@@ -24,6 +24,9 @@ public class AppConstants {
     /** The context path of this tomcat app */
     public static String CONTEXT_PATH;
 
+    /** Whether this is a dev buil or not */
+    public static Boolean DEV_BUILD;
+
     // PROPERTY-BASED STUFF
 
     /** The auth type to use: user/session */
@@ -65,6 +68,8 @@ public class AppConstants {
     
     /** Time in ms that sessions expire in */
     public static long SESSION_TIMEOUT;
+    
+    public static Integer[] DEV_BUSINESS_MANUAL_BUSINESSES;
 
     /**
      * Initialized static variables
@@ -83,7 +88,8 @@ public class AppConstants {
         CONTEXT_PATH = servletContext.getContextPath().replaceAll("^/", "");
 
         // from properties
-        AUTH_TYPE = AppProperties.getProperty("app.authType");
+        DEV_BUILD = AppProperties.getBooleanProperty("app.developmentApp", false);
+        AUTH_TYPE = AppProperties.getProperty("app.authType", "user");
         
         DB_SERVER_HOSTNAME = AppProperties.getProperty("database.server.hostname");
         DB_SCHEMA_DEFAULT = AppProperties.getProperty("database.schema.default");
@@ -100,14 +106,36 @@ public class AppConstants {
         
         SESSION_TIMEOUT = AppProperties.getLongProperty("sesson.timeout", 15L*60L*1000L); // default to 15 minutes
         
+        try {
+            DEV_BUSINESS_MANUAL_BUSINESSES = new Integer[0];
+            String tempStr = AppProperties.getProperty("dev.business.manualBusinesses", "");
+            if(tempStr.length() > 0) {
+                String[] tempStrArr = tempStr.split(",");
+                Integer[] tempIntArr = new Integer[tempStrArr.length];
+                for(int id = 0;id < tempIntArr.length;id++)
+                    tempIntArr[id] = new Integer(tempStrArr[id]);
+                DEV_BUSINESS_MANUAL_BUSINESSES = tempIntArr;
+            }
+        } catch(Exception e) {
+            logger.error("Failed to parse dev.business.manualBusinesses");
+        }
+        
         printValues();
     }
     
     private static void printValues() {
         try {
         for(Field field:AppConstants.class.getFields())
-            if(Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(field.getModifiers()))
-                logger.info(field.getName() + ":" + field.get(null));
+            if(Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(field.getModifiers())) {
+                String value;
+                if(field.getType().isArray()) {
+                    value = "";
+                    for(Object ele:(Object[])field.get(null))
+                        value += ele.toString() + " ";
+                } else
+                    value = field.get(null).toString();
+                logger.info(field.getName() + ":" + value);
+            }
         } catch(Exception e) {
             logger.warn("Failed to print constants", e);
         }

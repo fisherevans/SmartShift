@@ -5,9 +5,11 @@ import org.apache.log4j.Logger;
 import org.dom4j.IllegalAddException;
 import smartshift.common.hibernate.BusinessConnectionManager;
 import smartshift.common.rmi.BaseRemote;
+import smartshift.common.rmi.RMIClient;
 import smartshift.common.rmi.interfaces.BusinessServiceInterface;
 import smartshift.common.security.session.UserSession;
 import smartshift.common.security.session.UserSessionManager;
+import smartshift.common.util.properties.AppConstants;
 
 /**
  * @author D. Fisher Evans <contact@fisherevans.com>
@@ -62,5 +64,14 @@ public class BusinessService extends BaseRemote implements BusinessServiceInterf
     @Override
     public void connectBusinessSchema(Integer businessID, String businessName) throws RemoteException {
         BusinessConnectionManager.connectBusinessSchema(businessID, businessName);
+    }
+
+    /**
+     * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#disconnecting()
+     */
+    @Override
+    public void disconnecting() throws RemoteException {
+        logger.warn("Accounts application is disconnecting!");
+        RMIClient.stopClient(AppConstants.RMI_ACCOUNTS_HOSTNAME, AppConstants.RMI_ACCOUNTS_PORT);
     }
 }

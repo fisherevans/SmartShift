@@ -41,4 +41,9 @@ public interface BusinessServiceInterface extends BaseRemoteInterface {
      * @throws RemoteException
      */
     public void connectBusinessSchema(Integer businessID, String businessName) throws RemoteException;
+
+    /**
+     * Called by the accouts application to tell the business app the server is disconnecting
+     */
+    public void disconnecting() throws RemoteException;
 }
