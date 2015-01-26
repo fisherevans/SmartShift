@@ -100,7 +100,8 @@ public class AppConstants {
         DB_SCHEMA_DEFAULT = AppProperties.getProperty("database.schema.default");
         DB_SCHEMA_ACCOUNTS = AppProperties.getProperty("database.schema.accounts");
         DB_SCHEMA_BUSINESS_BASE = AppProperties.getProperty("database.schema.business.base");
-        DB_SCHEMA_INITIAL_SET = AppProperties.getProperty("database.schema.initialSet").split(",");
+        if(AppProperties.getProperty("database.schema.initialSet") != null)
+            DB_SCHEMA_INITIAL_SET = AppProperties.getProperty("database.schema.initialSet").split(",");
 
         RMI_BUSINESS_PORT = AppProperties.getIntegerProperty("rmi.business.port", -1);
         RMI_ACCOUNTS_PORT = AppProperties.getIntegerProperty("rmi.accounts.port", -1);

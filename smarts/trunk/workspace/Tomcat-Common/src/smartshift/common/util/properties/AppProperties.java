@@ -27,15 +27,25 @@ public class AppProperties {
      */
     public static void loadProperties(ServletContext servletContext) {
         synchronized(properties) {
-            try {
-                Properties newProperties = new Properties();
-                InputStream fileInput = AppProperties.class.getClassLoader().getResourceAsStream(PROPERTIES_FILE);
-                newProperties.load(fileInput);
-                properties = newProperties;
-                AppConstants.initialize(servletContext);
-            } catch(Exception e) {
-                logger.error("Failed to load properties from: " + PROPERTIES_FILE, e);
-            }
+            String context = servletContext.getContextPath().replaceAll("^/", "");
+            properties = new Properties();
+            loadFromFile(PROPERTIES_FILE, properties);
+            loadFromFile("global.properties", properties);
+            loadFromFile(context + ".properties", properties);
+            AppConstants.initialize(servletContext);
+        }
+    }
+    
+    private static void loadFromFile(String filePath, Properties baseProperties) {
+        try {
+            Properties properties = new Properties();
+            InputStream fileInput = AppProperties.class.getClassLoader().getResourceAsStream(filePath);
+            properties.load(fileInput);
+            baseProperties.putAll(properties);
+        } catch(NullPointerException e) {
+            logger.warn("Failed to load properties because file could not be read: " + filePath);
+        } catch(Exception e) {
+            logger.error("Failed to load properties from: " + filePath);
         }
     }
     
