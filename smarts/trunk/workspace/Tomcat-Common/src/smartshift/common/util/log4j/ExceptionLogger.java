@@ -8,7 +8,7 @@ import org.apache.log4j.Logger;
 public class ExceptionLogger {
     private static final Logger logger = Logger.getLogger(ExceptionLogger.class);
     
-    private static Integer nextExceptionID = 1;
+    private static Long lastExceptionID = -1L;
     
     protected static final int TRACE = 0;
     
@@ -22,8 +22,12 @@ public class ExceptionLogger {
     
     protected static final int FATAL = 5;
     
-    private static Integer getNextExceptionID() {
-        return nextExceptionID++;
+    private static Long getNextExceptionID() {
+        Long thisExceptionID = System.currentTimeMillis();
+        if(thisExceptionID <= lastExceptionID)
+            thisExceptionID = lastExceptionID + 1;
+        lastExceptionID = thisExceptionID;
+        return thisExceptionID;
     }
     
     /** Log a full stack trace in this log, return a reference id for debugging - alos logs on the parent
@@ -32,8 +36,8 @@ public class ExceptionLogger {
      * @param t the throwable/exception to log
      * @return the reference exception id
      */
-    protected static Integer logException(Logger parentLogger, String baseParentLoggerMsg, int level, Throwable t) {
-        Integer exceptionID = -1;
+    protected static Long logException(Logger parentLogger, String baseParentLoggerMsg, int level, Throwable t) {
+        Long exceptionID = -1L;
         String parentLogMessage = null, logMessage = null;
         if(t == null) {
             parentLogMessage = baseParentLoggerMsg + " >>> NULL EXCEPTION THROWN <<<";
