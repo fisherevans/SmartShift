@@ -1,5 +1,6 @@
 package smartshift.common.util.log4j;
 
+import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
 /** Used as the default logger for smartshift apps. Logs thrown exception in a seperate logger 
@@ -21,7 +22,7 @@ public class SmartLogger {
      * @see org.apache.log4j.Logger#trace(java.lang.Object, java.lang.Throwable)
      */
     public void trace(Object message, Throwable t) {
-        ExceptionLogger.logException(logger, message.toString(), ExceptionLogger.TRACE, t);
+        ExceptionLogger.logException(logger, message.toString(), Level.TRACE, t);
     }
     
     /** 
@@ -38,7 +39,7 @@ public class SmartLogger {
      * @see org.apache.log4j.Category#debug(java.lang.Object, java.lang.Throwable)
      */
     public void debug(Object message, Throwable t) {
-        ExceptionLogger.logException(logger, message.toString(), ExceptionLogger.DEBUG, t);
+        ExceptionLogger.logException(logger, message.toString(), Level.DEBUG, t);
     }
     
     /** 
@@ -55,7 +56,7 @@ public class SmartLogger {
      * @see org.apache.log4j.Category#error(java.lang.Object, java.lang.Throwable)
      */
     public void error(Object message, Throwable t) {
-        ExceptionLogger.logException(logger, message.toString(), ExceptionLogger.ERROR, t);
+        ExceptionLogger.logException(logger, message.toString(), Level.ERROR, t);
     }
     
     /** 
@@ -72,7 +73,7 @@ public class SmartLogger {
      * @see org.apache.log4j.Category#fatal(java.lang.Object, java.lang.Throwable)
      */
     public void fatal(Object message, Throwable t) {
-        ExceptionLogger.logException(logger, message.toString(), ExceptionLogger.FATAL, t);
+        ExceptionLogger.logException(logger, message.toString(), Level.FATAL, t);
     }
     
     /** 
@@ -89,7 +90,7 @@ public class SmartLogger {
      * @see org.apache.log4j.Category#info(java.lang.Object, java.lang.Throwable)
      */
     public void info(Object message, Throwable t) {
-        ExceptionLogger.logException(logger, message.toString(), ExceptionLogger.INFO, t);
+        ExceptionLogger.logException(logger, message.toString(), Level.INFO, t);
     }
     
     /** 
@@ -106,7 +107,7 @@ public class SmartLogger {
      * @see org.apache.log4j.Category#warn(java.lang.Object, java.lang.Throwable)
      */
     public void warn(Object message, Throwable t) {
-        ExceptionLogger.logException(logger, message.toString(), ExceptionLogger.WARN, t);
+        ExceptionLogger.logException(logger, message.toString(), Level.WARN, t);
     }
     
     /** 
