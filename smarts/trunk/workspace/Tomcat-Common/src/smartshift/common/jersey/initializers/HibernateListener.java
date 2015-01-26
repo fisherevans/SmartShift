@@ -36,7 +36,8 @@ public class HibernateListener implements ServletContextListener {
     /**
      * a context has been destroyed, close hibernate factories
      */
-	@Override
+	@SuppressWarnings("deprecation")
+    @Override
     public void contextDestroyed(ServletContextEvent event) {
         logger.info("Closing the hibernate session factories");
         HibernateFactory.closeFactories();
