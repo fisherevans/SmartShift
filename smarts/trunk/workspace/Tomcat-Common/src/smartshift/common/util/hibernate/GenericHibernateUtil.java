@@ -5,7 +5,6 @@ import java.util.List;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import org.apache.log4j.Logger;
 import org.hibernate.Criteria;
 import org.hibernate.PropertyValueException;
 import org.hibernate.Session;
@@ -14,6 +13,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import smartshift.common.hibernate.DBError;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.util.json.APIResultFactory;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * A set of utilities for generic lookups with hibernate
@@ -21,7 +21,7 @@ import smartshift.common.util.json.APIResultFactory;
  * @author D. Fisher Evans <contact@fisherevans.com>
  */
 public class GenericHibernateUtil {
-    private static Logger logger = Logger.getLogger(GenericHibernateUtil.class);
+    private static SmartLogger logger = new SmartLogger(GenericHibernateUtil.class);
 
     /**
      * Fetches a unique object from the database by ID using the get method

@@ -2,12 +2,12 @@ package smartshift.common.hibernate;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import smartshift.common.util.PrimativeUtils;
+import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
 
 /**
@@ -18,7 +18,7 @@ import smartshift.common.util.properties.AppConstants;
  *          and annotation
  */
 public class HibernateFactory {
-    private static Logger logger = Logger.getLogger(HibernateFactory.class);
+    private static SmartLogger logger = new SmartLogger(HibernateFactory.class);
 	
 	/**
 	 * The map of hibernate factories <schema, session facory>
@@ -79,4 +79,14 @@ public class HibernateFactory {
 		}
 		factories.clear();
 	}
+
+    /** close and remove a single business schema
+     * @param businessSchema the schema to disconnect from
+     */
+    public static void closeFactory(String businessSchema) {
+        SessionFactory sf =  getFactory(businessSchema);
+        if(sf != null)
+            sf.close();
+        factories.remove(businessSchema);
+    }
 }

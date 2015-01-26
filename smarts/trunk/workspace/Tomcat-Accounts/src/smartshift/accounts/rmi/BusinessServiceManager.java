@@ -4,27 +4,27 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-import org.apache.log4j.Logger;
 import smartshift.common.rmi.interfaces.BusinessServiceInterface;
 import smartshift.common.util.PrimativeUtils;
 import smartshift.common.util.collections.ROSet;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * @author D. Fisher Evans <contact@fisherevans.com>
  * Manager for business application RMI connections
  */
 public class BusinessServiceManager {
-    private static final Logger logger = Logger.getLogger(BusinessServiceManager.class);
+    private static final SmartLogger logger = new SmartLogger(BusinessServiceManager.class);
     
+    /** main map for business id -> services to call for that business */
     private static Map<Integer, Set<BusinessServiceInterface>> businessServices = new HashMap<>();
     
+    /** lookup map to find what service a host offers */
     private static Map<String, BusinessServiceInterface> hostServices = new HashMap<>();
     
+    /** lookup map to find what host a service belongs to */
     private static Map<BusinessServiceInterface, String> serviceHosts = new HashMap<>();
     
     /** Add a service
@@ -32,7 +32,7 @@ public class BusinessServiceManager {
      * @param hostname the service's hostname
      * @param businessIDs the business ids to add this service to
      */
-    public static void addService(BusinessServiceInterface businessService, String hostname, Integer ... businessIDs) {
+    public synchronized static void addService(BusinessServiceInterface businessService, String hostname, Integer ... businessIDs) {
         logger.info("Registering " + hostname + " for the following businesses: " + PrimativeUtils.joinArray(businessIDs, " "));
         hostServices.put(hostname, businessService);
         serviceHosts.put(businessService, hostname);
@@ -43,15 +43,13 @@ public class BusinessServiceManager {
     /** remove a service for this hostname
      * @param hostname the hostname to rmeove
      */
-    public static void removeService(String hostname) {
+    public synchronized static void removeService(String hostname) {
         logger.info("Removing Service: " + hostname);
         BusinessServiceInterface deleteService = hostServices.remove(hostname);
         if(deleteService != null)
             serviceHosts.remove(deleteService);
-        Iterator<Entry<Integer, Set<BusinessServiceInterface>>> businessServicesIterator = businessServices.entrySet().iterator();
-        while(businessServicesIterator.hasNext()) {
-            Entry<Integer, Set<BusinessServiceInterface>> businesServiceSetEntry = businessServicesIterator.next();
-            Iterator<BusinessServiceInterface> serviceSetIterator = businesServiceSetEntry.getValue().iterator();
+        for(Set<BusinessServiceInterface> businessServiceSet:businessServices.values()) {
+            Iterator<BusinessServiceInterface> serviceSetIterator = businessServiceSet.iterator();
             while(serviceSetIterator.hasNext()) {
                 if(serviceSetIterator.next() == deleteService)
                     serviceSetIterator.remove();
@@ -63,7 +61,7 @@ public class BusinessServiceManager {
      * @param hostname the hostname to lookuo
      * @return the service
      */
-    public static BusinessServiceInterface getHostService(String hostname) {
+    public synchronized static BusinessServiceInterface getHostService(String hostname) {
         return hostServices.get(hostname);
     }
     
@@ -71,14 +69,14 @@ public class BusinessServiceManager {
      * @param businessID the business id
      * @return the ro set of services
      */
-    public static ROSet<BusinessServiceInterface> getBusinessServices(Integer businessID) {
+    public synchronized static ROSet<BusinessServiceInterface> getBusinessServices(Integer businessID) {
         return new ROSet<BusinessServiceInterface>(getBusinessServiceSet(businessID));
     }
     
     /** get all registered business ids
      * @return the or set of business ids
      */
-    public static ROSet<Integer> getAllBusinessIds() {
+    public synchronized static ROSet<Integer> getAllBusinessIds() {
         Set<Integer> businessIDs = new HashSet<>();
         for(Integer businessID:businessServices.keySet()) {
             if(businessServices.get(businessID).size() > 0)
@@ -90,7 +88,7 @@ public class BusinessServiceManager {
     /** get all registered hostnames
      * @return the set of hostnames
      */
-    public static ROSet<String> getAllHostnames() {
+    public synchronized static ROSet<String> getAllHostnames() {
         return new ROSet<String>(hostServices.keySet());
     }
     
@@ -98,7 +96,7 @@ public class BusinessServiceManager {
      * @param businessID the business id
      * @return the existing or new set
      */
-    private static Set<BusinessServiceInterface> getBusinessServiceSet(Integer businessID) {
+    private synchronized static Set<BusinessServiceInterface> getBusinessServiceSet(Integer businessID) {
         Set<BusinessServiceInterface> businessServiceSet = businessServices.get(businessID);
         if(businessServiceSet == null) {
             businessServiceSet = new LinkedHashSet<>();
@@ -109,7 +107,7 @@ public class BusinessServiceManager {
     
     /** check all services, attempt to ping. If it fails, remove it
      */
-    public static void cleanAllConnections() {
+    public synchronized static void cleanAllConnections() {
         for(Integer businessID:businessServices.keySet())
             cleanConnections(businessID);
     }
@@ -117,8 +115,8 @@ public class BusinessServiceManager {
     /** check all services associated with this businessid, attempt to ping. If it failes, remove it
      * @param businessID the business id
      */
-    public static void cleanConnections(Integer businessID) {
-        List<String> deadHosts = new LinkedList<>();
+    public synchronized static void cleanConnections(Integer businessID) {
+        Set<String> deadHosts = new HashSet<>();
         for(BusinessServiceInterface businessService:getBusinessServiceSet(businessID)) {
             String hostname = serviceHosts.get(businessService);
             try {
@@ -139,16 +137,16 @@ public class BusinessServiceManager {
      * Disconnects all business services and clears the this registry
      * @param invalidateSessions pass true if you want to invalidate all user sessions at the same time
      */
-    public static void closeAllConnections(boolean invalidateSessions) {
+    public synchronized static void closeAllConnections(boolean invalidateSessions) {
         for(Integer businessID:businessServices.keySet()) {
             for(BusinessServiceInterface service:businessServices.get(businessID)) {
                 String host = serviceHosts.get(service);
                 try {
                     if(invalidateSessions)
                         service.invalidateAllUserSessions(null);
-                    service.disconnecting();
+                    service.accountsDisconnecting();
                 } catch(Exception e) {
-                    logger.error("Failed to warn " + host + " of closing");
+                    logger.error("Failed to warn " + host + " of closing", e);
                 }
             }
         }

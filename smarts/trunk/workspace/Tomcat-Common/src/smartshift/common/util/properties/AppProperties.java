@@ -3,7 +3,7 @@ package smartshift.common.util.properties;
 import java.io.InputStream;
 import java.util.Properties;
 import javax.servlet.ServletContext;
-import org.apache.log4j.Logger;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * Static properties system. The properties are based on a java properties file that is loaded at runtime
@@ -13,7 +13,7 @@ import org.apache.log4j.Logger;
 public class AppProperties {
     private static final String PROPERTIES_FILE = "app.properties";
 
-    private static final Logger logger = Logger.getLogger(AppProperties.class);
+    private static final SmartLogger logger = new SmartLogger(AppProperties.class);
 
     /**
      * The properties map

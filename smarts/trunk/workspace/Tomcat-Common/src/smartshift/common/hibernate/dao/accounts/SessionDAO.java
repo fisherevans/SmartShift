@@ -2,12 +2,12 @@ package smartshift.common.hibernate.dao.accounts;
 
 import java.security.SecureRandom;
 import java.util.Date;
-import org.apache.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.hibernate.model.accounts.SessionModel;
 import smartshift.common.hibernate.model.accounts.UserBusinessEmployeeModel;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * The access methods for Sessions
@@ -15,7 +15,7 @@ import smartshift.common.util.hibernate.GenericHibernateUtil;
  *
  */
 public class SessionDAO extends BaseAccountsDAO {
-    private static final Logger logger = Logger.getLogger(SessionDAO.class);
+    private static final SmartLogger logger = new SmartLogger(SessionDAO.class);
     
     /**
      * The characters to use in session keys

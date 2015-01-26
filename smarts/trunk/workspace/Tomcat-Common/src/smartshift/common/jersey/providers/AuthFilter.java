@@ -8,13 +8,13 @@ import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
-import org.apache.log4j.Logger;
 import smartshift.common.hibernate.model.accounts.UserModel;
 import smartshift.common.security.Authentication;
 import smartshift.common.security.BasicAuth;
 import smartshift.common.security.session.UserSession;
 import smartshift.common.security.session.UserSessionManager;
 import smartshift.common.util.json.APIResultFactory;
+import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
 
 /**
@@ -24,7 +24,7 @@ import smartshift.common.util.properties.AppConstants;
  */
 @Provider
 public class AuthFilter implements ContainerRequestFilter {
-    private static final Logger logger = Logger.getLogger(AuthFilter.class);
+    private static final SmartLogger logger = new SmartLogger(AuthFilter.class);
     
     private static final int USER_AUTH = 1;
     

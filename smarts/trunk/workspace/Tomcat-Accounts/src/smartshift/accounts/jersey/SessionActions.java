@@ -10,13 +10,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
-import org.apache.log4j.Logger;
 import com.google.gson.annotations.Expose;
 import smartshift.common.hibernate.dao.accounts.SessionDAO;
 import smartshift.common.hibernate.dao.accounts.UserBusinessEmployeeDAO;
 import smartshift.common.hibernate.model.accounts.SessionModel;
 import smartshift.common.hibernate.model.accounts.UserBusinessEmployeeModel;
 import smartshift.common.jersey.ActionBase;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * Jersey actions for session methods
@@ -27,7 +27,7 @@ import smartshift.common.jersey.ActionBase;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class SessionActions extends ActionBase {
-    private static final Logger logger = Logger.getLogger(SessionActions.class);
+    private static final SmartLogger logger = new SmartLogger(SessionActions.class);
 
     /**
      * Message to be returned if a session is not found;

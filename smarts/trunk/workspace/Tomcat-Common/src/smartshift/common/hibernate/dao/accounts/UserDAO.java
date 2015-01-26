@@ -1,12 +1,12 @@
 package smartshift.common.hibernate.dao.accounts;
 
 import java.util.List;
-import org.apache.log4j.Logger;
 import org.hibernate.criterion.Restrictions;
 import org.mindrot.jbcrypt.BCrypt;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.hibernate.model.accounts.UserModel;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * The data access object for the UserModel Object
@@ -17,7 +17,7 @@ public class UserDAO extends BaseAccountsDAO {
     /**
      * Logger for this DAO
      */
-    private static Logger logger = Logger.getLogger(UserDAO.class);
+    private static SmartLogger logger = new SmartLogger(UserDAO.class);
     
     /**
      * Fetch a UserModel by UserModelname

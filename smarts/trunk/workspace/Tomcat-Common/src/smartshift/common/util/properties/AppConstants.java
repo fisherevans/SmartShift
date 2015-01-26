@@ -5,7 +5,7 @@ import java.lang.reflect.Modifier;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import javax.servlet.ServletContext;
-import org.apache.log4j.Logger;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * Holds static properties based on App Properties
@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
  *
  */
 public class AppConstants {
-    private static final Logger logger = Logger.getLogger(AppConstants.class);
+    private static final SmartLogger logger = new SmartLogger(AppConstants.class);
     
     // NON-PROPERTY CONSTANTS
     
@@ -69,6 +69,7 @@ public class AppConstants {
     /** Time in ms that sessions expire in */
     public static long SESSION_TIMEOUT;
     
+    /** businesses to conenct to and post to accounts via rmi on connection, used for debugging and dev instances */
     public static Integer[] DEV_BUSINESS_MANUAL_BUSINESSES;
 
     /**

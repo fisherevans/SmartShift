@@ -4,7 +4,6 @@ package smartshift.business.jersey.initializers;
 import java.rmi.RemoteException;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import org.apache.log4j.Logger;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
 import org.quartz.Scheduler;
@@ -18,6 +17,7 @@ import smartshift.business.rmi.implementation.BusinessService;
 import smartshift.common.rmi.RMIClient;
 import smartshift.common.rmi.RMIServer;
 import smartshift.common.rmi.interfaces.AccountsServiceInterface;
+import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
 import smartshift.common.util.properties.AppProperties;
 
@@ -27,7 +27,7 @@ import smartshift.common.util.properties.AppProperties;
  *          the listener that starts the RMI service
  */
 public class BusinessRMIListener implements ServletContextListener {  
-    private static final Logger logger = Logger.getLogger(BusinessRMIListener.class);
+    private static final SmartLogger logger = new SmartLogger(BusinessRMIListener.class);
     
     private JobDetail _jobDetail;
     

@@ -1,15 +1,15 @@
 package smartshift.common.cache.bo.accounts;
 
-import org.apache.log4j.Logger;
 import smartshift.common.cache.bo.business.BusinessCache;
-import smartshift.common.cache.bo.business.Employee;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.hibernate.dao.accounts.BusinessDAO;
 import smartshift.common.hibernate.model.accounts.BusinessModel;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.hibernate.Stored;
+import smartshift.common.util.log4j.SmartLogger;
 
 public class Business implements Stored {
+    private static SmartLogger logger = new SmartLogger(Business.class);
 
     private String _name;
     
@@ -44,7 +44,7 @@ public class Business implements Stored {
                 //_model = BusinessDAO.addBusiness(_name);
             }
         } catch (DBException e) {
-            Logger.getLogger(Business.class).debug(e.getStackTrace());
+            logger.debug(e.getStackTrace());
         }
         _cache.save();      
     }

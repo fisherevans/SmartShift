@@ -4,8 +4,8 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import org.apache.log4j.Logger;
 import smartshift.common.hibernate.model.accounts.UserModel;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * @author fevans
@@ -15,7 +15,7 @@ import smartshift.common.hibernate.model.accounts.UserModel;
  */
 @Path("/hello")
 public class Hello extends ActionBase {
-    private static final Logger logger = Logger.getLogger(Hello.class);
+    private static final SmartLogger logger = new SmartLogger(Hello.class);
     
     /**
      * @return a "Hello, world!" string

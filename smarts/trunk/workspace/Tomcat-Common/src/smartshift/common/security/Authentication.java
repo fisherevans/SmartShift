@@ -2,11 +2,11 @@ package smartshift.common.security;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response.Status;
-import org.apache.log4j.Logger;
 import org.mindrot.jbcrypt.BCrypt;
 import smartshift.common.hibernate.dao.accounts.UserDAO;
 import smartshift.common.hibernate.model.accounts.UserModel;
 import smartshift.common.util.json.APIResultFactory;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * Authentication methods mapping HTTP Basic to the WebUser table
@@ -15,7 +15,7 @@ import smartshift.common.util.json.APIResultFactory;
  *
  */
 public class Authentication {
-    private static Logger logger = Logger.getLogger(Authentication.class);
+    private static SmartLogger logger = new SmartLogger(Authentication.class);
 
     /**
      * @param username the username of the basic auth

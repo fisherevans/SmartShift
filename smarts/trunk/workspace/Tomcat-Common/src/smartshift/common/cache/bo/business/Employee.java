@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import org.apache.log4j.Logger;
 import smartshift.common.cache.bo.accounts.Business;
 import smartshift.common.cache.bo.accounts.User;
 import smartshift.common.hibernate.DBException;
@@ -13,8 +12,10 @@ import smartshift.common.hibernate.model.business.EmployeeModel;
 import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.hibernate.Stored;
+import smartshift.common.util.log4j.SmartLogger;
 
 public class Employee extends CachedObject implements Stored{
+    private static final SmartLogger logger = new SmartLogger(Employee.class);
     private String _firstName;
     private String _lastName;
     private User _user;
@@ -92,7 +93,7 @@ public class Employee extends CachedObject implements Stored{
                 _model = EmployeeDAO.addEmployee(_firstName, _lastName, _homeGroup.getModel());
             }
         } catch (DBException e) {
-            Logger.getLogger(Employee.class).debug(e.getStackTrace());
+            logger.debug(e.getStackTrace());
         }
     }
 

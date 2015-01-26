@@ -44,6 +44,7 @@ public interface BusinessServiceInterface extends BaseRemoteInterface {
 
     /**
      * Called by the accouts application to tell the business app the server is disconnecting
+     * @throws RemoteException 
      */
-    public void disconnecting() throws RemoteException;
+    public void accountsDisconnecting() throws RemoteException;
 }

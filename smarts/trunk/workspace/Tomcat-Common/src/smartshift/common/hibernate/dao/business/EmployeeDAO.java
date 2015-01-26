@@ -1,11 +1,11 @@
 package smartshift.common.hibernate.dao.business;
 
 import java.util.List;
-import org.apache.log4j.Logger;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.hibernate.model.business.EmployeeModel;
 import smartshift.common.hibernate.model.business.GroupModel;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * The data access object for the EmployeeModel Object
@@ -16,7 +16,7 @@ public class EmployeeDAO extends BaseBusinessDAO {
     /**
      * Logger for this DAO
      */
-    private static Logger logger = Logger.getLogger(EmployeeDAO.class);
+    private static SmartLogger logger = new SmartLogger(EmployeeDAO.class);
     
     /**
      * Fetch a EmployeeModel by id

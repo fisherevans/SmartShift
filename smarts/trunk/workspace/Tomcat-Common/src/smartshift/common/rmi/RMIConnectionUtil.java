@@ -4,8 +4,8 @@ import java.net.MalformedURLException;
 import java.rmi.ConnectException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import org.apache.log4j.Logger;
 import smartshift.common.rmi.interfaces.BaseRemoteInterface;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * Util class for RMI connections
@@ -13,7 +13,7 @@ import smartshift.common.rmi.interfaces.BaseRemoteInterface;
  *
  */
 public class RMIConnectionUtil {
-    private static final Logger logger = Logger.getLogger(RMIConnectionUtil.class);
+    private static final SmartLogger logger = new SmartLogger(RMIConnectionUtil.class);
     
     /**
      * attempt to configure the connection if it doesn't exist

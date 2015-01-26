@@ -8,15 +8,15 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
 import smartshift.common.rmi.interfaces.BaseRemoteInterface;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * @author D. Fisher Evans <contact@fisherevans.com>
  *  Class for connecting, maintaining and disconnecting remote services
  */
 public class RMIClient {
-    private static Logger logger = Logger.getLogger(RMIClient.class);
+    private static SmartLogger logger = new SmartLogger(RMIClient.class);
 
     private static Map<ServerTouple, RegistryServices> _serversRegistries = new HashMap<>();
 
