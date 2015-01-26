@@ -13,6 +13,7 @@ import org.hibernate.engine.jdbc.connections.spi.AbstractMultiTenantConnectionPr
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.service.spi.ServiceRegistryAwareService;
 import org.hibernate.service.spi.ServiceRegistryImplementor;
+import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
 
 /**
@@ -21,11 +22,15 @@ import smartshift.common.util.properties.AppConstants;
  *
  */
 public class MultiTenantConnectionProviderImpl extends AbstractMultiTenantConnectionProvider implements ServiceRegistryAwareService {
+    private static final SmartLogger logger = new SmartLogger(MultiTenantConnectionProviderImpl.class);
+    
     private static final long serialVersionUID = -8842086563564584371L;
 
     private Map<String, C3P0ConnectionProvider> providers = new HashMap<>();
     
     private List<ServiceRegistryImplementor> serviceRegistries = new ArrayList<>();
+    
+    private static MultiTenantConnectionProviderImpl instance;
     
     /**
      * Initializes this provider - registers the standard service registry
@@ -34,6 +39,7 @@ public class MultiTenantConnectionProviderImpl extends AbstractMultiTenantConnec
         Properties properties = getConnectionConfiguration(AppConstants.DB_SCHEMA_DEFAULT).getProperties();
         StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(properties);
         injectServices((ServiceRegistryImplementor) ssrb.build());
+        instance = this;
     }
 
     /**
@@ -87,4 +93,31 @@ public class MultiTenantConnectionProviderImpl extends AbstractMultiTenantConnec
         cfg.setProperty(Environment.URL, "jdbc:mysql://" + AppConstants.DB_SERVER_HOSTNAME + "/" + schema);
         return cfg;
     }
+    
+    /**
+     * Closes all provider connection (when the app comes down)
+     */
+    public void close() {
+        try {
+            for(C3P0ConnectionProvider provider: providers.values()) {
+                try {
+                    provider.stop();
+                } catch(Exception e) {
+                    logger.error("Failed to close provider", e);
+                }
+            }
+            providers.clear();
+        } catch(Exception e) {
+            logger.error("Failed to close providers", e);
+        }
+    }
+
+    /** gets an instance of this class
+     * @return the instance
+     */
+    public static MultiTenantConnectionProviderImpl getInstance() {
+        return instance;
+    }
+    
+    
 }

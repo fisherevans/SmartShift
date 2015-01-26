@@ -26,6 +26,9 @@ public class AppConstants {
 
     /** Whether this is a dev buil or not */
     public static Boolean DEV_BUILD;
+    
+    /** Whether or not to log to file or stdout */
+    public static Boolean LOG_TO_FILE;
 
     // PROPERTY-BASED STUFF
 
@@ -91,6 +94,7 @@ public class AppConstants {
         // from properties
         DEV_BUILD = AppProperties.getBooleanProperty("app.developmentApp", false);
         AUTH_TYPE = AppProperties.getProperty("app.authType", "user");
+        LOG_TO_FILE = AppProperties.getBooleanProperty("app.log.toFile", true);
         
         DB_SERVER_HOSTNAME = AppProperties.getProperty("database.server.hostname");
         DB_SCHEMA_DEFAULT = AppProperties.getProperty("database.schema.default");
@@ -120,11 +124,12 @@ public class AppConstants {
         } catch(Exception e) {
             logger.error("Failed to parse dev.business.manualBusinesses");
         }
-        
-        printValues();
     }
     
-    private static void printValues() {
+    /**
+     * logs all static fields to the logger
+     */
+    public static void logValues() {
         try {
         for(Field field:AppConstants.class.getFields())
             if(Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(field.getModifiers())) {
