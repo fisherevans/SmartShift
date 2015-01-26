@@ -2,10 +2,10 @@ package smartshift.accounts.jersey.initializers;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import org.apache.log4j.Logger;
 import smartshift.accounts.rmi.BusinessServiceManager;
 import smartshift.accounts.rmi.implementation.AccountsService;
 import smartshift.common.rmi.RMIServer;
+import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
 
 /**
@@ -14,7 +14,7 @@ import smartshift.common.util.properties.AppConstants;
  *          the listener that starts the RMI service
  */
 public class AccountsRMIListener implements ServletContextListener {  
-    private static final Logger logger = Logger.getLogger(AccountsRMIListener.class);
+    private static final SmartLogger logger = new SmartLogger(AccountsRMIListener.class);
     
     /**
      * a context has been initialized, create the RMI service

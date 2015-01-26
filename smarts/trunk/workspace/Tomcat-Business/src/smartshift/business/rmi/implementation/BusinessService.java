@@ -1,14 +1,14 @@
 package smartshift.business.rmi.implementation;
 
 import java.rmi.RemoteException;
-import org.apache.log4j.Logger;
 import org.dom4j.IllegalAddException;
-import smartshift.common.hibernate.BusinessConnectionManager;
+import smartshift.common.hibernate.BusinessDatabaseManager;
 import smartshift.common.rmi.BaseRemote;
 import smartshift.common.rmi.RMIClient;
 import smartshift.common.rmi.interfaces.BusinessServiceInterface;
 import smartshift.common.security.session.UserSession;
 import smartshift.common.security.session.UserSessionManager;
+import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
 
 /**
@@ -16,7 +16,7 @@ import smartshift.common.util.properties.AppConstants;
  * implementation of the accounts RMI service
  */
 public class BusinessService extends BaseRemote implements BusinessServiceInterface {
-    private static Logger logger = Logger.getLogger(BusinessService.class);
+    private static SmartLogger logger = new SmartLogger(BusinessService.class);
     
     private static final long serialVersionUID = -1647486952709539166L;
 
@@ -63,15 +63,16 @@ public class BusinessService extends BaseRemote implements BusinessServiceInterf
      */
     @Override
     public void connectBusinessSchema(Integer businessID, String businessName) throws RemoteException {
-        BusinessConnectionManager.connectBusinessSchema(businessID, businessName);
+        BusinessDatabaseManager.connectBusinessSchema(businessID, businessName);
     }
 
     /**
-     * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#disconnecting()
+     * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#accountsDisconnecting()
      */
     @Override
-    public void disconnecting() throws RemoteException {
+    public void accountsDisconnecting() throws RemoteException {
         logger.warn("Accounts application is disconnecting!");
         RMIClient.stopClient(AppConstants.RMI_ACCOUNTS_HOSTNAME, AppConstants.RMI_ACCOUNTS_PORT);
+        BusinessDatabaseManager.disconnectAllSchemas(AppConstants.DEV_BUSINESS_MANUAL_BUSINESSES);
     }
 }

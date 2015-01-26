@@ -10,8 +10,11 @@ import smartshift.common.hibernate.dao.business.EmployeeDAO;
 import smartshift.common.hibernate.model.accounts.UserModel;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.hibernate.Stored;
+import smartshift.common.util.log4j.SmartLogger;
 
 public class User implements Stored {
+    private static final SmartLogger logger = new SmartLogger(User.class);
+    
     private String _uname;
     private String _email;
     private String _passHash;
@@ -61,7 +64,7 @@ public class User implements Stored {
                 GenericHibernateUtil.save(UserDAO.getAccountsSession(), _model);
             }
         } catch(DBException e) {
-            Logger.getLogger(User.class).debug(e.getStackTrace());
+            logger.debug(e.getStackTrace());
         }
     }
 

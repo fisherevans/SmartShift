@@ -3,16 +3,16 @@ package smartshift.common.security.session;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import org.apache.log4j.Logger;
 import org.dom4j.IllegalAddException;
 import smartshift.common.util.collections.ROSet;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * A class the manage the current user sessions
  * @author D. Fisher Evans <contact@fisherevans.com>
  */
 public class UserSessionManager {
-    private static final Logger logger = Logger.getLogger(UserSessionManager.class);
+    private static final SmartLogger logger = new SmartLogger(UserSessionManager.class);
     
     private static Map<String, UserSession> sessions = new HashMap<>();
     

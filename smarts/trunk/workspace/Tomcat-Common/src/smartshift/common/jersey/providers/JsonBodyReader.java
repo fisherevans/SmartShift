@@ -16,10 +16,10 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.MessageBodyReader;
 import javax.ws.rs.ext.MessageBodyWriter;
 import javax.ws.rs.ext.Provider;
-import org.apache.log4j.Logger;
 import com.google.gson.Gson;
 import smartshift.common.util.json.APIResultFactory;
 import smartshift.common.util.json.GsonFactory;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * Reads json text and creates a Gson json object.
@@ -33,7 +33,7 @@ import smartshift.common.util.json.GsonFactory;
 @Provider
 public class JsonBodyReader<T> implements MessageBodyReader<T>, MessageBodyWriter<T> {
 
-    private static final Logger logger = Logger.getLogger(JsonBodyReader.class);
+    private static final SmartLogger logger = new SmartLogger(JsonBodyReader.class);
     
     
     /**

@@ -10,13 +10,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
-import org.apache.log4j.Logger;
 import smartshift.common.cache.bo.accounts.ContactMethodBO;
 import smartshift.common.hibernate.dao.accounts.BusinessDAO;
 import smartshift.common.hibernate.dao.accounts.ContactMethodDAO;
 import smartshift.common.hibernate.model.accounts.BusinessModel;
 import smartshift.common.hibernate.model.accounts.UserModel;
 import smartshift.common.jersey.ActionBase;
+import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.params.SimpleIntegerParam;
 
 /**
@@ -28,7 +28,7 @@ import smartshift.common.util.params.SimpleIntegerParam;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UserActions extends ActionBase {
-    private static final Logger logger = Logger.getLogger(UserActions.class);
+    private static final SmartLogger logger = new SmartLogger(UserActions.class);
 
     /**
      * Message to be returned if a business is not found;

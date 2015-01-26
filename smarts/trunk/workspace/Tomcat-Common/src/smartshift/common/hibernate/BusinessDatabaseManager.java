@@ -1,10 +1,13 @@
 package smartshift.common.hibernate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import smartshift.common.util.PrimativeUtils;
+import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
 
 /**
@@ -12,8 +15,8 @@ import smartshift.common.util.properties.AppConstants;
  * @author D. Fisher Evans <contact@fisherevans.com>
  *
  */
-public class BusinessConnectionManager {
-    private static final Logger logger = Logger.getLogger(BusinessConnectionManager.class);
+public class BusinessDatabaseManager {
+    private static final SmartLogger logger = new SmartLogger(BusinessDatabaseManager.class);
     private static Map<Integer, String> businesses = new HashMap<>();
     
     /**
@@ -21,7 +24,7 @@ public class BusinessConnectionManager {
      * @param businessID the business id
      * @param businessName the business name
      */
-    public static void connectBusinessSchema(Integer businessID, String businessName) {
+    public synchronized static void connectBusinessSchema(Integer businessID, String businessName) {
         businesses.put(businessID, businessName);
         logger.info("Connecting to " + businessID + ":" + businessName + " db schema.");
         String schema = getBusinessSchema(businessID);
@@ -38,7 +41,7 @@ public class BusinessConnectionManager {
      * @param businessID the business id
      * @return the session factory. null if not connected or present.
      */
-    public static SessionFactory getBusinessSessionFactory(Integer businessID) {
+    public synchronized static SessionFactory getBusinessSessionFactory(Integer businessID) {
         if(businesses.containsKey(businessID))
             return HibernateFactory.getFactory(getBusinessSchema(businessID));
         return null;
@@ -49,7 +52,7 @@ public class BusinessConnectionManager {
      * @param businessID the business id
      * @return the session. null if not connected or present.
      */
-    public static Session getBusinessSession(Integer businessID) {
+    public synchronized static Session getBusinessSession(Integer businessID) {
         if(businesses.containsKey(businessID))
             return HibernateFactory.getSession(getBusinessSchema(businessID));
         return null;
@@ -59,15 +62,36 @@ public class BusinessConnectionManager {
      * @param businessID the business id
      * @return the name of the business
      */
-    public static String getBusinessName(Integer businessID) {
+    public synchronized static String getBusinessName(Integer businessID) {
         return businesses.get(businessID);
+    }
+    
+    /** Disconnect all schemas exluding any business id's passed
+     * @param exludeIDs the ids not to disconnect
+     */
+    public synchronized static void disconnectAllSchemas(Integer ... exludeIDs) {
+        List<Integer> disconnectIDs = new ArrayList<Integer>(businesses.keySet().size() - exludeIDs.length);
+        for(Integer businessID:businesses.keySet()) {
+            if(!PrimativeUtils.inArray(businessID, exludeIDs))
+                disconnectIDs.add(businessID);
+        }
+        for(Integer disconnectID:disconnectIDs)
+            disconnectSchema(disconnectID);
+    }
+    
+    /** disconnect a single business database connection
+     * @param businessID the business id to disconnect from
+     */
+    public synchronized static void disconnectSchema(Integer businessID) {
+        businesses.remove(businessID);
+        HibernateFactory.closeFactory(getBusinessSchema(businessID));
     }
     
     /**
      * @param businessID the business id
      * @return the db schema name for that business
      */
-    public static String getBusinessSchema(Integer businessID) {
+    public synchronized static String getBusinessSchema(Integer businessID) {
         return AppConstants.DB_SCHEMA_BUSINESS_BASE + businessID;
     }
 }

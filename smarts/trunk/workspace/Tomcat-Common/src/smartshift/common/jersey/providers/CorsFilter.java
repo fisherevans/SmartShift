@@ -7,7 +7,7 @@ import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.ext.Provider;
-import org.apache.log4j.Logger;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * @author D. Fisher Evans <contact@fisherevans.com>
@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
 @Provider
 public class CorsFilter implements ContainerResponseFilter {
 
-    private static final Logger logger = Logger.getLogger(CorsFilter.class);
+    private static final SmartLogger logger = new SmartLogger(CorsFilter.class);
     
     /**
      * @see javax.ws.rs.container.ContainerResponseFilter#filter(javax.ws.rs.container.ContainerRequestContext, javax.ws.rs.container.ContainerResponseContext)

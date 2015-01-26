@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.apache.log4j.Logger;
+import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
 
 /**
@@ -21,7 +21,7 @@ import smartshift.common.util.properties.AppConstants;
  *
  */
 public class RMIServer {
-    private static final Logger logger = Logger.getLogger(RMIServer.class);
+    private static final SmartLogger logger = new SmartLogger(RMIServer.class);
     
     private static Map<String, BaseRemote> _services = new HashMap<>();
     private static Registry _registry = null;
