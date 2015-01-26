@@ -1,0 +1,1 @@
+Copy the contents of this folder into your tomcat application directory. This will configure C3P0 global pooling, log4j server configs and web connection settings.
