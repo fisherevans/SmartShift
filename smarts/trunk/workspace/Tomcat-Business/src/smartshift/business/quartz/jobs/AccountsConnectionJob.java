@@ -32,21 +32,22 @@ public class AccountsConnectionJob implements Job {
             String host = AppConstants.RMI_ACCOUNTS_HOSTNAME;
             int port = AppConstants.RMI_ACCOUNTS_PORT;
             String serviceName = AppConstants.RMI_ACCOUNTS_SERVICE_NAME;
-            if(RMIConnectionUtil.pollConnection(host, port, serviceName)) {
-                if(!connectionInGoodStanding) {
-                    connectionInGoodStanding = true;
-                    logger.info("Connection is established");
-                }
-            } else {
+            if(!RMIConnectionUtil.pollConnection(host, port, serviceName)) {
                 connectionInGoodStanding = false;
                 RMIClient.stopClient(host, port);
+                return;
             }
-            try {
-                AccountsServiceInterface as = (AccountsServiceInterface) RMIClient.getService(host, port, serviceName);
-                as.businessConnected(AppConstants.HOSTNAME, AppConstants.RMI_BUSINESS_PORT);
-            } catch(RemoteException e) {
-                logger.error("Failed to notify accounts application. Assuming no businesses were registered!!!");
-                connectionInGoodStanding = false;
+
+            if(!connectionInGoodStanding) {
+                try {
+                    AccountsServiceInterface as = (AccountsServiceInterface) RMIClient.getService(host, port, serviceName);
+                    as.businessConnected(AppConstants.HOSTNAME, AppConstants.RMI_BUSINESS_PORT, AppConstants.DEV_BUSINESS_MANUAL_BUSINESSES);
+                } catch(RemoteException e) {
+                    logger.error("Failed to notify accounts application.", e);
+                    return;
+                }
+                connectionInGoodStanding = true;
+                logger.info("Connection is established");
             }
         } catch(Exception e) {
             logger.error("An unexpected error occured", e);

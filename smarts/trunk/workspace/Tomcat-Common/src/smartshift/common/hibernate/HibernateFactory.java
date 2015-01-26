@@ -7,6 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import smartshift.common.util.PrimativeUtils;
 import smartshift.common.util.properties.AppConstants;
 
 /**
@@ -28,6 +29,7 @@ public class HibernateFactory {
 	 * Initialized the DB factories based on the tables found in the app properties
 	 */
 	public synchronized static void initialize() {
+        logger.info("Initializing - Auto-Connecting to: " + PrimativeUtils.joinArray(AppConstants.DB_SCHEMA_INITIAL_SET, ", "));
         for(String schema:AppConstants.DB_SCHEMA_INITIAL_SET)
             createFactory(schema);
 	}
@@ -37,6 +39,7 @@ public class HibernateFactory {
 	 * @param schema the schema to connect to
 	 */
 	public synchronized static void createFactory(String schema) {
+	    logger.info("Connection to schema: " + schema);
 	    Configuration cfg = MultiTenantConnectionProviderImpl.getConnectionConfiguration(schema);
         StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties());
         SessionFactory factory = cfg.buildSessionFactory(ssrb.build());
@@ -68,6 +71,7 @@ public class HibernateFactory {
      * close all hibernate factories
      */
 	public synchronized static void closeFactories() {
+        logger.info("Closing all hibernate session factories.");
 		for(SessionFactory factory:factories.values()) {
 			if(factory != null) {
 				factory.close();

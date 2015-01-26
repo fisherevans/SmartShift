@@ -3,6 +3,7 @@ package smartshift.accounts.jersey.initializers;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import org.apache.log4j.Logger;
+import smartshift.accounts.rmi.BusinessServiceManager;
 import smartshift.accounts.rmi.implementation.AccountsService;
 import smartshift.common.rmi.RMIServer;
 import smartshift.common.util.properties.AppConstants;
@@ -34,6 +35,7 @@ public class AccountsRMIListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent event) {
         try {
+            BusinessServiceManager.closeAllConnections(true);
             RMIServer.destroy(AppConstants.RMI_ACCOUNTS_SERVICE_NAME);
         } catch(Exception e) {
             logger.error("Failed to destroy accounts RMI service", e);

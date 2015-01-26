@@ -32,7 +32,7 @@ public class RMIClient {
             throw new IllegalStateException("RMI Client already started for " + server.toString());
         Registry registry = LocateRegistry.getRegistry(server.hostname, server.port);
         _serversRegistries.put(server, new RegistryServices(registry)); 
-        logger.info("RMI Client started to: " + server);
+        logger.info("RMI Client started: " + server);
     }
 
     /**
@@ -44,9 +44,9 @@ public class RMIClient {
         ServerTouple server = new ServerTouple(serverHostname, port);
         if(_serversRegistries.get(server) != null) {
             _serversRegistries.remove(server);
-            logger.info("RMI Client connectected to: " + server.hostname + ":" + server.port);
+            logger.info("RMI Client stopped: " + server.hostname + ":" + server.port);
         } else
-            logger.info("RMI Client stopped: " + server);
+            logger.info("RMI Client already stopped: " + server);
     }
     
     /**

@@ -4,6 +4,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import org.apache.log4j.Logger;
 import smartshift.common.hibernate.HibernateFactory;
+import smartshift.common.util.properties.AppConstants;
 
 /**
  * @author fevans
@@ -20,7 +21,10 @@ public class HibernateListener implements ServletContextListener {
 	@Override
     public void contextInitialized(ServletContextEvent event) {
         logger.info("Initializing he hibernate session factory");
+        System.setProperty("com.mchange.v2.c3p0.management.ManagementCoordinator", "com.mchange.v2.c3p0.management.NullManagementCoordinator");
         HibernateFactory.initialize();
+        for(Integer businessID:AppConstants.DEV_BUSINESS_MANUAL_BUSINESSES)
+            HibernateFactory.createFactory(AppConstants.DB_SCHEMA_BUSINESS_BASE + businessID);
     }  
 
     /**
