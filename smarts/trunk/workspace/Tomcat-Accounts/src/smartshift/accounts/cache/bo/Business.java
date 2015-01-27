@@ -1,8 +1,8 @@
 package smartshift.accounts.cache.bo;
 
+import smartshift.accounts.hibernate.dao.accounts.BusinessDAO;
+import smartshift.accounts.hibernate.model.accounts.BusinessModel;
 import smartshift.common.hibernate.DBException;
-import smartshift.common.hibernate.dao.accounts.BusinessDAO;
-import smartshift.common.hibernate.model.accounts.BusinessModel;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.hibernate.Stored;
 import smartshift.common.util.log4j.SmartLogger;
