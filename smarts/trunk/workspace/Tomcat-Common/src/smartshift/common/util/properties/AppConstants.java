@@ -31,9 +31,6 @@ public class AppConstants {
     public static Boolean LOG_TO_FILE;
 
     // PROPERTY-BASED STUFF
-
-    /** The auth type to use: user/session */
-    public static String AUTH_TYPE;
     
     /** The hostname (including port) of db server */
     public static String DB_SERVER_HOSTNAME;
@@ -93,7 +90,6 @@ public class AppConstants {
 
         // from properties
         DEV_BUILD = AppProperties.getBooleanProperty("app.developmentApp", false);
-        AUTH_TYPE = AppProperties.getProperty("app.authType", "user");
         LOG_TO_FILE = AppProperties.getBooleanProperty("app.log.toFile", true);
         
         DB_SERVER_HOSTNAME = AppProperties.getProperty("database.server.hostname");
