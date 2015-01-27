@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import smartshift.common.cache.bo.accounts.Business;
 import smartshift.common.cache.bo.accounts.User;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.hibernate.dao.business.EmployeeDAO;
@@ -24,18 +23,18 @@ public class Employee extends CachedObject implements Stored{
     
     private EmployeeModel _model;
     
-    public Employee(Business business, String first, String last, Group home) {
-        super(business);
+    public Employee(Cache cache, String first, String last, Group home) {
+        super(cache);
         _firstName = first;
         _lastName = last;
         _homeGroup = home;
         _roles = new HashMap<Group, Set<Role>>();
         _roles.put(_homeGroup, new HashSet<Role>());
-        _roles.get(_homeGroup).add(Role.getBasicRole(business, _homeGroup));
+        _roles.get(_homeGroup).add(Role.getBasicRole(cache, _homeGroup));
     }
     
-    private Employee(BusinessCache cache, EmployeeModel model) {
-        this(cache.getBusiness(), model.getFirstName(), model.getLastName(), Group.getGroup(cache, model.getDefaultGroup()));
+    private Employee(Cache cache, EmployeeModel model) {
+        this(cache, model.getFirstName(), model.getLastName(), Group.getGroup(cache, model.getDefaultGroup()));
         _model = model;
     }
     
@@ -76,7 +75,7 @@ public class Employee extends CachedObject implements Stored{
         return ROCollection.wrap(_roles.get(group));
     }
 
-    public static Employee getEmployee(BusinessCache cache, EmployeeModel model) {     
+    public static Employee getEmployee(Cache cache, EmployeeModel model) {     
         Employee employee = cache.getEmployee(model.getId());
         if(employee == null)
             employee = new Employee(cache, model);

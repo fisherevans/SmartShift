@@ -14,14 +14,14 @@ public class Role extends CachedObject implements Stored{
     
     private RoleModel _model;
     
-    private Role(BusinessCache cache, String name) {
-        super(cache.getBusiness());
+    private Role(Cache cache, String name) {
+        super(cache);
         _name = name;
         _capabilities = new HashMap<Group, Set<Capability>>();
     }
     
-    public Role(Business business, String name, Group parent) {
-        this(business.getCache(), name);
+    public Role(Cache cache, String name, Group parent) {
+        this(cache, name);
         _capabilities.put(parent, new HashSet<Capability>());
     }
     
@@ -29,8 +29,8 @@ public class Role extends CachedObject implements Stored{
         return _name;
     }
     
-    public static Role getBasicRole(Business business, Group parent) {
-        Role basicRole = new Role(business, "basic", parent);
+    public static Role getBasicRole(Cache cache, Group parent) {
+        Role basicRole = new Role(cache, "basic", parent);
         if(!parent.hasRole(basicRole))
             parent.addRole(basicRole);
         return basicRole;
