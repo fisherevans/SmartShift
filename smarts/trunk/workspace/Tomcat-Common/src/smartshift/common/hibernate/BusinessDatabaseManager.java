@@ -23,17 +23,24 @@ public class BusinessDatabaseManager {
      * Registers a business name and connects to the business schema
      * @param businessID the business id
      * @param businessName the business name
+     * @return true if schema connected
      */
-    public synchronized static void connectBusinessSchema(Integer businessID, String businessName) {
-        businesses.put(businessID, businessName);
-        logger.info("Connecting to " + businessID + ":" + businessName + " db schema.");
-        String schema = getBusinessSchema(businessID);
-        SessionFactory sf = HibernateFactory.getFactory(schema);
-        if(sf != null) {
-            logger.info("Attempted to connect to " + businessID + ":" + businessName + ", but it was already connected.");
-            return; 
+    public synchronized static boolean connectBusinessSchema(Integer businessID, String businessName) {
+        try {
+            logger.info("Connecting to " + businessID + ":" + businessName + " db schema.");
+            String schema = getBusinessSchema(businessID);
+            SessionFactory sf = HibernateFactory.getFactory(schema);
+            if(sf != null) {
+                logger.info("Attempted to connect to " + businessID + ":" + businessName + ", but it was already connected.");
+                return false; 
+            }
+            HibernateFactory.createFactory(schema);
+        } catch(Exception e) {
+            logger.error("Failed to connect to business schema", e);
+            return false;
         }
-        HibernateFactory.createFactory(schema);
+        businesses.put(businessID, businessName);
+        return true;
     }
     
     /**
