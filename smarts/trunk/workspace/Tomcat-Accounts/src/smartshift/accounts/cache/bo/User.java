@@ -2,7 +2,6 @@ package smartshift.accounts.cache.bo;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.log4j.Logger;
 import smartshift.accounts.hibernate.dao.UserDAO;
 import smartshift.accounts.hibernate.model.UserModel;
 import smartshift.common.hibernate.DBException;
@@ -13,6 +12,8 @@ import smartshift.common.util.log4j.SmartLogger;
 public class User implements Stored {
     private static final SmartLogger logger = new SmartLogger(User.class);
     
+    private static Map<Integer, User> users;
+    
     private String _uname;
     private String _email;
     private String _passHash;
@@ -20,7 +21,7 @@ public class User implements Stored {
     
     private UserModel _model;
     
-    private User(String username, String email, String password) {
+    public User(String username, String email, String password) {
         _uname = username;
         _email = email;
         _passHash = password;
@@ -28,9 +29,7 @@ public class User implements Stored {
     }
     
     private User(UserModel model) {
-        _uname = model.getUsername();
-        _email = model.getEmail();
-        _passHash = model.getPassHash();
+        this(model.getUsername(), model.getEmail(), model.getPassHash());
         _model = model;
     }
     
@@ -70,5 +69,13 @@ public class User implements Stored {
     public void loadAllChildren() {
         // TODO Auto-generated method stub
         
+    }
+    
+    public static User load(int userID) {
+        if(!users.containsKey(userID)) {
+            UserModel model = UserDAO.getUserById(userID);
+            users.put(userID, new User(model));
+        }
+        return users.get(userID);
     }
 }
