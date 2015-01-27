@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import smartshift.business.hibernate.model.business.GroupModel;
+import smartshift.business.hibernate.model.GroupModel;
 import smartshift.common.util.hibernate.Stored;
 
 public class Group extends CachedObject implements Stored{

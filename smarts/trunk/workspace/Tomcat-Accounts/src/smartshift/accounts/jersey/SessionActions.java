@@ -11,10 +11,10 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 import com.google.gson.annotations.Expose;
-import smartshift.accounts.hibernate.dao.accounts.SessionDAO;
-import smartshift.accounts.hibernate.dao.accounts.UserBusinessEmployeeDAO;
-import smartshift.accounts.hibernate.model.accounts.SessionModel;
-import smartshift.accounts.hibernate.model.accounts.UserBusinessEmployeeModel;
+import smartshift.accounts.hibernate.dao.SessionDAO;
+import smartshift.accounts.hibernate.dao.UserBusinessEmployeeDAO;
+import smartshift.accounts.hibernate.model.SessionModel;
+import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
 import smartshift.common.jersey.ActionBase;
 import smartshift.common.util.log4j.SmartLogger;
 
