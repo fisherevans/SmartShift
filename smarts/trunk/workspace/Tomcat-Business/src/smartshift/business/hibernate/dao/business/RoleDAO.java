@@ -1,8 +1,8 @@
 package smartshift.business.hibernate.dao.business;
 
 import java.util.List;
+import smartshift.business.hibernate.model.business.RoleModel;
 import smartshift.common.hibernate.DBException;
-import smartshift.common.hibernate.model.business.RoleModel;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.log4j.SmartLogger;
 

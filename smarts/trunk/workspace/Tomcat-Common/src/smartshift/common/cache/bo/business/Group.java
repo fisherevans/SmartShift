@@ -1,10 +1,11 @@
-package smartshift.business.cache.bo;
+package smartshift.common.cache.bo.business;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import smartshift.business.hibernate.model.business.GroupModel;
+import smartshift.common.cache.bo.accounts.Business;
+import smartshift.common.hibernate.model.business.GroupModel;
 import smartshift.common.util.hibernate.Stored;
 
 public class Group extends CachedObject implements Stored{
@@ -14,14 +15,14 @@ public class Group extends CachedObject implements Stored{
     
     private GroupModel _model;
 
-    public Group(Cache cache) {
-        super(cache);
+    public Group(Business business) {
+        super(business);
         _employees = new HashMap<Role, Set<Employee>>();
-        _employees.put(Role.getBasicRole(cache, this), new HashSet<Employee>());
+        _employees.put(Role.getBasicRole(business, this), new HashSet<Employee>());
     }
     
-    private Group(Cache cache, GroupModel model) {
-        this(cache);
+    private Group(BusinessCache cache, GroupModel model) {
+        this(cache.getBusiness());
         _model = model;
     }
     
@@ -40,7 +41,7 @@ public class Group extends CachedObject implements Stored{
             _employees.get(role).add(employee);
     }
     
-    public static Group getGroup(Cache cache, GroupModel model) {
+    public static Group getGroup(BusinessCache cache, GroupModel model) {
         Group group = cache.getGroup(model.getId());
         if(group == null)
             group = new Group(cache, model);

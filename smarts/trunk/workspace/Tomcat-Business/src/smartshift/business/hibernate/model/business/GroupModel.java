@@ -1,11 +1,10 @@
-package smartshift.common.hibernate.model.business;
+package smartshift.business.hibernate.model.business;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -13,7 +12,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyJoinColumn;
@@ -37,38 +35,36 @@ import smartshift.common.util.collections.ROList;
  * @version Oct 26, 2014
  */
 @Entity
-@Table(name = "Employee")
-public class EmployeeModel {
+@Table(name = "Group")
+public class GroupModel {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
-
-    @Column(name = "fName", length = 50)
-    private String firstName;
-
-    @Column(name = "lName", length = 50)
-    private String lastName;
-
-    @ManyToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "defaultGrpID")
-    private GroupModel defaultGroup;
     
-    @ManyToMany(cascade=CascadeType.ALL)
-    @JoinTable(
-        name="GroupRoleEmployee",
-        joinColumns={@JoinColumn(name="empID", referencedColumnName="id")},
-        inverseJoinColumns={@JoinColumn(name="grpRoleID", referencedColumnName="id")})
+    @ManyToOne
+    @JoinColumn(name = "parentID")
+    private GroupModel parent;
+
+    @OneToMany(mappedBy = "parent")
+    private List<GroupModel> children;
+
+    @OneToMany(mappedBy = "group")
     private List<GroupRoleModel> groupRoles;
 
-    public EmployeeModel() {
+    @OneToMany(mappedBy = "group")
+    private List<EmployeeModel> employees;
+
+    @Column(name = "name", length = 50)
+    private String name;
+
+    public GroupModel() {
     }
 
-    public EmployeeModel(String firstName, String lastName, GroupModel defaultGroup) {
+    public GroupModel(GroupModel parent, String name) {
         super();
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.defaultGroup = defaultGroup;
+        this.parent = parent;
+        this.name = name;
     }
 
     /**
@@ -86,45 +82,38 @@ public class EmployeeModel {
     }
 
     /**
-     * @return the firstName
+     * @return the parent
      */
-    public String getFirstName() {
-        return firstName;
+    public GroupModel getParent() {
+        return parent;
     }
 
     /**
-     * @param firstName the firstName to set
+     * @param parent the parent to set
      */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setParent(GroupModel parent) {
+        this.parent = parent;
     }
 
     /**
-     * @return the lastName
+     * @return the children
      */
-    public String getLastName() {
-        return lastName;
+    public List<GroupModel> getChildren() {
+        return children;
     }
 
     /**
-     * @param lastName the lastName to set
+     * @return the name
      */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @return the defaultGroup
+     * @param name the name to set
      */
-    public GroupModel getDefaultGroup() {
-        return defaultGroup;
-    }
-
-    /**
-     * @param defaultGroup the defaultGroup to set
-     */
-    public void setDefaultGroup(GroupModel defaultGroup) {
-        this.defaultGroup = defaultGroup;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**
@@ -133,4 +122,5 @@ public class EmployeeModel {
     public List<GroupRoleModel> getGroupRoles() {
         return groupRoles;
     }
+    
 }

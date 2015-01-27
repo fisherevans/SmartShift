@@ -6,7 +6,6 @@ import java.util.Map;
 import smartshift.accounts.hibernate.model.accounts.ContactMethodModel;
 import smartshift.accounts.hibernate.model.accounts.UserContactMethodModel;
 import smartshift.accounts.hibernate.model.accounts.UserModel;
-import smartshift.common.cache.bo.accounts.ContactMethodBO;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 
 /**
