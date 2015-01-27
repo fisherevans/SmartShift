@@ -74,6 +74,8 @@ public class User implements Stored {
     public static User load(String username) {
         if(!users.containsKey(username)) {
             UserModel model = UserDAO.getUserByUsername(username);
+            if(model == null)
+                return null;
             users.put(username, new User(model));
         }
         return users.get(username);
