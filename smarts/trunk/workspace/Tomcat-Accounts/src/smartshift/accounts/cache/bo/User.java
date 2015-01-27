@@ -12,7 +12,7 @@ import smartshift.common.util.log4j.SmartLogger;
 public class User implements Stored {
     private static final SmartLogger logger = new SmartLogger(User.class);
     
-    private static Map<Integer, User> users;
+    private static Map<String, User> users;
     
     private String _uname;
     private String _email;
@@ -71,11 +71,11 @@ public class User implements Stored {
         
     }
     
-    public static User load(int userID) {
-        if(!users.containsKey(userID)) {
-            UserModel model = UserDAO.getUserById(userID);
-            users.put(userID, new User(model));
+    public static User load(String username) {
+        if(!users.containsKey(username)) {
+            UserModel model = UserDAO.getUserByUsername(username);
+            users.put(username, new User(model));
         }
-        return users.get(userID);
+        return users.get(username);
     }
 }
