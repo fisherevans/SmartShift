@@ -1,7 +1,7 @@
 package smartshift.accounts.cache.bo;
 
+import smartshift.accounts.hibernate.model.accounts.UserContactMethodModel;
 import com.google.gson.annotations.Expose;
-import smartshift.common.hibernate.model.accounts.UserContactMethodModel;
 
 /**
  * The business object for a contact method. Belongs to a user
