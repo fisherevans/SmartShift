@@ -15,14 +15,14 @@ public class Group extends CachedObject implements Stored{
     
     private GroupModel _model;
 
-    public Group(Business business) {
-        super(business);
+    public Group(Cache cache) {
+        super(cache);
         _employees = new HashMap<Role, Set<Employee>>();
-        _employees.put(Role.getBasicRole(business, this), new HashSet<Employee>());
+        _employees.put(Role.getBasicRole(cache, this), new HashSet<Employee>());
     }
     
-    private Group(BusinessCache cache, GroupModel model) {
-        this(cache.getBusiness());
+    private Group(Cache cache, GroupModel model) {
+        this(cache);
         _model = model;
     }
     
@@ -41,7 +41,7 @@ public class Group extends CachedObject implements Stored{
             _employees.get(role).add(employee);
     }
     
-    public static Group getGroup(BusinessCache cache, GroupModel model) {
+    public static Group getGroup(Cache cache, GroupModel model) {
         Group group = cache.getGroup(model.getId());
         if(group == null)
             group = new Group(cache, model);

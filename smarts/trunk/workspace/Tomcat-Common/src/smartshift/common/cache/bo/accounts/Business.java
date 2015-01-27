@@ -1,6 +1,6 @@
 package smartshift.common.cache.bo.accounts;
 
-import smartshift.common.cache.bo.business.BusinessCache;
+import smartshift.common.cache.bo.business.Cache;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.hibernate.dao.accounts.BusinessDAO;
 import smartshift.common.hibernate.model.accounts.BusinessModel;
@@ -13,7 +13,7 @@ public class Business implements Stored {
 
     private String _name;
     
-    private BusinessCache _cache;
+    private Cache _cache;
     private BusinessModel _model;
     
     public Business(String name) {
@@ -25,14 +25,14 @@ public class Business implements Stored {
         _model = model;
     }
     
-    public BusinessCache getCache() {
+    public Cache getCache() {
         initCache();
         return _cache;
     }
     
     private void initCache() {
         if(_cache == null)
-            _cache = new BusinessCache(this);
+            _cache = new Cache(_model.getId());
     }
 
     @Override

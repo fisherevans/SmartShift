@@ -4,15 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 import smartshift.common.cache.bo.accounts.Business;
 
-public class BusinessCache {
-    private Business _root;
+public class Cache {
+    private int _rootBusID;
     
     private Map<Integer, Employee> _employees;
     private Map<Integer, Role> _roles;
     private Map<Integer, Group> _groups;
     
-    public BusinessCache(Business root) {
-        _root = root;
+    public Cache(int rootBusID) {
+        _rootBusID = rootBusID;
         _employees = new HashMap<Integer, Employee>();
         _roles = new HashMap<Integer, Role>();
         _groups = new HashMap<Integer, Group>();
@@ -48,8 +48,8 @@ public class BusinessCache {
         _groups.put(groupID, group);
     }
 
-    public Business getBusiness() {
-        return _root;
+    public int getBusinessID() {
+        return _rootBusID;
     }
 
     public void save() {
