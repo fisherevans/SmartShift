@@ -8,8 +8,10 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.HashMap;
 import java.util.Map;
+import smartshift.common.rmi.interfaces.AccountsServiceInterface;
 import smartshift.common.rmi.interfaces.BaseRemoteInterface;
 import smartshift.common.util.log4j.SmartLogger;
+import smartshift.common.util.properties.AppConstants;
 
 /**
  * @author D. Fisher Evans <contact@fisherevans.com>
@@ -113,6 +115,20 @@ public class RMIClient {
             throw new IllegalStateException("RMI Client not yet started for " + serverHostname + ":" + port);
         BaseRemoteInterface service = registryServices.services.get(serviceName);
         return service;
+    }
+    
+    /** calls getService() using the AppConstants.RMI_ACCOUNTS_INFO
+     * @return the accounts service
+     */
+    public static AccountsServiceInterface getAccountsService() {
+        try {
+            AccountsServiceInterface accountsService = (AccountsServiceInterface) getService(
+                    AppConstants.RMI_ACCOUNTS_HOSTNAME,AppConstants.RMI_ACCOUNTS_PORT, AppConstants.RMI_ACCOUNTS_SERVICE_NAME);
+            return accountsService;
+        } catch(Exception e) {
+            logger.error("Failed to fetch accounts service", e);
+            return null;
+        }
     }
     
     /**

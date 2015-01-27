@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import smartshift.common.hibernate.model.accounts.UserModel;
+import smartshift.common.cache.bo.accounts.User;
 import smartshift.common.util.json.APIResultFactory;
 
 /**
@@ -43,8 +43,8 @@ public class ActionBase {
     /**
      * @return The User from the Request
      */
-    protected UserModel getRequestUser() {
-        return (UserModel) _request.getAttribute("user");
+    protected User getRequestUser() {
+        return (User) _request.getAttribute("user");
     }
 
     /**
