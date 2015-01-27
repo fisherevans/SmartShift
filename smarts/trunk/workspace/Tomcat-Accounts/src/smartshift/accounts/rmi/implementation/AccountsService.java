@@ -1,6 +1,8 @@
 package smartshift.accounts.rmi.implementation;
 
 import java.rmi.RemoteException;
+import java.util.LinkedList;
+import java.util.List;
 import smartshift.accounts.rmi.BusinessServiceManager;
 import smartshift.common.hibernate.dao.accounts.ServerDAO;
 import smartshift.common.hibernate.model.accounts.BusinessModel;
@@ -65,13 +67,11 @@ public class AccountsService extends BaseRemote implements AccountsServiceInterf
             BusinessServiceManager.addService(businessService, clientHostname, developmentBusinesses);
         } else { // registered db servers
             if(server.getBusinesses().size() > 0) {
-                Integer[] businessIDs = new Integer[server.getBusinesses().size()];
-                int id = 0;
-                for(BusinessModel business:server.getBusinesses()) {
-                    businessService.connectBusinessSchema(business.getId(), business.getName());
-                    businessIDs[id++] = business.getId();
-                }
-                BusinessServiceManager.addService(businessService, clientHostname, businessIDs);
+                List<Integer> businessIDs = new LinkedList<>();
+                for(BusinessModel business:server.getBusinesses())
+                    if(businessService.connectBusinessSchema(business.getId(), business.getName()))
+                        businessIDs.add(business.getId());
+                BusinessServiceManager.addService(businessService, clientHostname, businessIDs.toArray(new Integer[0]));
             }
         }
     }
