@@ -1,4 +1,4 @@
-package smartshift.common.hibernate.model.business;
+package smartshift.business.hibernate.model.business;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -35,35 +35,24 @@ import smartshift.common.util.collections.ROList;
  * @version Oct 26, 2014
  */
 @Entity
-@Table(name = "Group")
-public class GroupModel {
+@Table(name = "Role")
+public class RoleModel {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
+
+    @Column(name = "name", length = 45)
+    private String name;
     
-    @ManyToOne
-    @JoinColumn(name = "parentID")
-    private GroupModel parent;
-
-    @OneToMany(mappedBy = "parent")
-    private List<GroupModel> children;
-
-    @OneToMany(mappedBy = "group")
+    @OneToMany(mappedBy = "role")
     private List<GroupRoleModel> groupRoles;
 
-    @OneToMany(mappedBy = "group")
-    private List<EmployeeModel> employees;
-
-    @Column(name = "name", length = 50)
-    private String name;
-
-    public GroupModel() {
+    public RoleModel() {
     }
 
-    public GroupModel(GroupModel parent, String name) {
+    public RoleModel(String name) {
         super();
-        this.parent = parent;
         this.name = name;
     }
 
@@ -79,27 +68,6 @@ public class GroupModel {
      */
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    /**
-     * @return the parent
-     */
-    public GroupModel getParent() {
-        return parent;
-    }
-
-    /**
-     * @param parent the parent to set
-     */
-    public void setParent(GroupModel parent) {
-        this.parent = parent;
-    }
-
-    /**
-     * @return the children
-     */
-    public List<GroupModel> getChildren() {
-        return children;
     }
 
     /**

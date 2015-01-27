@@ -1,4 +1,4 @@
-package smartshift.common.hibernate.model.business;
+package smartshift.business.hibernate.model.business;
 
 import java.util.Date;
 import java.util.HashMap;

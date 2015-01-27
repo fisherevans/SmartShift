@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import smartshift.common.hibernate.model.business.RoleModel;
+import smartshift.business.hibernate.model.business.RoleModel;
 import smartshift.common.util.hibernate.Stored;
 
 public class Role extends CachedObject implements Stored{

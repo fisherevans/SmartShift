@@ -14,7 +14,6 @@ import smartshift.accounts.hibernate.dao.accounts.BusinessDAO;
 import smartshift.accounts.hibernate.dao.accounts.ContactMethodDAO;
 import smartshift.accounts.hibernate.model.accounts.BusinessModel;
 import smartshift.accounts.hibernate.model.accounts.UserModel;
-import smartshift.common.cache.bo.accounts.ContactMethodBO;
 import smartshift.common.jersey.ActionBase;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.params.SimpleIntegerParam;
@@ -27,7 +26,7 @@ import smartshift.common.util.params.SimpleIntegerParam;
 @Path("/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class UserActions extends ActionBase {
+public class UserActions extends AccountsActionBase {
     private static final SmartLogger logger = new SmartLogger(UserActions.class);
 
     /**
