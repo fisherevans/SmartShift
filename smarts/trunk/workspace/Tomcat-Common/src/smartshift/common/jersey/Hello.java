@@ -4,7 +4,7 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import smartshift.common.hibernate.model.accounts.UserModel;
+import smartshift.common.cache.bo.accounts.User;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -23,9 +23,9 @@ public class Hello extends ActionBase {
 	@GET
 	public Response sayHello() {
         logger.debug("Hello.sayHello()");
-	    UserModel user = getRequestUser();
+	    User user = getRequestUser();
 	    String contextPath = getContext().getContextPath();
-	    String responseText = "Hello, " + (user == null ? "Anon" : user.getUsername()) + "!";
+	    String responseText = "Hello, " + (user == null ? "Anon" : user.getUserName()) + "!";
 	    responseText += " Welcome to " + contextPath + ".";
 		return getMessageResponse(Status.OK, responseText);
 	}

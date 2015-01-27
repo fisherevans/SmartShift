@@ -10,11 +10,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
+import smartshift.accounts.hibernate.dao.accounts.BusinessDAO;
+import smartshift.accounts.hibernate.dao.accounts.ContactMethodDAO;
+import smartshift.accounts.hibernate.model.accounts.BusinessModel;
+import smartshift.accounts.hibernate.model.accounts.UserModel;
 import smartshift.common.cache.bo.accounts.ContactMethodBO;
-import smartshift.common.hibernate.dao.accounts.BusinessDAO;
-import smartshift.common.hibernate.dao.accounts.ContactMethodDAO;
-import smartshift.common.hibernate.model.accounts.BusinessModel;
-import smartshift.common.hibernate.model.accounts.UserModel;
 import smartshift.common.jersey.ActionBase;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.params.SimpleIntegerParam;
@@ -58,10 +58,10 @@ public class UserActions extends ActionBase {
     @GET
     @Path("/business")
     public Response getUserBusinessesAction() {
-        logger.debug("UserActions.getUserBusinessesAction() Enter");
-        Map<Integer, BusinessModel> businesses = BusinessDAO.getUserBusinessMap(getRequestUser());
-        logger.debug("UserActions.getUserBusinessesAction() found " + businesses.size() + " businesses");
-        return getObjectResponse(Status.OK, businesses);
+//        logger.debug("UserActions.getUserBusinessesAction() Enter");
+//        Map<Integer, BusinessModel> businesses = BusinessDAO.getUserBusinessMap(getRequestUser());
+//        logger.debug("UserActions.getUserBusinessesAction() found " + businesses.size() + " businesses");
+        return getObjectResponse(Status.OK, "businesses");
     }
 
     /**
@@ -72,13 +72,13 @@ public class UserActions extends ActionBase {
     @GET
     @Path("/business/{businessID}")
     public Response getUserBusiness(@PathParam("businessID") SimpleIntegerParam businessID) {
-        logger.debug("UserActions.getUserBusiness() Enter");
-        BusinessModel business = BusinessDAO.getUserBusiness(getRequestUser(), businessID.getInteger());
-        if(business == null) {
-            logger.debug("UserActions.getUserBusiness() No business found for id " + businessID.getOriginalValue());
-            return getMessageResponse(Status.NO_CONTENT, MSG_204_BUSINESS);
-        }
-        return getObjectResponse(Status.OK, business);
+//        logger.debug("UserActions.getUserBusiness() Enter");
+//        BusinessModel business = BusinessDAO.getUserBusiness(getRequestUser(), businessID.getInteger());
+//        if(business == null) {
+//            logger.debug("UserActions.getUserBusiness() No business found for id " + businessID.getOriginalValue());
+//            return getMessageResponse(Status.NO_CONTENT, MSG_204_BUSINESS);
+//        }
+        return getObjectResponse(Status.OK, "business");
     }
 
     /**
@@ -88,9 +88,9 @@ public class UserActions extends ActionBase {
     @GET
     @Path("/contactMethod")
     public Response getContactMethods() {
-        logger.debug("UserActions.getContactMethods() Enter");
-        Map<Integer, ContactMethodBO> contactMethods = ContactMethodDAO.getUserContactMethodMap(getRequestUser());
-        return getObjectResponse(Status.OK, contactMethods);
+//        logger.debug("UserActions.getContactMethods() Enter");
+//        Map<Integer, ContactMethodBO> contactMethods = ContactMethodDAO.getUserContactMethodMap(getRequestUser());
+        return getObjectResponse(Status.OK, "contactMethods");
     }
 
     /**
@@ -101,13 +101,13 @@ public class UserActions extends ActionBase {
     @GET
     @Path("/contactMethod/{contactMethodID}")
     public Response getContactMethod(@PathParam("contactMethodID") SimpleIntegerParam contactMethodID) {
-        logger.debug("UserActions.getUsergetContactMethod() Enter");
-        UserModel user = getRequestUser();
-        ContactMethodBO contactMethod = ContactMethodDAO.getUserContactMethod(user, contactMethodID.getInteger());
-        if(contactMethod == null) {
-            logger.debug("UserActions.getUsergetContactMethod() No countact method found for id " + contactMethodID.getOriginalValue());
-            return getMessageResponse(Status.NO_CONTENT, MSG_204_CONTACT_METHOD);
-        }
-        return getObjectResponse(Status.OK, contactMethod);
+//        logger.debug("UserActions.getUsergetContactMethod() Enter");
+//        UserModel user = getRequestUser();
+//        ContactMethodBO contactMethod = ContactMethodDAO.getUserContactMethod(user, contactMethodID.getInteger());
+//        if(contactMethod == null) {
+//            logger.debug("UserActions.getUsergetContactMethod() No countact method found for id " + contactMethodID.getOriginalValue());
+//            return getMessageResponse(Status.NO_CONTENT, MSG_204_CONTACT_METHOD);
+//        }
+        return getObjectResponse(Status.OK, "contactMethod");
     }
 }

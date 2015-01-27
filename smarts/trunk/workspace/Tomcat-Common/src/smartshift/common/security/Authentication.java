@@ -3,6 +3,7 @@ package smartshift.common.security;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response.Status;
 import org.mindrot.jbcrypt.BCrypt;
+import smartshift.common.cache.bo.accounts.User;
 import smartshift.common.hibernate.dao.accounts.UserDAO;
 import smartshift.common.hibernate.model.accounts.UserModel;
 import smartshift.common.util.json.APIResultFactory;
@@ -24,11 +25,11 @@ public class Authentication {
      * null if not
      * @throws WebApplicationException If any error occurs
      */
-    public static UserModel checkAuth(String username, String password) throws WebApplicationException {
-        UserModel user = null;
+    public static User checkAuth(String username, String password) throws WebApplicationException {
+        User user = null;
         try {
             logger.debug("Fetching web user with the username of: " + username);
-            UserModel tempUser = UserDAO.getUserByUsername(username);
+            User tempUser = UserDAO.getUserByUsername(username);
             if(tempUser != null) {
                 if(BCrypt.checkpw(password, tempUser.getPassHash())) {
                     user = tempUser;
