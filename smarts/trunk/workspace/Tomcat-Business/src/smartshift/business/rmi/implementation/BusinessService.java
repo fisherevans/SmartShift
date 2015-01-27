@@ -62,8 +62,8 @@ public class BusinessService extends BaseRemote implements BusinessServiceInterf
      * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#connectBusinessSchema(java.lang.Integer, java.lang.String)
      */
     @Override
-    public void connectBusinessSchema(Integer businessID, String businessName) throws RemoteException {
-        BusinessDatabaseManager.connectBusinessSchema(businessID, businessName);
+    public boolean connectBusinessSchema(Integer businessID, String businessName) throws RemoteException {
+        return BusinessDatabaseManager.connectBusinessSchema(businessID, businessName);
     }
 
     /**
