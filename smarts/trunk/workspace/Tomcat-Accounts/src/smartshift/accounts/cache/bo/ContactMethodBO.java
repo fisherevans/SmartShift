@@ -1,6 +1,6 @@
 package smartshift.accounts.cache.bo;
 
-import smartshift.accounts.hibernate.model.accounts.UserContactMethodModel;
+import smartshift.accounts.hibernate.model.UserContactMethodModel;
 import com.google.gson.annotations.Expose;
 
 /**
