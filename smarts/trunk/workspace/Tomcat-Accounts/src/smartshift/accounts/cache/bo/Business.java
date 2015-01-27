@@ -1,5 +1,6 @@
 package smartshift.accounts.cache.bo;
 
+import java.util.Map;
 import smartshift.accounts.hibernate.dao.BusinessDAO;
 import smartshift.accounts.hibernate.model.BusinessModel;
 import smartshift.common.hibernate.DBException;
@@ -10,6 +11,8 @@ import smartshift.common.util.log4j.SmartLogger;
 public class Business implements Stored {
     private static SmartLogger logger = new SmartLogger(Business.class);
 
+    private static Map<Integer, Business> businesses;
+    
     private String _name;
     
     private BusinessModel _model;
@@ -40,5 +43,13 @@ public class Business implements Stored {
     public void loadAllChildren() {
         // TODO Auto-generated method stub
         
+    }
+    
+    public static Business load(int busID) {
+        if(!businesses.containsKey(busID)) {
+            BusinessModel model = BusinessDAO.getBusiness(busID);
+            businesses.put(busID, new Business(model));           
+        }
+        return businesses.get(busID);
     }
 }
