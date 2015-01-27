@@ -1,11 +1,10 @@
-package smartshift.common.security;
+package smartshift.accounts.security;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response.Status;
 import org.mindrot.jbcrypt.BCrypt;
-import smartshift.common.cache.bo.accounts.User;
-import smartshift.common.hibernate.dao.accounts.UserDAO;
-import smartshift.common.hibernate.model.accounts.UserModel;
+import smartshift.accounts.hibernate.dao.UserDAO;
+import smartshift.accounts.hibernate.model.UserModel;
 import smartshift.common.util.json.APIResultFactory;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -15,8 +14,8 @@ import smartshift.common.util.log4j.SmartLogger;
  * @author D. Fisher Evans <contact@fisherevans.com>
  *
  */
-public class Authentication {
-    private static SmartLogger logger = new SmartLogger(Authentication.class);
+public class UserAuthentication {
+    private static SmartLogger logger = new SmartLogger(UserAuthentication.class);
 
     /**
      * @param username the username of the basic auth
@@ -25,11 +24,11 @@ public class Authentication {
      * null if not
      * @throws WebApplicationException If any error occurs
      */
-    public static User checkAuth(String username, String password) throws WebApplicationException {
-        User user = null;
+    public static UserModel checkAuth(String username, String password) throws WebApplicationException {
+        UserModel user = null;
         try {
             logger.debug("Fetching web user with the username of: " + username);
-            User tempUser = UserDAO.getUserByUsername(username);
+            UserModel tempUser = UserDAO.getUserByUsername(username);
             if(tempUser != null) {
                 if(BCrypt.checkpw(password, tempUser.getPassHash())) {
                     user = tempUser;

@@ -27,7 +27,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.mindrot.jbcrypt.BCrypt;
 import com.google.gson.annotations.Expose;
-import smartshift.common.security.Authentication;
+import smartshift.accounts.security.UserAuthentication;
 import smartshift.common.util.collections.ROList;
 
 /**
