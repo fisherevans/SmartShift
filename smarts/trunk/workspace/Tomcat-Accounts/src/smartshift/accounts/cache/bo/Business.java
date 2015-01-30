@@ -13,19 +13,29 @@ public class Business implements Stored {
 
     private static Map<Integer, Business> businesses;
     
+    private int _id;
     private String _name;
     
     private BusinessModel _model;
     
-    public Business(String name) {
+    private Business(int id, String name) {
+        _id = id;
         _name = name;
     }
     
     private Business(BusinessModel model) {
-        this(model.getName());
+        this(model.getId(), model.getName());
         _model = model;
     }
 
+    public int getID() {
+        return _id;
+    }
+    
+    public String getName() {
+        return _name;
+    }
+    
     @Override
     public void save() {
         try {

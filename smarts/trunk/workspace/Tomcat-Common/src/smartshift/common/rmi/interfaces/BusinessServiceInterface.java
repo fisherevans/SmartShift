@@ -33,7 +33,7 @@ public interface BusinessServiceInterface extends BaseRemoteInterface {
      * @throws RemoteException
      */
     public int invalidateAllUserSessions(Integer businessID) throws RemoteException;
-    
+
     /**
      * Connects this server to this business via the database
      * @param businessID the business id

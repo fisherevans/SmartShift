@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Cache {
+    private static Map<Integer, Cache> caches;
+    
     private int _rootBusID;
     
     private Map<Integer, Employee> _employees;
@@ -58,5 +60,13 @@ public class Cache {
             e.save();
         for(Role r : _roles.values())
             r.save();      
+    }
+    
+    public static Cache getCache(Integer busID) {
+        if(caches == null)
+            caches = new HashMap<Integer, Cache>();
+        if(!caches.containsKey(busID))
+            caches.put(busID, new Cache(busID));
+        return caches.get(busID);
     }
 }

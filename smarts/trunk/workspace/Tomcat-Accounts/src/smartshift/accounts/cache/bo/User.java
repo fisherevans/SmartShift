@@ -2,7 +2,9 @@ package smartshift.accounts.cache.bo;
 
 import java.util.HashMap;
 import java.util.Map;
+import smartshift.accounts.hibernate.dao.UserBusinessEmployeeDAO;
 import smartshift.accounts.hibernate.dao.UserDAO;
+import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
 import smartshift.accounts.hibernate.model.UserModel;
 import smartshift.accounts.rmi.BusinessServiceManager;
 import smartshift.common.hibernate.DBException;
@@ -23,6 +25,7 @@ public class User implements Stored {
     private Map<Business, Integer> _employeeIDs;
     
     private UserModel _model;
+    private UserBusinessEmployeeModel _busEmpModel;
     
     public User(String username, String email, String password) {
         _uname = username;
@@ -61,15 +64,7 @@ public class User implements Stored {
     
     public void connect(Business bus, int empID) {
         _employeeIDs.put(bus, empID);
-        ROSet<BusinessServiceInterface> bs = BusinessServiceManager.getBusinessServices(bus.getID());
-        for(BusinessServiceInterface bsi : bs) {
-            try {
-               bsi.linkEmployeeToUser(bus.getID(), _model.getId(), empID);
-            } catch (Exception e) {
-                logger.debug(e);
-            }
-        }
-        
+        _busEmpModel = UserBusinessEmployeeDAO.getUBE(_model, bus.getID(), empID);
     }
     
     public void save() {
@@ -86,8 +81,9 @@ public class User implements Stored {
 
     @Override
     public void loadAllChildren() {
-        // TODO Auto-generated method stub
-        
+        for(UserBusinessEmployeeModel ube : _model.getUserBusinessEmployees()) {
+            _employeeIDs.put(Business.load(ube.getBusiness().getId()), ube.getEmployeeID());
+        }
     }
     
     public static User load(String username) {
@@ -98,5 +94,12 @@ public class User implements Stored {
             users.put(username, new User(model));
         }
         return users.get(username);
+    }
+    
+    public static User createNewUser(String username, String email, String password) {
+        User user = new User(username, email, password);
+        users.put(username, user);
+        user.save();
+        return user;
     }
 }
