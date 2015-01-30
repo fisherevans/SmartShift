@@ -21,6 +21,7 @@ public class Employee extends CachedObject implements Stored{
     
     private EmployeeModel _model;
     
+    
     public Employee(Cache cache, String first, String last, Group home) {
         super(cache);
         _firstName = first;
