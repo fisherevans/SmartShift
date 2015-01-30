@@ -4,7 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import smartshift.accounts.hibernate.dao.UserDAO;
 import smartshift.accounts.hibernate.model.UserModel;
+import smartshift.accounts.rmi.BusinessServiceManager;
 import smartshift.common.hibernate.DBException;
+import smartshift.common.rmi.interfaces.BusinessServiceInterface;
+import smartshift.common.util.collections.ROSet;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.hibernate.Stored;
 import smartshift.common.util.log4j.SmartLogger;
@@ -49,8 +52,24 @@ public class User implements Stored {
         return _employeeIDs.get(bus);
     }
     
+    public int getID() {
+        if(_model != null) {
+            return _model.getId();
+        } 
+        return -1;
+    }
+    
     public void connect(Business bus, int empID) {
         _employeeIDs.put(bus, empID);
+        ROSet<BusinessServiceInterface> bs = BusinessServiceManager.getBusinessServices(bus.getID());
+        for(BusinessServiceInterface bsi : bs) {
+            try {
+               bsi.linkEmployeeToUser(bus.getID(), _model.getId(), empID);
+            } catch (Exception e) {
+                logger.debug(e);
+            }
+        }
+        
     }
     
     public void save() {
