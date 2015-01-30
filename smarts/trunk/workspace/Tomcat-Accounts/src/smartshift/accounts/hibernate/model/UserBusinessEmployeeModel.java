@@ -30,80 +30,101 @@ public class UserBusinessEmployeeModel implements Serializable {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "userID", nullable = false)
-    private UserModel user;
+    @Column(name = "userID", nullable = false)
+    private Integer userID;
 
-    @ManyToOne
-    @JoinColumn(name = "busID", nullable = false)
-    private BusinessModel business;
+    @Column(name = "busID", nullable = false)
+    private Integer businessID;
     
     @Column(name = "empID", nullable = false)
     private Integer employeeID;
 
     @Column(name = "joinTS", nullable = false)
     private Date joinTimestamp;
-    
-    @OneToMany(mappedBy = "userBusinessEmployee")
-    private List<UserBusinessEmployeePreferenceModel> userBusinessEmployeePreferences;
 
     public UserBusinessEmployeeModel() {
     }
-
+    
+    /**
+     * @return the id
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public UserModel getUser() {
-        return user;
+    /**
+     * @return the userID
+     */
+    public Integer getUserID() {
+        return userID;
     }
 
-    public void setUser(UserModel user) {
-        this.user = user;
+    /**
+     * @param userID the userID to set
+     */
+    public void setUserID(Integer userID) {
+        this.userID = userID;
     }
 
-    public BusinessModel getBusiness() {
-        return business;
+    /**
+     * @return the businessID
+     */
+    public Integer getBusinessID() {
+        return businessID;
     }
 
-    public void setBusiness(BusinessModel business) {
-        this.business = business;
+    /**
+     * @param businessID the businessID to set
+     */
+    public void setBusinessID(Integer businessID) {
+        this.businessID = businessID;
     }
 
+    /**
+     * @return the employeeID
+     */
     public Integer getEmployeeID() {
         return employeeID;
     }
 
+    /**
+     * @param employeeID the employeeID to set
+     */
     public void setEmployeeID(Integer employeeID) {
         this.employeeID = employeeID;
     }
 
+    /**
+     * @return the joinTimestamp
+     */
     public Date getJoinTimestamp() {
         return joinTimestamp;
     }
 
+    /**
+     * @param joinTimestamp the joinTimestamp to set
+     */
     public void setJoinTimestamp(Date joinTimestamp) {
         this.joinTimestamp = joinTimestamp;
     }
 
-    public ROList<UserBusinessEmployeePreferenceModel> getUserBusinessEmployeePreferences() {
-        return new ROList<UserBusinessEmployeePreferenceModel>(userBusinessEmployeePreferences);
-    }
-
     @Override
     public int hashCode() {
-        return user.getId().hashCode()*business.getId().hashCode();
+        return userID.hashCode()*businessID.hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof UserBusinessEmployeeModel) {
             UserBusinessEmployeeModel other = (UserBusinessEmployeeModel) obj;
-            return other.getUser().getId() == user.getId() && other.getBusiness().getId() == business.getId();
+            return other.getUserID() == getUserID() && other.getBusinessID() == getBusinessID();
         }
         return false;
     }

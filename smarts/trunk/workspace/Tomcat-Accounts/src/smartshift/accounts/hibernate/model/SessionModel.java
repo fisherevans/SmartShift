@@ -24,9 +24,8 @@ public class SessionModel {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @ManyToOne
-    @JoinColumn(name = "userBusEmpID", nullable = false)
-    private UserBusinessEmployeeModel userBusinessEmployee;
+    @Column(name = "userBusEmpID", nullable = false)
+    private Integer userBusinessEmployeeID;
 
     @Column(name = "sessionKey", nullable = false, length = 256)
     private String sessionKey;
@@ -37,34 +36,58 @@ public class SessionModel {
     public SessionModel() {
     }
 
+    /**
+     * @return the id
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(Integer id) {
         this.id = id;
     }
 
-    public UserBusinessEmployeeModel getUserBusinessEmployee() {
-        return userBusinessEmployee;
+    /**
+     * @return the userBusinessEmployeeID
+     */
+    public Integer getUserBusinessEmployeeID() {
+        return userBusinessEmployeeID;
     }
 
-    public void setUserBusinessEmployee(UserBusinessEmployeeModel userBusinessEmployee) {
-        this.userBusinessEmployee = userBusinessEmployee;
+    /**
+     * @param userBusinessEmployeeID the userBusinessEmployeeID to set
+     */
+    public void setUserBusinessEmployeeID(Integer userBusinessEmployeeID) {
+        this.userBusinessEmployeeID = userBusinessEmployeeID;
     }
 
+    /**
+     * @return the sessionKey
+     */
     public String getSessionKey() {
         return sessionKey;
     }
 
+    /**
+     * @param sessionKey the sessionKey to set
+     */
     public void setSessionKey(String sessionKey) {
         this.sessionKey = sessionKey;
     }
 
+    /**
+     * @return the lastActivityTimestamp
+     */
     public Date getLastActivityTimestamp() {
         return lastActivityTimestamp;
     }
 
+    /**
+     * @param lastActivityTimestamp the lastActivityTimestamp to set
+     */
     public void setLastActivityTimestamp(Date lastActivityTimestamp) {
         this.lastActivityTimestamp = lastActivityTimestamp;
     }

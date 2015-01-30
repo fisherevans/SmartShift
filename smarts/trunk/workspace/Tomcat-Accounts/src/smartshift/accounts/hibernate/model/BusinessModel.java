@@ -25,7 +25,6 @@ import smartshift.common.util.collections.ROList;
 @Table(name = "Business")
 public class BusinessModel {
     @Id
-    @Expose
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -40,23 +39,17 @@ public class BusinessModel {
     @Column(name = "groupID")
     private Integer groupID;
 
-    @ManyToOne
-    @JoinColumn(name = "buildID", nullable = false)
-    private BuildModel build;
+    @Column(name = "buildID")
+    private Integer buildID;
 
-    @ManyToOne
-    @JoinColumn(name = "servID", nullable = false)
-    private ServerModel server;
+    @Column(name = "servID", nullable = false)
+    private Integer serverID;
+    
+    @Column(name = "imgID")
+    private Integer imageID;
 
-    @Expose
-    @ManyToOne
-    @JoinColumn(name = "imgID")
-    private ImageModel image;
-
-    @Expose
-    @ManyToOne
-    @JoinColumn(name = "addressID")
-    private AddressModel address;
+    @Column(name = "addressID")
+    private Integer addressID;
 
     @Column(name = "inactive", nullable = false)
     private Boolean inactive = false;
@@ -64,31 +57,33 @@ public class BusinessModel {
     @Column(name = "flags", nullable = false)
     private Integer flags = 0;
     
-    @ManyToMany
-    @JoinTable(
-        name="UserBusinessEmployee",
-        joinColumns={@JoinColumn(name="busID", referencedColumnName="id")},
-        inverseJoinColumns={@JoinColumn(name="userID", referencedColumnName="id")})
-    private List<UserModel> users;
-    
-    @OneToMany(mappedBy = "business")
-    private List<BusinessPreferenceModel> businessPreferences;
-
     public BusinessModel() {
     }
 
+    /**
+     * @return the id
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * @return the name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * @param name the name to set
+     */
     public void setName(String name) {
         this.name = name;
     }
@@ -107,55 +102,101 @@ public class BusinessModel {
         this.description = description;
     }
 
-    public AddressModel getAddress() {
-        return address;
+    /**
+     * @return the groupID
+     */
+    public Integer getGroupID() {
+        return groupID;
     }
 
-    public void setAddress(AddressModel address) {
-        this.address = address;
+    /**
+     * @param groupID the groupID to set
+     */
+    public void setGroupID(Integer groupID) {
+        this.groupID = groupID;
     }
 
-    public BuildModel getBuild() {
-        return build;
+    /**
+     * @return the buildID
+     */
+    public Integer getBuildID() {
+        return buildID;
     }
 
-    public void setBuild(BuildModel build) {
-        this.build = build;
+    /**
+     * @param buildID the buildID to set
+     */
+    public void setBuildID(Integer buildID) {
+        this.buildID = buildID;
     }
 
-    public ServerModel getServer() {
-        return server;
+    /**
+     * @return the serverID
+     */
+    public Integer getServerID() {
+        return serverID;
     }
 
-    public void setServer(ServerModel server) {
-        this.server = server;
+    /**
+     * @param serverID the serverID to set
+     */
+    public void setServerID(Integer serverID) {
+        this.serverID = serverID;
     }
 
-    public ImageModel getImage() {
-        return image;
+    /**
+     * @return the imageID
+     */
+    public Integer getImageID() {
+        return imageID;
     }
 
-    public void setImage(ImageModel image) {
-        this.image = image;
+    /**
+     * @param imageID the imageID to set
+     */
+    public void setImageID(Integer imageID) {
+        this.imageID = imageID;
     }
 
+    /**
+     * @return the addressID
+     */
+    public Integer getAddressID() {
+        return addressID;
+    }
+
+    /**
+     * @param addressID the addressID to set
+     */
+    public void setAddressID(Integer addressID) {
+        this.addressID = addressID;
+    }
+
+    /**
+     * @return the inactive
+     */
     public Boolean getInactive() {
         return inactive;
     }
 
+    /**
+     * @param inactive the inactive to set
+     */
     public void setInactive(Boolean inactive) {
         this.inactive = inactive;
     }
 
+    /**
+     * @return the flags
+     */
     public Integer getFlags() {
         return flags;
     }
 
+    /**
+     * @param flags the flags to set
+     */
     public void setFlags(Integer flags) {
         this.flags = flags;
-    }
-
-    public ROList<UserModel> getUsers() {
-        return new ROList<UserModel>(users);
     }
 }

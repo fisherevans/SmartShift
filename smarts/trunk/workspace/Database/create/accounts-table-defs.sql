@@ -150,6 +150,14 @@ CREATE TABLE `Accounts`.`Session` (
 	PRIMARY KEY (`id`)
 );
 
+ALTER TABLE `Accounts`.`Session`
+ADD CONSTRAINT `session_userbusiness`
+	FOREIGN KEY (`userBusEmpID`)
+	REFERENCES `Accounts`.`UserBusinessEmployee`(`id`)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION
+;
+
 DROP TABLE IF EXISTS `Accounts`.`BusinessPreference`;
 CREATE TABLE `Accounts`.`BusinessPreference` (
 	`busID` INT NOT NULL,

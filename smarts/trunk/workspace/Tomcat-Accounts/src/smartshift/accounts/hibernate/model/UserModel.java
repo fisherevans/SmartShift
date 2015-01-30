@@ -37,42 +37,31 @@ import smartshift.common.util.collections.ROList;
 @Entity
 @Table(name = "User")
 public class UserModel {
-    @Expose
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Expose
     @Column(name = "username", nullable = false, length = 50)
     private String username;
 
     @Column(name = "passHash", nullable = false, length = 256)
     private String passHash;
 
-    @Expose
     @Column(name = "email", nullable = false, length = 256)
     private String email;
 
     @Column(name = "createTS", nullable = false)
     private Date createTimestamp = new Date();
 
-    @Expose
-    @ManyToOne
-    @JoinColumn(name = "imgID")
-    private ImageModel image;
+    @Column(name = "imgID", nullable = false)
+    private Integer imageID;
 
     @Column(name = "inactive", nullable = false)
     private Boolean inactive = false;
 
     @Column(name = "flags", nullable = false)
     private Integer flags = 0;
-    
-    @OneToMany(mappedBy = "user")
-    private List<UserContactMethodModel> userContactMethods;
-    
-    @OneToMany(mappedBy = "user")
-    private List<UserBusinessEmployeeModel> userBusinessEmployees;
 
     public UserModel() {
     }
@@ -81,10 +70,6 @@ public class UserModel {
         this.username = username;
         this.passHash = passHash;
         this.email = email;
-    }
-    
-    public List<UserContactMethodModel> getUserContactMethods() {
-        return userContactMethods;
     }
 
     public Integer getId() {
@@ -127,12 +112,18 @@ public class UserModel {
         this.createTimestamp = createTimestamp;
     }
 
-    public ImageModel getImage() {
-        return image;
+    /**
+     * @return the imageID
+     */
+    public Integer getImageID() {
+        return imageID;
     }
 
-    public void setImage(ImageModel image) {
-        this.image = image;
+    /**
+     * @param imageID the imageID to set
+     */
+    public void setImageID(Integer imageID) {
+        this.imageID = imageID;
     }
 
     public Boolean getInactive() {
@@ -149,9 +140,5 @@ public class UserModel {
 
     public void setFlags(Integer flags) {
         this.flags = flags;
-    }
-
-    public List<UserBusinessEmployeeModel> getUserBusinessEmployees() {
-        return userBusinessEmployees;
     }
 }
