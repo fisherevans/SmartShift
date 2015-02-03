@@ -11,12 +11,17 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 import com.google.gson.annotations.Expose;
+import smartshift.accounts.cache.bo.Business;
+import smartshift.accounts.cache.bo.User;
 import smartshift.accounts.hibernate.dao.SessionDAO;
 import smartshift.accounts.hibernate.dao.UserBusinessEmployeeDAO;
 import smartshift.accounts.hibernate.model.SessionModel;
 import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
+import smartshift.accounts.rmi.BusinessServiceManager;
 import smartshift.common.jersey.ActionBase;
+import smartshift.common.rmi.interfaces.BusinessServiceInterface;
 import smartshift.common.util.log4j.SmartLogger;
+import smartshift.common.util.properties.AppConstants;
 
 /**
  * Jersey actions for session methods
@@ -26,7 +31,7 @@ import smartshift.common.util.log4j.SmartLogger;
 @Path("/user/session")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class SessionActions extends ActionBase {
+public class SessionActions extends AccountsActionBase {
     private static final SmartLogger logger = new SmartLogger(SessionActions.class);
 
     /**
@@ -42,7 +47,7 @@ public class SessionActions extends ActionBase {
     /**
      * message when there's not enough data to create a session
      */
-    private static final String MSG_SESSION_CREATE_400 = "Please supply a correct employee ID or business ID";
+    private static final String MSG_SESSION_CREATE_400 = "Please supply a valid employee ID or business ID";
     
     /**
      * message when there's an error creating a session
@@ -52,7 +57,7 @@ public class SessionActions extends ActionBase {
     /**
      * message when there's an error creating a session
      */
-    private static final String MSG_SESSION_DELETE_400 = "Please supply a correct employee ID, business ID and session key";
+    private static final String MSG_SESSION_DELETE_400 = "Please supply a valid employee ID, business ID and session key";
     
     /**
      * message when there's an error creating a session
@@ -67,7 +72,7 @@ public class SessionActions extends ActionBase {
     /**
      * message when there's not enough data to lookup a session
      */
-    private static final String MSG_SESSION_KA_400 = "Please supply a correct employee ID, business ID and session key";
+    private static final String MSG_SESSION_KA_400 = "Please supply a valid employee ID, business ID and session key";
 
     /**
      * message when theres an internal error updating a session ts
@@ -81,18 +86,33 @@ public class SessionActions extends ActionBase {
      */
     @PUT
     public Response createSession(SessionRequest sessionRequest) {
-//        logger.debug("SessionActions.createSession() Enter");
-//        if(sessionRequest== null || sessionRequest.businessID == null || sessionRequest.employeeID == null) {
-//            logger.debug("SessionActions.createSession() Invalid request");
-//            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_CREATE_400);
-//        }
-//        UserBusinessEmployeeModel ube = UserBusinessEmployeeDAO.getUBE(getRequestUser().g, sessionRequest.businessID, sessionRequest.employeeID);
-//        SessionModel session = SessionDAO.createSession(ube);
-//        if(session == null) {
-//            logger.debug("SessionActions.createSession() Failed to create session");
-//            return getMessageResponse(Status.INTERNAL_SERVER_ERROR, MSG_SESSION_CREATE_501);
-//        }
-        return getObjectResponse(Status.OK, "session");
+        logger.debug("SessionActions.createSession() Enter");
+        if(sessionRequest== null || sessionRequest.businessID == null || sessionRequest.employeeID == null) {
+            logger.debug("SessionActions.createSession() Invalid request");
+            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_CREATE_400);
+        }
+        User user = getRequestUser();
+        Business business = Business.load(sessionRequest.businessID);
+        if(user == null || business == null)
+            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_CREATE_400);
+        Integer employeeID = user.getEmployeeID(business);
+        if(employeeID == null)
+            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_CREATE_400);
+        
+        UserBusinessEmployeeModel ube = UserBusinessEmployeeDAO.getUBE(user.getID(), sessionRequest.businessID, sessionRequest.employeeID);
+        SessionModel session = SessionDAO.createSession(ube.getEmployeeID());
+        if(session == null) {
+            logger.debug("SessionActions.createSession() Failed to create session");
+            return getMessageResponse(Status.INTERNAL_SERVER_ERROR, MSG_SESSION_CREATE_501);
+        }
+        for(BusinessServiceInterface bs:BusinessServiceManager.getBusinessServices(sessionRequest.businessID)) {
+            try {
+                bs.addUserSession(user.getUserName(), session.getSessionKey(), sessionRequest.businessID, AppConstants.SESSION_TIMEOUT);
+            } catch(Exception e) {
+                logger.warn("Failed to send session to business");
+            }
+        }
+        return getObjectResponse(Status.OK, session.getSessionKey());
     }
     
     /**

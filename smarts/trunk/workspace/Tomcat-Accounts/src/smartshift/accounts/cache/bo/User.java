@@ -64,7 +64,7 @@ public class User implements Stored {
     
     public void connect(Business bus, int empID) {
         _employeeIDs.put(bus, empID);
-        _busEmpModel = UserBusinessEmployeeDAO.getUBE(_model, bus.getID(), empID);
+        _busEmpModel = UserBusinessEmployeeDAO.getUBE(_model.getId(), bus.getID(), empID);
     }
     
     public void save() {
@@ -81,12 +81,17 @@ public class User implements Stored {
 
     @Override
     public void loadAllChildren() {
-        for(UserBusinessEmployeeModel ube : _model.getUserBusinessEmployees()) {
-            _employeeIDs.put(Business.load(ube.getBusiness().getId()), ube.getEmployeeID());
+        try {
+            for(UserBusinessEmployeeModel ube : UserBusinessEmployeeDAO.getUBEs(_model.getId()))
+                _employeeIDs.put(Business.load(ube.getBusinessID()), ube.getEmployeeID());
+        } catch(Exception e) {
+            logger.error("Failed to load children", e);
         }
     }
     
     public static User load(String username) {
+        if(users == null)
+            users = new HashMap<String, User>();
         if(!users.containsKey(username)) {
             UserModel model = UserDAO.getUserByUsername(username);
             if(model == null)

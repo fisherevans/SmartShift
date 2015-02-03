@@ -29,14 +29,14 @@ public class SessionDAO extends BaseAccountsDAO {
     
     /**
      * Gets an existing session
-     * @param ube the user business employee relation for this key
+     * @param ubeID the user business employee relation for this key
      * @param key the key string
      * @return the session object, null if it doesn't exist
      */
-    public static SessionModel getSession(UserBusinessEmployeeModel ube, String key) {
+    public static SessionModel getSession(Integer ubeID, String key) {
         logger.debug("getSession() Enter");
         SessionModel session = GenericHibernateUtil.uniqueByCriterea(getAccountsSession(), SessionModel.class,
-                Restrictions.eq("userBusinessEmployee", ube), Restrictions.eq("sessionKey", key));
+                Restrictions.eq("userBusinessEmployeeID", ubeID), Restrictions.eq("sessionKey", key));
         return session;
     }
     
@@ -73,12 +73,12 @@ public class SessionDAO extends BaseAccountsDAO {
      * @param ube the user business employee relationship for this session
      * @return the new session
      */
-    public static SessionModel createSession(UserBusinessEmployeeModel ube) {
+    public static SessionModel createSession(Integer ubeID) {
         logger.debug("createSession() Enter");
         try {
             SessionModel session = new SessionModel();
-            session.setSessionKey(generateSessionKey(ube));
-            session.setUserBusinessEmployee(ube);
+            session.setSessionKey(generateSessionKey(ubeID));
+            session.setUserBusinessEmployeeID(ubeID);
             GenericHibernateUtil.save(getAccountsSession(), session);
             return session;
         } catch(Exception e) {
@@ -107,13 +107,13 @@ public class SessionDAO extends BaseAccountsDAO {
      * Generate a new session key unique to the user business employee relationship
      * @param ube the relationship to use
      */
-    private static String generateSessionKey(UserBusinessEmployeeModel ube) {
+    private static String generateSessionKey(Integer ubeID) {
         logger.debug("generateSessionKey() Enter");
         String key = "";
         do {
             logger.debug("generateSessionKey() Generating key");
             key = getRandomSessionKey(KEY_LENGTH);
-        } while(getSession(ube, key) != null);
+        } while(getSession(ubeID, key) != null);
         return key;
     }
     

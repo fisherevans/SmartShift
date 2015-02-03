@@ -47,21 +47,24 @@
         <!-- Hibernate XML mapping files -->  
         <!--  <mapping resource="Artist.hbm.xml"/>  -->
         
-		<mapping class="smartshift.common.hibernate.model.accounts.AddressModel"/>
-		<mapping class="smartshift.common.hibernate.model.accounts.ApplicationTipModel"/>
-		<mapping class="smartshift.common.hibernate.model.accounts.BuildModel"/>
-		<mapping class="smartshift.common.hibernate.model.accounts.BusinessModel"/>
-		<mapping class="smartshift.common.hibernate.model.accounts.BusinessPreferenceModel"/>
-		<mapping class="smartshift.common.hibernate.model.accounts.ContactMethodModel"/>
-		<mapping class="smartshift.common.hibernate.model.accounts.ImageModel"/>
-		<mapping class="smartshift.common.hibernate.model.accounts.PreferenceModel"/>
-		<mapping class="smartshift.common.hibernate.model.accounts.ServerModel"/>
-		<mapping class="smartshift.common.hibernate.model.accounts.SessionModel"/>
-		<mapping class="smartshift.common.hibernate.model.accounts.SystemPropertyModel"/>
-		<mapping class="smartshift.common.hibernate.model.accounts.UserModel"/>
-		<mapping class="smartshift.common.hibernate.model.accounts.UserBusinessEmployeeModel"/>
-		<mapping class="smartshift.common.hibernate.model.accounts.UserBusinessEmployeePreferenceModel"/>
-		<mapping class="smartshift.common.hibernate.model.accounts.UserContactMethodModel"/>
+	    <mapping class="smartshift.accounts.hibernate.model.UserModel"/>
+	    <mapping class="smartshift.accounts.hibernate.model.UserBusinessEmployeeModel"/>
+	    <mapping class="smartshift.accounts.hibernate.model.SessionModel"/>
+	    <mapping class="smartshift.accounts.hibernate.model.BusinessModel"/>
+
+		<!-- 
+	    <mapping class="smartshift.accounts.hibernate.model.AddressModel"/>
+	    <mapping class="smartshift.accounts.hibernate.model.ApplicationTipModel"/>
+	    <mapping class="smartshift.accounts.hibernate.model.BuildModel"/
+	    <mapping class="smartshift.accounts.hibernate.model.BusinessPreferenceModel"/>
+	    <mapping class="smartshift.accounts.hibernate.model.ContactMethodModel"/>
+	    <mapping class="smartshift.accounts.hibernate.model.ImageModel"/>
+	    <mapping class="smartshift.accounts.hibernate.model.PreferenceModel"/>
+	    <mapping class="smartshift.accounts.hibernate.model.ServerModel"/>
+	    <mapping class="smartshift.accounts.hibernate.model.SystemPropertyModel"/>
+	    <mapping class="smartshift.accounts.hibernate.model.UserBusinessEmployeePreferenceModel"/>
+	    <mapping class="smartshift.accounts.hibernate.model.UserContactMethodModel"/>
+	    -->
   
     </session-factory>  
   
