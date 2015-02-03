@@ -1,0 +1,99 @@
+/accounts/user/self
+  GET - Gets basic information for this user
+    REQUIRES
+      Basic Authentication
+    RETURNS
+      200 - User information
+        {
+          "data":{
+            "id":userID,
+            "username":"The username",
+            "email":"email@google.com",
+          }
+        }
+      401 - The Basic Authentication credentials are invalid
+/accounts/user/session/
+  PARAMS
+    businessID - The id of a business
+    employeeID - The id of an employee
+  PUT - Creates a new session token
+    REQUIRES
+      Basic Authentication
+    TAKES
+      {
+        "businessID":businessID,
+        "employeeID":employeeID
+      }
+    RETURNS
+      201 - A session was created
+        {
+          "data":{
+            "sessionID":"Some session id",
+            "server":"someserver.domain",
+            "timeout":timeoutInSeconds
+          }
+        }
+      401 - The Basic Authentication credentials are invalid
+  DELETE - Destroys and existing session token
+    REQUIRES
+      Basic Authentication
+    TAKES
+      {
+        "businessID":businessID,
+        "employeeID":employeeID,
+        "sessionID":"The session id to destroy"
+      }
+    RETURNS
+      200 - The session was destroyed
+      400 - The session does not exist or is already expired
+      401 - The Basic Authentication credentials are invalid
+/accounts/user/full
+  GET - A call that fetches all user inforation in one go
+    REQUIRES
+      Basic Authentication
+    RETURNS
+      200 - All user information
+        {
+          "data":{
+            "user":{
+              "id":userID,
+              "username":"The username",
+              "email":"email@google.com",
+            },
+            "businesses":{
+              businessID:{ 
+                "id":businessID,
+                "name":"Business Name",
+                "server":"some.domain",
+                "img":{
+                  "id":imageID,
+                  "alt":"Alternate text"
+                },
+                "address":{
+                  "street1": "101 Loop Lane",
+                  "street2": "Suite 8",
+                  "city": "Somewhere",
+                  "subDivision": "In Cali",
+                  "country": "USA",
+                  "postalCode": "12345",
+                  "phoneNumber": "18885551234"
+                }
+              },
+              ...
+            },
+            "employees":{
+              employeeID:{
+                "id":employeeID,
+                "businessID":businessID,
+                "firstName":"First Name",
+                "lastName":"Last Name",
+                "img":{
+                  "id":imageID,
+                  "alt":"Alternate text"
+                }
+              },
+              ...
+            }
+          }
+        }
+      401 - The Basic Authentication credentials are invalid
