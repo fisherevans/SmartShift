@@ -48,6 +48,11 @@ public class Business implements Stored {
             logger.debug(e.getStackTrace());
         }  
     }
+    
+    @Override
+    public int hashCode() {
+        return _id * 13 + _name.hashCode();
+    }
 
     @Override
     public void loadAllChildren() {

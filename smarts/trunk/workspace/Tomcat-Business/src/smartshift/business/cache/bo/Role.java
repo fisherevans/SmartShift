@@ -5,9 +5,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import smartshift.business.hibernate.model.RoleModel;
+import smartshift.common.util.UID;
 import smartshift.common.util.hibernate.Stored;
 
-public class Role extends CachedObject implements Stored{
+public class Role extends CachedObject {
     private String _name;
     private Map<Group, Set<Capability>> _capabilities;
     
@@ -45,5 +46,16 @@ public class Role extends CachedObject implements Stored{
         // TODO Auto-generated method stub
         
     }
-    
+
+    @Override
+    public String typeCode() {
+        return "R";
+    }
+
+    @Override
+    public int getID() {
+        if(_model == null)
+            return -1;
+        return _model.getId();
+    }
 }
