@@ -291,5 +291,10 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/mchange-commons-java-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry exported="true" kind="lib" path="lib/jar/joda-time.jar" sourcepath="lib/src/joda-time-sources.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Build/lib/javadoc/joda-time-javadoc.jar!/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="out/bin"/>
 </classpath>
