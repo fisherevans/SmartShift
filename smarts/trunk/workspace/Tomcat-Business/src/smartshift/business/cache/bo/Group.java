@@ -5,9 +5,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import smartshift.business.hibernate.model.GroupModel;
+import smartshift.common.util.UID;
 import smartshift.common.util.hibernate.Stored;
 
-public class Group extends CachedObject implements Stored{
+public class Group extends CachedObject {
     
     private String _name;
     private Map<Role, Set<Employee>> _employees;
@@ -62,4 +63,15 @@ public class Group extends CachedObject implements Stored{
         
     }
 
+    @Override
+    public String typeCode() {
+        return "G";
+    }
+
+    @Override
+    public int getID() {
+        if(_model == null)
+            return -1;
+        return _model.getId();
+    }
 }

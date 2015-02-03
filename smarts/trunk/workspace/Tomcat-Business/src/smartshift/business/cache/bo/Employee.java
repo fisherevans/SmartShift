@@ -7,12 +7,14 @@ import java.util.Set;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.common.hibernate.DBException;
+import smartshift.common.util.Identifiable;
+import smartshift.common.util.UID;
 import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.hibernate.Stored;
 import smartshift.common.util.log4j.SmartLogger;
 
-public class Employee extends CachedObject implements Stored{
+public class Employee extends CachedObject {
     private static final SmartLogger logger = new SmartLogger(Employee.class);
     private String _firstName;
     private String _lastName;
@@ -89,5 +91,17 @@ public class Employee extends CachedObject implements Stored{
     public void loadAllChildren() {
         // TODO Auto-generated method stub
         
+    }
+
+    @Override
+    public String typeCode() {
+        return "E";
+    }
+
+    @Override
+    public int getID() {
+        if(_model == null)
+            return -1;
+        return _model.getId();
     }
 }
