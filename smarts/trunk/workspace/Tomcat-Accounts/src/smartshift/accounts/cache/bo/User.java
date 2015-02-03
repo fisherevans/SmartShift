@@ -1,6 +1,8 @@
 package smartshift.accounts.cache.bo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import smartshift.accounts.hibernate.dao.UserBusinessEmployeeDAO;
 import smartshift.accounts.hibernate.dao.UserDAO;
@@ -25,7 +27,7 @@ public class User implements Stored {
     private Map<Business, Integer> _employeeIDs;
     
     private UserModel _model;
-    private UserBusinessEmployeeModel _busEmpModel;
+    private List<UserBusinessEmployeeModel> _busEmpModels;
     
     public User(String username, String email, String password) {
         _uname = username;
@@ -52,6 +54,8 @@ public class User implements Stored {
     }
     
     public int getEmployeeID(Business bus) {
+        if(!_employeeIDs.containsKey(bus))
+            return -1;
         return _employeeIDs.get(bus);
     }
     
@@ -64,7 +68,14 @@ public class User implements Stored {
     
     public void connect(Business bus, int empID) {
         _employeeIDs.put(bus, empID);
-        _busEmpModel = UserBusinessEmployeeDAO.getUBE(_model.getId(), bus.getID(), empID);
+        if(_busEmpModels == null)
+            _busEmpModels = new ArrayList<UserBusinessEmployeeModel>();
+        _busEmpModels.add(UserBusinessEmployeeDAO.addUBE(getID(), bus.getID(), empID));
+        if(_busEmpModels.get(_busEmpModels.size()-1) == null)
+            logger.error("constraint violation trying to connect user to employee: U" + getID()
+                    + "@B"+bus.getID()+"--E"+empID);
+        _busEmpModels.clear();
+        _busEmpModels = null;
     }
     
     public void save() {
