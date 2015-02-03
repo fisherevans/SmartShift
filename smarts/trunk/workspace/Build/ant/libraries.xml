@@ -54,6 +54,8 @@
 			<dependency groupId="org.codehaus.jackson" artifactId="jackson-mapper-asl" version="1.9.13"/>
 			<dependency groupId="org.codehaus.jackson" artifactId="jackson-jaxrs" version="1.9.13"/>
 			<dependency groupId="org.quartz-scheduler" artifactId="quartz" version="2.2.1"/>
+			<dependency groupId="joda-time" artifactId="joda-time" version="2.7"/>
+
 			<!-- END DEPENDENCY LIST -->
 		</artifact:dependencies>
 	</target>

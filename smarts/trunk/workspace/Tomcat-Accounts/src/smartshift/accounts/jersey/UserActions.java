@@ -15,6 +15,7 @@ import smartshift.accounts.hibernate.dao.BusinessDAO;
 import smartshift.accounts.hibernate.dao.ContactMethodDAO;
 import smartshift.accounts.hibernate.model.BusinessModel;
 import smartshift.accounts.hibernate.model.UserModel;
+import smartshift.accounts.jersey.objects.UserSelfResponse;
 import smartshift.common.jersey.ActionBase;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.params.SimpleIntegerParam;
@@ -48,7 +49,7 @@ public class UserActions extends AccountsActionBase {
     @Path("/self")
     public Response getUser() {
         logger.debug("UserActions.getUser() Enter");
-        return getObjectResponse(Status.OK, getRequestUser());
+        return getObjectResponse(Status.OK, new UserSelfResponse(getRequestUser()));
     }
 
     /**
