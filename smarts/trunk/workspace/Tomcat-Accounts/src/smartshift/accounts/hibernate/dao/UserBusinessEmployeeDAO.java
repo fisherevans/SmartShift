@@ -75,7 +75,7 @@ public class UserBusinessEmployeeDAO extends BaseAccountsDAO {
      * @param userID the user id
      * @param businessID the business id
      * @param employeeID the employee id
-     * @return the ube object
+     * @return the ube object, null on error
      */
     public static UserBusinessEmployeeModel addUBE(Integer userID, Integer businessID, Integer employeeID) {
         try {

@@ -4,8 +4,6 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response.Status;
 import org.mindrot.jbcrypt.BCrypt;
 import smartshift.accounts.cache.bo.User;
-import smartshift.accounts.hibernate.dao.UserDAO;
-import smartshift.accounts.hibernate.model.UserModel;
 import smartshift.common.util.json.APIResultFactory;
 import smartshift.common.util.log4j.SmartLogger;
 
