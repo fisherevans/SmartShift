@@ -9,6 +9,8 @@ import smartshift.common.util.UID;
 import smartshift.common.util.hibernate.Stored;
 
 public class Role extends CachedObject {
+    public static final String TYPE_IDENTIFIER = "R";
+    
     private String _name;
     private Map<Group, Set<Capability>> _capabilities;
     
@@ -49,7 +51,7 @@ public class Role extends CachedObject {
 
     @Override
     public String typeCode() {
-        return "R";
+        return TYPE_IDENTIFIER;
     }
 
     @Override

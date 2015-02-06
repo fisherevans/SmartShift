@@ -7,15 +7,16 @@ import java.util.Set;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.common.hibernate.DBException;
-import smartshift.common.util.Identifiable;
 import smartshift.common.util.UID;
 import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
-import smartshift.common.util.hibernate.Stored;
 import smartshift.common.util.log4j.SmartLogger;
 
 public class Employee extends CachedObject {
+    public static final String TYPE_IDENTIFIER = "E";
+    
     private static final SmartLogger logger = new SmartLogger(Employee.class);
+    
     private String _firstName;
     private String _lastName;
     private Group _homeGroup;
@@ -95,7 +96,7 @@ public class Employee extends CachedObject {
 
     @Override
     public String typeCode() {
-        return "E";
+        return TYPE_IDENTIFIER;
     }
 
     @Override
@@ -103,5 +104,19 @@ public class Employee extends CachedObject {
         if(_model == null)
             return -1;
         return _model.getId();
+    }
+    
+    public static Employee load(Cache cache, int empID) {
+        if(cache.contains(new UID(TYPE_IDENTIFIER, empID)))
+            return cache.getEmployee(empID); 
+        return null;
+    }
+    
+    public static Employee createNewEmployee(int businessID, String first, String last, int homeGroupID) {
+        Cache cache = Cache.getCache(businessID);
+        Employee emp = new Employee(cache, first, last, Group.load(cache, homeGroupID));
+        emp.save();
+        cache.cache(new UID(emp), emp);
+        return emp;
     }
 }
