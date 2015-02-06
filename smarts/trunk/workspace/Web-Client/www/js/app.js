@@ -3,9 +3,9 @@
 
 var app = angular.module('smartsApp', ['ngRoute']);
 
-app.config(function($routeProvider, $locationProvider){
+app.config(function($routeProvider){
 	$routeProvider
-		.when('/newsfeed', {
+        .when('/newsfeed', {
 			templateUrl: '/templates/newsfeed.html',
 			controller: 'NewsfeedController',
 			controllerAs: 'newsfeedCtrl'
@@ -26,7 +26,7 @@ app.config(function($routeProvider, $locationProvider){
 			controllerAs: 'scheduleCtrl'
 		})
 		.when('/settings', {
-			templateUrl: 'templates/settings.html',
+			templateUrl: '/templates/settings.html',
 			controller: 'SettingsController',
 			controllerAs: 'settingsCtrl'
 		})
