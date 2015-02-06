@@ -70,7 +70,7 @@ public class GroupDAO extends BaseBusinessDAO {
      * @param employeeID the employee in question
      * @return the list of employees ids
      */
-    public ROList<GroupModel> getGroupEmployees(Integer employeeID) {
+    public ROList<GroupModel> getEmployeeGroups(Integer employeeID) {
         List<GroupModel> groups = getBusinessSession()
                 .getNamedQuery(GroupModel.GET_EMPLOYEE_GROUPS)
                 .setParameter(GroupModel.GET_EMPLOYEE_GROUPS_EMP_ID, employeeID)
