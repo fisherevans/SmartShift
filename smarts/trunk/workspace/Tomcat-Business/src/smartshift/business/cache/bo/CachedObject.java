@@ -11,6 +11,10 @@ public abstract class CachedObject implements Identifiable, Stored{
         _cache = cache;
     }
     
+    public Cache getCache() {
+        return _cache;
+    }
+    
     public UID getUID() {
         return new UID(this);
     }
