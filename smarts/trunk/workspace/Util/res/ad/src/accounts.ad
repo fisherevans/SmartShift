@@ -39,8 +39,6 @@
       Basic Authentication
     TAKES
       {
-        "businessID":businessID,
-        "employeeID":employeeID,
         "sessionID":"The session id to destroy"
       }
     RETURNS
@@ -60,12 +58,13 @@
               "username":"The username",
               "email":"email@google.com",
             },
-            "businesses":{
+            "businesses":[
               businessID:{ 
                 "id":businessID,
                 "name":"Business Name",
                 "server":"some.domain",
-                "img":{
+                "employeeID":employeeID,
+                "image":{
                   "id":imageID,
                   "alt":"Alternate text"
                 },
@@ -80,20 +79,7 @@
                 }
               },
               ...
-            },
-            "employees":{
-              employeeID:{
-                "id":employeeID,
-                "businessID":businessID,
-                "firstName":"First Name",
-                "lastName":"Last Name",
-                "img":{
-                  "id":imageID,
-                  "alt":"Alternate text"
-                }
-              },
-              ...
-            }
+            ]
           }
         }
       401 - The Basic Authentication credentials are invalid
