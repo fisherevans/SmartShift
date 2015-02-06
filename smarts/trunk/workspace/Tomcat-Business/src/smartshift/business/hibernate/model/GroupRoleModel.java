@@ -42,24 +42,13 @@ public class GroupRoleModel {
     @Column(name = "id", nullable = false)
     private Integer id;
     
-    @ManyToOne
-    @JoinColumn(name = "grpID")
-    private GroupModel group;
+    @Column(name = "grpID", nullable = false)
+    private Integer groupID;
     
-    @ManyToOne
-    @JoinColumn(name = "roleID")
-    private RoleModel role;
-    
-    @ManyToMany(mappedBy="groupRoles", cascade=CascadeType.ALL)
-    private List<EmployeeModel> employees;
+    @Column(name = "roleID", nullable = false)
+    private Integer roleID;
 
     public GroupRoleModel() {
-    }
-
-    public GroupRoleModel(GroupModel group, RoleModel role) {
-        super();
-        this.group = group;
-        this.role = role;
     }
 
     /**
@@ -77,32 +66,30 @@ public class GroupRoleModel {
     }
 
     /**
-     * @return the group
+     * @return the groupID
      */
-    public GroupModel getGroup() {
-        return group;
+    public Integer getGroupID() {
+        return groupID;
     }
 
     /**
-     * @param group the group to set
+     * @param groupID the groupID to set
      */
-    public void setGroup(GroupModel group) {
-        this.group = group;
+    public void setGroupID(Integer groupID) {
+        this.groupID = groupID;
     }
 
     /**
-     * @return the role
+     * @return the roleID
      */
-    public RoleModel getRole() {
-        return role;
+    public Integer getRoleID() {
+        return roleID;
     }
 
     /**
-     * @param role the role to set
+     * @param roleID the roleID to set
      */
-    public void setRole(RoleModel role) {
-        this.role = role;
+    public void setRoleID(Integer roleID) {
+        this.roleID = roleID;
     }
-    
-    
 }

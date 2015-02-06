@@ -11,7 +11,7 @@ COMMIT;
 DROP TABLE IF EXISTS `Accounts`.`User`;
 CREATE TABLE `Accounts`.`User` (
 	`id` INT NOT NULL,
-	`username` VARCHAR(50) NOT NULL,
+	`username` VARCHAR(24) NOT NULL,
 	`passHash` VARCHAR(256) NOT NULL,
 	`email` VARCHAR(256) NOT NULL,
 	`createTS` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -20,7 +20,7 @@ CREATE TABLE `Accounts`.`User` (
 	`flags` INT(10) NOT NULL DEFAULT 0,
 	PRIMARY KEY (`id`),
 	-- UNIQUE (`email`),
-	-- UNIQUE (`username`)
+	UNIQUE (`username`)
 );
 
 DROP TABLE IF EXISTS `Accounts`.`Registration`;

@@ -1,9 +1,12 @@
 package smartshift.business.hibernate.dao;
 
+import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.model.EmployeeModel;
-import smartshift.business.hibernate.model.GroupModel;
+import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.common.hibernate.DBException;
+import smartshift.common.util.collections.ROList;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -17,13 +20,20 @@ public class EmployeeDAO extends BaseBusinessDAO {
      * Logger for this DAO
      */
     private static SmartLogger logger = new SmartLogger(EmployeeDAO.class);
+
+    /**
+     * @param context Base context for this business DAO
+     */
+    public EmployeeDAO(DAOContext context) {
+        super(context);
+    }
     
     /**
      * Fetch a EmployeeModel by id
      * @param id the id to lookup
      * @return the EmployeeModel - null if not found
      */
-    public static EmployeeModel getEmployeeById(Integer id) {
+    public EmployeeModel getEmployeeById(Integer id) {
         logger.debug("EmployeeDAO.getEmployeeById() Enter - " + id);
         EmployeeModel employeeModel = GenericHibernateUtil.unique(getBusinessSession(), EmployeeModel.class, id);
         logger.debug("EmployeeDAO.getEmployeeById() Got " + (employeeModel == null ? "null" : employeeModel.getFirstName() + " " + employeeModel.getLastName()));
@@ -34,7 +44,7 @@ public class EmployeeDAO extends BaseBusinessDAO {
      * Get all EmployeeModels
      * @return the list of EmployeeModels
      */
-    public static List<EmployeeModel> getEmployee() {
+    public List<EmployeeModel> getEmployees() {
         logger.debug("EmployeeDAO.getEmployee() Enter");
         List<EmployeeModel> employeeModels = GenericHibernateUtil.list(getBusinessSession(), EmployeeModel.class);
         logger.debug("EmployeeDAO.getEmployee() Got EmployeeModel count: " + employeeModels.size());
@@ -45,18 +55,30 @@ public class EmployeeDAO extends BaseBusinessDAO {
      * Add a EmployeeModel
      * @param firstName 
      * @param lastName 
-     * @param defaultGroup 
+     * @param defaultGroupID 
      * @return the created EmployeeModel
      * @throws DBException if there was an error creating the EmployeeModel
      */
-    public static EmployeeModel addEmployee(String firstName, String lastName, GroupModel defaultGroup) throws DBException {
+    public EmployeeModel addEmployee(String firstName, String lastName, Integer defaultGroupID) throws DBException {
         logger.debug("EmployeeDAO.addEmployee() Enter");
         EmployeeModel employeeModel = new EmployeeModel();
         employeeModel.setFirstName(firstName);
         employeeModel.setLastName(lastName);
-        employeeModel.setDefaultGroup(defaultGroup);
+        employeeModel.setDefaultGroupID(defaultGroupID);
         GenericHibernateUtil.save(getBusinessSession(), employeeModel);
         logger.debug("EmployeeDAO.addEmployee() Success");
         return employeeModel;
+    }
+
+    /** gets a list of employees in a group
+     * @param groupID the group in question
+     * @return the list of employees ids
+     */
+    public ROList<EmployeeModel> getGroupEmployees(Integer groupID) {
+        List<EmployeeModel> employees = getBusinessSession()
+                .getNamedQuery(EmployeeModel.GET_GROUP_EMPLOYEES)
+                .setParameter(EmployeeModel.GET_GROUP_EMPLOYEES_GROUP_ID, groupID)
+                .list();
+        return new ROList<EmployeeModel>(employees);
     }
 }

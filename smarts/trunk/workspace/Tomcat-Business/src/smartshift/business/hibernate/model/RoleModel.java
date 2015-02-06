@@ -43,15 +43,11 @@ public class RoleModel {
 
     @Column(name = "name", length = 45)
     private String name;
-    
-    @OneToMany(mappedBy = "role")
-    private List<GroupRoleModel> groupRoles;
 
     public RoleModel() {
     }
 
     public RoleModel(String name) {
-        super();
         this.name = name;
     }
 
@@ -82,12 +78,4 @@ public class RoleModel {
     public void setName(String name) {
         this.name = name;
     }
-
-    /**
-     * @return the groupRoles
-     */
-    public List<GroupRoleModel> getGroupRoles() {
-        return groupRoles;
-    }
-    
 }

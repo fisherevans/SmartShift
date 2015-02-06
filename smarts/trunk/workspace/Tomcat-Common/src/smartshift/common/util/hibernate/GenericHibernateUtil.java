@@ -24,38 +24,20 @@ public class GenericHibernateUtil {
     private static SmartLogger logger = new SmartLogger(GenericHibernateUtil.class);
 
     /**
-     * Fetches a unique object from the database by ID using the get method
-     * @param <T> The type of object
-     * @param session the session to use
-     * @param clazz the class of the object (should be same as Type)
-     * @param id the primary ID of the object
-     * @return the fetched object
-     * @throws WebApplicationException if the object is not found
-     */
-    public static <T> T unique(Session session, Class<T> clazz, Serializable id) throws WebApplicationException {
-        return unique(session, clazz, id, false);
-    }
-
-    /**
      * Fetches a unique object from the database by ID
      * @param <T> The type of object
      * @param session the session to use
      * @param clazz the class of the object (should be same as Type)
      * @param id the primary ID of the object
-     * @param loadFromCache use the hibernate load, else get
      * @return the fetched object
      * @throws WebApplicationException if the object is not found
      */
     @SuppressWarnings("unchecked")
-    public static <T> T unique(Session session, Class<T> clazz, Serializable id, boolean loadFromCache) throws WebApplicationException {
+    public static <T> T unique(Session session, Class<T> clazz, Serializable id) throws WebApplicationException {
         // TODO load should only be used if we know the object exists
         T object = null;
         try {
-            // Unchecked
-            if(loadFromCache)
-                object = (T) session.load(clazz, id);
-            else
-                object = (T) session.get(clazz, id);
+            object = (T) session.get(clazz, id);
         } catch(Exception e) {
             logger.error("Failed to fetch unique by id " + clazz.getCanonicalName(), e);
             throw new WebApplicationException(getInternalError("Failed to fetch object"));
@@ -115,15 +97,14 @@ public class GenericHibernateUtil {
     }
     
     /**
-     * Saves or updates an existing object
+     * Saves a new object
      * @param session the session to use
      * @param object the existing or new object to save
      * @throws DBException If the request is bad
      */
     public static void save(Session session, Object object) throws DBException {
         try {
-            session.getTransaction().begin();
-            session.saveOrUpdate(object);
+            session.save(object);
         } catch(PropertyValueException e) {
             logger.error("Failed to add object " + object.getClass().toString(), e);
             throw new DBException(DBError.BadData, "Invalid property value: " + e.getPropertyName());
@@ -132,7 +113,28 @@ public class GenericHibernateUtil {
             throw new DBException(DBError.ConstraintError, e.getCause().getMessage());
         } catch(Exception e) {
             logger.error("Failed to add object " + object.getClass().toString(), e);
-            throw new WebApplicationException(getInternalError("Failed to save or update object"));
+            throw new WebApplicationException(getInternalError("Failed to save object"));
+        }
+    }
+    
+    /**
+     * updates an existing object
+     * @param session the session to use
+     * @param object the existing or new object to save
+     * @throws DBException If the request is bad
+     */
+    public static void update(Session session, Object object) throws DBException {
+        try {
+            session.update(object);
+        } catch(PropertyValueException e) {
+            logger.error("Failed to update object " + object.getClass().toString(), e);
+            throw new DBException(DBError.BadData, "Invalid property value: " + e.getPropertyName());
+        } catch(ConstraintViolationException e) {
+            logger.error("Failed to update object " + object.getClass().toString(), e);
+            throw new DBException(DBError.ConstraintError, e.getCause().getMessage());
+        } catch(Exception e) {
+            logger.error("Failed to update object " + object.getClass().toString(), e);
+            throw new WebApplicationException(getInternalError("Failed to update object"));
         }
     }
     
