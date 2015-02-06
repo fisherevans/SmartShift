@@ -1,5 +1,6 @@
 package smartshift.accounts.cache.bo;
 
+import java.util.HashMap;
 import java.util.Map;
 import smartshift.accounts.hibernate.dao.BusinessDAO;
 import smartshift.accounts.hibernate.model.BusinessModel;
@@ -61,6 +62,8 @@ public class Business implements Stored {
     }
     
     public static Business load(int busID) {
+        if(businesses == null)
+            businesses = new HashMap<Integer, Business>();
         if(!businesses.containsKey(busID)) {
             BusinessModel model = BusinessDAO.getBusiness(busID);
             businesses.put(busID, new Business(model));           
