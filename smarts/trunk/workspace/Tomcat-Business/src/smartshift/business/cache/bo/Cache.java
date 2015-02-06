@@ -76,7 +76,7 @@ public class Cache {
     }
     
     public Session getBusinessSession() {
-        return _daoContext.getBusinessSession();
+        return getDAOContext().getBusinessSession();
     }
 
     public void save() {
