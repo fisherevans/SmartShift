@@ -77,10 +77,13 @@ public class User implements Stored {
     
     public void save() {
         try {
-            if(_model == null) {
-                _model = UserDAO.addUser(_uname, _email, _passHash);      
+            if(_model != null) {
+                _model.setUsername(_uname);
+                _model.setEmail(_email);
+                _model.setPassHash(_passHash);
+                GenericHibernateUtil.update(UserDAO.getAccountsSession(), _model);      
             } else {
-                GenericHibernateUtil.save(UserDAO.getAccountsSession(), _model);
+                _model = UserDAO.addUser(_uname, _email, _passHash); 
             }
         } catch(DBException e) {
             logger.debug(e.getStackTrace());

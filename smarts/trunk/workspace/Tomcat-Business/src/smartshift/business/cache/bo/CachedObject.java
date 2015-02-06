@@ -18,4 +18,8 @@ public abstract class CachedObject implements Identifiable, Stored{
     public UID getUID() {
         return new UID(this);
     }
+    
+    public <T> T getDAO(Class<T> clazz) {
+        return (T) getCache().getDAOContext().dao(clazz);
+    }
 }

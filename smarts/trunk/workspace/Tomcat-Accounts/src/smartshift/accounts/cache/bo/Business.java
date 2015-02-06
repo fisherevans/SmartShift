@@ -40,9 +40,11 @@ public class Business implements Stored {
     @Override
     public void save() {
         try {
-            if(_model != null)
-                GenericHibernateUtil.save(BusinessDAO.getAccountsSession(), _model);
-            else {
+            if(_model != null) {
+                _model.setName(_name);
+                GenericHibernateUtil.update(BusinessDAO.getAccountsSession(), _model);
+            } else {
+                // we probably never want to create a new business here
                 //_model = BusinessDAO.addBusiness(_name);
             }
         } catch (DBException e) {
