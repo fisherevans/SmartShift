@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="smartsApp">
+<head>
+    <title>Smart Shift | SampleLayout</title>
+    <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
+    <link href="css/styleIcomoon.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+    <link href='css/styleSmall.css' rel='stylesheet' type='text/css' media="(max-width:700px)">
+    <link href='css/styleBig.css' rel='stylesheet' type='text/css' media="(min-width:701px)">
+
+</head>
+<body>
+<div class="navPane" ng-controller="TabController as tabCtrl">
+    <img class="navLogo" src="logoicon.png" />
+    <a href="#/newsfeed">
+        <div class="navElement fadeNav" ng-class="{ current: tabCtrl.isSet(1) }" data-window-class=".newsfeedWindow"
+             ng-click="tabCtrl.setTab(1)">
+            <div class="navLabel fadeLeft">News Feed</div>
+            <div class="navIcon icon-newspaper"></div>
+        </div>
+    </a>
+    <a href="#/messages">
+        <div class="navElement fadeNav" ng-class="{ current: tabCtrl.isSet(2) }" data-window-class=".chatWindow"
+             ng-click="tabCtrl.setTab(2)">
+            <div class="navLabel fadeLeft">Messages</div>
+            <div class="navIcon icon-chat"></div>
+        </div>
+    </a>
+    <a href="#/requests">
+        <div class="navElement fadeNav" ng-class="{ current: tabCtrl.isSet(3) }" data-window-class=".requestsWindow"
+             ng-click="tabCtrl.setTab(3)">
+            <div class="navLabel fadeLeft">Requests</div>
+            <div class="navIcon icon-drawer"></div>
+        </div>
+    </a>
+    <a href="#/schedule">
+        <div class="navElement fadeNav" ng-class="{ current: tabCtrl.isSet(4) }" data-window-class=".scheduleWindow"
+             ng-click="tabCtrl.setTab(4)">
+            <div class="navLabel fadeLeft">Schedule</div>
+            <div class="navIcon icon-calendar"></div>
+        </div>
+    </a>
+    <a href="#/settings">
+        <div class="navElement fadeNav" ng-class="{ current: tabCtrl.isSet(5) }" data-window-class=".settingsWindow"
+             ng-click="tabCtrl.setTab(5)">
+            <div class="navLabel fadeLeft">Settings</div>
+            <div class="navIcon icon-cog"></div>
+        </div>
+    </a>
+</div>
+<div class="appWindowBg"></div>
+<div ng-view></div>
+<script src="lib/jquery-2.1.1.min.js"></script>
+<script src="lib/angular/angular.js"></script>
+<script src="lib/angular/angular-route.min.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

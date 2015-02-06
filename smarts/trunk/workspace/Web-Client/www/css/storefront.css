@@ -1,0 +1,13 @@
+body {
+    padding-top: 80px;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+.login {
+    margin: 2px;
+}
+
+.alert.login-alert{
+    padding: 2px;
+    padding-left: 6px;
+}
