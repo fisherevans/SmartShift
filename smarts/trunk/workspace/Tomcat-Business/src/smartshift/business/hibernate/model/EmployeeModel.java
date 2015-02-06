@@ -16,7 +16,7 @@ import org.hibernate.annotations.NamedQuery;
 @Table(name = "Employee")
 @NamedQueries({
         @NamedQuery(name = EmployeeModel.GET_GROUP_EMPLOYEES,
-                    query = "from Employee e "
+                    query = "select e from Employee e "
                           + "where e.id in (select employeeID "
                           +                "from GroupEmployee ge "
                           +                "where ge.groupID = :" + EmployeeModel.GET_GROUP_EMPLOYEES_GROUP_ID
