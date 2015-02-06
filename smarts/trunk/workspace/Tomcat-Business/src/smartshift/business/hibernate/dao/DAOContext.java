@@ -33,6 +33,26 @@ public class DAOContext {
     public Integer getBusinessID() {
         return businessID;
     }
+
+    /**
+     * @return the hibernate session for this business's schema
+     */
+    public Session getBusinessSession() {
+        return HibernateFactory.getSession(AppConstants.DB_SCHEMA_BUSINESS_BASE + getBusinessID());
+    }
+
+    /** gets a dao context
+     * @param businessID the business id of the contxt
+     * @return the context. makes one if it doesn't exist
+     */
+    public static DAOContext business(Integer businessID) {
+        DAOContext context = contexts.get(businessID);
+        if(context == null) {
+            context = new DAOContext(businessID);
+            contexts.put(businessID, context);
+        }
+        return context;
+    }
     
     /** gets the dao of the given class
      * @param <T> the dao class
@@ -53,24 +73,14 @@ public class DAOContext {
             throw new IllegalArgumentException(clazz.getCanonicalName() + " is an invalid DAO object!");
         }
     }
-
-    /**
-     * @return the hibernate session for this business's schema
+    
+    /** get the DAO for a business
+     * @param <T> the dao type
+     * @param businessID the business d
+     * @param clazz the dao class
+     * @return the dao instance for this business
      */
-    public Session getBusinessSession() {
-        return HibernateFactory.getSession(AppConstants.DB_SCHEMA_BUSINESS_BASE + getBusinessID());
-    }
-
-    /** gets a dao context
-     * @param businessID the business id of the contxt
-     * @return the context. makes one if it doesn't exist
-     */
-    public static DAOContext business(Integer businessID) {
-        DAOContext context = contexts.get(businessID);
-        if(context == null) {
-            context = new DAOContext(businessID);
-            contexts.put(businessID, context);
-        }
-        return context;
+    public static <T> T businesDAO(Integer businessID, Class<T> clazz) {
+        return business(businessID).dao(clazz);
     }
 }
