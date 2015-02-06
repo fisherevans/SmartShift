@@ -1,16 +1,8 @@
 package smartshift.business.hibernate.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
-import org.hibernate.criterion.Restrictions;
-import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.business.hibernate.model.GroupEmployeeModelId;
-import smartshift.business.hibernate.model.GroupModel;
 import smartshift.common.hibernate.DBException;
-import smartshift.common.util.collections.ROList;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -38,6 +30,7 @@ public class GroupEmployeeDAO extends BaseBusinessDAO {
      * @throws DBException if there's an error
      */
     public void linkGroupEmployee(Integer groupID, Integer employeeID) throws DBException {
+        logger.debug("Linking G" + groupID + " E" + employeeID);
         GroupEmployeeModel link = new GroupEmployeeModel();
         link.setGroupID(groupID);
         link.setEmployeeID(employeeID);
@@ -50,6 +43,7 @@ public class GroupEmployeeDAO extends BaseBusinessDAO {
      * @throws DBException if there's an error
      */
     public void unlinkGroupEmployee(Integer groupID, Integer employeeID) throws DBException {
+        logger.debug("Unlinking G" + groupID + " E" + employeeID);
         GroupEmployeeModelId id = new GroupEmployeeModelId();
         id.groupID = groupID;
         id.employeeID = employeeID;

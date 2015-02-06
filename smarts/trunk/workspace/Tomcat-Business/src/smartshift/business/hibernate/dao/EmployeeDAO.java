@@ -1,10 +1,7 @@
 package smartshift.business.hibernate.dao;
 
-import java.util.ArrayList;
 import java.util.List;
-import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.model.EmployeeModel;
-import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.util.collections.ROList;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
@@ -75,6 +72,7 @@ public class EmployeeDAO extends BaseBusinessDAO {
      * @return the list of employees ids
      */
     public ROList<EmployeeModel> getGroupEmployees(Integer groupID) {
+        @SuppressWarnings("unchecked")
         List<EmployeeModel> employees = getBusinessSession()
                 .getNamedQuery(EmployeeModel.GET_GROUP_EMPLOYEES)
                 .setParameter(EmployeeModel.GET_GROUP_EMPLOYEES_GROUP_ID, groupID)
