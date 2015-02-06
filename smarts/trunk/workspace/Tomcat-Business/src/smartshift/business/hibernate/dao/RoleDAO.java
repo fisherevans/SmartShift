@@ -16,13 +16,20 @@ public class RoleDAO extends BaseBusinessDAO {
      * Logger for this DAO
      */
     private static SmartLogger logger = new SmartLogger(RoleDAO.class);
+
+    /**
+     * @param context Base context for this business DAO
+     */
+    public RoleDAO(DAOContext context) {
+        super(context);
+    }
     
     /**
      * Fetch a EmployeeModel by id
      * @param id the id to lookup
      * @return the EmployeeModel - null if not found
      */
-    public static RoleModel getRoleById(Integer id) {
+    public RoleModel getRoleById(Integer id) {
         logger.debug("RoleDAO.getRoleById() Enter - " + id);
         RoleModel roleModel = GenericHibernateUtil.unique(getBusinessSession(), RoleModel.class, id);
         logger.debug("RoleDAO.getRoleById() Got " + (roleModel == null ? "null" : roleModel.getName()));
@@ -33,7 +40,7 @@ public class RoleDAO extends BaseBusinessDAO {
      * Get all EmployeeModels
      * @return the list of EmployeeModels
      */
-    public static List<RoleModel> getRole() {
+    public List<RoleModel> getRoles() {
         logger.debug("RoleDAO.getRole() Enter");
         List<RoleModel> roleModels = GenericHibernateUtil.list(getBusinessSession(), RoleModel.class);
         logger.debug("RoleDAO.getRole() Got RoleModel count: " + roleModels.size());
@@ -46,7 +53,7 @@ public class RoleDAO extends BaseBusinessDAO {
      * @return the created EmployeeModel
      * @throws DBException if there was an error creating the EmployeeModel
      */
-    public static RoleModel addRole(String name) throws DBException {
+    public RoleModel addRole(String name) throws DBException {
         logger.debug("RoleDAO.addRole() Enter");
         RoleModel roleModel = new RoleModel();
         roleModel.setName(name);

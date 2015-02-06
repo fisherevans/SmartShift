@@ -25,6 +25,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.mindrot.jbcrypt.BCrypt;
 import com.google.gson.annotations.Expose;
 import smartshift.common.util.collections.ROList;
@@ -35,34 +37,37 @@ import smartshift.common.util.collections.ROList;
  */
 @Entity
 @Table(name = "Group")
+@NamedQueries({
+        @NamedQuery(name = GroupModel.GET_EMPLOYEE_GROUPS,
+                    query = "from Group g "
+                          + "where g.id in (select groupID "
+                          +                "from GroupEmployee ge "
+                          +                "where ge.employeeID = :" + GroupModel.GET_EMPLOYEE_GROUPS_EMP_ID
+                          + ")"
+        )
+})
 public class GroupModel {
+    public static final String GET_EMPLOYEE_GROUPS = "getEmployeeGroups";
+    
+    public static final String GET_EMPLOYEE_GROUPS_EMP_ID = "empoyeeID";
+    
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
     
-    @ManyToOne
-    @JoinColumn(name = "parentID")
-    private GroupModel parent;
+    @Column(name = "parentID")
+    private Integer parentID;
 
-    @OneToMany(mappedBy = "parent")
-    private List<GroupModel> children;
-
-    @OneToMany(mappedBy = "group")
-    private List<GroupRoleModel> groupRoles;
-
-    @OneToMany(mappedBy = "group")
-    private List<EmployeeModel> employees;
-
-    @Column(name = "name", length = 50)
+    @Column(name = "name", length = 45)
     private String name;
 
     public GroupModel() {
     }
 
-    public GroupModel(GroupModel parent, String name) {
+    public GroupModel(Integer parentID, String name) {
         super();
-        this.parent = parent;
+        this.parentID = parentID;
         this.name = name;
     }
 
@@ -79,26 +84,19 @@ public class GroupModel {
     public void setId(Integer id) {
         this.id = id;
     }
-
+    
     /**
-     * @return the parent
+     * @return the parentID
      */
-    public GroupModel getParent() {
-        return parent;
+    public Integer getParentID() {
+        return parentID;
     }
 
     /**
-     * @param parent the parent to set
+     * @param parentID the parentID to set
      */
-    public void setParent(GroupModel parent) {
-        this.parent = parent;
-    }
-
-    /**
-     * @return the children
-     */
-    public List<GroupModel> getChildren() {
-        return children;
+    public void setParentID(Integer parentID) {
+        this.parentID = parentID;
     }
 
     /**
@@ -114,12 +112,4 @@ public class GroupModel {
     public void setName(String name) {
         this.name = name;
     }
-
-    /**
-     * @return the groupRoles
-     */
-    public List<GroupRoleModel> getGroupRoles() {
-        return groupRoles;
-    }
-    
 }
