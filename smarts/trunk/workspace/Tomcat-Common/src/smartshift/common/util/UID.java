@@ -13,7 +13,7 @@ public class UID {
         _id = id;
         _type = type;
     }
-    
+
     public int id() {
         return _id;
     }
