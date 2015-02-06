@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import smartshift.business.hibernate.dao.DAOContext;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.common.hibernate.DBException;
@@ -24,7 +25,6 @@ public class Employee extends CachedObject {
     
     private EmployeeModel _model;
     
-    
     public Employee(Cache cache, String first, String last, Group home) {
         super(cache);
         _firstName = first;
@@ -36,7 +36,7 @@ public class Employee extends CachedObject {
     }
     
     private Employee(Cache cache, EmployeeModel model) {
-        this(cache, model.getFirstName(), model.getLastName(), Group.getGroup(cache, model.getDefaultGroup()));
+        this(cache, model.getFirstName(), model.getLastName(), Group.getGroup(cache, model.getDefaultGroupID()));
         _model = model;
     }
     
@@ -60,7 +60,6 @@ public class Employee extends CachedObject {
         if(!_roles.containsKey(parent))
             _roles.put(parent, new HashSet<Role>());
         _roles.get(parent).add(role);
-        
     }
     
     public ROCollection<Role> getRoles(Group group) {
@@ -77,11 +76,15 @@ public class Employee extends CachedObject {
     @Override
     public void save() {
         try {
-            if(_model != null)
-                GenericHibernateUtil.save(EmployeeDAO.getBusinessSession(), _model);
-            else {
+            if(_model != null) {
+                _model.setFirstName(_firstName);
+                _model.setLastName(_lastName);
+                _model.setDefaultGroupID(_homeGroup.getID());
+                GenericHibernateUtil.update(DAOContext.business(getCache().
+                        getBusinessID()).getBusinessSession(), _model);
+            } else {
                 _homeGroup.save();
-                _model = EmployeeDAO.addEmployee(_firstName, _lastName, _homeGroup.getModel());
+                _model = getDAO(EmployeeDAO.class).addEmployee(_firstName, _lastName, _homeGroup.getID());
             }
         } catch (DBException e) {
             logger.debug(e.getStackTrace());
@@ -91,7 +94,6 @@ public class Employee extends CachedObject {
     @Override
     public void loadAllChildren() {
         // TODO Auto-generated method stub
-        
     }
 
     @Override
@@ -109,7 +111,12 @@ public class Employee extends CachedObject {
     public static Employee load(Cache cache, int empID) {
         if(cache.contains(new UID(TYPE_IDENTIFIER, empID)))
             return cache.getEmployee(empID); 
-        return null;
+        else {
+            EmployeeModel model = cache.getDAOContext().dao(EmployeeDAO.class).getEmployeeById(empID);
+            if(model != null)
+                return new Employee(cache, model);
+            return null;
+        }
     }
     
     public static Employee createNewEmployee(int businessID, String first, String last, int homeGroupID) {

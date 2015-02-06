@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import smartshift.business.hibernate.dao.GroupDAO;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.common.util.UID;
 import smartshift.common.util.hibernate.Stored;
@@ -47,10 +48,10 @@ public class Group extends CachedObject {
             _employees.get(role).add(employee);
     }
     
-    public static Group getGroup(Cache cache, GroupModel model) {
-        Group group = cache.getGroup(model.getId());
+    public static Group getGroup(Cache cache, int groupID) {
+        Group group = cache.getGroup(groupID);
         if(group == null)
-            group = new Group(cache, model);
+            group = new Group(cache, cache.getDAOContext().dao(GroupDAO.class).getGroupById(groupID));
         return group;
     }
 
