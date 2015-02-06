@@ -33,6 +33,6 @@ public class APIResultFactory {
      */
     public static ResponseBuilder getResponseBuilder(Status status, Object result, String message) {
         String json = GsonFactory.toJson(new JsonResult(status, result, message));
-        return Response.ok(json);
+        return Response.status(status).entity(json);
     }
 }
