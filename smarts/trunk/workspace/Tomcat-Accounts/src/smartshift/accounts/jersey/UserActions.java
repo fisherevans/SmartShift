@@ -11,11 +11,15 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 import com.google.gson.Gson;
+import smartshift.accounts.cache.bo.Business;
+import smartshift.accounts.cache.bo.User;
 import smartshift.accounts.hibernate.dao.BusinessDAO;
 import smartshift.accounts.hibernate.dao.ContactMethodDAO;
 import smartshift.accounts.hibernate.model.BusinessModel;
 import smartshift.accounts.hibernate.model.UserModel;
-import smartshift.accounts.jersey.objects.UserSelfResponse;
+import smartshift.accounts.jersey.objects.BusinessJSON;
+import smartshift.accounts.jersey.objects.UserFullJSON;
+import smartshift.accounts.jersey.objects.UserJSON;
 import smartshift.common.jersey.ActionBase;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.params.SimpleIntegerParam;
@@ -47,68 +51,23 @@ public class UserActions extends AccountsActionBase {
      */
     @GET
     @Path("/self")
-    public Response getUser() {
-        logger.debug("UserActions.getUser() Enter");
-        return getObjectResponse(Status.OK, new UserSelfResponse(getRequestUser()));
+    public Response userSelf() {
+        logger.debug("UserActions.userSelf() Enter");
+        return getObjectResponse(Status.OK, new UserJSON(getRequestUser()));
     }
-
-    /**
-     * Gets a map of businesses for the authenticated user <businessID, business>
-     * @return HTTP Response with the business map
-     */
+    
     @GET
-    @Path("/business")
-    public Response getUserBusinessesAction() {
-//        logger.debug("UserActions.getUserBusinessesAction() Enter");
-//        Map<Integer, BusinessModel> businesses = BusinessDAO.getUserBusinessMap(getRequestUser());
-//        logger.debug("UserActions.getUserBusinessesAction() found " + businesses.size() + " businesses");
-        return getObjectResponse(Status.OK, "businesses");
-    }
-
-    /**
-     * Gets a business that a user have access to via businessID
-     * @param businessID the businessID to look up
-     * @return HTTP Response with the business, or a 204 if the user doesn't have access
-     */
-    @GET
-    @Path("/business/{businessID}")
-    public Response getUserBusiness(@PathParam("businessID") SimpleIntegerParam businessID) {
-//        logger.debug("UserActions.getUserBusiness() Enter");
-//        BusinessModel business = BusinessDAO.getUserBusiness(getRequestUser(), businessID.getInteger());
-//        if(business == null) {
-//            logger.debug("UserActions.getUserBusiness() No business found for id " + businessID.getOriginalValue());
-//            return getMessageResponse(Status.NO_CONTENT, MSG_204_BUSINESS);
-//        }
-        return getObjectResponse(Status.OK, "business");
-    }
-
-    /**
-     * Gets a map of contact methods for the authenticated user <contactMethodID, contactMethod>
-     * @return HTTP Response with the map of contact methods
-     */
-    @GET
-    @Path("/contactMethod")
-    public Response getContactMethods() {
-//        logger.debug("UserActions.getContactMethods() Enter");
-//        Map<Integer, ContactMethodBO> contactMethods = ContactMethodDAO.getUserContactMethodMap(getRequestUser());
-        return getObjectResponse(Status.OK, "contactMethods");
-    }
-
-    /**
-     * Gets a contact method for the authenticated user
-     * @param contactMethodID the contact method id to look up
-     * @return HTTP Response with the contact method. 204 if not found
-     */
-    @GET
-    @Path("/contactMethod/{contactMethodID}")
-    public Response getContactMethod(@PathParam("contactMethodID") SimpleIntegerParam contactMethodID) {
-//        logger.debug("UserActions.getUsergetContactMethod() Enter");
-//        UserModel user = getRequestUser();
-//        ContactMethodBO contactMethod = ContactMethodDAO.getUserContactMethod(user, contactMethodID.getInteger());
-//        if(contactMethod == null) {
-//            logger.debug("UserActions.getUsergetContactMethod() No countact method found for id " + contactMethodID.getOriginalValue());
-//            return getMessageResponse(Status.NO_CONTENT, MSG_204_CONTACT_METHOD);
-//        }
-        return getObjectResponse(Status.OK, "contactMethod");
+    @Path("/full")
+    public Response userFull() {
+        logger.debug("UserActions.userFull() Enter");
+        User user = getRequestUser();
+        UserFullJSON userFull = new UserFullJSON();
+        for(Business business:user.getBusinesses()) {
+            BusinessJSON businessJson = new BusinessJSON(business);
+            businessJson.employeeID = user.getEmployeeID(business);
+            userFull.businesses.add(businessJson);
+        }
+        userFull.user = new UserJSON(getRequestUser());
+        return getObjectResponse(Status.OK, userFull);
     }
 }

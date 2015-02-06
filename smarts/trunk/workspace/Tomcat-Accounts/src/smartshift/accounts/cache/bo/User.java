@@ -9,6 +9,7 @@ import smartshift.accounts.hibernate.dao.UserDAO;
 import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
 import smartshift.accounts.hibernate.model.UserModel;
 import smartshift.common.hibernate.DBException;
+import smartshift.common.util.collections.ROSet;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.hibernate.Stored;
 import smartshift.common.util.log4j.SmartLogger;
@@ -36,6 +37,7 @@ public class User implements Stored {
     private User(UserModel model) {
         this(model.getUsername(), model.getEmail(), model.getPassHash());
         _model = model;
+        loadAllChildren();
     }
     
     public String getEmail() {
@@ -61,6 +63,10 @@ public class User implements Stored {
             return _model.getId();
         } 
         return -1;
+    }
+    
+    public ROSet<Business> getBusinesses() {
+        return new ROSet<Business>(_employeeIDs.keySet());
     }
     
     public void connect(Business bus, int empID) {
