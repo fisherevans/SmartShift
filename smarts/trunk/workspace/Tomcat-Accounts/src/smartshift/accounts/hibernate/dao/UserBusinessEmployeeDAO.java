@@ -104,4 +104,18 @@ public class UserBusinessEmployeeDAO extends BaseAccountsDAO {
         }
         return false;
     }
+
+    /** gets a UBE link
+     * @param ubeID the PK
+     * @return null if not found
+     */
+    public static UserBusinessEmployeeModel getUBEByID(Integer ubeID) {
+        UserBusinessEmployeeModel ube = null;
+        try {
+            ube = GenericHibernateUtil.unique(getAccountsSession(), UserBusinessEmployeeModel.class, ubeID);
+        } catch(Exception e) {
+            logger.debug("failed to fetch ube", e);
+        }
+        return ube; // else
+    }
 }
