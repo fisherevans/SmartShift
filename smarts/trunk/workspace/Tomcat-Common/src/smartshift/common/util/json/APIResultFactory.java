@@ -20,7 +20,8 @@ public class APIResultFactory {
      * @return the built response
      */
     public static Response getResponse(Status status, Object result, String message) {
-        return getResponseBuilder(status, result, message).build();
+        Response response = getResponseBuilder(status, result, message).build();
+        return response;
     }
 
     /**

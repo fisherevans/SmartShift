@@ -8,6 +8,7 @@ import javax.ws.rs.core.Response.Status;
 import org.hibernate.Criteria;
 import org.hibernate.PropertyValueException;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.exception.ConstraintViolationException;
 import smartshift.common.hibernate.DBError;
@@ -97,14 +98,32 @@ public class GenericHibernateUtil {
     }
     
     /**
+     * @see save(Session, Object, boolean)
+     * calls with a true commit
+     */
+    public static Object save(Session session, Object object) throws DBException {
+        return save(session, object, true);
+    }
+    
+    /**
      * Saves a new object
      * @param session the session to use
      * @param object the existing or new object to save
+     * @return the id of the saved object
      * @throws DBException If the request is bad
      */
-    public static void save(Session session, Object object) throws DBException {
+    public static Object save(Session session, Object object, boolean commit) throws DBException {
+        Transaction tx = null;
         try {
-            session.save(object);
+            if(commit)
+                tx = session.beginTransaction();
+            Object id = session.save(object);
+            if(commit) {
+                tx.commit();
+                tx = null;
+            }
+            logger.debug("Saved new " + Object.class.getSimpleName() + " with the ID of: " + id.toString());
+            return id;
         } catch(PropertyValueException e) {
             logger.error("Failed to add object " + object.getClass().toString(), e);
             throw new DBException(DBError.BadData, "Invalid property value: " + e.getPropertyName());
@@ -114,7 +133,18 @@ public class GenericHibernateUtil {
         } catch(Exception e) {
             logger.error("Failed to add object " + object.getClass().toString(), e);
             throw new WebApplicationException(getInternalError("Failed to save object"));
+        } finally {
+            if(commit && tx != null)
+                tx.rollback();
         }
+    }
+    
+    /**
+     * @see update(Session, Object, boolean)
+     * calls with a true commit
+     */
+    public static void update(Session session, Object object) throws DBException {
+        update(session, object, true);
     }
     
     /**
@@ -123,9 +153,16 @@ public class GenericHibernateUtil {
      * @param object the existing or new object to save
      * @throws DBException If the request is bad
      */
-    public static void update(Session session, Object object) throws DBException {
+    public static void update(Session session, Object object, boolean commit) throws DBException {
+        Transaction tx = null;
         try {
+            if(commit)
+                tx = session.beginTransaction();
             session.update(object);
+            if(commit) {
+                tx.commit();
+                tx = null;
+            }
         } catch(PropertyValueException e) {
             logger.error("Failed to update object " + object.getClass().toString(), e);
             throw new DBException(DBError.BadData, "Invalid property value: " + e.getPropertyName());
@@ -135,19 +172,40 @@ public class GenericHibernateUtil {
         } catch(Exception e) {
             logger.error("Failed to update object " + object.getClass().toString(), e);
             throw new WebApplicationException(getInternalError("Failed to update object"));
+        } finally {
+            if(commit && tx != null)
+                tx.rollback();
         }
+    }
+    
+    /**
+     * @param session 
+     * @param object 
+     * @throws DBException 
+     * @see delete(Session, Object, boolean)
+     * calls with a true commit
+     */
+    public static void delete(Session session, Object object) throws DBException {
+        delete(session, object, true);
     }
     
     /**
      * deletes an existing object
      * @param session the session to use
      * @param object the existing object to delete
+     * @param commit set to true if you want start a tx and commit
      * @throws DBException If the request is bad
      */
-    public static void delete(Session session, Object object) throws DBException {
+    public static void delete(Session session, Object object, boolean commit) throws DBException {
+        Transaction tx = null;
         try {
-            session.getTransaction().begin();
+            if(commit)
+                tx = session.beginTransaction();
             session.delete(object);
+            if(commit) {
+                tx.commit();
+                tx = null;
+            }
         } catch(PropertyValueException e) {
             logger.error("Failed to delete object " + object.getClass().toString(), e);
             throw new DBException(DBError.BadData, "Invalid property value: " + e.getPropertyName());
@@ -157,6 +215,9 @@ public class GenericHibernateUtil {
         } catch(Exception e) {
             logger.error("Failed to delete object " + object.getClass().toString(), e);
             throw new WebApplicationException(getInternalError("Failed to save or update object"));
+        } finally {
+            if(commit && tx != null)
+                tx.rollback();
         }
     }
     

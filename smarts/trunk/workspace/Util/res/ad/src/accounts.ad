@@ -13,9 +13,6 @@
         }
       401 - The Basic Authentication credentials are invalid
 /accounts/user/session/
-  PARAMS
-    businessID - The id of a business
-    employeeID - The id of an employee
   PUT - Creates a new session token
     REQUIRES
       Basic Authentication
