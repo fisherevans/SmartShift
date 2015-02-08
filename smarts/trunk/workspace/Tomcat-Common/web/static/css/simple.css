@@ -1,0 +1,51 @@
+* {
+	padding: 0px;
+	margin: 0px;
+	font-family: Ubuntu, Arial, sans-serif;
+	font-size: 14px;
+}
+
+body {
+	background-color:#303030;
+}
+
+.content {
+	margin: 20px auto;
+	width: 90%;
+	min-width: 600px;
+	max-width: 1000px;
+	padding: 20px;
+	background-color: #fafafa;
+	box-shadow:0 0 10px #000000;
+}
+
+h1 {
+	font-size: 28px;
+	text-align: center;
+	line-height: 50px;
+}
+
+table {
+	margin: 10px auto;
+    border-collapse: collapse;
+	border-top:1px solid #b0b0b0;
+	border-left:1px solid #b0b0b0;
+}
+
+td {
+	padding: 5px;
+	line-height: 20px;
+	border-right:1px solid #b0b0b0;
+	border-bottom:1px solid #b0b0b0;
+}
+
+tr.head td {
+	font-weight: 700;
+	font-size: 18px;
+	text-align: center;
+	padding: 10px;
+	line-height: 30px;
+	vertical-align: middle;
+	background-color: #303030;
+	color:#fafafa;
+}

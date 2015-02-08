@@ -36,6 +36,8 @@
       Basic Authentication
     TAKES
       {
+        "businessID":businessID,
+        "employeeID":employeeID,
         "sessionID":"The session id to destroy"
       }
     RETURNS
@@ -55,7 +57,7 @@
               "username":"The username",
               "email":"email@google.com",
             },
-            "businesses":[
+            "businesses":{
               businessID:{ 
                 "id":businessID,
                 "name":"Business Name",
@@ -76,7 +78,7 @@
                 }
               },
               ...
-            ]
+            }
           }
         }
       401 - The Basic Authentication credentials are invalid

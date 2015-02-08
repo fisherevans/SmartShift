@@ -97,9 +97,12 @@ public class GenericHibernateUtil {
         return objects;
     }
     
-    /**
-     * @see save(Session, Object, boolean)
-     * calls with a true commit
+    /** calls save(session, obj, commit) where commit is true
+     * see save(session, obj, commit)
+     * @param session see
+     * @param object 
+     * @return the saved model
+     * @throws DBException 
      */
     public static Object save(Session session, Object object) throws DBException {
         return save(session, object, true);
@@ -109,6 +112,7 @@ public class GenericHibernateUtil {
      * Saves a new object
      * @param session the session to use
      * @param object the existing or new object to save
+     * @param commit set true to start a tx, and commit
      * @return the id of the saved object
      * @throws DBException If the request is bad
      */
@@ -140,7 +144,9 @@ public class GenericHibernateUtil {
     }
     
     /**
-     * @see update(Session, Object, boolean)
+     * @param session 
+     * @param object 
+     * @throws DBException 
      * calls with a true commit
      */
     public static void update(Session session, Object object) throws DBException {
@@ -151,6 +157,7 @@ public class GenericHibernateUtil {
      * updates an existing object
      * @param session the session to use
      * @param object the existing or new object to save
+     * @param commit set true to start a tx, and commit
      * @throws DBException If the request is bad
      */
     public static void update(Session session, Object object, boolean commit) throws DBException {
@@ -182,7 +189,6 @@ public class GenericHibernateUtil {
      * @param session 
      * @param object 
      * @throws DBException 
-     * @see delete(Session, Object, boolean)
      * calls with a true commit
      */
     public static void delete(Session session, Object object) throws DBException {
