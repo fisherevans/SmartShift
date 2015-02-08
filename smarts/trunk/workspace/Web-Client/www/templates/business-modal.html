@@ -1,0 +1,11 @@
+<div class="modal-header">
+    <h3 class="modal-title">Please select which business you would like to access.</h3>
+</div>
+<div class="modal-body">
+    <select ng-model="selected" class="form-control">
+        <option ng-repeat="business in businesses" value="{{business.id}}">{{business.name}}</option>
+    </select>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="ok()">OK</button>
+</div>
