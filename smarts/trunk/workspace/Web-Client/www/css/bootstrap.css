@@ -1062,8 +1062,8 @@ th {
      -moz-box-sizing: border-box;
           box-sizing: border-box;
 }
-*:before,
-*:after {
+*:not(.navPane):before,
+*:not(.navPane):after{
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
           box-sizing: border-box;

@@ -1,17 +1,26 @@
 .navPane {
-  position: absolute;
-  top:0;
-  left:0;
-  width: 80px;
-  text-align: center;
-  font-size: 0;
-  overflow: visible;
-  z-index: 10;
-   -moz-user-select: none;
-   -khtml-user-select: none;
-   -webkit-user-select: none;
-}
+    position: absolute;
+    top:0;
+    left:0;
+    width: 80px;
+    text-align: center;
+    font-size: 14px;
+    overflow: visible;
+    z-index: 10;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    background-color: #282828;
+    display: block;
+    height: 100%;
 
+
+}
+.navPane:after, .navPane:before{
+/*    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;*/
+}
 .navPane * {
    -moz-user-select: none;
    -khtml-user-select: none;
@@ -553,4 +562,30 @@
         -ms-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
          -o-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
             transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
+}
+
+.dim {
+    height:100%;
+    width:100%;
+    position:fixed;
+    left:0;
+    top:0;
+    z-index:100 !important;
+    background-color:black;
+    filter: alpha(opacity=10); /* internet explorer */
+    -khtml-opacity: 0.10;      /* khtml, old safari */
+    -moz-opacity: 0.10;      /* mozilla, netscape */
+    opacity: 0.10;      /* fx, safari, opera */
+}
+
+.login {
+    margin: 2px;
+    margin-left:-10px;
+
+}
+
+.alert.login-alert{
+    padding: 2px;
+    padding-left: 6px;
+    margin-top: -5px;
 }

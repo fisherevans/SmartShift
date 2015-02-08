@@ -1,42 +1,135 @@
 
 'use strict'
 
-var app = angular.module('smartsApp', ['ngRoute']);
+var app = angular.module('smartsApp', [
+    'ngRoute',
+    'ui.bootstrap',
+    'storefrontApp.services'
+]);
 
 app.config(function($routeProvider){
 	$routeProvider
         .when('/newsfeed', {
-			templateUrl: '/templates/newsfeed.html',
+			templateUrl: 'templates/newsfeed.html',
 			controller: 'NewsfeedController',
 			controllerAs: 'newsfeedCtrl'
 		})
 		.when('/messages', {
-			templateUrl: '/templates/messages.html',
+			templateUrl: 'templates/messages.html',
 			controller: 'MessagesController',
 			controllerAs: 'messagesCtrl'
 		})
 		.when('/requests', {
-			templateUrl: '/templates/requests.html',
+			templateUrl: 'templates/requests.html',
 			controller: 'RequestsController',
 			controllerAs: 'requestsCtrl'
 		})
 		.when('/schedule', {
-			templateUrl: '/templates/schedule.html',
+			templateUrl: 'templates/schedule.html',
 			controller: 'ScheduleController',
 			controllerAs: 'scheduleCtrl'
 		})
 		.when('/settings', {
-			templateUrl: '/templates/settings.html',
+			templateUrl: 'templates/settings.html',
 			controller: 'SettingsController',
 			controllerAs: 'settingsCtrl'
 		})
-		.otherwise({
-			redirectTo: '/newsfeed'
-		})
+		/*.otherwise({
+			redirectTo: '/'
+		})*/
 
 });
 
-app.controller('TabController', function($location){
+app.controller('MainController', ['$scope', '$rootScope', '$modal', '$location', 'accountsService',
+    function($scope, $rootScope, $modal, $location, accountsService){
+        $scope.session = {
+            id: 0
+        };
+
+
+        $scope.init = function(){
+            if(!$rootScope.sessionID){
+                var modalInstance = $modal.open({
+                    templateUrl: 'templates/login.html',
+                    controller: 'LoginModalController',
+                    backdrop: 'static',
+                    backdropClass: 'dim'
+
+
+                });
+                modalInstance.result.then(function (result){
+                    $rootScope.username = result.username;
+                    $rootScope.password = result.password;
+                    console.log($rootScope.username);
+                    console.log($rootScope.password);
+                    console.log(result.full);
+                    if(result.full.businesses.length > 1){
+                        var modalInstance = $modal.open({
+                            templateUrl: 'templates/business-modal.html',
+                            controller: 'BusinessModalController',
+                            resolve: {
+                                businesses: function(){
+                                    var bus = result.full.businesses;
+                                    return bus;
+                                }
+                            }
+
+                        });
+                        modalInstance.result.then(function (business){
+                            console.log(business);
+                            accountsService.getSession(business.id, business.employeeID)
+                                .success(function(result){
+                                    $rootScope.sessionID = result.data;
+                                    console.log($rootScope.sessionID);
+                                    $location.url('/newsfeed');
+                                });
+                            //$rootScope.sessionId = selectedItem;
+                        })
+                    }
+                    // $rootScope.sessionId = result.sessionId;
+                })
+            }
+
+        };
+
+        $scope.init();
+}]);
+app.controller('BusinessModalController', ['$scope', '$modalInstance', 'businesses',
+    function($scope, $modalInstance, businesses){
+        $scope.businesses = businesses;
+        $scope.selected = $scope.businesses[0].id;
+
+        $scope.ok = function() {
+            for( var business in $scope.businesses ){
+                if($scope.businesses[business].id == $scope.selected )
+                    $modalInstance.close($scope.businesses[business]);
+            }
+
+
+        }
+    }]);
+app.controller('LoginModalController', ['$scope', '$modalInstance', 'accountsService',
+    function($scope, $modalInstance, accountsService){
+        $scope.account = {
+            username: '',
+            password: ''
+        };
+
+        $scope.error = '';
+
+        $scope.submit = function() {
+            accountsService.getFull($scope.account.username, $scope.account.password)
+                .success(function(data){
+                    $scope.account.full = data.data;
+                    $modalInstance.close($scope.account);
+                })
+                .error(function(data){
+                   $scope.error = data.message;
+                });
+        }
+    }]);
+
+app.controller('TabController', ['$location', function($location){
 	this.currentTab = (function(){switch($location.path()){
 		case '/messages':
 			return 2;
@@ -65,7 +158,7 @@ app.controller('TabController', function($location){
 		return this.currentTab === tab;
 	};
 
-});
+}]);
 
 app.controller('NewsfeedController', function($location){
 	this.route = $location.path();
