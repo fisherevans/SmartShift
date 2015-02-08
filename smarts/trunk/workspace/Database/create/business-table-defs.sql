@@ -1,7 +1,7 @@
 -- Database
 DROP DATABASE IF EXISTS Business_1;
 CREATE DATABASE Business_1;
-GRANT ALL PRIVILEGES ON Business_1.* TO 'smarts'@'localhost';
+GRANT ALL PRIVILEGES ON Business_1.* TO 'smarts'@'%';
 COMMIT;
 
 USE Business_1;

@@ -1,3 +1,4 @@
+
 -- Initial Dara
 INSERT INTO `Accounts`.`ContactMethod` (`id`, `name`) VALUES (1, 'email');
 INSERT INTO `Accounts`.`ContactMethod` (`id`, `name`) VALUES (2, 'phone');
@@ -23,7 +24,7 @@ INSERT INTO `Accounts`.`User` (`id`, `username`, `passHash`, `email`) VALUES (4,
 
 INSERT INTO `Accounts`.`UserBusinessEmployee` (`userID`, `busID`, `empID`) VALUES (1, 1, 1);
 INSERT INTO `Accounts`.`UserBusinessEmployee` (`userID`, `busID`, `empID`) VALUES (2, 1, 2);
-INSERT INTO `Accounts`.`UserBusinessEmployee` (`userID`, `busID`, `empID`) VALUES (3, 2, 4);
-INSERT INTO `Accounts`.`UserBusinessEmployee` (`userID`, `busID`, `empID`) VALUES (3, 3, 5);
+INSERT INTO `Accounts`.`UserBusinessEmployee` (`userID`, `busID`, `empID`) VALUES (3, 2, 3);
+INSERT INTO `Accounts`.`UserBusinessEmployee` (`userID`, `busID`, `empID`) VALUES (3, 3, 4);
 
 INSERT INTO `Accounts`.`Registration` (`businessID`, `employeeID`, `verificationCode`, `email`) VALUES (2, 3, 'SOMECODE', 'fisher@email.com');
