@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 /**
  * @author fevans
@@ -18,7 +20,22 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  */
 @Entity
 @Table(name = "Session")
+@NamedQueries({
+    @NamedQuery(name = SessionModel.GET_ACTIVE_SESSIONS,
+                query = "select s from Session s "
+                      + "where s.userBusinessEmployeeID in (select id "
+                      +                "from UserBusinessEmployee ube "
+                      +                "where ube.businessID = :" + SessionModel.GET_ACTIVE_SESSIONS_BUSINESS_ID
+                      + ") and s.lastActivityTimestamp >= :" + SessionModel.GET_ACTIVE_SESSIONS_LAST_ACCESS
+    )
+})
 public class SessionModel {
+    public static final String GET_ACTIVE_SESSIONS = "getActiveSessions";
+
+    public static final String GET_ACTIVE_SESSIONS_BUSINESS_ID = "businessID";
+
+    public static final String GET_ACTIVE_SESSIONS_LAST_ACCESS = "lastAccess";
+    
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
