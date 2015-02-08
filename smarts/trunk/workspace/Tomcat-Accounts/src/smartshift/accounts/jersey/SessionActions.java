@@ -10,6 +10,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import com.google.gson.annotations.Expose;
 import smartshift.accounts.cache.bo.Business;
 import smartshift.accounts.cache.bo.User;
@@ -18,7 +20,6 @@ import smartshift.accounts.hibernate.dao.UserBusinessEmployeeDAO;
 import smartshift.accounts.hibernate.model.SessionModel;
 import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
 import smartshift.accounts.rmi.BusinessServiceManager;
-import smartshift.common.jersey.ActionBase;
 import smartshift.common.rmi.interfaces.BusinessServiceInterface;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
@@ -100,10 +101,12 @@ public class SessionActions extends AccountsActionBase {
             return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_CREATE_400);
         
         UserBusinessEmployeeModel ube = UserBusinessEmployeeDAO.getUBE(user.getID(), sessionRequest.businessID, sessionRequest.employeeID);
-        SessionModel session = SessionDAO.createSession(ube.getEmployeeID());
+        if(ube == null)
+            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_CREATE_400);
+        SessionModel session = SessionDAO.createSession(ube.getId());
         if(session == null) {
             logger.debug("SessionActions.createSession() Failed to create session");
-            return getMessageResponse(Status.INTERNAL_SERVER_ERROR, MSG_SESSION_CREATE_501);
+            return getObjectResponse(Status.INTERNAL_SERVER_ERROR, MSG_SESSION_CREATE_501);
         }
         for(BusinessServiceInterface bs:BusinessServiceManager.getBusinessServices(sessionRequest.businessID)) {
             try {
@@ -112,7 +115,9 @@ public class SessionActions extends AccountsActionBase {
                 logger.warn("Failed to send session to business");
             }
         }
-        return getObjectResponse(Status.OK, session.getSessionKey());
+        SessionRequest response = new SessionRequest();
+        response.sessionKey = session.getSessionKey();
+        return getObjectResponse(Status.OK, response);
     }
     
     /**
@@ -122,21 +127,24 @@ public class SessionActions extends AccountsActionBase {
      */
     @DELETE
     public Response deleteSession(SessionRequest sessionRequest) {
-//        logger.debug("SessionActions.deleteSession() Enter");
-//        if(sessionRequest== null || sessionRequest.businessID == null || sessionRequest.employeeID == null || sessionRequest.sessionKey == null) {
-//            logger.debug("SessionActions.deleteSession() Invalid request");
-//            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_DELETE_400);
-//        }
-//        UserBusinessEmployeeModel ube = UserBusinessEmployeeDAO.getUBE(getRequestUser(), sessionRequest.businessID, sessionRequest.employeeID);
-//        SessionModel session = SessionDAO.getSession(ube, sessionRequest.sessionKey);
-//        if(session == null) {
-//            logger.debug("SessionActions.deleteSession() Session not found");
-//            return getMessageResponse(Status.NO_CONTENT, MSG_SESSION_204);
-//        }
-//        if(!SessionDAO.destroySession(session)) {
-//            logger.debug("SessionActions.deleteSession() Failed to delete session");
-//            return getMessageResponse(Status.INTERNAL_SERVER_ERROR, MSG_SESSION_DELETE_501);
-//        }
+        logger.debug("SessionActions.deleteSession() Enter");
+        if(sessionRequest== null || sessionRequest.businessID == null || sessionRequest.employeeID == null || sessionRequest.sessionKey == null) {
+            logger.debug("SessionActions.deleteSession() Invalid request");
+            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_DELETE_400);
+        }
+        User user = getRequestUser();
+        UserBusinessEmployeeModel ube = UserBusinessEmployeeDAO.getUBE(user.getID(), sessionRequest.businessID, sessionRequest.employeeID);
+        if(ube == null)
+            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_CREATE_400);
+        SessionModel session = SessionDAO.getSession(ube.getId(), sessionRequest.sessionKey);
+        if(session == null) {
+            logger.debug("SessionActions.deleteSession() Session not found");
+            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_DELETE_400);
+        }
+        if(!SessionDAO.destroySession(session)) {
+            logger.debug("SessionActions.deleteSession() Failed to delete session");
+            return getMessageResponse(Status.INTERNAL_SERVER_ERROR, MSG_SESSION_DELETE_501);
+        }
         return getMessageResponse(Status.OK, MSG_SESSION_DELETE_200);
     }
     
@@ -148,21 +156,25 @@ public class SessionActions extends AccountsActionBase {
     @POST
     @Path("/keepAlive")
     public Response keepAliveSession(SessionRequest sessionRequest) {
-//        logger.debug("SessionActions.keepAliveSession() Enter");
-//        if(sessionRequest== null || sessionRequest.businessID == null || sessionRequest.employeeID == null || sessionRequest.sessionKey == null) {
-//            logger.debug("SessionActions.keepAliveSession() Invalid request");
-//            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_KA_400);
-//        }
-//        UserBusinessEmployeeModel ube = UserBusinessEmployeeDAO.getUBE(getRequestUser(), sessionRequest.businessID, sessionRequest.employeeID);
-//        SessionModel session = SessionDAO.getSession(ube, sessionRequest.sessionKey);
-//        if(session == null) {
-//            logger.debug("SessionActions.keepAliveSession() Session not found");
-//            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_204);
-//        }
-//        if(!SessionDAO.updateSessionTimestamp(session)) {
-//            logger.debug("SessionActions.keepAliveSession() Failed to update session");
-//            return getMessageResponse(Status.INTERNAL_SERVER_ERROR, MSG_SESSION_KA_501);
-//        }
+        logger.debug("SessionActions.keepAliveSession() Enter");
+        if(sessionRequest== null || sessionRequest.businessID == null || sessionRequest.employeeID == null || sessionRequest.sessionKey == null) {
+            logger.debug("SessionActions.keepAliveSession() Invalid request");
+            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_KA_400);
+        }
+        UserBusinessEmployeeModel ube = UserBusinessEmployeeDAO.getUBE(getRequestUser().getID(), sessionRequest.businessID, sessionRequest.employeeID);
+        if(ube == null) {
+            logger.debug("SessionActions.keepAliveSession() ube not found");
+            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_204);
+        }
+        SessionModel session = SessionDAO.getSession(ube.getId(), sessionRequest.sessionKey);
+        if(session == null) {
+            logger.debug("SessionActions.keepAliveSession() Session not found");
+            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_204);
+        }
+        if(!SessionDAO.updateSessionTimestamp(session)) {
+            logger.debug("SessionActions.keepAliveSession() Failed to update session");
+            return getMessageResponse(Status.INTERNAL_SERVER_ERROR, MSG_SESSION_KA_501);
+        }
         return getMessageResponse(Status.OK, MSG_SESSION_KA_200);
     }
     
@@ -171,6 +183,7 @@ public class SessionActions extends AccountsActionBase {
      * @author D. Fisher Evans <contact@fisherevans.com>
      *
      */
+    @XmlAccessorType(XmlAccessType.FIELD)
     public static class SessionRequest {
         /**
          * The Business object id

@@ -22,24 +22,24 @@ public abstract class AbstractAuthFilter implements ContainerRequestFilter {
      */
     @Override
     public void filter(ContainerRequestContext containerRequest) throws IOException {
-        logger.debug("filter() Enter");
+        logger.trace("filter() Enter");
         // http://stackoverflow.com/questions/18499465/cors-and-http-basic-auth
         // http://stackoverflow.com/questions/19234892/xmlhttprequest-based-cors-call-with-basic-auth-fails-in-firefox-and-chrome
         // Ignore Options Requests - preflight browsers
         if(containerRequest.getMethod().equalsIgnoreCase(HttpMethod.OPTIONS))
             return;
-        logger.debug("filter() Not a OPTIONS request");
+        logger.trace("filter() Not a OPTIONS request");
         String auth = containerRequest.getHeaders().getFirst("Authorization");
         if(auth == null)
             throw new WebApplicationException(getInvalidCredentialsResponse());
-        logger.debug("filter() Auth header found");
+        logger.trace("filter() Auth header found");
         String[] authData = BasicAuth.decode(auth);
         if(authData == null || authData.length != 2)
             throw new WebApplicationException(getInvalidCredentialsResponse());
-        logger.debug("filter() valid header value");
+        logger.trace("filter() valid header value");
         String username = authData[0];
         String authString = authData[1];
-        logger.info(String.format("Processing: %s %s (%s)", containerRequest.getMethod(), containerRequest.getUriInfo().getPath(), username));
+        logger.debug(String.format("Processing: %s %s (%s)", containerRequest.getMethod(), containerRequest.getUriInfo().getPath(), username));
         processCredentials(containerRequest, username, authString);
     }
 

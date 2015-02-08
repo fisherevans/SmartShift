@@ -2,6 +2,7 @@ package smartshift.accounts.hibernate.dao;
 
 import java.security.SecureRandom;
 import java.util.Date;
+import java.util.List;
 import org.hibernate.criterion.Restrictions;
 import smartshift.accounts.hibernate.model.SessionModel;
 import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
@@ -41,6 +42,15 @@ public class SessionDAO extends BaseAccountsDAO {
     }
     
     /**
+     * @return the session object, null if it doesn't exist
+     */
+    public static List<SessionModel> getSessions() {
+        logger.debug("getSessions() Enter");
+        List<SessionModel> sessions = GenericHibernateUtil.list(getAccountsSession(), SessionModel.class);
+        return sessions;
+    }
+    
+    /**
      * Updates a session's last timestamp with the current time
      * @param session the session the update
      * @return true if the session was updated
@@ -60,7 +70,7 @@ public class SessionDAO extends BaseAccountsDAO {
         logger.debug("updateSessionTimestamp() Enter");
         session.setLastActivityTimestamp(ts);
         try {
-            GenericHibernateUtil.save(getAccountsSession(), session);
+            GenericHibernateUtil.update(getAccountsSession(), session);
         } catch(DBException e) {
             logger.debug("updateSessionTimestamp() failed to update timestamp", e);
             return false;

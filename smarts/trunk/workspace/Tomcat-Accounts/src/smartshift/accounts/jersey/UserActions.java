@@ -1,28 +1,19 @@
 package smartshift.accounts.jersey;
 
-import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
-import com.google.gson.Gson;
 import smartshift.accounts.cache.bo.Business;
 import smartshift.accounts.cache.bo.User;
-import smartshift.accounts.hibernate.dao.BusinessDAO;
-import smartshift.accounts.hibernate.dao.ContactMethodDAO;
-import smartshift.accounts.hibernate.model.BusinessModel;
-import smartshift.accounts.hibernate.model.UserModel;
 import smartshift.accounts.jersey.objects.BusinessJSON;
 import smartshift.accounts.jersey.objects.UserFullJSON;
 import smartshift.accounts.jersey.objects.UserJSON;
-import smartshift.common.jersey.ActionBase;
 import smartshift.common.util.log4j.SmartLogger;
-import smartshift.common.util.params.SimpleIntegerParam;
 
 /**
  * Jersey actions for user methods
@@ -36,16 +27,6 @@ public class UserActions extends AccountsActionBase {
     private static final SmartLogger logger = new SmartLogger(UserActions.class);
 
     /**
-     * Message to be returned if a business is not found;
-     */
-    private static final String MSG_204_BUSINESS = "User is not linked to this business or this business does not exist.";
-
-    /**
-     * Message to be returned if a contact method is not found;
-     */
-    private static final String MSG_204_CONTACT_METHOD = "A contact method with this id is not linked to this user.";
-
-    /**
      * Gets the basic information for the authenticated user
      * @return HTTP Response with the user object
      */
@@ -55,7 +36,12 @@ public class UserActions extends AccountsActionBase {
         logger.debug("UserActions.userSelf() Enter");
         return getObjectResponse(Status.OK, new UserJSON(getRequestUser()));
     }
-    
+
+    /**
+     * Gets the full information for the authenticated user
+     * included businesses and employee ids
+     * @return HTTP Response with the full user object
+     */
     @GET
     @Path("/full")
     public Response userFull() {
@@ -65,7 +51,7 @@ public class UserActions extends AccountsActionBase {
         for(Business business:user.getBusinesses()) {
             BusinessJSON businessJson = new BusinessJSON(business);
             businessJson.employeeID = user.getEmployeeID(business);
-            userFull.businesses.add(businessJson);
+            userFull.businesses.put(business.getID(), businessJson);
         }
         userFull.user = new UserJSON(getRequestUser());
         return getObjectResponse(Status.OK, userFull);
