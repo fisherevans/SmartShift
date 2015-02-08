@@ -1,9 +1,7 @@
 package smartshift.common.hibernate;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.hibernate.Session;
@@ -24,6 +22,7 @@ import smartshift.common.util.properties.AppConstants;
 public class HibernateFactory {
     private static SmartLogger logger = new SmartLogger(HibernateFactory.class);
     
+    @SuppressWarnings("rawtypes")
     private static Set<Class> annotatedClasses = new HashSet<Class>();
 	
 	/**
@@ -47,7 +46,7 @@ public class HibernateFactory {
 	public synchronized static void createFactory(String schema) {
 	    logger.info("Connection to schema: " + schema);
 	    Configuration cfg = MultiTenantConnectionProviderImpl.getConnectionConfiguration(schema);
-	    for(Class clazz:annotatedClasses)
+	    for(@SuppressWarnings("rawtypes") Class clazz:annotatedClasses)
 	        cfg.addAnnotatedClass(clazz);
         StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties());
         SessionFactory factory = cfg.buildSessionFactory(ssrb.build());
@@ -101,7 +100,7 @@ public class HibernateFactory {
     /** Adds a class to the list of classes to load in the session factories 
      * @param clazz the annotated hibernat class
      */
-    public static void addAnnotatedClass(Class clazz) {
+    public static void addAnnotatedClass(@SuppressWarnings("rawtypes") Class clazz) {
         logger.info("Adding Hibernate Class: " + clazz.getSimpleName());
         annotatedClasses.add(clazz);
     }

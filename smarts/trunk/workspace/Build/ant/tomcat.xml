@@ -82,6 +82,7 @@
 		<echo>Packaging required files into the build directory</echo>
 		<copy todir="${build.dir}/${project.prefix}${project.name}/WEB-INF/lib">
 			<fileset dir="${lib.dir}/jar">
+				<exclude name="catalina.jar" />
 				<exclude name="javax.servlet.jar" />
 				<exclude name="servlet-api.jar" />
 			</fileset>

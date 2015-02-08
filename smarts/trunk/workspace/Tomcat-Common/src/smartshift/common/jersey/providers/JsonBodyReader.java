@@ -9,8 +9,6 @@ import java.io.Reader;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.nio.charset.Charset;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
@@ -37,6 +35,9 @@ public class JsonBodyReader<T> implements MessageBodyReader<T>, MessageBodyWrite
 
     private static final SmartLogger logger = new SmartLogger(JsonBodyReader.class);
     
+    /**
+     * initialized this class
+     */
     public JsonBodyReader() {
         
     }
