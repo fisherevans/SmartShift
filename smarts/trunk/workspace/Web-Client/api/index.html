@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+    <script src="api.js"></script>
+    <link href="style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div ng-app ng-controller="APIDocController">
+
+
+      <div class='pathDocsPane'>
+
+        <div class='pathDocs' ng-hide='currentPath == ""'>
+          <div class='methodDocs fadeColor {{currentMethod == method ? "current" : ""}} {{methodObject.notImplemented == true ? "warn" : ""}}' ng-repeat="(method, methodObject) in currentMethods">
+            <div class='methodDocTitle'>
+              <div class='methodDocType method{{method}}'>{{method}}</div>
+              <div class='methodDocPath'>{{currentPath}}</div>
+              <div class='methodDocDescription'>({{methodObject.shortDescription}})</div>
+            </div>
+            <div ng-hide='methodObject.longDescription == undefined' class='methodDocLongDescription'>{{methodObject.longDescription}}</div>
+            <div ng-hide='methodObject.requires == undefined || objSize(methodObject.requires) == 0' class='methodRequiresList'>
+              <div class='methodRequires' ng-repeat="req in methodObject.requires">
+                <div ng-hide="req.name == undefined" class='methodRequiresName'>
+                  Requires {{req.name}}
+                </div>
+                <div ng-hide="req.description == undefined" class='methodRequiresDescription'>
+                  {{req.description}}
+                </div>
+                <div ng-hide="req.example == undefined" class='methodRequiresExample codeBox'>
+                  {{req.example}}
+                </div>
+              </div>
+            </div>
+            <div class='methodTakes' ng-hide='methodObject.takes == undefined'>
+              <div class='methodTakesTitle'>Takes</div>
+              <pre class='methodTakesJSON codeBox'>{{prettyJson(methodObject.takes)}}</pre>
+            </div>
+            <div class='returnTitle'>Returns</div>
+            <div class='methodResponses'>
+              <div class='methodResponse' ng-repeat="(responseCode, response) in methodObject.responses">
+              <div class='methodResponseTitle'>
+                <div class='httpCode'>{{responseCode}}</div>
+                <div class='responseDescription'>{{response.result}}</div>
+              </div>
+              <pre ng-hide='response.data == undefined' class='responseExample codeBox'>{{prettyJson(response.data)}}</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class='pathDocsSelect' ng-hide='currentPath != ""'>
+          Select an API call to the left...
+        </div>
+      </div>
+
+      <div class='filter'>
+        <input type='text' id='filterInput' value='' ng-keyup='filterListener()' placeholder='Filter'></input>
+      </div>
+
+
+      <div class='paths'>
+        <div class='path fadeColor' ng-class="{current:currentPath==path}" ng-repeat="(path, pathObj) in filteredPaths">
+          <div class='pathLabel fadeColor' ng-click="updateCurrent(path, pathObj)">{{path}}</div>
+          <div class='methods'>
+            <div class='method fadeColor' ng-repeat="(method, methodObject) in pathObj" ng-click="updateCurrent(path, pathObj, method)">
+              <div class='methodText'>
+                <div class='methodLabel method{{method}} fadeColor'>{{method}}</div>
+                <div class='methodDescription fadeColor'>{{methodObject.shortDescription}}</div>
+              </div>
+              <div class='response'>
+                <div class='responseLabel fadeColor'>Returns: </div>
+                <div class='responseCodes fadeColor' ng-repeat="(responseCode, responseObject) in methodObject.responses">
+                  <div class='responseCode'>{{responseCode}}</div>
+                  <div class='responseCodeGlue' ng-show="!$last">, </div>
+                </div>
+              </div>
+              <div class='methodNotAvailable' ng-show="methodObject.notImplemented == true">Not Implemented!</div>
+            </div>
+          </div>
+        </div>
+        <div class='noResults' ng-hide='objSize(filteredPaths) > 0'>No results found</div>
+      </div>
+
+    </div>
+  </body>
+</html>
