@@ -13,7 +13,7 @@
       <div class='pathDocsPane'>
 
         <div class='pathDocs' ng-hide='currentPath == ""'>
-          <div class='methodDocs fadeColor {{currentMethod == method ? "current" : ""}} {{methodObject.notImplemented == true ? "warn" : ""}}' ng-repeat="(method, methodObject) in currentMethods">
+          <div class='methodDocs fadeColor {{methodObject.notImplemented == true ? "warn" : ""}}' ng-repeat="(method, methodObject) in currentMethods">
             <div class='methodDocTitle'>
               <div class='methodDocType method{{method}}'>{{method}}</div>
               <div class='methodDocPath'>{{currentPath}}</div>
@@ -22,15 +22,9 @@
             <div ng-hide='methodObject.longDescription == undefined' class='methodDocLongDescription'>{{methodObject.longDescription}}</div>
             <div ng-hide='methodObject.requires == undefined || objSize(methodObject.requires) == 0' class='methodRequiresList'>
               <div class='methodRequires' ng-repeat="req in methodObject.requires">
-                <div ng-hide="req.name == undefined" class='methodRequiresName'>
-                  Requires {{req.name}}
-                </div>
-                <div ng-hide="req.description == undefined" class='methodRequiresDescription'>
-                  {{req.description}}
-                </div>
-                <div ng-hide="req.example == undefined" class='methodRequiresExample codeBox'>
-                  {{req.example}}
-                </div>
+                <div ng-hide="req.name == undefined" class='methodRequiresName'>Requires {{req.name}}</div>
+                <div ng-hide="req.description == undefined" class='methodRequiresDescription'>{{req.description}}</div>
+                <div ng-hide="req.example == undefined" class='methodRequiresExample codeBox'>{{req.example}}</div>
               </div>
             </div>
             <div class='methodTakes' ng-hide='methodObject.takes == undefined'>
@@ -40,19 +34,17 @@
             <div class='returnTitle'>Returns</div>
             <div class='methodResponses'>
               <div class='methodResponse' ng-repeat="(responseCode, response) in methodObject.responses">
-              <div class='methodResponseTitle'>
-                <div class='httpCode'>{{responseCode}}</div>
-                <div class='responseDescription'>{{response.result}}</div>
-              </div>
-              <pre ng-hide='response.data == undefined' class='responseExample codeBox'>{{prettyJson(response.data)}}</pre>
+                <div class='methodResponseTitle'>
+                  <div class='httpCode'>{{responseCode}}</div>
+                  <div class='responseDescription'>{{response.result}}</div>
+                </div>
+                <pre ng-hide='response.data == undefined' class='responseExample codeBox'>{{prettyJson(response.data)}}</pre>
               </div>
             </div>
           </div>
         </div>
 
-        <div class='pathDocsSelect' ng-hide='currentPath != ""'>
-          Select an API call to the left...
-        </div>
+        <div class='pathDocsSelect' ng-hide='currentPath != ""'>Select an API call to the left...</div>
       </div>
 
       <div class='filter'>
@@ -61,14 +53,15 @@
 
 
       <div class='paths'>
-        <div class='path fadeColor' ng-class="{current:currentPath==path}" ng-repeat="(path, pathObj) in filteredPaths">
-          <div class='pathLabel fadeColor' ng-click="updateCurrent(path, pathObj)">{{path}}</div>
+        <div class='path fadeColor' ng-class="{current:currentPath==path}" ng-repeat="(path, pathObj) in filteredPaths" ng-click="updateCurrent(path, pathObj)">
+          <div class='pathLabel fadeColor'>{{path}}</div>
           <div class='methods'>
-            <div class='method fadeColor' ng-repeat="(method, methodObject) in pathObj" ng-click="updateCurrent(path, pathObj, method)">
+            <div class='method fadeColor' ng-repeat="(method, methodObject) in pathObj">
               <div class='methodText'>
                 <div class='methodLabel method{{method}} fadeColor'>{{method}}</div>
                 <div class='methodDescription fadeColor'>{{methodObject.shortDescription}}</div>
               </div>
+              <div class='methodNotAvailable' ng-show="methodObject.notImplemented == true">Not Implemented!</div>
               <div class='response'>
                 <div class='responseLabel fadeColor'>Returns: </div>
                 <div class='responseCodes fadeColor' ng-repeat="(responseCode, responseObject) in methodObject.responses">
@@ -76,7 +69,6 @@
                   <div class='responseCodeGlue' ng-show="!$last">, </div>
                 </div>
               </div>
-              <div class='methodNotAvailable' ng-show="methodObject.notImplemented == true">Not Implemented!</div>
             </div>
           </div>
         </div>
