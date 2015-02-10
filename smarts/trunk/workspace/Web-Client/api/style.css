@@ -63,6 +63,7 @@
   color:#eee;
   cursor: pointer;
   position: relative;
+  padding-bottom: 0px;
 }
 
 .path:hover .pathLabel {
