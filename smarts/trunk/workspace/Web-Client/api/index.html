@@ -38,7 +38,8 @@
                   <div class='httpCode'>{{responseCode}}</div>
                   <div class='responseDescription'>{{response.result}}</div>
                 </div>
-                <pre ng-hide='response.data == undefined' class='responseExample codeBox'>{{prettyJson(response.data)}}</pre>
+                <div ng-hide='response.explanation == undefined' class='responseExplanation'>{{response.explanation}}</div>
+                <pre ng-hide='returnStructure(response) == undefined' class='responseExample codeBox'>{{prettyJson(returnStructure(response))}}</pre>
               </div>
             </div>
           </div>

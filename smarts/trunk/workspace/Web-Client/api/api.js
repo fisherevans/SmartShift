@@ -171,6 +171,7 @@ var apiDef = {
           401: badAuthResult,
           200: {
             "result":"The full employee object",
+            "explanation":"The 'groupRoles' object contains a map of <GroupID -> Array<RoleID>>.",
             "data": {
               "employee": {
                 "firstName":"Joe",
@@ -236,6 +237,21 @@ function APIDocController($scope) {
     });
     scope.$apply();
   };
+  $scope.returnStructure = function(response) {
+    var r = {};
+    var contents = 0;
+    if(response.data != undefined) {
+      r['data'] = response.data;
+      contents++;
+    }
+    if(response.message != undefined) {
+      r['message'] = response.message;
+      contents++;
+    }
+    if(contents == 0)
+      return undefined;
+    return r;
+  }
   $scope.prettyJson = function(obj) {
     return JSON.stringify(obj, undefined, 2);
   }
