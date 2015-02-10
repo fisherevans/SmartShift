@@ -281,6 +281,10 @@
   margin-bottom: 10px;
 }
 
+.responseExplanation {
+  margin: 10px 0px;
+}
+
 .returnTitle {
   padding-top: 15px;
 }
