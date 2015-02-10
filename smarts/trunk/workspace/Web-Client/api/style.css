@@ -49,11 +49,11 @@
 }
 
 .path.current {
-  background-color: #292B33;
+  background-color: #282828;
 }
 
 .path:hover {
-  background-color:#222;
+  background-color:#282828;
 }
 
 .pathLabel {
@@ -65,19 +65,14 @@
   position: relative;
 }
 
-.pathLabel:hover {
+.path:hover .pathLabel {
   color:#fff;
-  background-color:#353535;
 }
 
 .method {
   padding: 10px 15px;
   padding-left: 30px;
   cursor: pointer;
-}
-
-.method:hover {
-  background-color:#353535;
 }
 
 .methodText {
@@ -126,7 +121,7 @@
   color:#bbb;
 }
 
-.method:hover .methodDescription {
+.path:hover .methodDescription {
   color:#ccc;
 }
 
@@ -142,7 +137,7 @@
   color: #999;
 }
 
-.method:hover .responseLabel {
+.path:hover .responseLabel {
   color:#aaa;
 }
 
@@ -150,7 +145,7 @@
   color:#666;
 }
 
-.method:hover .responseCodes {
+.path:hover .responseCodes {
   color:#777;
 }
 
@@ -202,9 +197,6 @@
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 20px;
-}
-
-.methodDocs.current {
   border: 1px solid #aaa;
   background-color: #fbfbfb;
   box-shadow: 0px 0px 5px #aaa;

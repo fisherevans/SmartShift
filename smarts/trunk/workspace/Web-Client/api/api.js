@@ -10,6 +10,11 @@ var sessionAuthRequirement = {
   "example":"HTTP Header - 'Authentication: Basic ' + base64(username + ':' + sessionKey)"
 };
 
+var employeeOwnerOrManager = {
+  "name":"Employee Ownership or Management",
+  "description":"The access this method, you must be the employee in question, or you must be a manager to the employee."
+};
+
 var badAuthResult = {
   "result":"The Basic Authentication credentials were invalid"
 };
@@ -110,19 +115,72 @@ var apiDef = {
         }
       }
     },
-    "/accounts/zzz/test": {
+    "/business/groupRoles": {
       "GET": {
         "notImplemented":true,
-        "shortDescription":"Gets basic user info",
-        "requires": [userAuthRequirement],
+        "shortDescription":"Gets a listing of all groups, and what roles belong to it.",
+        "requires": [sessionAuthRequirement],
         "responses": {
           401: badAuthResult,
           200: {
-            "result":"The basic user object",
+            "result":"The mapping of groups to roles",
             "data": {
-                "id":1,
-                "username":"username",
-                "email":"email@address.com"
+              1: {
+                "groupID":1,
+                "parentGroupID":2,
+                "groupName":"Some name",
+                "roles": {
+                  1: {
+                    "roleID":1,
+                    "roleName":"Some name"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/business/employee/{employeeID}": {
+      "GET": {
+        "notImplemented":true,
+        "shortDescription":"Gets basic information about an employee",
+        "requires": [sessionAuthRequirement],
+        "responses": {
+          401: badAuthResult,
+          200: {
+            "result":"The base employee object",
+            "data": {
+              "firstName":"Joe",
+              "lastName":"Shmoe",
+              "defaultGroupID":1
+            }
+          }
+        }
+      }
+    },
+    "/business/employee/full/{employeeID}": {
+      "GET": {
+        "notImplemented":true,
+        "shortDescription":"Gets all information about an employee",
+        "requires": [
+          sessionAuthRequirement,
+          employeeOwnerOrManager
+        ],
+        "responses": {
+          401: badAuthResult,
+          200: {
+            "result":"The full employee object",
+            "data": {
+              "employee": {
+                "firstName":"Joe",
+                "lastName":"Shmoe",
+                "defaultGroupID":1
+              },
+              "groupRoles": {
+                1:[1, 2],
+                2:[2, 3]
+              }
             }
           }
         }
@@ -144,13 +202,11 @@ function APIDocController($scope) {
   $scope.api = apiDef;
   $scope.currentPath = '';
   $scope.currentMethods = {};
-  $scope.currentMethod = '';
-  $scope.updateCurrent = function(path, methods, method) {
+  $scope.updateCurrent = function(path, methods) {
     var input = document.getElementById('filterInput');
     var scope = angular.element(input).scope();
     scope.currentPath = path;
     scope.currentMethods = methods;
-    scope.currentMethod = method;
   };
   $scope.filteredPaths = apiDef.paths;
   $scope.filterListener = function () {
@@ -170,7 +226,8 @@ function APIDocController($scope) {
       var methods = {};
       angular.forEach(value, function(mValue, mKey) {
         if(mKey.toLowerCase().search(filter) >= 0
-          || mValue.shortDescription.toLowerCase().replace(/\W+/g, " ").search(filter) >= 0) {
+          || mValue.shortDescription.toLowerCase().replace(/\W+/g, " ").search(filter) >= 0
+          || (mValue.longDescription != null && mValue.longDescription.toLowerCase().replace(/\W+/g, " ").search(filter) >= 0)) {
           methods[mKey] = mValue;
         }
       });
