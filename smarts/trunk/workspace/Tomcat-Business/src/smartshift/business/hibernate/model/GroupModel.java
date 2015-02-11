@@ -37,19 +37,19 @@ import smartshift.common.util.collections.ROList;
  */
 @Entity
 @Table(name = "Group")
-@NamedQueries({
-        @NamedQuery(name = GroupModel.GET_EMPLOYEE_GROUPS,
-                    query = "select g from Group g "
-                          + "where g.id in (select groupID "
-                          +                "from GroupEmployee ge "
-                          +                "where ge.employeeID = :" + GroupModel.GET_EMPLOYEE_GROUPS_EMP_ID
-                          + ")"
-        )
-})
+//@NamedQueries({
+//        @NamedQuery(name = GroupModel.GET_EMPLOYEE_GROUPS,
+//                    query = "select g from GroupModel g "
+//                          + "where g.id in (select ge.groupID "
+//                          +                "from GroupEmployeeModel ge "
+//                          +                "where ge.employeeID = :" + GroupModel.GET_EMPLOYEE_GROUPS_EMP_ID
+//                          + ")"
+//        )
+//})
 public class GroupModel {
     public static final String GET_EMPLOYEE_GROUPS = "getEmployeeGroups";
     
-    public static final String GET_EMPLOYEE_GROUPS_EMP_ID = "empoyeeID";
+    public static final String GET_EMPLOYEE_GROUPS_EMP_ID = "empoyeeIDParam";
     
     @Id
     @GeneratedValue

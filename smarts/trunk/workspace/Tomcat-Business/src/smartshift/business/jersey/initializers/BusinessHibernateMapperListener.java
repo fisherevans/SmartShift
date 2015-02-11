@@ -4,6 +4,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
+import smartshift.business.hibernate.model.GroupRoleEmployeeModel;
 import smartshift.business.hibernate.model.GroupRoleModel;
 import smartshift.business.hibernate.model.RoleModel;
 import smartshift.common.hibernate.HibernateFactory;
@@ -23,6 +24,7 @@ public class BusinessHibernateMapperListener implements ServletContextListener {
         HibernateFactory.addAnnotatedClass(GroupModel.class);
         HibernateFactory.addAnnotatedClass(GroupRoleModel.class);
         HibernateFactory.addAnnotatedClass(RoleModel.class);
+        HibernateFactory.addAnnotatedClass(GroupRoleEmployeeModel.class);
     }
 
     /**

@@ -2,8 +2,11 @@ package smartshift.common.jersey.initializers;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import org.apache.log4j.Level;
+import org.apache.log4j.LogManager;
 import org.apache.log4j.MDC;
 import org.apache.log4j.PropertyConfigurator;
+import com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
 import smartshift.common.util.properties.AppProperties;
@@ -31,6 +34,7 @@ public class AppPropertiesListener implements ServletContextListener {
             PropertyConfigurator.configure(AppPropertiesListener.class.getClassLoader().getResourceAsStream(LOG_TO_FILE));
         else
             PropertyConfigurator.configure(AppPropertiesListener.class.getClassLoader().getResourceAsStream(LOG_TO_CONSOLE));
+        LogManager.getLogger(AbstractPoolBackedDataSource.class).setLevel(Level.WARN);
         
         logger.info("Log4J configuration has been loaded (To file: " + AppConstants.LOG_TO_FILE + ")");
         

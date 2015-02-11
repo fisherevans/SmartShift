@@ -27,7 +27,7 @@ public class HibernateListener implements ServletContextListener {
 	@Override
     public void contextInitialized(ServletContextEvent event) {
         logger.info("Initializing he hibernate session factory");
-        System.setProperty("com.mchange.v2.c3p0.management.ManagementCoordinator", "com.mchange.v2.c3p0.management.NullManagementCoordinator");
+        //System.setProperty("com.mchange.v2.c3p0.management.ManagementCoordinator", "com.mchange.v2.c3p0.management.NullManagementCoordinator");
         HibernateFactory.initialize();
         for(Integer businessID:AppConstants.DEV_BUSINESS_MANUAL_BUSINESSES)
             HibernateFactory.createFactory(AppConstants.DB_SCHEMA_BUSINESS_BASE + businessID);
@@ -46,25 +46,25 @@ public class HibernateListener implements ServletContextListener {
             provider.close();
 
         // De-register old class loaders
-        Enumeration<Driver> drivers = DriverManager.getDrivers();
-        while (drivers.hasMoreElements()) {
-            Driver driver = drivers.nextElement();
-            try {
-                DriverManager.deregisterDriver(driver);
-                logger.info(String.format("Deregistering jdbc driver: %s", driver));
-            } catch (SQLException e) {
-                logger.fatal(String.format("Error deregistering driver %s", driver), e);
-            }
-        }
+//        Enumeration<Driver> drivers = DriverManager.getDrivers();
+//        while (drivers.hasMoreElements()) {
+//            Driver driver = drivers.nextElement();
+//            try {
+//                DriverManager.deregisterDriver(driver);
+//                logger.info(String.format("Deregistering jdbc driver: %s", driver));
+//            } catch (SQLException e) {
+//                logger.fatal(String.format("Error deregistering driver %s", driver), e);
+//            }
+//        }
         
-        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-        Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
-        for(Thread t:threadArray) {
-            if(t.getName().contains("Abandoned connection cleanup thread")) {
-                synchronized(t) {
-                    t.stop(); //don't complain, it works
-                }
-            }
-        }
+//        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
+//        Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
+//        for(Thread t:threadArray) {
+//            if(t.getName().contains("Abandoned connection cleanup thread")) {
+//                synchronized(t) {
+//                    t.stop(); //don't complain, it works
+//                }
+//            }
+//        }
     }
 }
