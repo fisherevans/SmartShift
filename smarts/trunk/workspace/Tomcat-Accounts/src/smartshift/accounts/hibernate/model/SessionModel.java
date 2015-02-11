@@ -20,15 +20,15 @@ import org.hibernate.annotations.NamedQuery;
  */
 @Entity
 @Table(name = "Session")
-@NamedQueries({
-    @NamedQuery(name = SessionModel.GET_ACTIVE_SESSIONS,
-                query = "select s from Session s "
-                      + "where s.userBusinessEmployeeID in (select id "
-                      +                "from UserBusinessEmployee ube "
-                      +                "where ube.businessID = :" + SessionModel.GET_ACTIVE_SESSIONS_BUSINESS_ID
-                      + ") and s.lastActivityTimestamp >= :" + SessionModel.GET_ACTIVE_SESSIONS_LAST_ACCESS
-    )
-})
+//@NamedQueries({
+//    @NamedQuery(name = SessionModel.GET_ACTIVE_SESSIONS,
+//                query = "select s from SessionModel s "
+//                      + "where s.userBusinessEmployeeID in (select id "
+//                      +                "from UserBusinessEmployeeModel ube "
+//                      +                "where ube.businessID = :" + SessionModel.GET_ACTIVE_SESSIONS_BUSINESS_ID
+//                      + ") and s.lastActivityTimestamp >= :" + SessionModel.GET_ACTIVE_SESSIONS_LAST_ACCESS
+//    )
+//})
 public class SessionModel {
     public static final String GET_ACTIVE_SESSIONS = "getActiveSessions";
 

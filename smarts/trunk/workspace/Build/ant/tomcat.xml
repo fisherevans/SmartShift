@@ -85,6 +85,11 @@
 				<exclude name="catalina.jar" />
 				<exclude name="javax.servlet.jar" />
 				<exclude name="servlet-api.jar" />
+				<exclude name="c3p0.jar" />
+				<exclude name="jackson-core-asl.jar" />
+				<exclude name="quartz.jar" />
+				<exclude name="slf4j-log4j12.jar" />
+				<exclude name="slf4j-api.jar" />
 			</fileset>
 		</copy>
 		<touch file="${build.dir}/${project.prefix}${project.name}/WEB-INF/classes/app.properties" />

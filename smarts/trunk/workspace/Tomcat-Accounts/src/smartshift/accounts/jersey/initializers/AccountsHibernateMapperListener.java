@@ -23,6 +23,7 @@ public class AccountsHibernateMapperListener implements ServletContextListener {
         HibernateFactory.addAnnotatedClass(SessionModel.class);
         HibernateFactory.addAnnotatedClass(UserBusinessEmployeeModel.class);
         HibernateFactory.addAnnotatedClass(BusinessModel.class);
+        HibernateFactory.addAnnotatedClass(SessionModel.class);
     }
 
     /**
