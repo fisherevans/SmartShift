@@ -29,7 +29,7 @@
 
 	<target name="build-clean">
 		<echo>Cleaning the build directory</echo>
-		<delete dir="${out.dir}" />
+		<delete dir="${out.dir}/build" />
 	</target>
 
 	<target name="prep-accounts">
