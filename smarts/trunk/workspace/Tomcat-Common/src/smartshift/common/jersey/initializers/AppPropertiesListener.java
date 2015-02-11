@@ -34,7 +34,7 @@ public class AppPropertiesListener implements ServletContextListener {
             PropertyConfigurator.configure(AppPropertiesListener.class.getClassLoader().getResourceAsStream(LOG_TO_FILE));
         else
             PropertyConfigurator.configure(AppPropertiesListener.class.getClassLoader().getResourceAsStream(LOG_TO_CONSOLE));
-        LogManager.getLogger(AbstractPoolBackedDataSource.class).setLevel(Level.WARN);
+        LogManager.getLogger("com.mchange.v2").setLevel(Level.WARN);
         
         logger.info("Log4J configuration has been loaded (To file: " + AppConstants.LOG_TO_FILE + ")");
         
