@@ -7,7 +7,10 @@ import java.util.Set;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.c3p0.internal.C3P0ConnectionProvider;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
+import org.hibernate.internal.SessionFactoryImpl;
 import smartshift.common.util.PrimativeUtils;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
@@ -78,23 +81,32 @@ public class HibernateFactory {
      * close all hibernate factories
      */
 	public synchronized static void closeFactories() {
-        logger.info("Closing all hibernate session factories.");
-		for(SessionFactory factory:factories.values()) {
-			if(factory != null) {
-				factory.close();
-			}
+        logger.info("Closing all hibernate sessison factories.");
+        Set<String> schemas = new HashSet<>(factories.keySet());
+		for(String schema:schemas) {
+			closeFactory(schema);
 		}
 		factories.clear();
 	}
 
     /** close and remove a single business schema
-     * @param businessSchema the schema to disconnect from
+     * @param schema the schema to disconnect from
      */
-    public static void closeFactory(String businessSchema) {
-        SessionFactory sf =  getFactory(businessSchema);
-        if(sf != null)
+    public static void closeFactory(String schema) {
+        SessionFactory sf =  getFactory(schema);
+        if(sf != null) {
+            if(sf instanceof SessionFactoryImpl) {
+                SessionFactoryImpl sfi = (SessionFactoryImpl) sf;
+                ConnectionProvider cp = sfi.getConnectionProvider();
+                if(cp instanceof C3P0ConnectionProvider) {
+                    C3P0ConnectionProvider ccp = (C3P0ConnectionProvider) cp;
+                    logger.info("Closing C3P0 connection provider: " + ccp.toString());
+                    ((C3P0ConnectionProvider) cp).stop();
+                }
+            }
             sf.close();
-        factories.remove(businessSchema);
+        }
+        factories.remove(schema);
     }
     
     /** Adds a class to the list of classes to load in the session factories 
