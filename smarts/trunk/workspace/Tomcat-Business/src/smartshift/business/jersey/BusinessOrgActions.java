@@ -8,7 +8,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
-import smartshift.business.cache.bo.Cache;
 import smartshift.business.cache.bo.Employee;
 import smartshift.business.jersey.objects.EmployeeJSON;
 import smartshift.common.util.log4j.SmartLogger;
@@ -22,7 +21,7 @@ public class BusinessOrgActions extends BusinessActionBase {
     @GET
     @Path("/employee/self")
     public Response userSelf() {
-        Employee e = getBusinessCache().getEmployee(getUserSession().employeeID);
+        Employee e = Employee.load(getBusinessCache(), getUserSession().employeeID);
         if(e == null) {
             logger.warn("Failed to find employee: " + getUserSession().employeeID);
             return getMessageResponse(Status.INTERNAL_SERVER_ERROR, "Something went wrong...");
