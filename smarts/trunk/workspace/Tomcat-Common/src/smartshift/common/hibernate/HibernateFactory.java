@@ -93,12 +93,17 @@ public class HibernateFactory {
      * @param schema the schema to disconnect from
      */
     public static void closeFactory(String schema) {
-        SessionFactory sf =  getFactory(schema);
+        logger.debug("Closing sf for schema: " + schema);
+        SessionFactory sf = getFactory(schema);
         if(sf != null) {
+            logger.debug("not null");
             if(sf instanceof SessionFactoryImpl) {
+                logger.debug("is impl");
                 SessionFactoryImpl sfi = (SessionFactoryImpl) sf;
                 ConnectionProvider cp = sfi.getConnectionProvider();
+                logger.debug("cp = " + cp.getClass().getSimpleName() + " - " + cp.toString());
                 if(cp instanceof C3P0ConnectionProvider) {
+                    logger.debug("is c3p0");
                     C3P0ConnectionProvider ccp = (C3P0ConnectionProvider) cp;
                     logger.info("Closing C3P0 connection provider: " + ccp.toString());
                     ((C3P0ConnectionProvider) cp).stop();
