@@ -60,8 +60,9 @@ public class HibernateListener implements ServletContextListener {
         Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
         Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
         for(Thread t:threadArray) {
-            if(t.getName().contains("cleanup")) {
+            if(t.getName().contains("cleanup") || t.getName().contains("mchange.v2")) {
                 synchronized(t) {
+                    logger.info("Killing thread: " + t.getName() + " " + t.getId());
                     t.stop(); //don't complain, it works
                 }
             }

@@ -35,6 +35,8 @@ public class BusinessRMIListener implements ServletContextListener {
     
     private Scheduler _scheduler;
     
+    private StdSchedulerFactory _schedFactory;
+    
     /**
      * a context has been initialized, create the RMI service
      */
@@ -58,7 +60,8 @@ public class BusinessRMIListener implements ServletContextListener {
                     .withIntervalInSeconds(AppProperties.getIntegerProperty("rmi.connection.polling", 60)).repeatForever())
                     .build();
             
-            _scheduler = new StdSchedulerFactory().getScheduler();
+            _schedFactory = new StdSchedulerFactory(); 
+            _scheduler = _schedFactory.getScheduler();
             _scheduler.scheduleJob(_jobDetail, _trigger);
             _scheduler.start();
         } catch(Exception e) {
@@ -72,14 +75,15 @@ public class BusinessRMIListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent event) {
         try {
-            if(_scheduler != null) {
-                logger.info("Shutting down Quartz scheduler...");
-                _scheduler.shutdown(true);
-                logger.info("The Quartz scheduler has been shut down.");
+            for(Scheduler sched:_schedFactory.getAllSchedulers()) {
+                logger.info("Shutting down Quartz scheduler... " + sched);
+                sched.shutdown(true);
+                logger.debug("The Quartz scheduler has been shut down.");
             }
         } catch(SchedulerException e) {
             logger.error("Failed to cancel Job!", e);
         }
+        
         try {
             if(RMIClient.isClinetStarted(AppConstants.RMI_ACCOUNTS_HOSTNAME, AppConstants.RMI_ACCOUNTS_PORT)) {
                 AccountsServiceInterface acctsService = (AccountsServiceInterface)
@@ -89,6 +93,7 @@ public class BusinessRMIListener implements ServletContextListener {
         } catch(Exception e) {
             logger.error("Failed to warn accounts app of shutdown!", e);
         }
+        
         try {
             RMIServer.destroyAll();
         } catch(RemoteException e) {
