@@ -1,11 +1,15 @@
 package smartshift.common.security.session;
 
+import smartshift.common.util.log4j.SmartLogger;
+
 /**
  * Holds a session for a user. This is to be created by the accounts application and sent to business applications
  * @author D. Fisher Evans <contact@fisherevans.com>
  *
  */
 public class UserSession {
+    private static final SmartLogger logger = new SmartLogger(UserSession.class);
+    
     /** The username for the session */
     public final String username;
     
@@ -80,6 +84,8 @@ public class UserSession {
      * @return true if still active
      */
     public boolean stillActive() {
-        return _lastActivity + timeOutPeriod < System.currentTimeMillis();
+        boolean active = _lastActivity + timeOutPeriod < System.currentTimeMillis();
+        logger.debug(_lastActivity + " + " + timeOutPeriod + " < " + System.currentTimeMillis() + " = " + active);
+        return active;
     }
 }
