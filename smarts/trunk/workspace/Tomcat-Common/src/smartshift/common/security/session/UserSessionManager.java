@@ -21,7 +21,7 @@ public class UserSessionManager {
      * @param session the session to add
      */
     public static synchronized void addSession(UserSession session) {
-        logger.info("Adding session: " + session.sessionID.substring(0, Math.min(session.sessionID.length(), 8)) + "... for " + session.username + ":" + session.employeeID);
+        logger.info("Adding session: " + getDebugStr(session) + "... for " + session.username + ":" + session.employeeID);
         if(sessions.get(session.sessionID) != null) {
             throw new IllegalAddException("A session already exists with the sessionID: " + session.sessionID);
         }
@@ -119,5 +119,9 @@ public class UserSessionManager {
         }
         logger.info("Removed " + sessionsRemoved + " sessions with invalidateAllSessions(): " + sessionList);
         return sessionsRemoved;
+    }
+    
+    private static String getDebugStr(UserSession session) {
+        return session.sessionID.substring(0, Math.min(session.sessionID.length(), 8));
     }
 }

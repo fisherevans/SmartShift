@@ -32,7 +32,6 @@ public class BusinessService extends BaseRemote implements BusinessServiceInterf
      */
     @Override
     public void addUserSession(String username, String sessionId, Integer businessID, Integer employeeID, long timoutPeriod) throws RemoteException {
-        logger.info("Adding session: " + sessionId);
         UserSession session = new UserSession(username, sessionId, businessID, employeeID, timoutPeriod);
         try {
             UserSessionManager.addSession(session);
