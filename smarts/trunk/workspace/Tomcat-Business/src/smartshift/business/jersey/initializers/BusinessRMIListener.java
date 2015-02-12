@@ -72,8 +72,11 @@ public class BusinessRMIListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent event) {
         try {
-            if(_scheduler != null)
-                _scheduler.shutdown();
+            if(_scheduler != null) {
+                logger.info("Shutting down Quartz scheduler...");
+                _scheduler.shutdown(true);
+                logger.info("The Quartz scheduler has been shut down.");
+            }
         } catch(SchedulerException e) {
             logger.error("Failed to cancel Job!", e);
         }
