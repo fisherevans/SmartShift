@@ -21,6 +21,7 @@ public class SessionAuthFilter extends AbstractAuthFilter {
 
     @Override
     protected void processCredentials(ContainerRequestContext containerRequest, String username, String authString) {
+        logger.debug("Processing auth for " + username + ":" + authString.charAt(0) + "..." + authString.charAt(authString.length()-1));
         UserSession session = UserSessionManager.getSession(authString, true);
         if(session == null)
             throw new WebApplicationException(getInvalidCredentialsResponse());

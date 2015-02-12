@@ -21,7 +21,7 @@ public class UserSessionManager {
      * @param session the session to add
      */
     public static synchronized void addSession(UserSession session) {
-        logger.info("Adding session: " + session.sessionID);
+        logger.info("Adding session: " + session.sessionID.substring(0, Math.min(session.sessionID.length(), 8)) + "... for " + session.username + ":" + session.employeeID);
         if(sessions.get(session.sessionID) != null) {
             throw new IllegalAddException("A session already exists with the sessionID: " + session.sessionID);
         }
@@ -36,7 +36,7 @@ public class UserSessionManager {
      */
     public static synchronized UserSession getSession(String sessionID, boolean requireActive) {
         UserSession session = sessions.get(sessionID);
-        if(requireActive &&  !session.stillActive()) {
+        if(session != null && requireActive &&  !session.stillActive()) {
             logger.info("Session is inactive: " + sessionID);
             removeSession(sessionID);
             return null;
