@@ -84,8 +84,8 @@ public class UserSession {
      * @return true if still active
      */
     public boolean stillActive() {
-        boolean active = _lastActivity + timeOutPeriod < System.currentTimeMillis();
-        logger.debug(_lastActivity + " + " + timeOutPeriod + " < " + System.currentTimeMillis() + " = " + active);
+        boolean active = _lastActivity + timeOutPeriod > System.currentTimeMillis();
+        logger.debug(_lastActivity + " + " + timeOutPeriod + " > " + System.currentTimeMillis() + " = " + active);
         return active;
     }
 }
