@@ -7,6 +7,7 @@
 	<display-name>accounts</display-name>
 	
 	<listener><listener-class>smartshift.common.jersey.initializers.AppPropertiesListener</listener-class></listener>
+	<listener><listener-class>smartshift.business.jersey.initializers.CleanupListener</listener-class></listener>
 	<listener><listener-class>smartshift.common.jersey.initializers.GsonFactoryListener</listener-class></listener>
 	<listener><listener-class>smartshift.accounts.jersey.initializers.AccountsHibernateMapperListener</listener-class></listener>
 	<listener><listener-class>smartshift.common.jersey.initializers.HibernateListener</listener-class></listener>

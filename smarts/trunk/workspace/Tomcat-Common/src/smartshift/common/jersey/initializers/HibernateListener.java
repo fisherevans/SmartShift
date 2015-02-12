@@ -44,28 +44,5 @@ public class HibernateListener implements ServletContextListener {
         MultiTenantConnectionProviderImpl provider = MultiTenantConnectionProviderImpl.getInstance();
         if(provider != null)
             provider.close();
-
-        // De-register old class loaders
-        Enumeration<Driver> drivers = DriverManager.getDrivers();
-        while (drivers.hasMoreElements()) {
-            Driver driver = drivers.nextElement();
-            try {
-                DriverManager.deregisterDriver(driver);
-                logger.info(String.format("Deregistering jdbc driver: %s", driver));
-            } catch (SQLException e) {
-                logger.fatal(String.format("Error deregistering driver %s", driver), e);
-            }
-        }
-        
-        Set<Thread> threadSet = Thread.getAllStackTraces().keySet();
-        Thread[] threadArray = threadSet.toArray(new Thread[threadSet.size()]);
-        for(Thread t:threadArray) {
-            if(t.getName().contains("cleanup") || t.getName().contains("mchange.v2") || t.getName().contains("Timer")) {
-                synchronized(t) {
-                    logger.info("Killing thread: " + t.getName() + " " + t.getId());
-                    t.stop(); //don't complain, it works
-                }
-            }
-        }
     }
 }

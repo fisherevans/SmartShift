@@ -81,7 +81,7 @@ public class HibernateFactory {
      * close all hibernate factories
      */
 	public synchronized static void closeFactories() {
-        logger.info("Closing all hibernate sessison factories.");
+        logger.info("Closing all hibernate sessison factories. " + factories.size());
         Set<String> schemas = new HashSet<>(factories.keySet());
 		for(String schema:schemas) {
 			closeFactory(schema);
