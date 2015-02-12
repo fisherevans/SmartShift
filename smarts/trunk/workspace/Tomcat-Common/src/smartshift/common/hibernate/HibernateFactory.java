@@ -101,7 +101,7 @@ public class HibernateFactory {
                 logger.debug("is impl");
                 SessionFactoryImpl sfi = (SessionFactoryImpl) sf;
                 ConnectionProvider cp = sfi.getConnectionProvider();
-                logger.debug("cp = " + cp.getClass().getSimpleName() + " - " + cp.toString());
+                logger.debug("cp = " + cp);
                 if(cp instanceof C3P0ConnectionProvider) {
                     logger.debug("is c3p0");
                     C3P0ConnectionProvider ccp = (C3P0ConnectionProvider) cp;
