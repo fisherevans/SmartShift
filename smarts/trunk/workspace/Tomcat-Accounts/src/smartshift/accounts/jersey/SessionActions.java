@@ -110,7 +110,7 @@ public class SessionActions extends AccountsActionBase {
         }
         for(BusinessServiceInterface bs:BusinessServiceManager.getBusinessServices(sessionRequest.businessID)) {
             try {
-                bs.addUserSession(user.getUserName(), session.getSessionKey(), sessionRequest.businessID, AppConstants.SESSION_TIMEOUT);
+                bs.addUserSession(user.getUserName(), session.getSessionKey(), sessionRequest.businessID, sessionRequest.employeeID, AppConstants.SESSION_TIMEOUT);
             } catch(Exception e) {
                 logger.warn("Failed to send session to business");
             }
