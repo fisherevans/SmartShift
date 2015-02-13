@@ -45,11 +45,11 @@ public class Employee extends CachedObject {
         for(GroupModel groupModel:groupModels) {
             Group group = Group.load(getCache(), groupModel.getId());
             _roles.put(group, new HashSet<Role>());
-            ROList<RoleModel> roleModels = getDAO(RoleDAO.class).getEmployeeGroupRoles(_model.getId(), group.getID());
-            for(RoleModel roleModel:roleModels) {
-                //Role role = Role.load(roleModel.getID());
-                //_roles.get(group).add(role);
-            }
+//            ROList<RoleModel> roleModels = getDAO(RoleDAO.class).getEmployeeGroupRoles(_model.getId(), group.getID());
+//            for(RoleModel roleModel:roleModels) {
+//                Role role = Role.load(roleModel.getID());
+//                _roles.get(group).
+//            }
         }
     }
     
