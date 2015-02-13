@@ -18,7 +18,8 @@ public class EmployeeJSON {
 
     @Expose
     public Integer defaultGroupID;
-    
+
+    @Expose
     public Map<GroupJSON, Set<RoleJSON>> groupRoles;
     
     public EmployeeJSON(Employee e) {
