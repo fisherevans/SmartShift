@@ -2,19 +2,18 @@ package smartshift.business.cache.bo;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import smartshift.business.hibernate.dao.DAOContext;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
-import smartshift.business.hibernate.dao.RoleDAO;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
-import smartshift.business.hibernate.model.RoleModel;
+import smartshift.business.hibernate.model.GroupRoleEmployeeModel;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.util.UID;
 import smartshift.common.util.collections.ROCollection;
-import smartshift.common.util.collections.ROList;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -29,6 +28,7 @@ public class Employee extends CachedObject {
     private Map<Group, Set<Role>> _roles;
     
     private EmployeeModel _model;
+    private List<GroupRoleEmployeeModel> _grpRoleEmpModels;
     
     public Employee(Cache cache, String first, String last, Group home) {
         super(cache);
@@ -39,18 +39,9 @@ public class Employee extends CachedObject {
     }
     
     private Employee(Cache cache, EmployeeModel model) {
-        this(cache, model.getFirstName(), model.getLastName(), Group.getGroup(cache, model.getDefaultGroupID()));
+        this(cache, model.getFirstName(), model.getLastName(), Group.load(cache, model.getDefaultGroupID()));
         _model = model;
-        ROList<GroupModel> groupModels = getDAO(GroupDAO.class).getEmployeeGroups(model.getId());
-        for(GroupModel groupModel:groupModels) {
-            Group group = Group.load(getCache(), groupModel.getId());
-            _roles.put(group, new HashSet<Role>());
-//            ROList<RoleModel> roleModels = getDAO(RoleDAO.class).getEmployeeGroupRoles(_model.getId(), group.getID());
-//            for(RoleModel roleModel:roleModels) {
-//                Role role = Role.load(roleModel.getID());
-//                _roles.get(group).
-//            }
-        }
+        loadAllChildren();
     }
     
     public String getDisplayName() {
@@ -106,7 +97,13 @@ public class Employee extends CachedObject {
 
     @Override
     public void loadAllChildren() {
-        // TODO Auto-generated method stub
+        try {
+            for(GroupModel gm : getDAO(GroupDAO.class).getEmployeeGroups(getID())) {
+                _roles.put(Group.load(getCache(), gm.getId()), new HashSet<Role>()); 
+            }
+        } catch(Exception e) {
+            logger.error("Failed to load children", e);
+        }
     }
 
     @Override
@@ -132,7 +129,7 @@ public class Employee extends CachedObject {
         }
     }
     
-    public static Employee createNewEmployee(int businessID, String first, String last, int homeGroupID) {
+    public static Employee create(int businessID, String first, String last, int homeGroupID) {
         Cache cache = Cache.getCache(businessID);
         Employee emp = new Employee(cache, first, last, Group.load(cache, homeGroupID));
         emp.save();
