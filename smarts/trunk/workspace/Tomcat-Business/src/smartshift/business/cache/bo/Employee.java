@@ -45,7 +45,7 @@ public class Employee extends CachedObject {
     }
     
     public String getDisplayName() {
-        return _firstName + _lastName;
+        return _firstName + " " + _lastName;
     }
     
     public String getFirstName() {
