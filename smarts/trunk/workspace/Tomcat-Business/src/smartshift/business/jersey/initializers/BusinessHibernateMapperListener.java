@@ -3,6 +3,7 @@ package smartshift.business.jersey.initializers;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import smartshift.business.hibernate.model.EmployeeModel;
+import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.business.hibernate.model.GroupRoleEmployeeModel;
 import smartshift.business.hibernate.model.GroupRoleModel;
@@ -22,6 +23,7 @@ public class BusinessHibernateMapperListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent sce) {
         HibernateFactory.addAnnotatedClass(EmployeeModel.class);
         HibernateFactory.addAnnotatedClass(GroupModel.class);
+        HibernateFactory.addAnnotatedClass(GroupEmployeeModel.class);
         HibernateFactory.addAnnotatedClass(GroupRoleModel.class);
         HibernateFactory.addAnnotatedClass(RoleModel.class);
         HibernateFactory.addAnnotatedClass(GroupRoleEmployeeModel.class);

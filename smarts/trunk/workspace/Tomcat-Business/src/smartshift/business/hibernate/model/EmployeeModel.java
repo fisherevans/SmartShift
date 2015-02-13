@@ -14,15 +14,15 @@ import org.hibernate.annotations.NamedQuery;
  */
 @Entity
 @Table(name = "Employee")
-//@NamedQueries({
-//        @NamedQuery(name = EmployeeModel.GET_GROUP_EMPLOYEES,
-//                    query = "select e from EmployeeModel e "
-//                          + "where e.id in (select ge.employeeID "
-//                          +                "from GroupEmployeeModel ge "
-//                          +                "where ge.groupID = :" + EmployeeModel.GET_GROUP_EMPLOYEES_GROUP_ID
-//                          + ")"
-//        )
-//})
+@NamedQueries({
+        @NamedQuery(name = EmployeeModel.GET_GROUP_EMPLOYEES,
+                    query = "select e from EmployeeModel e "
+                          + "where e.id in (select ge.employeeID "
+                          +                "from GroupEmployeeModel ge "
+                          +                "where ge.groupID = :" + EmployeeModel.GET_GROUP_EMPLOYEES_GROUP_ID
+                          + ")"
+        )
+})
 public class EmployeeModel {
     public static final String GET_GROUP_EMPLOYEES = "getGroupEmployees";
     

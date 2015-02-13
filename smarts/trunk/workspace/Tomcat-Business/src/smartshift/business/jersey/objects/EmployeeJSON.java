@@ -1,5 +1,7 @@
 package smartshift.business.jersey.objects;
 
+import java.util.List;
+import java.util.Map;
 import com.google.gson.annotations.Expose;
 import smartshift.business.cache.bo.Employee;
 
@@ -15,6 +17,8 @@ public class EmployeeJSON {
 
     @Expose
     public Integer defaultGroupID;
+    
+    public Map<GroupJSON, List<RoleJSON>> groupRoles;
     
     public EmployeeJSON(Employee e) {
         this.id = e.getID();

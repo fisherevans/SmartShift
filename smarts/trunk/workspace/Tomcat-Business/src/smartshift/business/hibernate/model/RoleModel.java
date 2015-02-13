@@ -25,6 +25,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.mindrot.jbcrypt.BCrypt;
 import com.google.gson.annotations.Expose;
 import smartshift.common.util.collections.ROList;
@@ -35,7 +37,39 @@ import smartshift.common.util.collections.ROList;
  */
 @Entity
 @Table(name = "Role")
+@NamedQueries({
+    @NamedQuery(name = RoleModel.GET_GROUP_ROLES,
+            query = "select e from RoleModel r "
+                  + "where r.id in (select gr.roleID "
+                  +                "from GroupRoleModel gr "
+                  +                "where gr.groupID = :" + RoleModel.GET_GROUP_ROLES_GRP_ID
+                  + ")"
+    ),
+    @NamedQuery(name = RoleModel.GET_EMPLOYEE_GROUP_ROLES,
+            query = "select r "
+                  + "  from RoleModel r "
+                  + " where r.id in ( "
+                  + "  select gr.roleID "
+                  + "    from GroupRoleModel gr "
+                  + "   where gr.id in ( "
+                  + "    select gre.groupRoleID "
+                  + "      from GroupRoleEmployeeModel gre "
+                  + "     where gre.employeeID = :" + RoleModel.GET_EMPLOYEE_GROUP_ROLES_EMP_ID
+                  + "   ) and gr.groupID = :" + RoleModel.GET_EMPLOYEE_GROUP_ROLES_GRP_ID
+                  + " ) "
+    )
+})
 public class RoleModel {
+    public static final String GET_GROUP_ROLES = "getGroupRoles";
+
+    public static final String GET_GROUP_ROLES_GRP_ID = "groupIDParam";
+    
+    public static final String GET_EMPLOYEE_GROUP_ROLES = "getEmployeeGroupRoles";
+
+    public static final String GET_EMPLOYEE_GROUP_ROLES_GRP_ID = "groupIDParam";
+
+    public static final String GET_EMPLOYEE_GROUP_ROLES_EMP_ID = "employeeIDParam";
+    
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)

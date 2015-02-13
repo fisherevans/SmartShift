@@ -1,5 +1,6 @@
 package smartshift.accounts.jersey;
 
+import java.util.Date;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
@@ -21,6 +22,7 @@ import smartshift.accounts.hibernate.model.SessionModel;
 import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
 import smartshift.accounts.rmi.BusinessServiceManager;
 import smartshift.common.rmi.interfaces.BusinessServiceInterface;
+import smartshift.common.util.collections.ROList;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
 
@@ -112,7 +114,7 @@ public class SessionActions extends AccountsActionBase {
             try {
                 bs.addUserSession(user.getUserName(), session.getSessionKey(), sessionRequest.businessID, sessionRequest.employeeID, AppConstants.SESSION_TIMEOUT);
             } catch(Exception e) {
-                logger.warn("Failed to send session to business");
+                logger.warn("Failed to send session to business", e);
             }
         }
         SessionRequest response = new SessionRequest();

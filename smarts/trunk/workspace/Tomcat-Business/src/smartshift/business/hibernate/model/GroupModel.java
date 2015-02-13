@@ -36,16 +36,16 @@ import smartshift.common.util.collections.ROList;
  * @version Oct 26, 2014
  */
 @Entity
-@Table(name = "Group")
-//@NamedQueries({
-//        @NamedQuery(name = GroupModel.GET_EMPLOYEE_GROUPS,
-//                    query = "select g from GroupModel g "
-//                          + "where g.id in (select ge.groupID "
-//                          +                "from GroupEmployeeModel ge "
-//                          +                "where ge.employeeID = :" + GroupModel.GET_EMPLOYEE_GROUPS_EMP_ID
-//                          + ")"
-//        )
-//})
+@Table(name = "`Group`")
+@NamedQueries({
+        @NamedQuery(name = GroupModel.GET_EMPLOYEE_GROUPS,
+                    query = "select g from GroupModel g "
+                          + "where g.id in (select ge.groupID "
+                          +                "from GroupEmployeeModel ge "
+                          +                "where ge.employeeID = :" + GroupModel.GET_EMPLOYEE_GROUPS_EMP_ID
+                          + ")"
+        )
+})
 public class GroupModel {
     public static final String GET_EMPLOYEE_GROUPS = "getEmployeeGroups";
     
