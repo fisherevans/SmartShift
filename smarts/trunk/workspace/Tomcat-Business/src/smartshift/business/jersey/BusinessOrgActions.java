@@ -1,5 +1,6 @@
 package smartshift.business.jersey;
 
+import java.util.HashMap;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -9,7 +10,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 import smartshift.business.cache.bo.Employee;
+import smartshift.business.cache.bo.Group;
+import smartshift.business.hibernate.dao.GroupDAO;
+import smartshift.business.hibernate.model.GroupModel;
 import smartshift.business.jersey.objects.EmployeeJSON;
+import smartshift.common.util.collections.ROList;
 import smartshift.common.util.log4j.SmartLogger;
 
 @Provider
@@ -21,11 +26,17 @@ public class BusinessOrgActions extends BusinessActionBase {
     @GET
     @Path("/employee/self")
     public Response userSelf() {
-        Employee e = Employee.load(getBusinessCache(), getUserSession().employeeID);
-        if(e == null) {
+        Employee employee = Employee.load(getBusinessCache(), getUserSession().employeeID);
+        if(employee == null) {
             logger.warn("Failed to find employee: " + getUserSession().employeeID);
             return getMessageResponse(Status.INTERNAL_SERVER_ERROR, "Something went wrong...");
         }
-        return getObjectResponse(Status.OK, new EmployeeJSON(e));
+        EmployeeJSON employeeJson = new EmployeeJSON(employee);
+        employeeJson.groupRoles = new HashMap<>();
+        ROList<GroupModel> gs = getBusinessCache().getDAOContext().dao(GroupDAO.class).getEmployeeGroups(e.getID());
+        for(Group group:groups) {
+            
+        }
+        return getObjectResponse(Status.OK, );
     }
 }

@@ -6,10 +6,15 @@ import java.util.Map;
 import java.util.Set;
 import smartshift.business.hibernate.dao.DAOContext;
 import smartshift.business.hibernate.dao.EmployeeDAO;
+import smartshift.business.hibernate.dao.GroupDAO;
+import smartshift.business.hibernate.dao.RoleDAO;
 import smartshift.business.hibernate.model.EmployeeModel;
+import smartshift.business.hibernate.model.GroupModel;
+import smartshift.business.hibernate.model.RoleModel;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.util.UID;
 import smartshift.common.util.collections.ROCollection;
+import smartshift.common.util.collections.ROList;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -31,13 +36,21 @@ public class Employee extends CachedObject {
         _lastName = last;
         _homeGroup = home;
         _roles = new HashMap<Group, Set<Role>>();
-        _roles.put(_homeGroup, new HashSet<Role>());
-        _roles.get(_homeGroup).add(Role.getBasicRole(cache, _homeGroup));
     }
     
     private Employee(Cache cache, EmployeeModel model) {
         this(cache, model.getFirstName(), model.getLastName(), Group.getGroup(cache, model.getDefaultGroupID()));
         _model = model;
+        ROList<GroupModel> groupModels = getDAO(GroupDAO.class).getEmployeeGroups(model.getId());
+        for(GroupModel groupModel:groupModels) {
+            Group group = Group.load(getCache(), groupModel.getId());
+            _roles.put(group, new HashSet<Role>());
+            ROList<RoleModel> roleModels = getDAO(RoleDAO.class).getEmployeeGroupRoles(_model.getId(), group.getID());
+            for(RoleModel roleModel:roleModels) {
+                //Role role = Role.load(roleModel.getID());
+                //_roles.get(group).add(role);
+            }
+        }
     }
     
     public String getDisplayName() {
