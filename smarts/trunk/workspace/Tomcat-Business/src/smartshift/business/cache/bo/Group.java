@@ -4,18 +4,25 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import smartshift.business.hibernate.dao.DAOContext;
 import smartshift.business.hibernate.dao.GroupDAO;
+import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
+import smartshift.common.hibernate.DBException;
 import smartshift.common.util.UID;
-import smartshift.common.util.hibernate.Stored;
+import smartshift.common.util.hibernate.GenericHibernateUtil;
+import smartshift.common.util.log4j.SmartLogger;
 
 public class Group extends CachedObject {
     public static final String TYPE_IDENTIFIER = "G";
+    
+    private static final SmartLogger logger = new SmartLogger(Group.class);
     
     private String _name;
     private Map<Role, Set<Employee>> _employees;
     
     private GroupModel _model;
+    private GroupEmployeeModel _grpEmpModel;
 
     public Group(Cache cache, String name) {
         super(cache);
@@ -27,6 +34,7 @@ public class Group extends CachedObject {
     private Group(Cache cache, GroupModel model) {
         this(cache, model.getName());
         _model = model;
+        loadAllChildren();
     }
     
     public String getName() {
@@ -47,27 +55,24 @@ public class Group extends CachedObject {
         if(!_employees.get(role).contains(employee))
             _employees.get(role).add(employee);
     }
-    
-    public static Group getGroup(Cache cache, int groupID) {
-        Group group = cache.getGroup(groupID);
-        if(group == null)
-            group = new Group(cache, cache.getDAOContext().dao(GroupDAO.class).getGroupById(groupID));
-        return group;
-    }
-
-    public GroupModel getModel() {
-        return _model;
-    }
 
     public void save() {
-        // TODO Auto-generated method stub
-        
+        try {
+            if(_model != null) {
+                _model.setName(_name);
+                GenericHibernateUtil.update(DAOContext.business(getCache().
+                        getBusinessID()).getBusinessSession(), _model);
+            } else {
+                _model = getDAO(GroupDAO.class).addGroup(_name, null);
+            }
+        } catch (DBException e) {
+            logger.debug(e.getStackTrace());
+        }
     }
 
     @Override
     public void loadAllChildren() {
-        // TODO Auto-generated method stub
-        
+        // TODO Load group roles        
     }
 
     @Override
@@ -85,10 +90,26 @@ public class Group extends CachedObject {
     public static Group load(Cache cache, int grpID) {
         if(cache.contains(new UID(TYPE_IDENTIFIER, grpID)))
             return cache.getGroup(grpID);
-        return null;
+        else {
+            GroupModel model = cache.getDAOContext().dao(GroupDAO.class).getGroupById(grpID);
+            if(model != null)
+                return new Group(cache, model);
+            return null;
+        }
     }
-    
-    public static Group createNewGroup() {
-        return null;
+     
+    /**
+     * create a new group
+     * @param businessID the id of the Business that the group belongs to
+     * @param name the name of the group
+     * @param parent null if no parent
+     * @return the new group
+     */
+    public static Group create(int businessID, String name, Group parent) {
+        Cache cache = Cache.getCache(businessID);
+        Group grp = new Group(cache, name);
+        grp.save();
+        cache.cache(new UID(grp), grp);
+        return grp;
     }
 }

@@ -4,12 +4,18 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import smartshift.business.hibernate.dao.DAOContext;
+import smartshift.business.hibernate.dao.RoleDAO;
 import smartshift.business.hibernate.model.RoleModel;
+import smartshift.common.hibernate.DBException;
 import smartshift.common.util.UID;
-import smartshift.common.util.hibernate.Stored;
+import smartshift.common.util.hibernate.GenericHibernateUtil;
+import smartshift.common.util.log4j.SmartLogger;
 
 public class Role extends CachedObject {
     public static final String TYPE_IDENTIFIER = "R";
+    
+    private static final SmartLogger logger = new SmartLogger(Role.class);
     
     private String _name;
     private Map<Group, Set<Capability>> _capabilities;
@@ -27,6 +33,11 @@ public class Role extends CachedObject {
         _capabilities.put(parent, new HashSet<Capability>());
     }
     
+    private Role(Cache cache, RoleModel model) {
+        this(cache, model.getName());
+        loadAllChildren();
+    }
+    
     public String getName(String name) {
         return _name;
     }
@@ -39,14 +50,22 @@ public class Role extends CachedObject {
     }
 
     public void save() {
-        // TODO Auto-generated method stub
-        
+        try {
+            if(_model != null) {
+                _model.setName(_name);
+                GenericHibernateUtil.update(DAOContext.business(getCache().
+                        getBusinessID()).getBusinessSession(), _model);
+            } else {
+                _model = getDAO(RoleDAO.class).addRole(_name);
+            }
+        } catch (DBException e) {
+            logger.debug(e.getStackTrace());
+        }
     }
 
     @Override
     public void loadAllChildren() {
         // TODO Auto-generated method stub
-        
     }
 
     @Override
@@ -59,5 +78,32 @@ public class Role extends CachedObject {
         if(_model == null)
             return -1;
         return _model.getId();
+    }
+    
+    public static Role load(Cache cache, int roleID) {
+        if(cache.contains(new UID(TYPE_IDENTIFIER, roleID)))
+            return cache.getRole(roleID);
+        else {
+            RoleModel model = cache.getDAOContext().dao(RoleDAO.class).getRoleById(roleID);
+            if(model != null)
+                return new Role(cache, model);
+            return null;
+        }
+    }
+    
+    public static Role create(int businessID, String name) {
+        return create(businessID, name, null);
+    }
+    
+    public static Role create(int businessID, String name, Group parent) {
+        Cache cache = Cache.getCache(businessID);
+        Role role;
+        if(parent == null)
+            role = new Role(cache, name);
+        else
+            role = new Role(cache, name, parent);
+        role.save();
+        cache.cache(new UID(role), role);
+        return role;
     }
 }
