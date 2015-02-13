@@ -1,6 +1,7 @@
 package smartshift.business.jersey;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -9,11 +10,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
+import org.hibernate.mapping.Set;
 import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.hibernate.dao.GroupDAO;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.business.jersey.objects.EmployeeJSON;
+import smartshift.business.jersey.objects.GroupJSON;
+import smartshift.business.jersey.objects.RoleJSON;
 import smartshift.common.util.collections.ROList;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -33,10 +37,11 @@ public class BusinessOrgActions extends BusinessActionBase {
         }
         EmployeeJSON employeeJson = new EmployeeJSON(employee);
         employeeJson.groupRoles = new HashMap<>();
-        ROList<GroupModel> gs = getBusinessCache().getDAOContext().dao(GroupDAO.class).getEmployeeGroups(e.getID());
-        for(Group group:groups) {
-            
+        ROList<GroupModel> groups = getBusinessCache().getDAOContext().dao(GroupDAO.class).getEmployeeGroups(employee.getID());
+        for(GroupModel group:groups) {
+            GroupJSON groupJson = new GroupJSON(group);
+            employeeJson.groupRoles.put(groupJson, new HashSet<RoleJSON>());
         }
-        return getObjectResponse(Status.OK, );
+        return getObjectResponse(Status.OK, employeeJson);
     }
 }
