@@ -39,7 +39,7 @@ import smartshift.common.util.collections.ROList;
 @Table(name = "Role")
 @NamedQueries({
     @NamedQuery(name = RoleModel.GET_GROUP_ROLES,
-            query = "select e from RoleModel r "
+            query = "select r from RoleModel r "
                   + "where r.id in (select gr.roleID "
                   +                "from GroupRoleModel gr "
                   +                "where gr.groupID = :" + RoleModel.GET_GROUP_ROLES_GRP_ID
