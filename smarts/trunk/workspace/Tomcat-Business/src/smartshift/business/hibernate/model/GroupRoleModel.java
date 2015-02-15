@@ -26,6 +26,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 import org.mindrot.jbcrypt.BCrypt;
 import com.google.gson.annotations.Expose;
 import smartshift.common.util.collections.ROList;
@@ -36,7 +38,22 @@ import smartshift.common.util.collections.ROList;
  */
 @Entity
 @Table(name = "GroupRole")
+@NamedQueries({
+    @NamedQuery(name = GroupRoleModel.GET_GROUP_ROLES_BY_EMPLOYEE,
+            query = "select gr "
+                  + "  from GroupRoleModel gr "
+                  + " where gr.id in ( "
+                  + "         select gre.groupRoleID "
+                  + "           from GroupRoleEmployeeModel gre "
+                  + "          where gre.employeeID = :" + GroupRoleModel.GET_GROUP_ROLES_BY_EMPLOYEE_EMP_ID
+                  + "       )"
+    )
+})
 public class GroupRoleModel {
+    public static final String GET_GROUP_ROLES_BY_EMPLOYEE = "getGroupRoleByEmployee";
+
+    public static final String GET_GROUP_ROLES_BY_EMPLOYEE_EMP_ID = "employeeID";
+    
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)

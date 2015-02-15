@@ -1,10 +1,7 @@
 package smartshift.business.hibernate.dao;
 
 import org.hibernate.criterion.Restrictions;
-import smartshift.business.hibernate.model.GroupEmployeeModel;
-import smartshift.business.hibernate.model.GroupEmployeeModelId;
 import smartshift.business.hibernate.model.GroupRoleEmployeeModel;
-import smartshift.business.hibernate.model.GroupRoleModel;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.log4j.SmartLogger;
@@ -32,8 +29,8 @@ public class GroupRoleEmployeeDAO extends BaseBusinessDAO {
      * @param employeeID the employee id
      * @throws DBException if there's an error
      */
-    public void linkGroupRole(Integer groupRoleID, Integer employeeID) throws DBException {
-        logger.debug("Linking GR" + groupRoleID + " E" + employeeID);
+    public void linkGroupRoleEmployee(Integer groupRoleID, Integer employeeID) throws DBException {
+        logger.debug("Linking GRE" + groupRoleID + " E" + employeeID);
         if(isGroupRoleEmployeeLinked(groupRoleID, employeeID))
             return;
         GroupRoleEmployeeModel link = new GroupRoleEmployeeModel();
@@ -47,8 +44,8 @@ public class GroupRoleEmployeeDAO extends BaseBusinessDAO {
      * @param employeeID the employee id
      * @throws DBException if there's an error
      */
-    public void unlinkGroupEmployee(Integer groupRoleID, Integer employeeID) throws DBException {
-        logger.debug("Unlinking GR" + groupRoleID + " E" + employeeID);
+    public void unlinkGroupEmployeeEmployee(Integer groupRoleID, Integer employeeID) throws DBException {
+        logger.debug("Unlinking GRE" + groupRoleID + " E" + employeeID);
         GroupRoleEmployeeModel link = getGroupRoleEmployeeLink(groupRoleID, employeeID);
         if(link != null)
             GenericHibernateUtil.delete(getBusinessSession(), link);
