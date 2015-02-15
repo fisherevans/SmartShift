@@ -1,10 +1,10 @@
 package smartshift.business.hibernate.dao;
 
+import java.util.List;
 import org.hibernate.criterion.Restrictions;
-import smartshift.business.hibernate.model.GroupEmployeeModel;
-import smartshift.business.hibernate.model.GroupEmployeeModelId;
 import smartshift.business.hibernate.model.GroupRoleModel;
 import smartshift.common.hibernate.DBException;
+import smartshift.common.util.collections.ROList;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -74,5 +74,18 @@ public class GroupRoleDAO extends BaseBusinessDAO {
         GroupRoleModel link = GenericHibernateUtil.uniqueByCriterea(getBusinessSession(), GroupRoleModel.class,
                 Restrictions.eq("groupID", groupID), Restrictions.eq("roleID", roleID));
         return link;
+    }
+    
+    /** gets the group roles that belong to a user
+     * @param employeeID the employee
+     * @return the ro list of gr's
+     */
+    public ROList<GroupRoleModel> getGroupRolesByEmployee(Integer employeeID) {
+        @SuppressWarnings("unchecked")
+        List<GroupRoleModel> groupRoles = getBusinessSession()
+                .getNamedQuery(GroupRoleModel.GET_GROUP_ROLES_BY_EMPLOYEE)
+                .setParameter(GroupRoleModel.GET_GROUP_ROLES_BY_EMPLOYEE_EMP_ID, employeeID)
+                .list();
+        return new ROList<GroupRoleModel>(groupRoles);
     }
 }

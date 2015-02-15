@@ -79,4 +79,32 @@ public class EmployeeDAO extends BaseBusinessDAO {
                 .list();
         return new ROList<EmployeeModel>(employees);
     }
+
+    /** gets a list of employees in a group role
+     * @param groupID the group
+     * @param roleID the role
+     * @return the list of employees ids
+     */
+    public ROList<EmployeeModel> getGroupRoleEmployees(Integer groupID, Integer roleID) {
+        @SuppressWarnings("unchecked")
+        List<EmployeeModel> employees = getBusinessSession()
+                .getNamedQuery(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES)
+                .setParameter(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_GROUP_ID, groupID)
+                .setParameter(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_ROLE_ID, roleID)
+                .list();
+        return new ROList<EmployeeModel>(employees);
+    }
+
+    /** gets a list of employees in a group role
+     * @param groupRoleID the group role
+     * @return the list of employees ids
+     */
+    public ROList<EmployeeModel> getGroupRoleEmployeesByGR(Integer groupRoleID) {
+        @SuppressWarnings("unchecked")
+        List<EmployeeModel> employees = getBusinessSession()
+                .getNamedQuery(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_BY_GR)
+                .setParameter(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_BY_GR_GR_ID, groupRoleID)
+                .list();
+        return new ROList<EmployeeModel>(employees);
+    }
 }

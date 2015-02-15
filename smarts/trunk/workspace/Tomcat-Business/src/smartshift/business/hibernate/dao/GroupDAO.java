@@ -64,6 +64,15 @@ public class GroupDAO extends BaseBusinessDAO {
         logger.debug("GroupDAO.addGroup() Success");
         return groupModel;
     }
+    
+    /** deletes a group
+     * @param group the group to delete
+     * @throws DBException 
+     */
+    public void deleteGroup(GroupModel group) throws DBException {
+        logger.debug("Enter: GroupDAO.deleteGroup()");
+        GenericHibernateUtil.delete(getBusinessSession(), group);
+    }
 
     /** gets a list of groups an employee belongs to
      * @param employeeID the employee in question

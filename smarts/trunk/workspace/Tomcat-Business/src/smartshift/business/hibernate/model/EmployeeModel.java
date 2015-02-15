@@ -21,12 +21,45 @@ import org.hibernate.annotations.NamedQuery;
                           +                "from GroupEmployeeModel ge "
                           +                "where ge.groupID = :" + EmployeeModel.GET_GROUP_EMPLOYEES_GROUP_ID
                           + ")"
+        ),
+        @NamedQuery(name = EmployeeModel.GET_GROUP_ROLE_EMPLOYEES,
+        query = "select e "
+              + "  from EmployeeModel e "
+              + " where e.id in ( "
+              + "         select gre.employeeID "
+              + "           from GroupRoleEmployeeModel gre "
+              + "          where gre.groupRoleID in ( "
+              + "                  select gr.id "
+              + "                    from GroupRoleModel gr "
+              + "                   where gr.groupID = :" + EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_GROUP_ID
+              + "                     and gr.roleID = :" + EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_ROLE_ID
+              + "                ) "
+              + "       )"
+        ),
+        @NamedQuery(name = EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_BY_GR,
+        query = "select e "
+              + "  from EmployeeModel e "
+              + " where e.id in ( "
+              + "         select gre.employeeID "
+              + "           from GroupRoleEmployeeModel gre "
+              + "          where gre.groupRoleID = :" + EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_BY_GR_GR_ID
+              + "       )"
         )
 })
 public class EmployeeModel {
     public static final String GET_GROUP_EMPLOYEES = "getGroupEmployees";
     
     public static final String GET_GROUP_EMPLOYEES_GROUP_ID = "groupID";
+    
+    public static final String GET_GROUP_ROLE_EMPLOYEES = "getGroupRoleEmployees";
+    
+    public static final String GET_GROUP_ROLE_EMPLOYEES_GROUP_ID = "groupID";
+    
+    public static final String GET_GROUP_ROLE_EMPLOYEES_ROLE_ID = "roleID";
+    
+    public static final String GET_GROUP_ROLE_EMPLOYEES_BY_GR = "getGroupRoleEmployeesByGR";
+    
+    public static final String GET_GROUP_ROLE_EMPLOYEES_BY_GR_GR_ID = "groupRoleID";
     
     @Id
     @GeneratedValue

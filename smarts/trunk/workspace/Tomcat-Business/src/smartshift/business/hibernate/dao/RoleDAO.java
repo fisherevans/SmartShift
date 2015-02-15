@@ -1,7 +1,6 @@
 package smartshift.business.hibernate.dao;
 
 import java.util.List;
-import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.RoleModel;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.util.collections.ROList;
@@ -27,9 +26,9 @@ public class RoleDAO extends BaseBusinessDAO {
     }
     
     /**
-     * Fetch a EmployeeModel by id
+     * Fetch a RoleModel by id
      * @param id the id to lookup
-     * @return the EmployeeModel - null if not found
+     * @return the role model - null if not found
      */
     public RoleModel getRoleById(Integer id) {
         logger.debug("RoleDAO.getRoleById() Enter - " + id);
@@ -39,8 +38,18 @@ public class RoleDAO extends BaseBusinessDAO {
     }
     
     /**
-     * Get all EmployeeModels
-     * @return the list of EmployeeModels
+     * Deletes a role
+     * @param role the role to delete
+     * @throws DBException 
+     */
+    public void deleteRole(RoleModel role) throws DBException {
+        logger.debug("RoleDAO.deleteRole() Enter");
+        GenericHibernateUtil.delete(getBusinessSession(), role);
+    }
+    
+    /**
+     * Get all RoleModels
+     * @return the list of roles
      */
     public List<RoleModel> getRoles() {
         logger.debug("RoleDAO.getRole() Enter");
@@ -50,8 +59,10 @@ public class RoleDAO extends BaseBusinessDAO {
     }
     
     /**
-     * Get all EmployeeModels
-     * @return the list of EmployeeModels
+     * Get all roles for an employee and group 
+     * @param employeeID the employee
+     * @param groupID  the group
+     * @return the list of roles
      */
     public ROList<RoleModel> getEmployeeGroupRoles(Integer employeeID, Integer groupID) {
         logger.debug("RoleDAO.getEmployeeGroupRoles() Enter");
@@ -62,6 +73,21 @@ public class RoleDAO extends BaseBusinessDAO {
                 .setParameter(RoleModel.GET_EMPLOYEE_GROUP_ROLES_GRP_ID, groupID)
                 .list();
         logger.debug("RoleDAO.getEmployeeGroupRoles() Got RoleModel count: " + roleModels.size());
+        return new ROList<RoleModel>(roleModels);
+    }
+    
+    /** gets a list of roles belonging to a group
+     * @param groupID the group
+     * @return the ro list of roles
+     */
+    public ROList<RoleModel> getGroupRoles(Integer groupID) {
+        logger.debug("RoleDAO.getGroupRoles() Enter");
+        @SuppressWarnings("unchecked")
+        List<RoleModel> roleModels = getBusinessSession()
+                .getNamedQuery(RoleModel.GET_GROUP_ROLES)
+                .setParameter(RoleModel.GET_GROUP_ROLES_GRP_ID, groupID)
+                .list();
+        logger.debug("RoleDAO.getGroupRoles() Got RoleModel count: " + roleModels.size());
         return new ROList<RoleModel>(roleModels);
     }
     
