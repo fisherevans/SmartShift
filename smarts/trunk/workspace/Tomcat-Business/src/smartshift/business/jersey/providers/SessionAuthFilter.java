@@ -25,7 +25,7 @@ public class SessionAuthFilter extends AbstractAuthFilter {
         UserSession session = UserSessionManager.getSession(authString, true);
         if(session == null)
             throw new WebApplicationException(getInvalidCredentialsResponse());
-        DAOContext daoContext = DAOContext.business(session.businesID);
+        DAOContext daoContext = DAOContext.business(session.businessID);
         logger.debug("filter() Session found");
         containerRequest.setProperty("userSession", session);
         containerRequest.setProperty("daoContext", daoContext);

@@ -8,11 +8,17 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
+import javax.persistence.EntityResult;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.NamedNativeQueries;
+import org.hibernate.annotations.NamedNativeQuery;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
+import smartshift.accounts.hibernate.model.custom.GetActiveSessionsModel;
 
 /**
  * @author fevans
@@ -20,21 +26,23 @@ import org.hibernate.annotations.NamedQuery;
  */
 @Entity
 @Table(name = "Session")
-@NamedQueries({
-    @NamedQuery(name = SessionModel.GET_ACTIVE_SESSIONS,
-                query = "select s from SessionModel s "
-                      + "where s.userBusinessEmployeeID in (select id "
-                      +                "from UserBusinessEmployeeModel ube "
-                      +                "where ube.businessID = :" + SessionModel.GET_ACTIVE_SESSIONS_BUSINESS_ID
-                      + ") and s.lastActivityTimestamp >= :" + SessionModel.GET_ACTIVE_SESSIONS_LAST_ACCESS
+@NamedNativeQueries({
+    @NamedNativeQuery(name = SessionModel.GET_ACTIVE_SESSIONS,
+                     query = "select s.id, u.username, s.sessionKey, ube.busID, ube.empID, s.lastActivityTS"
+                           + "  from Session s"
+                           + "  left join UserBusinessEmployee ube on s.userBusEmpId = ube.id"
+                           + "  left join User u on ube.userID = u.id"
+                           + " where ube.busID = ?"
+                           + "   and s.lastActivityTS >= ?",
+               resultClass = GetActiveSessionsModel.class
     )
 })
 public class SessionModel {
     public static final String GET_ACTIVE_SESSIONS = "getActiveSessions";
 
-    public static final String GET_ACTIVE_SESSIONS_BUSINESS_ID = "businessID";
+    public static final Integer GET_ACTIVE_SESSIONS_BUSINESS_ID = 0;
 
-    public static final String GET_ACTIVE_SESSIONS_LAST_ACCESS = "lastAccess";
+    public static final Integer GET_ACTIVE_SESSIONS_LAST_ACCESS = 1;
     
     @Id
     @GeneratedValue

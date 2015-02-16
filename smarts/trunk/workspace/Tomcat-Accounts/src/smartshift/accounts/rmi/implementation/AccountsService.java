@@ -14,6 +14,7 @@ import smartshift.accounts.hibernate.model.BusinessModel;
 import smartshift.accounts.hibernate.model.ServerModel;
 import smartshift.accounts.hibernate.model.SessionModel;
 import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
+import smartshift.accounts.hibernate.model.custom.GetActiveSessionsModel;
 import smartshift.accounts.rmi.BusinessServiceManager;
 import smartshift.common.rmi.BaseRemote;
 import smartshift.common.rmi.RMIClient;
@@ -84,7 +85,24 @@ public class AccountsService extends BaseRemote implements AccountsServiceInterf
                 }
             }
         }
-        BusinessServiceManager.addService(businessService, clientHostname, businessIDs.toArray(new Integer[0]));
+        if(businessService != null) {
+            BusinessServiceManager.addService(businessService, clientHostname, businessIDs.toArray(new Integer[0]));
+            Date minLastAccess = new Date(System.currentTimeMillis() - AppConstants.SESSION_TIMEOUT);
+            for(Integer businessID:businessIDs) {
+                try {
+                    businessService.invalidateAllUserSessions(businessID);
+                    ROList<GetActiveSessionsModel> sessions = SessionDAO.getBusinessSessions(businessID, minLastAccess);
+                    for(GetActiveSessionsModel session:sessions) {
+                        businessService.addUserSession(session.username, session.sessionKey, session.businessID,
+                                session.employeeID, session.lastActivity.getTime(), AppConstants.SESSION_TIMEOUT);
+                    }
+                } catch(Exception e) {
+                    logger.warn("Failed to send existing active sessions to business app", e);
+                }
+            }
+        } else {
+            logger.warn("For some reason the service was null - please, investigate " + clientHostname + ":" + clientPort);
+        }
     }
 
     /**

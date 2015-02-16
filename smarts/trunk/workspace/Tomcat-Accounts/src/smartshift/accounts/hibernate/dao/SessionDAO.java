@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.criterion.Restrictions;
 import smartshift.accounts.hibernate.model.SessionModel;
 import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
+import smartshift.accounts.hibernate.model.custom.GetActiveSessionsModel;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.util.collections.ROList;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
@@ -119,14 +120,14 @@ public class SessionDAO extends BaseAccountsDAO {
      * @param lastAccess the minimum last access time
      * @return the list of employees ids
      */
-    public static ROList<SessionModel> getBusinessSessions(Integer businessID, Date lastAccess) {
+    public static ROList<GetActiveSessionsModel> getBusinessSessions(Integer businessID, Date lastAccess) {
         @SuppressWarnings("unchecked")
-        List<SessionModel> sessions = getAccountsSession()
+        List<GetActiveSessionsModel> sessions = getAccountsSession()
                 .getNamedQuery(SessionModel.GET_ACTIVE_SESSIONS)
                 .setParameter(SessionModel.GET_ACTIVE_SESSIONS_BUSINESS_ID, businessID)
                 .setParameter(SessionModel.GET_ACTIVE_SESSIONS_LAST_ACCESS, lastAccess)
                 .list();
-        return new ROList<SessionModel>(sessions);
+        return new ROList<GetActiveSessionsModel>(sessions);
     }
     
     /**

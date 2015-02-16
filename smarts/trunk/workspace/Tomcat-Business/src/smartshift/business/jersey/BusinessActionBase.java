@@ -19,6 +19,6 @@ public class BusinessActionBase extends ActionBase {
         UserSession session = getUserSession();
         if(session == null)
             return null;
-        return Cache.getCache(getUserSession().businesID);
+        return Cache.getCache(getUserSession().businessID);
     }
 }
