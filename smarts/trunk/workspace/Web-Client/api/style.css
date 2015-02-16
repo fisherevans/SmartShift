@@ -261,6 +261,35 @@
 .methodRequiresExample {
 }
 
+
+.methodParams {
+  font-size: 16px;
+  padding-top: 15px;
+  padding-left: 10px;
+}
+
+.methodParamsTitle {
+  font-weight: 700;
+  font-size: 18px;
+  padding-bottom:6px;
+}
+
+.methodParam {
+  font-weight: 400;
+  font-size: 14px;
+  padding-bottom:6px;
+}
+
+.methodParam * {
+  display: inline;
+}
+
+.methodParamName {
+  font-size: 16px;
+  font-weight: 700;
+  padding-right: 4px;
+}
+
 .methodTakes {
   padding-top: 15px;
   padding-left: 10px;

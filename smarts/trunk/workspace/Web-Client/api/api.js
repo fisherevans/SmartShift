@@ -115,37 +115,60 @@ var apiDef = {
         }
       }
     },
-    "/business/groupRoles": {
-      "GET": {
-        "notImplemented":true,
-        "shortDescription":"Gets a listing of all groups, and what roles belong to it.",
-        "requires": [sessionAuthRequirement],
-        "responses": {
-          401: badAuthResult,
-          200: {
-            "result":"The mapping of groups to roles",
-            "data": {
-              1: {
-                "groupID":1,
-                "parentGroupID":2,
-                "groupName":"Some name",
-                "roles": {
+    "/business/group/{ids}": {
+        "GET": {
+          "notImplemented":true,
+          "shortDescription":"Gets simple group data",
+          "requires": [sessionAuthRequirement],
+          "params": {
+          	"ids":"A dash seperated list of valid group IDs. (Example: ../group/1-5-6-13)"
+          },
+          "responses": {
+            401: badAuthResult,
+            200: {
+                "result":"A mapping of simple group data objects. (Group ID is the key).",
+              "data": {
+            	1: {
+                    "groupID":1,
+                    "name":"Some Name",
+                    "parentGroupID":2,
+                    "roles": [ 1, 2, 3 ]
+            	}
+              }
+            }
+          }
+        }
+      },
+      "/business/role/{ids}": {
+          "GET": {
+            "notImplemented":true,
+            "shortDescription":"Gets simple role data",
+            "requires": [sessionAuthRequirement],
+            "params": {
+              "ids":"A dash seperated list of valid role IDs. (Example: ../role/1-5-6-13)"
+            },
+            "responses": {
+              401: badAuthResult,
+              200: {
+                "result":"A mapping of simple role data objects. (Role ID is the key).",
+                "data": {
                   1: {
-                    "roleID":1,
-                    "roleName":"Some name"
+                	  "roleID":1,
+                      "name":"Some Name"
                   }
                 }
               }
             }
           }
-        }
-      }
-    },
-    "/business/employee/{employeeID}": {
+        },
+    "/business/employee/{id}": {
       "GET": {
         "notImplemented":true,
         "shortDescription":"Gets basic information about an employee",
         "requires": [sessionAuthRequirement],
+        "params": {
+        	"id":"A valid employee ID."
+        },
         "responses": {
           401: badAuthResult,
           200: {
@@ -153,13 +176,13 @@ var apiDef = {
             "data": {
               "firstName":"Joe",
               "lastName":"Shmoe",
-              "defaultGroupID":1
+              "defaultGroupID": 1
             }
           }
         }
       }
     },
-    "/business/employee/full/{employeeID}": {
+    "/business/employee/full/{id}": {
       "GET": {
         "notImplemented":true,
         "shortDescription":"Gets all information about an employee",
@@ -167,6 +190,9 @@ var apiDef = {
           sessionAuthRequirement,
           employeeOwnerOrManager
         ],
+        "params": {
+          "id":"A valid employee ID."
+        },
         "responses": {
           401: badAuthResult,
           200: {
@@ -179,8 +205,8 @@ var apiDef = {
                 "defaultGroupID":1
               },
               "groupRoles": {
-                1:[1, 2],
-                2:[2, 3]
+                1: [1, 2],
+                2: [2, 3]
               }
             }
           }

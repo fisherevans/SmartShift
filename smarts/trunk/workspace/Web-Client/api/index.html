@@ -27,6 +27,13 @@
                 <div ng-hide="req.example == undefined" class='methodRequiresExample codeBox'>{{req.example}}</div>
               </div>
             </div>
+            <div ng-hide='methodObject.params == undefined || objSize(methodObject.params) == 0' class='methodParams'>
+              <div class='methodParamsTitle'>URL Parameters</div>
+              <div class='methodParam' ng-repeat="(paramName, paramDesc) in methodObject.params">
+                <div class='methodParamName'>{{paramName}}</div>
+                <div class='methodParamDescription'>{{paramDesc}}</div>
+              </div>
+            </div>
             <div class='methodTakes' ng-hide='methodObject.takes == undefined'>
               <div class='methodTakesTitle'>Takes</div>
               <pre class='methodTakesJSON codeBox'>{{prettyJson(methodObject.takes)}}</pre>
