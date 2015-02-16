@@ -28,11 +28,11 @@ public class BusinessService extends BaseRemote implements BusinessServiceInterf
     }
 
     /**
-     * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#addUserSession(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, long)
+     * @see smartshift.common.rmi.interfaces.BusinessServiceInterface#addUserSession(java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, long, long)
      */
     @Override
-    public void addUserSession(String username, String sessionId, Integer businessID, Integer employeeID, long timoutPeriod) throws RemoteException {
-        UserSession session = new UserSession(username, sessionId, businessID, employeeID, timoutPeriod);
+    public void addUserSession(String username, String sessionId, Integer businessID, Integer employeeID, long lastActivity, long timoutPeriod) throws RemoteException {
+        UserSession session = new UserSession(username, sessionId, businessID, employeeID, timoutPeriod, lastActivity);
         try {
             UserSessionManager.addSession(session);
         } catch(IllegalAddException e) {

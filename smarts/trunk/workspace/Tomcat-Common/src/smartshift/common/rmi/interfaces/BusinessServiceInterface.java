@@ -14,10 +14,11 @@ public interface BusinessServiceInterface extends BaseRemoteInterface {
      * @param sessionId  the session id
      * @param businessID the business id
      * @param employeeID the employee id
+     * @param lastActivity the last time this sessions was active
      * @param timoutPeriod the time in ms the sessions should expire in
      * @throws RemoteException
      */
-    public void addUserSession(String username, String sessionId, Integer businessID, Integer employeeID, long timoutPeriod) throws RemoteException;
+    public void addUserSession(String username, String sessionId, Integer businessID, Integer employeeID, long lastActivity, long timoutPeriod) throws RemoteException;
     
     /**
      * Removes the given sessions id

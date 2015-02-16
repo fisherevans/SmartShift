@@ -17,7 +17,7 @@ public class UserSession {
     public final String sessionID;
     
     /** The identifying buisness id */
-    public final Integer businesID;
+    public final Integer businessID;
     
     /** The identifying employee id */
     public final Integer employeeID;
@@ -52,7 +52,7 @@ public class UserSession {
     public UserSession(String username, String sessionID, Integer businesID, Integer employeeID, long timeOutPeriod, long lastActivity) {
         this.username = username;
         this.sessionID = sessionID;
-        this.businesID = businesID;
+        this.businessID = businesID;
         this.employeeID = employeeID;
         this.timeOutPeriod = timeOutPeriod;
         _lastActivity = lastActivity;

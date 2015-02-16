@@ -39,7 +39,7 @@ public class RMIConnectionUtil {
                 logger.info("Connecting the " + nickname + " RMI service");
                 RMIClient.connectService(host, port, serviceName);
             } catch(ConnectException e) {
-                logger.warn(nickname + " server is unreachable", e);
+                logger.warn(nickname + " server is unreachable - failed to connect to: " + host + ":" + port);
                 return false;
             } catch(MalformedURLException | RemoteException | NotBoundException e) {
                 logger.warn("Failed to connect the " + nickname + " service", e);

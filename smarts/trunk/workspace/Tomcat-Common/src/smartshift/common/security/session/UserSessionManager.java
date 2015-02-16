@@ -111,7 +111,7 @@ public class UserSessionManager {
         String sessionList = "";
         for(Iterator<Map.Entry<String, UserSession>> it = sessions.entrySet().iterator(); it.hasNext(); ) {
           Map.Entry<String, UserSession> entry = it.next();
-          if(businessID == null || entry.getValue().businesID == businessID) {
+          if(businessID == null || entry.getValue().businessID == businessID) {
               sessionList += entry.getValue() != null ? entry.getValue().sessionID + ", " : "null, ";
               sessionsRemoved++;
               it.remove();

@@ -6,6 +6,7 @@ import smartshift.accounts.hibernate.model.BusinessModel;
 import smartshift.accounts.hibernate.model.SessionModel;
 import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
 import smartshift.accounts.hibernate.model.UserModel;
+import smartshift.accounts.hibernate.model.custom.GetActiveSessionsModel;
 import smartshift.common.hibernate.HibernateFactory;
 
 /**
@@ -24,6 +25,7 @@ public class AccountsHibernateMapperListener implements ServletContextListener {
         HibernateFactory.addAnnotatedClass(UserBusinessEmployeeModel.class);
         HibernateFactory.addAnnotatedClass(BusinessModel.class);
         HibernateFactory.addAnnotatedClass(SessionModel.class);
+        HibernateFactory.addAnnotatedClass(GetActiveSessionsModel.class);
     }
 
     /**
