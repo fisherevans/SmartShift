@@ -35,13 +35,19 @@
   color: #aaa;
 }
 
+.links {
+  text-align: center;
+}
+
 .link, .link a {
-  font-size: 16px;
+  text-align: center;
+  font-size: 14px;
   font-weight: 700;
   color: #0080ff;
   text-align: center;
   text-decoration: none;
-  margin-top: 20px;
+  margin: 3px 15px;
+  display: inline-block;
 }
 
 .link a:hover {
