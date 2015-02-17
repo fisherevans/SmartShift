@@ -1,34 +1,11 @@
 package smartshift.accounts.hibernate.model;
 
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.persistence.Cacheable;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyJoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.mindrot.jbcrypt.BCrypt;
-import com.google.gson.annotations.Expose;
-import smartshift.accounts.security.UserAuthentication;
-import smartshift.common.util.collections.ROList;
 
 /**
  * @author fevans
@@ -63,51 +40,90 @@ public class UserModel {
     @Column(name = "flags", nullable = false)
     private Integer flags = 0;
 
+    /**
+     * Initializes the object.
+     */
     public UserModel() {
     }
 
+    /**
+     * Initializes the object.
+     * @param username
+     * @param passHash
+     * @param email
+     */
     public UserModel(String username, String passHash, String email) {
         this.username = username;
         this.passHash = passHash;
         this.email = email;
     }
 
+    /**
+     * @return the id
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * @return the username
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * @param username the username to set
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * @return the passHash
+     */
     public String getPassHash() {
         return passHash;
     }
 
+    /**
+     * @param passHash the passHash to set
+     */
     public void setPassHash(String passHash) {
         this.passHash = passHash;
     }
 
+    /**
+     * @return the email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * @param email the email to set
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * @return the createTimestamp
+     */
     public Date getCreateTimestamp() {
         return createTimestamp;
     }
 
+    /**
+     * @param createTimestamp the createTimestamp to set
+     */
     public void setCreateTimestamp(Date createTimestamp) {
         this.createTimestamp = createTimestamp;
     }
@@ -126,18 +142,30 @@ public class UserModel {
         this.imageID = imageID;
     }
 
+    /**
+     * @return the inactive
+     */
     public Boolean getInactive() {
         return inactive;
     }
 
+    /**
+     * @param inactive the inactive to set
+     */
     public void setInactive(Boolean inactive) {
         this.inactive = inactive;
     }
 
+    /**
+     * @return the flags
+     */
     public Integer getFlags() {
         return flags;
     }
 
+    /**
+     * @param flags the flags to set
+     */
     public void setFlags(Integer flags) {
         this.flags = flags;
     }

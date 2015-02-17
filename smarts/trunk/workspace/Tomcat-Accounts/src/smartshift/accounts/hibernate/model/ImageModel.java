@@ -1,17 +1,13 @@
 package smartshift.accounts.hibernate.model;
 
 import java.util.List;
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import com.google.gson.annotations.Expose;
-import smartshift.common.util.collections.ROList;
 
 /**
  * @author fevans
@@ -40,38 +36,79 @@ public class ImageModel {
     @OneToMany(mappedBy = "image")
     private List<UserModel> users;
 
+    /**
+     * Initializes the object.
+     */
     public ImageModel() {
     }
 
+    /**
+     * @return the id
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * @return the uri
+     */
     public String getUri() {
         return uri;
     }
 
+    /**
+     * @param uri the uri to set
+     */
     public void setUri(String uri) {
         this.uri = uri;
     }
 
+    /**
+     * @return the alternativeText
+     */
     public String getAlternativeText() {
         return alternativeText;
     }
 
+    /**
+     * @param alternativeText the alternativeText to set
+     */
     public void setAlternativeText(String alternativeText) {
         this.alternativeText = alternativeText;
     }
-    
-    public ROList<BusinessModel> getBusinesses() {
-        return new ROList<BusinessModel>(businesses);
+
+    /**
+     * @return the businesses
+     */
+    public List<BusinessModel> getBusinesses() {
+        return businesses;
     }
-    
-    public ROList<UserModel> getUsers() {
-        return new ROList<UserModel>(users);
+
+    /**
+     * @param businesses the businesses to set
+     */
+    public void setBusinesses(List<BusinessModel> businesses) {
+        this.businesses = businesses;
+    }
+
+    /**
+     * @return the users
+     */
+    public List<UserModel> getUsers() {
+        return users;
+    }
+
+    /**
+     * @param users the users to set
+     */
+    public void setUsers(List<UserModel> users) {
+        this.users = users;
     }
 }

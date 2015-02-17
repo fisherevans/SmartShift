@@ -7,7 +7,6 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.MDC;
 import org.apache.log4j.PropertyConfigurator;
 import org.quartz.core.QuartzScheduler;
-import com.mchange.v2.c3p0.impl.AbstractPoolBackedDataSource;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
 import smartshift.common.util.properties.AppProperties;

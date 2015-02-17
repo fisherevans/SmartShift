@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -14,16 +13,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
-
-import smartshift.business.cache.bo.Employee;
-import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
-import smartshift.business.jersey.objects.EmployeeJSON;
-import smartshift.business.jersey.objects.GroupJSON;
 import smartshift.business.jersey.objects.RoleJSON;
 import smartshift.common.util.log4j.SmartLogger;
-import smartshift.common.util.params.SimpleIntegerParam;
 
+/**
+ * @author "D. Fisher Evans <contact@fisherevans.com>"
+ * role actiosn for jerser
+ */
 @Provider
 @Path("/role")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -31,9 +28,14 @@ import smartshift.common.util.params.SimpleIntegerParam;
 public class RoleActions extends BusinessActionBase {
     private static final SmartLogger logger = new SmartLogger(BusinessActionBase.class);
     
+    /** gets the map of role id -> role
+     * @param roleIDs the rolesid to query
+     * @return the role map
+     */
     @GET
     @Path("/{ids}")
     public Response getRoles(@PathParam("ids") String roleIDs) {
+        logger.debug("Enter getRoles()");
     	Set<Role> roles = new HashSet<Role>();
     	StringBuffer error = new StringBuffer();
     	String[] ids = roleIDs.split("-");

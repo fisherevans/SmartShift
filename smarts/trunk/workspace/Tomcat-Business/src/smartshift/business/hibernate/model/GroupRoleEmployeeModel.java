@@ -2,7 +2,6 @@ package smartshift.business.hibernate.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
@@ -22,6 +21,9 @@ public class GroupRoleEmployeeModel {
     @Column(name = "empID", nullable = false)
     private Integer employeeID;
 
+    /**
+     * Initializes the object.
+     */
     public GroupRoleEmployeeModel() {
     }
 

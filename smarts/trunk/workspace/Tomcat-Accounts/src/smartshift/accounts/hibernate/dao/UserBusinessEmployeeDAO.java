@@ -3,9 +3,7 @@ package smartshift.accounts.hibernate.dao;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.criterion.Restrictions;
-import smartshift.accounts.hibernate.model.BusinessModel;
 import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
-import smartshift.accounts.hibernate.model.UserModel;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.log4j.SmartLogger;
 

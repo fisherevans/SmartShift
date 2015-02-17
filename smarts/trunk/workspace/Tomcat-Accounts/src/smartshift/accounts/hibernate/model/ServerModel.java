@@ -1,16 +1,12 @@
 package smartshift.accounts.hibernate.model;
 
 import java.util.List;
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import smartshift.common.util.collections.ROList;
 
 /**
  * @author fevans
@@ -36,38 +32,79 @@ public class ServerModel {
     @OneToMany(mappedBy = "server")
     private List<SystemPropertyModel> systemProperties;
 
+    /**
+     * Initializes the object.
+     */
     public ServerModel() {
     }
 
+    /**
+     * @return the id
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * @return the hostname
+     */
     public String getHostname() {
         return hostname;
     }
 
+    /**
+     * @param hostname the hostname to set
+     */
     public void setHostname(String hostname) {
         this.hostname = hostname;
     }
 
+    /**
+     * @return the ipAddress
+     */
     public String getIpAddress() {
         return ipAddress;
     }
 
+    /**
+     * @param ipAddress the ipAddress to set
+     */
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
     }
-    
-    public ROList<BusinessModel> getBusinesses() {
-        return new ROList<BusinessModel>(businesses);
+
+    /**
+     * @return the businesses
+     */
+    public List<BusinessModel> getBusinesses() {
+        return businesses;
     }
-    
-    public ROList<SystemPropertyModel> getSystemProperties() {
-        return new ROList<SystemPropertyModel>(systemProperties);
+
+    /**
+     * @param businesses the businesses to set
+     */
+    public void setBusinesses(List<BusinessModel> businesses) {
+        this.businesses = businesses;
+    }
+
+    /**
+     * @return the systemProperties
+     */
+    public List<SystemPropertyModel> getSystemProperties() {
+        return systemProperties;
+    }
+
+    /**
+     * @param systemProperties the systemProperties to set
+     */
+    public void setSystemProperties(List<SystemPropertyModel> systemProperties) {
+        this.systemProperties = systemProperties;
     }
 }

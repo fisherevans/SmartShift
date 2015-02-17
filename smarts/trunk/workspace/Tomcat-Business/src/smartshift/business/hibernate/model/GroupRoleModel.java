@@ -1,36 +1,12 @@
 package smartshift.business.hibernate.model;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.persistence.Cacheable;
-import javax.persistence.CascadeType;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyJoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
-import org.mindrot.jbcrypt.BCrypt;
-import com.google.gson.annotations.Expose;
-import smartshift.common.util.collections.ROList;
 
 /**
  * @author fevans
@@ -50,8 +26,14 @@ import smartshift.common.util.collections.ROList;
     )
 })
 public class GroupRoleModel {
+    /**
+     * named query - lookup group roles an emp belongs to
+     */
     public static final String GET_GROUP_ROLES_BY_EMPLOYEE = "getGroupRoleByEmployee";
 
+    /**
+     * the employee id param for GET_GROUP_ROLES_BY_EMPLOYEE
+     */
     public static final String GET_GROUP_ROLES_BY_EMPLOYEE_EMP_ID = "employeeID";
     
     @Id
@@ -65,6 +47,9 @@ public class GroupRoleModel {
     @Column(name = "roleID", nullable = false)
     private Integer roleID;
 
+    /**
+     * Initializes the object.
+     */
     public GroupRoleModel() {
     }
 

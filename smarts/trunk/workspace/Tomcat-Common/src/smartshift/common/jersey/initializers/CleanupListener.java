@@ -7,10 +7,7 @@ import java.util.Enumeration;
 import java.util.Set;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import smartshift.common.hibernate.HibernateFactory;
-import smartshift.common.hibernate.MultiTenantConnectionProviderImpl;
 import smartshift.common.util.log4j.SmartLogger;
-import smartshift.common.util.properties.AppConstants;
 
 /**
  * @author fevans
