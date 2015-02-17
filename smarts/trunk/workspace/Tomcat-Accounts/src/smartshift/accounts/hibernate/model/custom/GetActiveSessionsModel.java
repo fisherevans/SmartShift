@@ -8,22 +8,22 @@ import javax.persistence.Id;
 @Entity
 public class GetActiveSessionsModel {
     @Id 
-    public final Integer id;
+    public Integer id;
     
     @Column 
-    public final String username;
+    public String username;
 
     @Column 
-    public final String sessionKey;
+    public String sessionKey;
 
     @Column 
-    public final Integer businessID;
+    public Integer businessID;
 
     @Column 
-    public final Integer employeeID;
+    public Integer employeeID;
 
     @Column 
-    public final Date lastActivity;
+    public Date lastActivity;
 
     public GetActiveSessionsModel(Integer id, String username, String sessionKey, Integer businessID, Integer employeeID, Date lastActivity) {
         this.id = id;
@@ -32,5 +32,9 @@ public class GetActiveSessionsModel {
         this.businessID = businessID;
         this.employeeID = employeeID;
         this.lastActivity = lastActivity;
+    }
+    
+    public GetActiveSessionsModel() {
+    	
     }
 }

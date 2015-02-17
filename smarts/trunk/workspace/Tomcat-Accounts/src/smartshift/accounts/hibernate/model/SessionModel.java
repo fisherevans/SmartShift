@@ -28,7 +28,7 @@ import smartshift.accounts.hibernate.model.custom.GetActiveSessionsModel;
 @Table(name = "Session")
 @NamedNativeQueries({
     @NamedNativeQuery(name = SessionModel.GET_ACTIVE_SESSIONS,
-                     query = "select s.id, u.username, s.sessionKey, ube.busID, ube.empID, s.lastActivityTS"
+                     query = "select s.id, u.username, s.sessionKey, ube.busID as businessID, ube.empID as employeeID, s.lastActivityTS as lastActivity"
                            + "  from Session s"
                            + "  left join UserBusinessEmployee ube on s.userBusEmpId = ube.id"
                            + "  left join User u on ube.userID = u.id"
