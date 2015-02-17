@@ -1,6 +1,8 @@
 package smartshift.business.jersey.objects;
 
 import com.google.gson.annotations.Expose;
+
+import smartshift.business.cache.bo.Role;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.business.hibernate.model.RoleModel;
 import smartshift.common.util.PrimativeUtils;
@@ -12,9 +14,9 @@ public class RoleJSON {
     @Expose
     public String name;
     
-    public RoleJSON(RoleModel rm) {
-        id = rm.getId();
-        name = rm.getName();
+    public RoleJSON(Role r) {
+        id = r.getID();
+        name = r.getName();
     }
 
     /**
