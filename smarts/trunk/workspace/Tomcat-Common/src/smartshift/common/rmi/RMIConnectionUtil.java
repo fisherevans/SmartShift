@@ -54,7 +54,10 @@ public class RMIConnectionUtil {
                     logger.warn(nickname + "PING DOES NOT PONG, NOT GOOD");
                     return false;
                 }
-            } catch(RemoteException e) {
+            } catch(ConnectException e) {
+                logger.warn("Failed to ping-pong. " + nickname + " server is unreachable - failed to connect to: " + host + ":" + port);
+                return false;
+            }  catch(RemoteException e) {
                 logger.warn("Failed to call ping-pong method in " + nickname + " service", e);
                 return false;
             }
