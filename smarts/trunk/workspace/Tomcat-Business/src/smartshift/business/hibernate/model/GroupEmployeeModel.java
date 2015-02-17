@@ -21,6 +21,9 @@ public class GroupEmployeeModel {
     @Column(name = "empID", nullable = false)
     private Integer employeeID;
 
+    /**
+     * Initializes the object.
+     */
     public GroupEmployeeModel() {
     }
 

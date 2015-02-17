@@ -1,10 +1,5 @@
 package smartshift.business.jersey;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -14,16 +9,15 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
-
 import smartshift.business.cache.bo.Employee;
-import smartshift.business.cache.bo.Group;
-import smartshift.business.cache.bo.Role;
 import smartshift.business.jersey.objects.EmployeeJSON;
-import smartshift.business.jersey.objects.GroupJSON;
-import smartshift.business.jersey.objects.RoleJSON;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.params.SimpleIntegerParam;
 
+/**
+ * @author D. Fisher Evans <contact@fisherevans.com>
+ * jersey actions for employees
+ */
 @Provider
 @Path("/employee")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -31,6 +25,10 @@ import smartshift.common.util.params.SimpleIntegerParam;
 public class EmployeeActions extends BusinessActionBase {
     private static final SmartLogger logger = new SmartLogger(BusinessActionBase.class);
     
+    /** gets simple employee info
+     * @param employeeID the employee id from the url
+     * @return the employee json object
+     */
     @GET
     @Path("/{id}")
     public Response simple(@PathParam("id") SimpleIntegerParam employeeID) {
@@ -42,6 +40,10 @@ public class EmployeeActions extends BusinessActionBase {
         return getObjectResponse(Status.OK, EmployeeJSON.getSimple(employee));
     }
     
+    /** gets an employee object with the groups and roles they belong to
+     * @param employeeID the employee id from the ur;
+     * @return  the employee json object
+     */
     @GET
     @Path("/full/{id}")
     public Response full(@PathParam("id") SimpleIntegerParam employeeID) {

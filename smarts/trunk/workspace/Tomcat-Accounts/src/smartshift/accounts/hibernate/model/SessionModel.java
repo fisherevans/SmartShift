@@ -1,23 +1,13 @@
 package smartshift.accounts.hibernate.model;
 
 import java.util.Date;
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SqlResultSetMapping;
-import javax.persistence.SqlResultSetMappings;
 import javax.persistence.Table;
-import javax.persistence.EntityResult;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedNativeQueries;
 import org.hibernate.annotations.NamedNativeQuery;
-import org.hibernate.annotations.NamedQueries;
-import org.hibernate.annotations.NamedQuery;
 import smartshift.accounts.hibernate.model.custom.GetActiveSessionsModel;
 
 /**
@@ -38,10 +28,19 @@ import smartshift.accounts.hibernate.model.custom.GetActiveSessionsModel;
     )
 })
 public class SessionModel {
+    /**
+     * named query - gets all sessions that are still active given a business id
+     */
     public static final String GET_ACTIVE_SESSIONS = "getActiveSessions";
 
+    /**
+     * business id for GET_ACTIVE_SESSIONS
+     */
     public static final Integer GET_ACTIVE_SESSIONS_BUSINESS_ID = 0;
 
+    /**
+     * last access id for GET_ACTIVE_SESSIONS
+     */
     public static final Integer GET_ACTIVE_SESSIONS_LAST_ACCESS = 1;
     
     @Id
@@ -58,6 +57,9 @@ public class SessionModel {
     @Column(name = "lastActivityTS", nullable = false)
     private Date lastActivityTimestamp = new Date();
 
+    /**
+     * Initializes the object.
+     */
     public SessionModel() {
     }
 

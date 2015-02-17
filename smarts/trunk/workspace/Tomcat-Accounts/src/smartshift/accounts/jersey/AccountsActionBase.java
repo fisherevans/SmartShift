@@ -7,7 +7,7 @@ import smartshift.common.jersey.ActionBase;
  * The base action object for accounts services
  * @author D. Fisher Evans <contact@fisherevans.com>
  */
-public class AccountsActionBase extends ActionBase {
+public abstract class AccountsActionBase extends ActionBase {
     /**
      * @return The User from the Request
      */

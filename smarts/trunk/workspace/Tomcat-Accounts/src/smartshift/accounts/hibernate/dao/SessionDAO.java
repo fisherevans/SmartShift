@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import org.hibernate.criterion.Restrictions;
 import smartshift.accounts.hibernate.model.SessionModel;
-import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
 import smartshift.accounts.hibernate.model.custom.GetActiveSessionsModel;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.util.collections.ROList;
@@ -82,7 +81,7 @@ public class SessionDAO extends BaseAccountsDAO {
     
     /**
      * creates a new session with a random key
-     * @param ube the user business employee relationship for this session
+     * @param ubeID the user business employee relationship for this session
      * @return the new session
      */
     public static SessionModel createSession(Integer ubeID) {

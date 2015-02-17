@@ -1,35 +1,12 @@
 package smartshift.business.hibernate.model;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.persistence.Cacheable;
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.MapKeyJoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.ws.rs.core.MultivaluedHashMap;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
-import org.mindrot.jbcrypt.BCrypt;
-import com.google.gson.annotations.Expose;
-import smartshift.common.util.collections.ROList;
 
 /**
  * @author fevans
@@ -47,8 +24,14 @@ import smartshift.common.util.collections.ROList;
         )
 })
 public class GroupModel {
+    /**
+     * named query identifier to get the groups an employe belongs to
+     */
     public static final String GET_EMPLOYEE_GROUPS = "getEmployeeGroups";
     
+    /**
+     * named query parameter for GET_EMPLOYEE_GROUPS - the employee id
+     */
     public static final String GET_EMPLOYEE_GROUPS_EMP_ID = "empoyeeIDParam";
     
     @Id
@@ -62,9 +45,17 @@ public class GroupModel {
     @Column(name = "name", length = 45)
     private String name;
 
+    /**
+     * Initializes the object.
+     */
     public GroupModel() {
     }
 
+    /**
+     * Initializes the object.
+     * @param parentID the parent id, can be null
+     * @param name the name of the group
+     */
     public GroupModel(Integer parentID, String name) {
         super();
         this.parentID = parentID;

@@ -1,17 +1,11 @@
 package smartshift.accounts.hibernate.model;
 
 import java.util.Date;
-import java.util.List;
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import smartshift.common.util.collections.ROList;
 
 /**
  * @author fevans
@@ -43,61 +37,106 @@ public class RegistrationModel {
     @Column(name = "createTS", nullable = false)
     private Date createTimestamp = new Date();
 
+    /**
+     * Initializes the object.
+     */
     public RegistrationModel() {
     }
 
+    /**
+     * @return the id
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * @return the employeeID
+     */
     public Integer getEmployeeID() {
         return employeeID;
     }
 
+    /**
+     * @param employeeID the employeeID to set
+     */
     public void setEmployeeID(Integer employeeID) {
         this.employeeID = employeeID;
     }
 
+    /**
+     * @return the businessID
+     */
     public Integer getBusinessID() {
         return businessID;
     }
 
+    /**
+     * @param businessID the businessID to set
+     */
     public void setBusinessID(Integer businessID) {
         this.businessID = businessID;
     }
 
+    /**
+     * @return the nextID
+     */
     public Integer getNextID() {
         return nextID;
     }
 
+    /**
+     * @param nextID the nextID to set
+     */
     public void setNextID(Integer nextID) {
         this.nextID = nextID;
     }
 
+    /**
+     * @return the verificationCode
+     */
     public String getVerificationCode() {
         return verificationCode;
     }
 
+    /**
+     * @param verificationCode the verificationCode to set
+     */
     public void setVerificationCode(String verificationCode) {
         this.verificationCode = verificationCode;
     }
 
+    /**
+     * @return the email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * @param email the email to set
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * @return the createTimestamp
+     */
     public Date getCreateTimestamp() {
         return createTimestamp;
     }
 
+    /**
+     * @param createTimestamp the createTimestamp to set
+     */
     public void setCreateTimestamp(Date createTimestamp) {
         this.createTimestamp = createTimestamp;
     }

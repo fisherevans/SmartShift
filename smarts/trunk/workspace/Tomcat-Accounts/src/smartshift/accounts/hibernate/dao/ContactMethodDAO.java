@@ -1,11 +1,7 @@
 package smartshift.accounts.hibernate.dao;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import smartshift.accounts.hibernate.model.ContactMethodModel;
-import smartshift.accounts.hibernate.model.UserContactMethodModel;
-import smartshift.accounts.hibernate.model.UserModel;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 
 /**

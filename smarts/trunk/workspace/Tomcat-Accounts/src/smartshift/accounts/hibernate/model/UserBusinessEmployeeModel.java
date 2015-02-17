@@ -1,20 +1,12 @@
 package smartshift.accounts.hibernate.model;
 
-import javax.persistence.Cacheable;
+import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import smartshift.common.util.collections.ROList;
-import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
 
 /**
  * @author fevans
@@ -42,6 +34,9 @@ public class UserBusinessEmployeeModel implements Serializable {
     @Column(name = "joinTS", nullable = false)
     private Date joinTimestamp;
 
+    /**
+     * Initializes the object.
+     */
     public UserBusinessEmployeeModel() {
     }
     
@@ -115,11 +110,17 @@ public class UserBusinessEmployeeModel implements Serializable {
         this.joinTimestamp = joinTimestamp;
     }
 
+    /**
+     * @see java.lang.Object#hashCode()
+     */
     @Override
     public int hashCode() {
         return userID.hashCode()*businessID.hashCode();
     }
 
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof UserBusinessEmployeeModel) {

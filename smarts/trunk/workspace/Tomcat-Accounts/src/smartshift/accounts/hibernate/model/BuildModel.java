@@ -2,16 +2,12 @@ package smartshift.accounts.hibernate.model;
 
 import java.util.Date;
 import java.util.List;
-import javax.persistence.Cacheable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import smartshift.common.util.collections.ROList;
 
 /**
  * @author fevans
@@ -37,43 +33,79 @@ public class BuildModel {
     @OneToMany(mappedBy = "build")
     private List<BusinessModel> businesses;
 
-
+    /**
+     * Initializes the object.
+     */
     public BuildModel() {
     }
 
+    /**
+     * @return the id
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * @return the version
+     */
     public String getVersion() {
         return version;
     }
 
+    /**
+     * @param version the version to set
+     */
     public void setVersion(String version) {
         this.version = version;
     }
 
+    /**
+     * @return the createTimestamp
+     */
     public Date getCreateTimestamp() {
         return createTimestamp;
     }
 
+    /**
+     * @param createTimestamp the createTimestamp to set
+     */
     public void setCreateTimestamp(Date createTimestamp) {
         this.createTimestamp = createTimestamp;
     }
 
+    /**
+     * @return the sqlDirectory
+     */
     public String getSqlDirectory() {
         return sqlDirectory;
     }
 
+    /**
+     * @param sqlDirectory the sqlDirectory to set
+     */
     public void setSqlDirectory(String sqlDirectory) {
         this.sqlDirectory = sqlDirectory;
     }
-    
-    public ROList<BusinessModel> getBusinesses() {
-        return new ROList<BusinessModel>(businesses);
+
+    /**
+     * @return the businesses
+     */
+    public List<BusinessModel> getBusinesses() {
+        return businesses;
+    }
+
+    /**
+     * @param businesses the businesses to set
+     */
+    public void setBusinesses(List<BusinessModel> businesses) {
+        this.businesses = businesses;
     }
 }

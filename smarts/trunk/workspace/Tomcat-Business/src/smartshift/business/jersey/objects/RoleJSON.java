@@ -1,19 +1,30 @@
 package smartshift.business.jersey.objects;
 
+import smartshift.business.cache.bo.Role;
+import smartshift.common.util.PrimativeUtils;
 import com.google.gson.annotations.Expose;
 
-import smartshift.business.cache.bo.Role;
-import smartshift.business.hibernate.model.GroupModel;
-import smartshift.business.hibernate.model.RoleModel;
-import smartshift.common.util.PrimativeUtils;
-
+/**
+ * @author "D. Fisher Evans <contact@fisherevans.com>"
+ * the json rep of a role
+ */
 public class RoleJSON {
+    /**
+     * the role id
+     */
     @Expose
     public Integer id;
     
+    /**
+     * the role name
+     */
     @Expose
     public String name;
     
+    /**
+     * Initializes the object.
+     * @param r th ebase role
+     */
     public RoleJSON(Role r) {
         id = r.getID();
         name = r.getName();

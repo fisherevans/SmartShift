@@ -1,6 +1,5 @@
 package smartshift.accounts.jersey;
 
-import java.util.Date;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.POST;
@@ -13,7 +12,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import com.google.gson.annotations.Expose;
 import smartshift.accounts.cache.bo.Business;
 import smartshift.accounts.cache.bo.User;
 import smartshift.accounts.hibernate.dao.SessionDAO;
@@ -22,9 +20,9 @@ import smartshift.accounts.hibernate.model.SessionModel;
 import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
 import smartshift.accounts.rmi.BusinessServiceManager;
 import smartshift.common.rmi.interfaces.BusinessServiceInterface;
-import smartshift.common.util.collections.ROList;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
+import com.google.gson.annotations.Expose;
 
 /**
  * Jersey actions for session methods

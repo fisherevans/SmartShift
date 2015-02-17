@@ -1,13 +1,8 @@
 package smartshift.accounts.hibernate.dao;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import org.hibernate.criterion.Restrictions;
-import smartshift.accounts.hibernate.model.BusinessModel;
 import smartshift.accounts.hibernate.model.ServerModel;
-import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
-import smartshift.accounts.hibernate.model.UserModel;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 
 /**
