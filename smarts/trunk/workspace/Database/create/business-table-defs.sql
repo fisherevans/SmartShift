@@ -64,41 +64,49 @@ CREATE TABLE `AvailTemplate` (
 CREATE TABLE `Availability` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`templateID` INT NOT NULL,
-	`startTime` TIME NOT NULL,
+	`start` INT NOT NULL,
 	`duration` INT NOT NULL,
-	`repeatEvery` INT NULL,
+	`repeatEvery` INT NOT NULL DEFAULT 0,
 	`repeatCount` INT NOT NULL DEFAULT 0,
-	`repeatOffset` INT NULL,
-	`unavailable` TINYINT(1),
+	`repeatOffset` INT NOT NULL DEFAULT 0,
+	`unavailable` TINYINT(1) NOT NULL DEFAULT 0,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `AvailRepeatWeekly` (
+    `id` INT NOT NULL AUTO_INCREMENT,
 	`availID` INT NOT NULL,
 	`dayOfWeek` INT NOT NULL,
-	PRIMARY KEY (`availID`)
+	PRIMARY KEY (`id`),
+	UNIQUE(`availID`, `dayOfWeek`)
 );
 
 CREATE TABLE `AvailRepeatMonthlyByDate` (
+    `id` INT NOT NULL AUTO_INCREMENT,
 	`availID` INT NOT NULL,
 	-- make day of month negative if should start from end
 	`dayOfMonth` INT NOT NULL,
-	PRIMARY KEY (`availID`)
+	PRIMARY KEY (`id`),
+	UNIQUE(`availID`, `dayOfMonth`)
 );
 
 CREATE TABLE `AvailRepeatMonthlyByDay` (
+    `id` INT NOT NULL AUTO_INCREMENT,
 	`availID` INT NOT NULL,
 	`offset` INT NOT NULL DEFAULT 0,
 	-- make day of month negative if should start from end
 	`dayOfWeek` INT NOT NULL,
-	PRIMARY KEY (`availID`)
+	PRIMARY KEY (`id`),
+	UNIQUE(`availID`, `offset`, `dayOfWeek`)
 );
 
 CREATE TABLE `AvailRepeatYearly` (
+    `id` INT NOT NULL AUTO_INCREMENT,
 	`availID` INT NOT NULL,
 	`month` INT NOT NULL,
-	`dayOfWeek` INT NULL,
-	PRIMARY KEY (`availID`)
+	`dayOfMonth` INT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE(`availID`, `month`, `dayOfMonth`)
 );
 
 CREATE TABLE `Shift` (

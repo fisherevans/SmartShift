@@ -2,6 +2,13 @@ package smartshift.business.jersey.initializers;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import smartshift.business.hibernate.model.Availability;
+import smartshift.business.hibernate.model.AvailabilityInstance;
+import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDate;
+import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDay;
+import smartshift.business.hibernate.model.AvailabilityRepeatWeekly;
+import smartshift.business.hibernate.model.AvailabilityRepeatYearly;
+import smartshift.business.hibernate.model.AvailabilityTemplate;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
@@ -27,6 +34,14 @@ public class BusinessHibernateMapperListener implements ServletContextListener {
         HibernateFactory.addAnnotatedClass(GroupRoleModel.class);
         HibernateFactory.addAnnotatedClass(RoleModel.class);
         HibernateFactory.addAnnotatedClass(GroupRoleEmployeeModel.class);
+        
+        HibernateFactory.addAnnotatedClass(AvailabilityInstance.class);
+        HibernateFactory.addAnnotatedClass(AvailabilityTemplate.class);
+        HibernateFactory.addAnnotatedClass(Availability.class);
+        HibernateFactory.addAnnotatedClass(AvailabilityRepeatWeekly.class);
+        HibernateFactory.addAnnotatedClass(AvailabilityRepeatMonthlyByDay.class);
+        HibernateFactory.addAnnotatedClass(AvailabilityRepeatMonthlyByDate.class);
+        HibernateFactory.addAnnotatedClass(AvailabilityRepeatYearly.class);
     }
 
     /**
