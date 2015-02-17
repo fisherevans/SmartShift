@@ -4,8 +4,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import smartshift.business.hibernate.dao.DAOContext;
+import smartshift.business.hibernate.dao.GroupDAO;
 import smartshift.business.hibernate.dao.RoleDAO;
+import smartshift.business.hibernate.model.GroupModel;
 import smartshift.business.hibernate.model.RoleModel;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.util.UID;
@@ -38,7 +41,7 @@ public class Role extends CachedObject {
         loadAllChildren();
     }
     
-    public String getName(String name) {
+    public String getName() {
         return _name;
     }
     
@@ -81,13 +84,17 @@ public class Role extends CachedObject {
     }
     
     public static Role load(Cache cache, int roleID) {
-        if(cache.contains(new UID(TYPE_IDENTIFIER, roleID)))
-            return cache.getRole(roleID);
+    	UID uid = new UID(TYPE_IDENTIFIER, roleID);
+        if(cache.contains(uid))
+            return cache.getRole(roleID); 
         else {
             RoleModel model = cache.getDAOContext().dao(RoleDAO.class).getRoleById(roleID);
-            if(model != null)
-                return new Role(cache, model);
-            return null;
+            Role role = null;
+            if(model != null) {
+            	role = new Role(cache, model);
+                cache.cache(uid, role);
+            }
+            return role;
         }
     }
     

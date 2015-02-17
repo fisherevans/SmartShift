@@ -4,12 +4,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import smartshift.business.hibernate.dao.DAOContext;
+import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
+import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.util.UID;
+import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -19,6 +23,7 @@ public class Group extends CachedObject {
     private static final SmartLogger logger = new SmartLogger(Group.class);
     
     private String _name;
+    private Group _parent;
     private Map<Role, Set<Employee>> _employees;
     
     private GroupModel _model;
@@ -34,11 +39,19 @@ public class Group extends CachedObject {
     private Group(Cache cache, GroupModel model) {
         this(cache, model.getName());
         _model = model;
+        if(model.getParentID() == null)
+        	_parent = null;
+        else
+        	_parent = Group.load(cache, model.getParentID());
         loadAllChildren();
     }
     
     public String getName() {
         return _name;
+    }
+    
+    public Group getParent() {
+    	return _parent;
     }
     
     public boolean hasRole(Role role) {
@@ -54,6 +67,10 @@ public class Group extends CachedObject {
         addRole(role);
         if(!_employees.get(role).contains(employee))
             _employees.get(role).add(employee);
+    }
+    
+    public ROCollection<Role> getRoles() {
+    	return ROCollection.wrap(_employees.keySet());
     }
 
     public void save() {
@@ -88,13 +105,17 @@ public class Group extends CachedObject {
     }
     
     public static Group load(Cache cache, int grpID) {
-        if(cache.contains(new UID(TYPE_IDENTIFIER, grpID)))
-            return cache.getGroup(grpID);
+    	UID uid = new UID(TYPE_IDENTIFIER, grpID);
+        if(cache.contains(uid))
+            return cache.getGroup(grpID); 
         else {
             GroupModel model = cache.getDAOContext().dao(GroupDAO.class).getGroupById(grpID);
-            if(model != null)
-                return new Group(cache, model);
-            return null;
+            Group group = null;
+            if(model != null) {
+            	group = new Group(cache, model);
+                cache.cache(uid, group);
+            }
+            return group;
         }
     }
      

@@ -69,6 +69,15 @@ public class Employee extends CachedObject {
     public ROCollection<Role> getRoles(Group group) {
         return ROCollection.wrap(_roles.get(group));
     }
+    
+    public ROCollection<Group> getGroups() {
+    	return ROCollection.wrap(_roles.keySet());
+    }
+    
+    public boolean manages(Employee other) {
+    	// TODO Drew, need to find out if this employee manages the other, or is the same
+    	return false;
+    }
 
     public static Employee getEmployee(Cache cache, EmployeeModel model) {     
         Employee employee = cache.getEmployee(model.getId());
@@ -119,13 +128,17 @@ public class Employee extends CachedObject {
     }
     
     public static Employee load(Cache cache, int empID) {
-        if(cache.contains(new UID(TYPE_IDENTIFIER, empID)))
+    	UID uid = new UID(TYPE_IDENTIFIER, empID);
+        if(cache.contains(uid))
             return cache.getEmployee(empID); 
         else {
             EmployeeModel model = cache.getDAOContext().dao(EmployeeDAO.class).getEmployeeById(empID);
-            if(model != null)
-                return new Employee(cache, model);
-            return null;
+            Employee employee = null;
+            if(model != null) {
+                employee = new Employee(cache, model);
+                cache.cache(uid, employee);
+            }
+            return employee;
         }
     }
     
