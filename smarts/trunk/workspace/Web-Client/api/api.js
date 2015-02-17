@@ -19,6 +19,10 @@ var badAuthResult = {
   "result":"The Basic Authentication credentials were invalid"
 };
 
+var invalidID400 = {
+  "result":"The unique identifier passed was invalid."
+};
+
 var apiDef = {
   "paths": {
     "/accounts/user/full": {
@@ -124,6 +128,7 @@ var apiDef = {
           	"ids":"A dash seperated list of valid group IDs. (Example: ../group/1-5-6-13)"
           },
           "responses": {
+        	400: invalidID400,
             401: badAuthResult,
             200: {
                 "result":"A mapping of simple group data objects. (Group ID is the key).",
@@ -147,6 +152,7 @@ var apiDef = {
               "ids":"A dash seperated list of valid role IDs. (Example: ../role/1-5-6-13)"
             },
             "responses": {
+              400: invalidID400,
               401: badAuthResult,
               200: {
                 "result":"A mapping of simple role data objects. (Role ID is the key).",
@@ -168,6 +174,7 @@ var apiDef = {
         	"id":"A valid employee ID."
         },
         "responses": {
+          400: invalidID400,
           401: badAuthResult,
           200: {
             "result":"The base employee object",
