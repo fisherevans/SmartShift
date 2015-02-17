@@ -141,7 +141,6 @@ var apiDef = {
       },
       "/business/role/{ids}": {
           "GET": {
-            "notImplemented":true,
             "shortDescription":"Gets simple role data",
             "requires": [sessionAuthRequirement],
             "params": {
