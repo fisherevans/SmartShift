@@ -25,14 +25,14 @@ import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.params.SimpleIntegerParam;
 
 @Provider
-@Path("/employee")
+@Path("/role")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class RoleActions extends BusinessActionBase {
     private static final SmartLogger logger = new SmartLogger(BusinessActionBase.class);
     
     @GET
-    @Path("/role/{ids}")
+    @Path("/{ids}")
     public Response getRoles(@PathParam("ids") String roleIDs) {
     	Set<Role> roles = new HashSet<Role>();
     	StringBuffer error = new StringBuffer();
