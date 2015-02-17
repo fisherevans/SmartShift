@@ -163,7 +163,6 @@ var apiDef = {
         },
     "/business/employee/{id}": {
       "GET": {
-        "notImplemented":true,
         "shortDescription":"Gets basic information about an employee",
         "requires": [sessionAuthRequirement],
         "params": {
@@ -184,7 +183,6 @@ var apiDef = {
     },
     "/business/employee/full/{id}": {
       "GET": {
-        "notImplemented":true,
         "shortDescription":"Gets all information about an employee",
         "requires": [
           sessionAuthRequirement,
