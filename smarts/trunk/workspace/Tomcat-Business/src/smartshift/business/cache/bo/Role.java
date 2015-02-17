@@ -38,6 +38,7 @@ public class Role extends CachedObject {
     
     private Role(Cache cache, RoleModel model) {
         this(cache, model.getName());
+        _model = model;
         loadAllChildren();
     }
     
