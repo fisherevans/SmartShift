@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "AvailRepeatMonthlyByDate")
-public class AvailabilityRepeatMonthlyByDateModel {
+public class AvailabilityRepeatMonthlyByDateModel implements AvailabilityRepeatInterface {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)

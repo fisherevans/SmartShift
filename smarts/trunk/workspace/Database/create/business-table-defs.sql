@@ -58,6 +58,7 @@ CREATE TABLE `AvailInstance` (
 CREATE TABLE `AvailTemplate` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(45),
+	`empID` INT NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
@@ -283,6 +284,14 @@ ADD CONSTRAINT `availinstance_template`
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION,
 ADD CONSTRAINT `availinstance_emp`
+	FOREIGN KEY (`empID`)
+	REFERENCES `Employee`(`id`)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION
+;
+
+ALTER TABLE `AvailTemplate`
+ADD CONSTRAINT `availtemplate_emp`
 	FOREIGN KEY (`empID`)
 	REFERENCES `Employee`(`id`)
 	ON DELETE NO ACTION

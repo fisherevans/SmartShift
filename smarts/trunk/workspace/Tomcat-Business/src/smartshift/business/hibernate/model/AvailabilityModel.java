@@ -33,8 +33,8 @@ public class AvailabilityModel {
     @Column(name = "repeatCount", nullable = false)
     private Integer repeatCount;
 
-    @Column(name = "repeaseOffset")
-    private Integer repeaseOffset;
+    @Column(name = "repeateOffset")
+    private Integer repeateOffset;
 
     @Column(name = "unavailable", nullable = false)
     private Boolean unavailable;
@@ -131,17 +131,17 @@ public class AvailabilityModel {
     }
 
     /**
-     * @return the repeaseOffset
+     * @return the repeateOffset
      */
-    public Integer getRepeaseOffset() {
-        return repeaseOffset;
+    public Integer getRepeateOffset() {
+        return repeateOffset;
     }
 
     /**
-     * @param repeaseOffset the repeaseOffset to set
+     * @param repeateOffset the repeateOffset to set
      */
-    public void setRepeaseOffset(Integer repeaseOffset) {
-        this.repeaseOffset = repeaseOffset;
+    public void setRepeateOffset(Integer repeateOffset) {
+        this.repeateOffset = repeateOffset;
     }
 
     /**
