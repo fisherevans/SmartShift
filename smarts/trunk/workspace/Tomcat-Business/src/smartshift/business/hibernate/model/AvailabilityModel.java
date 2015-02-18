@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "Availability")
-public class Availability {
+public class AvailabilityModel {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -42,7 +42,7 @@ public class Availability {
     /**
      * Initializes the object.
      */
-    public Availability() {
+    public AvailabilityModel() {
         
     }
 

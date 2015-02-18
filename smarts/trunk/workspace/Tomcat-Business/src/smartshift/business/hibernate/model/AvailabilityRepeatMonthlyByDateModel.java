@@ -11,8 +11,8 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "AvailRepeatWeekly")
-public class AvailabilityRepeatWeekly {
+@Table(name = "AvailRepeatMonthlyByDate")
+public class AvailabilityRepeatMonthlyByDateModel {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -21,13 +21,13 @@ public class AvailabilityRepeatWeekly {
     @Column(name = "availID", nullable = false)
     private Integer availabilityID;
 
-    @Column(name = "dayOfWeek", nullable = false)
-    private Integer dayOfWeek;
+    @Column(name = "dayOfMonth", nullable = false)
+    private Integer dayOfMonth;
     
     /**
      * Initializes the object.
      */
-    public AvailabilityRepeatWeekly() {
+    public AvailabilityRepeatMonthlyByDateModel() {
         
     }
 
@@ -60,16 +60,16 @@ public class AvailabilityRepeatWeekly {
     }
 
     /**
-     * @return the dayOfWeek
+     * @return the dayOfMonth
      */
-    public Integer getDayOfWeek() {
-        return dayOfWeek;
+    public Integer getDayOfMonth() {
+        return dayOfMonth;
     }
 
     /**
-     * @param dayOfWeek the dayOfWeek to set
+     * @param dayOfMonth the dayOfMonth to set
      */
-    public void setDayOfWeek(Integer dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
+    public void setDayOfMonth(Integer dayOfMonth) {
+        this.dayOfMonth = dayOfMonth;
     }
 }

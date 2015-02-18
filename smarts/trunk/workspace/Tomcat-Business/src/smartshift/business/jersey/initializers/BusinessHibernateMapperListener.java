@@ -2,13 +2,13 @@ package smartshift.business.jersey.initializers;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import smartshift.business.hibernate.model.Availability;
-import smartshift.business.hibernate.model.AvailabilityInstance;
-import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDate;
-import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDay;
-import smartshift.business.hibernate.model.AvailabilityRepeatWeekly;
-import smartshift.business.hibernate.model.AvailabilityRepeatYearly;
-import smartshift.business.hibernate.model.AvailabilityTemplate;
+import smartshift.business.hibernate.model.AvailabilityModel;
+import smartshift.business.hibernate.model.AvailabilityInstanceModel;
+import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDateModel;
+import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDayModel;
+import smartshift.business.hibernate.model.AvailabilityRepeatWeeklyModel;
+import smartshift.business.hibernate.model.AvailabilityRepeatYearlyModel;
+import smartshift.business.hibernate.model.AvailabilityTemplateModel;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
@@ -35,13 +35,13 @@ public class BusinessHibernateMapperListener implements ServletContextListener {
         HibernateFactory.addAnnotatedClass(RoleModel.class);
         HibernateFactory.addAnnotatedClass(GroupRoleEmployeeModel.class);
         
-        HibernateFactory.addAnnotatedClass(AvailabilityInstance.class);
-        HibernateFactory.addAnnotatedClass(AvailabilityTemplate.class);
-        HibernateFactory.addAnnotatedClass(Availability.class);
-        HibernateFactory.addAnnotatedClass(AvailabilityRepeatWeekly.class);
-        HibernateFactory.addAnnotatedClass(AvailabilityRepeatMonthlyByDay.class);
-        HibernateFactory.addAnnotatedClass(AvailabilityRepeatMonthlyByDate.class);
-        HibernateFactory.addAnnotatedClass(AvailabilityRepeatYearly.class);
+        HibernateFactory.addAnnotatedClass(AvailabilityInstanceModel.class);
+        HibernateFactory.addAnnotatedClass(AvailabilityTemplateModel.class);
+        HibernateFactory.addAnnotatedClass(AvailabilityModel.class);
+        HibernateFactory.addAnnotatedClass(AvailabilityRepeatWeeklyModel.class);
+        HibernateFactory.addAnnotatedClass(AvailabilityRepeatMonthlyByDayModel.class);
+        HibernateFactory.addAnnotatedClass(AvailabilityRepeatMonthlyByDateModel.class);
+        HibernateFactory.addAnnotatedClass(AvailabilityRepeatYearlyModel.class);
     }
 
     /**
