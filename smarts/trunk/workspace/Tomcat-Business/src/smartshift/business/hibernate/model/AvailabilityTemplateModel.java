@@ -21,6 +21,9 @@ public class AvailabilityTemplateModel {
     @Column(name = "name", length = 45)
     private String name;
     
+    @Column(name = "empID", nullable = false)
+    private Integer employeeID;
+    
     /**
      * Initializes the object.
      */
@@ -54,5 +57,19 @@ public class AvailabilityTemplateModel {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * @return the employeeID
+     */
+    public Integer getEmployeeID() {
+        return employeeID;
+    }
+
+    /**
+     * @param employeeID the employeeID to set
+     */
+    public void setEmployeeID(Integer employeeID) {
+        this.employeeID = employeeID;
     }
 }
