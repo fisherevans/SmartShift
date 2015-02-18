@@ -11,8 +11,8 @@ import javax.persistence.Table;
  *
  */
 @Entity
-@Table(name = "AvailRepeatYearly")
-public class AvailabilityRepeatYearly {
+@Table(name = "AvailRepeatWeekly")
+public class AvailabilityRepeatWeeklyModel {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -21,16 +21,13 @@ public class AvailabilityRepeatYearly {
     @Column(name = "availID", nullable = false)
     private Integer availabilityID;
 
-    @Column(name = "month", nullable = false)
-    private Integer month;
-
-    @Column(name = "dayOfMonth", nullable = false)
-    private Integer dayOfMonth;
+    @Column(name = "dayOfWeek", nullable = false)
+    private Integer dayOfWeek;
     
     /**
      * Initializes the object.
      */
-    public AvailabilityRepeatYearly() {
+    public AvailabilityRepeatWeeklyModel() {
         
     }
 
@@ -63,30 +60,16 @@ public class AvailabilityRepeatYearly {
     }
 
     /**
-     * @return the month
+     * @return the dayOfWeek
      */
-    public Integer getMonth() {
-        return month;
+    public Integer getDayOfWeek() {
+        return dayOfWeek;
     }
 
     /**
-     * @param month the month to set
+     * @param dayOfWeek the dayOfWeek to set
      */
-    public void setMonth(Integer month) {
-        this.month = month;
-    }
-
-    /**
-     * @return the dayOfMonth
-     */
-    public Integer getDayOfMonth() {
-        return dayOfMonth;
-    }
-
-    /**
-     * @param dayOfMonth the dayOfMonth to set
-     */
-    public void setDayOfMonth(Integer dayOfMonth) {
-        this.dayOfMonth = dayOfMonth;
+    public void setDayOfWeek(Integer dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
     }
 }

@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "AvailTemplate")
-public class AvailabilityTemplate {
+public class AvailabilityTemplateModel {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -24,7 +24,7 @@ public class AvailabilityTemplate {
     /**
      * Initializes the object.
      */
-    public AvailabilityTemplate() {
+    public AvailabilityTemplateModel() {
         
     }
 

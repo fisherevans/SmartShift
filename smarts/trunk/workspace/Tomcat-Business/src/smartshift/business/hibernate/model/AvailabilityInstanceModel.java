@@ -13,7 +13,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "AvailInstance")
-public class AvailabilityInstance {
+public class AvailabilityInstanceModel {
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -34,7 +34,7 @@ public class AvailabilityInstance {
     /**
      * Initializes the object.
      */
-    public AvailabilityInstance() {
+    public AvailabilityInstanceModel() {
         
     }
 
