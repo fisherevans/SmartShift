@@ -2,19 +2,26 @@ package smartshift.business.jersey.initializers;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import smartshift.business.hibernate.model.AvailabilityModel;
 import smartshift.business.hibernate.model.AvailabilityInstanceModel;
+import smartshift.business.hibernate.model.AvailabilityModel;
 import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDateModel;
 import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDayModel;
 import smartshift.business.hibernate.model.AvailabilityRepeatWeeklyModel;
 import smartshift.business.hibernate.model.AvailabilityRepeatYearlyModel;
 import smartshift.business.hibernate.model.AvailabilityTemplateModel;
 import smartshift.business.hibernate.model.EmployeeModel;
+import smartshift.business.hibernate.model.EmployeeScheduleModel;
+import smartshift.business.hibernate.model.EmployeeScheduleShiftModel;
 import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.business.hibernate.model.GroupRoleEmployeeModel;
 import smartshift.business.hibernate.model.GroupRoleModel;
 import smartshift.business.hibernate.model.RoleModel;
+import smartshift.business.hibernate.model.RoleScheduleModel;
+import smartshift.business.hibernate.model.RoleScheduleShiftModel;
+import smartshift.business.hibernate.model.ScheduleModel;
+import smartshift.business.hibernate.model.ScheduleTemplateVersionModel;
+import smartshift.business.hibernate.model.ShiftModel;
 import smartshift.common.hibernate.HibernateFactory;
 
 /**
@@ -42,6 +49,14 @@ public class BusinessHibernateMapperListener implements ServletContextListener {
         HibernateFactory.addAnnotatedClass(AvailabilityRepeatMonthlyByDayModel.class);
         HibernateFactory.addAnnotatedClass(AvailabilityRepeatMonthlyByDateModel.class);
         HibernateFactory.addAnnotatedClass(AvailabilityRepeatYearlyModel.class);
+
+        HibernateFactory.addAnnotatedClass(EmployeeScheduleModel.class);
+        HibernateFactory.addAnnotatedClass(EmployeeScheduleShiftModel.class);
+        HibernateFactory.addAnnotatedClass(RoleScheduleModel.class);
+        HibernateFactory.addAnnotatedClass(RoleScheduleShiftModel.class);
+        HibernateFactory.addAnnotatedClass(ScheduleModel.class);
+        HibernateFactory.addAnnotatedClass(ScheduleTemplateVersionModel.class);
+        HibernateFactory.addAnnotatedClass(ShiftModel.class);
     }
 
     /**
