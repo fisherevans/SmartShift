@@ -2,10 +2,10 @@ package smartshift.accounts.cache.bo;
 
 import java.util.HashMap;
 import java.util.Map;
+import smartshift.accounts.hibernate.dao.AccountsDAOContext;
 import smartshift.accounts.hibernate.dao.BusinessDAO;
 import smartshift.accounts.hibernate.model.BusinessModel;
 import smartshift.common.hibernate.DBException;
-import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.hibernate.Stored;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -42,7 +42,7 @@ public class Business implements Stored {
         try {
             if(_model != null) {
                 _model.setName(_name);
-                GenericHibernateUtil.update(BusinessDAO.getAccountsSession(), _model);
+                AccountsDAOContext.dao(BusinessDAO.class).update(_model);
             } else {
                 // we probably never want to create a new business here
                 //_model = BusinessDAO.addBusiness(_name);
@@ -67,7 +67,7 @@ public class Business implements Stored {
         if(businesses == null)
             businesses = new HashMap<Integer, Business>();
         if(!businesses.containsKey(busID)) {
-            BusinessModel model = BusinessDAO.getBusiness(busID);
+            BusinessModel model = AccountsDAOContext.dao(BusinessDAO.class).uniqueByID(busID);
             businesses.put(busID, new Business(model));           
         }
         return businesses.get(busID);

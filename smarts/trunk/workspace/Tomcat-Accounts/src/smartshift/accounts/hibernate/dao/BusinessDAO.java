@@ -1,31 +1,26 @@
 package smartshift.accounts.hibernate.dao;
 
-import java.util.List;
 import smartshift.accounts.hibernate.model.BusinessModel;
-import smartshift.common.util.hibernate.GenericHibernateUtil;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * The data access object for the Business Object
  * @author D. Fisher Evans <contact@fisherevans.com>
  *
  */
-public class BusinessDAO extends BaseAccountsDAO {
-
-    /**
-     * Fetch all businesses
-     * @return The list of all businesses
-     */
-    public static List<BusinessModel> getBusinesses() {
-        return GenericHibernateUtil.list(getAccountsSession(), BusinessModel.class);
-    }
+public class BusinessDAO extends BaseAccountsDAO<BusinessModel> {
+    private static final SmartLogger logger = new SmartLogger(BusinessModel.class);
     
     /**
-     * Get a business
-     * @param id the business id to look up
-     * @return The business - null if not found
+     * Initializes the object.
      */
-    public static BusinessModel getBusiness(Integer id) {
-        return GenericHibernateUtil.unique(getAccountsSession(), BusinessModel.class, id);
+    public BusinessDAO() {
+        super(BusinessModel.class);
+    }
+
+    @Override
+    protected SmartLogger getLogger() {
+        return logger;
     }
     
 //    /**

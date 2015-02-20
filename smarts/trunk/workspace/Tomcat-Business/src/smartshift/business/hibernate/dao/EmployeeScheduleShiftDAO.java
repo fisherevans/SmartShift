@@ -17,7 +17,7 @@ public class EmployeeScheduleShiftDAO extends BaseBusinessDAO<EmployeeScheduleMo
     /**
      * @param context Base context for this business DAO
      */
-    public EmployeeScheduleShiftDAO(DAOContext context) {
+    public EmployeeScheduleShiftDAO(BusinessDAOContext context) {
         super(context, EmployeeScheduleModel.class);
     }
 

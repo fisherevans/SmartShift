@@ -9,13 +9,13 @@ import smartshift.common.hibernate.BaseDAO;
  * @param <T> the model type of this dao
  */
 public abstract class BaseBusinessDAO<T> extends BaseDAO<T> {
-    private DAOContext context;
+    private BusinessDAOContext context;
 
     /** creates the dao
      * @param context the business dao context
      * @param modelClass the model class of this dao
      */
-    public BaseBusinessDAO(DAOContext context, Class<T> modelClass) {
+    public BaseBusinessDAO(BusinessDAOContext context, Class<T> modelClass) {
         super(modelClass);
         this.context = context;
     }
@@ -31,7 +31,7 @@ public abstract class BaseBusinessDAO<T> extends BaseDAO<T> {
     /** get this daos context
      * @return the business dao context
      */
-    public DAOContext getContext() {
+    public BusinessDAOContext getContext() {
         return context;
     }
 }

@@ -17,7 +17,7 @@ public class AvailabilityRepeatMonthlyByDayDAO extends AvailabilityRepeatDAO<Ava
     /**
      * @param context Base context for this business DAO
      */
-    public AvailabilityRepeatMonthlyByDayDAO(DAOContext context) {
+    public AvailabilityRepeatMonthlyByDayDAO(BusinessDAOContext context) {
         super(context, AvailabilityRepeatMonthlyByDayModel.class);
     }
 

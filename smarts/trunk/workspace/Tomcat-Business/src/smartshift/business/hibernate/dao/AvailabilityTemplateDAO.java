@@ -17,7 +17,7 @@ public class AvailabilityTemplateDAO extends BaseBusinessDAO<AvailabilityTemplat
      * Initializes the object.
      * @param context
      */
-    public AvailabilityTemplateDAO(DAOContext context) {
+    public AvailabilityTemplateDAO(BusinessDAOContext context) {
         super(context, AvailabilityTemplateModel.class);
     }
     

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import smartshift.business.hibernate.dao.DAOContext;
+import smartshift.business.hibernate.dao.BusinessDAOContext;
 import smartshift.business.hibernate.dao.GroupDAO;
 import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
@@ -75,7 +75,7 @@ public class Group extends CachedObject {
         try {
             if(_model != null) {
                 _model.setName(_name);
-                GenericHibernateUtil.update(DAOContext.business(getCache().
+                GenericHibernateUtil.update(BusinessDAOContext.business(getCache().
                         getBusinessID()).getBusinessSession(), _model);
             } else {
                 _model = getDAO(GroupDAO.class).add(_name, null);

@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import smartshift.accounts.hibernate.dao.AccountsDAOContext;
 import smartshift.accounts.hibernate.dao.UserBusinessEmployeeDAO;
 import smartshift.accounts.hibernate.dao.UserDAO;
 import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
 import smartshift.accounts.hibernate.model.UserModel;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.util.collections.ROSet;
-import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.hibernate.Stored;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -69,11 +69,11 @@ public class User implements Stored {
         return new ROSet<Business>(_employeeIDs.keySet());
     }
     
-    public void connect(Business bus, int empID) {
+    public void connect(Business bus, int empID) throws DBException {
         _employeeIDs.put(bus, empID);
         if(_busEmpModels == null)
             _busEmpModels = new ArrayList<UserBusinessEmployeeModel>();
-        _busEmpModels.add(UserBusinessEmployeeDAO.addUBE(getID(), bus.getID(), empID));
+        _busEmpModels.add(AccountsDAOContext.dao(UserBusinessEmployeeDAO.class).add(getID(), bus.getID(), empID));
         if(_busEmpModels.get(_busEmpModels.size()-1) == null)
             logger.error("constraint violation trying to connect user to employee: U" + getID()
                     + "@B"+bus.getID()+"--E"+empID);
@@ -81,15 +81,16 @@ public class User implements Stored {
         _busEmpModels = null;
     }
     
+    @Override
     public void save() {
         try {
             if(_model != null) {
                 _model.setUsername(_uname);
                 _model.setEmail(_email);
                 _model.setPassHash(_passHash);
-                GenericHibernateUtil.update(UserDAO.getAccountsSession(), _model);      
+                AccountsDAOContext.dao(UserDAO.class).update(_model);      
             } else {
-                _model = UserDAO.addUser(_uname, _email, _passHash); 
+                _model = AccountsDAOContext.dao(UserDAO.class).add(_uname, _email, _passHash); 
             }
         } catch(DBException e) {
             logger.debug(e.getStackTrace());
@@ -99,7 +100,7 @@ public class User implements Stored {
     @Override
     public void loadAllChildren() {
         try {
-            for(UserBusinessEmployeeModel ube : UserBusinessEmployeeDAO.getUBEs(_model.getId()))
+            for(UserBusinessEmployeeModel ube : AccountsDAOContext.dao(UserBusinessEmployeeDAO.class).listByUser(_model.getId()))
                 _employeeIDs.put(Business.load(ube.getBusinessID()), ube.getEmployeeID());
         } catch(Exception e) {
             logger.error("Failed to load children", e);
@@ -110,7 +111,7 @@ public class User implements Stored {
         if(users == null)
             users = new HashMap<String, User>();
         if(!users.containsKey(username)) {
-            UserModel model = UserDAO.getUserByUsername(username);
+            UserModel model = AccountsDAOContext.dao(UserDAO.class).uniqueByUsername(username);
             if(model == null)
                 return null;
             users.put(username, new User(model));

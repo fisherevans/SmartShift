@@ -2,7 +2,6 @@ package smartshift.accounts.jersey;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -14,11 +13,13 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import smartshift.accounts.cache.bo.Business;
 import smartshift.accounts.cache.bo.User;
+import smartshift.accounts.hibernate.dao.AccountsDAOContext;
 import smartshift.accounts.hibernate.dao.SessionDAO;
 import smartshift.accounts.hibernate.dao.UserBusinessEmployeeDAO;
 import smartshift.accounts.hibernate.model.SessionModel;
 import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
 import smartshift.accounts.rmi.BusinessServiceManager;
+import smartshift.common.hibernate.DBException;
 import smartshift.common.rmi.interfaces.BusinessServiceInterface;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
@@ -38,7 +39,7 @@ public class SessionActions extends AccountsActionBase {
     /**
      * Message to be returned if a session is not found;
      */
-    private static final String MSG_SESSION_204 = "A session with the given ID does not belong to this business or is not active.";
+    //private static final String MSG_SESSION_204 = "A session with the given ID does not belong to this business or is not active.";
     
     /**
      * message when there's an error creating a session
@@ -66,21 +67,6 @@ public class SessionActions extends AccountsActionBase {
     private static final String MSG_SESSION_DELETE_200 = "The session was deleted";
 
     /**
-     * successfully updated a session ts
-     */
-    private static final String MSG_SESSION_KA_200 = "Session timestamp updated";
-
-    /**
-     * message when there's not enough data to lookup a session
-     */
-    private static final String MSG_SESSION_KA_400 = "Please supply a valid employee ID, business ID and session key";
-
-    /**
-     * message when theres an internal error updating a session ts
-     */
-    private static final String MSG_SESSION_KA_501 = "There was an error updatting the session";
-
-    /**
      * Creates a new session for this user for the given relationship
      * @param sessionRequest the json request for this method
      * @return HTTP Response with the new session object
@@ -100,10 +86,16 @@ public class SessionActions extends AccountsActionBase {
         if(employeeID == null)
             return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_CREATE_400);
         
-        UserBusinessEmployeeModel ube = UserBusinessEmployeeDAO.getUBE(user.getID(), sessionRequest.businessID, sessionRequest.employeeID);
+        UserBusinessEmployeeModel ube = AccountsDAOContext.dao(UserBusinessEmployeeDAO.class).uniqueByUserBusinessEmployee(user.getID(), sessionRequest.businessID, sessionRequest.employeeID);
         if(ube == null)
             return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_CREATE_400);
-        SessionModel session = SessionDAO.createSession(ube.getId());
+        SessionModel session;
+        try {
+            session = AccountsDAOContext.dao(SessionDAO.class).createNewSession(ube.getId());
+        } catch(DBException e) {
+            logger.warn("Failed to create session", e);
+            return getMessageResponse(Status.INTERNAL_SERVER_ERROR, "An internal error occured");
+        }
         if(session == null) {
             logger.debug("SessionActions.createSession() Failed to create session");
             return getObjectResponse(Status.INTERNAL_SERVER_ERROR, MSG_SESSION_CREATE_501);
@@ -134,49 +126,21 @@ public class SessionActions extends AccountsActionBase {
             return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_DELETE_400);
         }
         User user = getRequestUser();
-        UserBusinessEmployeeModel ube = UserBusinessEmployeeDAO.getUBE(user.getID(), sessionRequest.businessID, sessionRequest.employeeID);
+        UserBusinessEmployeeModel ube = AccountsDAOContext.dao(UserBusinessEmployeeDAO.class).uniqueByUserBusinessEmployee(user.getID(), sessionRequest.businessID, sessionRequest.employeeID);
         if(ube == null)
             return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_CREATE_400);
-        SessionModel session = SessionDAO.getSession(ube.getId(), sessionRequest.sessionKey);
+        SessionModel session = AccountsDAOContext.dao(SessionDAO.class).uniqueByKey(sessionRequest.sessionKey);
         if(session == null) {
             logger.debug("SessionActions.deleteSession() Session not found");
             return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_DELETE_400);
         }
-        if(!SessionDAO.destroySession(session)) {
-            logger.debug("SessionActions.deleteSession() Failed to delete session");
-            return getMessageResponse(Status.INTERNAL_SERVER_ERROR, MSG_SESSION_DELETE_501);
+        try {
+            AccountsDAOContext.dao(SessionDAO.class).delete(session);
+        } catch(DBException e) {
+            logger.warn("Failed to delete session", e);
+            return getObjectResponse(Status.INTERNAL_SERVER_ERROR, MSG_SESSION_DELETE_501);
         }
         return getMessageResponse(Status.OK, MSG_SESSION_DELETE_200);
-    }
-    
-    /**
-     * updates the last active timestamp for an existing session for this user
-     * @param sessionRequest the json request for this method
-     * @return HTTP Response with a message
-     */
-    @POST
-    @Path("/keepAlive")
-    public Response keepAliveSession(SessionRequest sessionRequest) {
-        logger.debug("SessionActions.keepAliveSession() Enter");
-        if(sessionRequest== null || sessionRequest.businessID == null || sessionRequest.employeeID == null || sessionRequest.sessionKey == null) {
-            logger.debug("SessionActions.keepAliveSession() Invalid request");
-            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_KA_400);
-        }
-        UserBusinessEmployeeModel ube = UserBusinessEmployeeDAO.getUBE(getRequestUser().getID(), sessionRequest.businessID, sessionRequest.employeeID);
-        if(ube == null) {
-            logger.debug("SessionActions.keepAliveSession() ube not found");
-            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_204);
-        }
-        SessionModel session = SessionDAO.getSession(ube.getId(), sessionRequest.sessionKey);
-        if(session == null) {
-            logger.debug("SessionActions.keepAliveSession() Session not found");
-            return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_204);
-        }
-        if(!SessionDAO.updateSessionTimestamp(session)) {
-            logger.debug("SessionActions.keepAliveSession() Failed to update session");
-            return getMessageResponse(Status.INTERNAL_SERVER_ERROR, MSG_SESSION_KA_501);
-        }
-        return getMessageResponse(Status.OK, MSG_SESSION_KA_200);
     }
     
     /**

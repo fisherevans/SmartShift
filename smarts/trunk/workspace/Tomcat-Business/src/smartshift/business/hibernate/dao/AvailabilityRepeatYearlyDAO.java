@@ -17,7 +17,7 @@ public class AvailabilityRepeatYearlyDAO extends AvailabilityRepeatDAO<Availabil
     /**
      * @param context Base context for this business DAO
      */
-    public AvailabilityRepeatYearlyDAO(DAOContext context) {
+    public AvailabilityRepeatYearlyDAO(BusinessDAOContext context) {
         super(context, AvailabilityRepeatYearlyModel.class);
     }
 

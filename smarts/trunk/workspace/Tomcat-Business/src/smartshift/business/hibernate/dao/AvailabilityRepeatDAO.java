@@ -20,7 +20,7 @@ public abstract class AvailabilityRepeatDAO<T extends AvailabilityRepeatInterfac
      * @param context the dao context
      * @param modelClass the repeat model class obj
      */
-    public AvailabilityRepeatDAO(DAOContext context, Class<T> modelClass) {
+    public AvailabilityRepeatDAO(BusinessDAOContext context, Class<T> modelClass) {
         super(context, modelClass);
     }
 

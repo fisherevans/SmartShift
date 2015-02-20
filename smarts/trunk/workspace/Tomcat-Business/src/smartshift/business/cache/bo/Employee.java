@@ -5,7 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import smartshift.business.hibernate.dao.DAOContext;
+import smartshift.business.hibernate.dao.BusinessDAOContext;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
 import smartshift.business.hibernate.model.EmployeeModel;
@@ -93,7 +93,7 @@ public class Employee extends CachedObject {
                 _model.setFirstName(_firstName);
                 _model.setLastName(_lastName);
                 _model.setDefaultGroupID(_homeGroup.getID());
-                GenericHibernateUtil.update(DAOContext.business(getCache().
+                GenericHibernateUtil.update(BusinessDAOContext.business(getCache().
                         getBusinessID()).getBusinessSession(), _model);
             } else {
                 _homeGroup.save();

@@ -1,5 +1,6 @@
 package smartshift.business.cache.bo;
 
+import smartshift.business.hibernate.dao.BaseBusinessDAO;
 import smartshift.common.util.Identifiable;
 import smartshift.common.util.UID;
 import smartshift.common.util.hibernate.Stored;
@@ -15,11 +16,12 @@ public abstract class CachedObject implements Identifiable, Stored{
         return _cache;
     }
     
+    @Override
     public UID getUID() {
         return new UID(this);
     }
     
-    public <T> T getDAO(Class<T> clazz) {
-        return (T) getCache().getDAOContext().dao(clazz);
+    public <T extends BaseBusinessDAO> T getDAO(Class<T> clazz) {
+        return getCache().getDAOContext().dao(clazz);
     }
 }
