@@ -17,7 +17,7 @@ public class AvailabilityRepeatWeeklyDAO extends AvailabilityRepeatDAO<Availabil
     /**
      * @param context Base context for this business DAO
      */
-    public AvailabilityRepeatWeeklyDAO(DAOContext context) {
+    public AvailabilityRepeatWeeklyDAO(BusinessDAOContext context) {
         super(context, AvailabilityRepeatWeeklyModel.class);
     }
 

@@ -10,20 +10,20 @@ import smartshift.common.util.properties.AppConstants;
 /** context for DAOs per business
  * @author D. Fisher Evans <contact@fisherevans.com>
  */
-public class DAOContext {
-    private static final SmartLogger logger = new SmartLogger(DAOContext.class);
+public class BusinessDAOContext {
+    private static final SmartLogger logger = new SmartLogger(BusinessDAOContext.class);
     
-    private static Map<Integer, DAOContext> contexts = new HashMap<>();
+    private static Map<Integer, BusinessDAOContext> contexts = new HashMap<>();
     
     private Integer businessID;
     
     @SuppressWarnings("rawtypes")
-    private Map<Class, Object> daos = new HashMap<>();
+    private Map<Class, BaseBusinessDAO> daos = new HashMap<>();
     
     /** creates a context with a businessID
      * @param businessID
      */
-    public DAOContext(Integer businessID) {
+    public BusinessDAOContext(Integer businessID) {
         this.businessID = businessID;
     }
     
@@ -45,10 +45,10 @@ public class DAOContext {
      * @param businessID the business id of the contxt
      * @return the context. makes one if it doesn't exist
      */
-    public static DAOContext business(Integer businessID) {
-        DAOContext context = contexts.get(businessID);
+    public static BusinessDAOContext business(Integer businessID) {
+        BusinessDAOContext context = contexts.get(businessID);
         if(context == null) {
-            context = new DAOContext(businessID);
+            context = new BusinessDAOContext(businessID);
             contexts.put(businessID, context);
         }
         return context;
@@ -59,15 +59,15 @@ public class DAOContext {
      * @param clazz the class
      * @return the dao. creates it if it doesn't exist
      */
-    @SuppressWarnings("unchecked")
-    public <T> T dao(Class<T> clazz) {
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    public <T extends BaseBusinessDAO> T dao(Class<T> clazz) {
         try {
-            Object dao = daos.get(clazz);
+            T dao = (T) daos.get(clazz);
             if(dao == null) {
-                dao = clazz.getConstructor(DAOContext.class).newInstance(this);
+                dao = clazz.getConstructor(BusinessDAOContext.class).newInstance(this);
                 daos.put(clazz, dao);
             }
-            return (T) dao;
+            return dao;
         } catch(Exception e) {
             logger.error("Failed to create DAO: " + clazz + " " + businessID, e);
             throw new IllegalArgumentException(clazz.getCanonicalName() + " is an invalid DAO object!");
@@ -80,7 +80,8 @@ public class DAOContext {
      * @param clazz the dao class
      * @return the dao instance for this business
      */
-    public static <T> T businesDAO(Integer businessID, Class<T> clazz) {
+    @SuppressWarnings("rawtypes")
+    public static <T extends BaseBusinessDAO> T businesDAO(Integer businessID, Class<T> clazz) {
         return business(businessID).dao(clazz);
     }
 }

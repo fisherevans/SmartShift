@@ -3,7 +3,7 @@ package smartshift.business.cache.bo;
 import java.util.HashMap;
 import java.util.Map;
 import org.hibernate.Session;
-import smartshift.business.hibernate.dao.DAOContext;
+import smartshift.business.hibernate.dao.BusinessDAOContext;
 import smartshift.common.util.UID;
 
 public class Cache {
@@ -11,14 +11,14 @@ public class Cache {
     
     private int _rootBusID;
     
-    private DAOContext _daoContext;
+    private BusinessDAOContext _daoContext;
     
     private Map<UID, CachedObject> _cached;
     
     public Cache(int rootBusID) {
         _rootBusID = rootBusID;
         _cached = new HashMap<UID, CachedObject>();
-        _daoContext = DAOContext.business(_rootBusID);
+        _daoContext = BusinessDAOContext.business(_rootBusID);
     }
     
     @SuppressWarnings("unchecked")
@@ -71,7 +71,7 @@ public class Cache {
         return _rootBusID;
     }
     
-    public DAOContext getDAOContext() {
+    public BusinessDAOContext getDAOContext() {
         return _daoContext;
     }
     

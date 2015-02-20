@@ -17,7 +17,7 @@ public class ScheduleTemplateVersionDAO extends BaseBusinessDAO<ScheduleTemplate
     /**
      * @param context Base context for this business DAO
      */
-    public ScheduleTemplateVersionDAO(DAOContext context) {
+    public ScheduleTemplateVersionDAO(BusinessDAOContext context) {
         super(context, ScheduleTemplateVersionModel.class);
     }
 

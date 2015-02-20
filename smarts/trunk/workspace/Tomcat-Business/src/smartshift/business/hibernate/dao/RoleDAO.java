@@ -19,7 +19,7 @@ public class RoleDAO extends BaseBusinessDAO<RoleModel> {
     /**
      * @param context Base context for this business DAO
      */
-    public RoleDAO(DAOContext context) {
+    public RoleDAO(BusinessDAOContext context) {
         super(context, RoleModel.class);
     }
     

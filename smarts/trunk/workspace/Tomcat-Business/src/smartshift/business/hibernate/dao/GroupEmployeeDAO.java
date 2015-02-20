@@ -19,7 +19,7 @@ public class GroupEmployeeDAO extends BaseBusinessDAO<GroupEmployeeModel> {
     /**
      * @param context Base context for this business DAO
      */
-    public GroupEmployeeDAO(DAOContext context) {
+    public GroupEmployeeDAO(BusinessDAOContext context) {
         super(context, GroupEmployeeModel.class);
     }
     

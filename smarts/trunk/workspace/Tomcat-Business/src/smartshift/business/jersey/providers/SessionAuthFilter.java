@@ -4,7 +4,7 @@ package smartshift.business.jersey.providers;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.ext.Provider;
-import smartshift.business.hibernate.dao.DAOContext;
+import smartshift.business.hibernate.dao.BusinessDAOContext;
 import smartshift.common.jersey.providers.AbstractAuthFilter;
 import smartshift.common.security.session.UserSession;
 import smartshift.common.security.session.UserSessionManager;
@@ -25,7 +25,7 @@ public class SessionAuthFilter extends AbstractAuthFilter {
         UserSession session = UserSessionManager.getSession(authString, true);
         if(session == null)
             throw new WebApplicationException(getInvalidCredentialsResponse());
-        DAOContext daoContext = DAOContext.business(session.businessID);
+        BusinessDAOContext daoContext = BusinessDAOContext.business(session.businessID);
         logger.debug("filter() Session found");
         containerRequest.setProperty("userSession", session);
         containerRequest.setProperty("daoContext", daoContext);

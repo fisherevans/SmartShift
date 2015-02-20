@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import smartshift.business.hibernate.dao.DAOContext;
+import smartshift.business.hibernate.dao.BusinessDAOContext;
 import smartshift.business.hibernate.dao.RoleDAO;
 import smartshift.business.hibernate.model.RoleModel;
 import smartshift.common.hibernate.DBException;
@@ -55,7 +55,7 @@ public class Role extends CachedObject {
         try {
             if(_model != null) {
                 _model.setName(_name);
-                GenericHibernateUtil.update(DAOContext.business(getCache().
+                GenericHibernateUtil.update(BusinessDAOContext.business(getCache().
                         getBusinessID()).getBusinessSession(), _model);
             } else {
                 _model = getDAO(RoleDAO.class).addRole(_name);

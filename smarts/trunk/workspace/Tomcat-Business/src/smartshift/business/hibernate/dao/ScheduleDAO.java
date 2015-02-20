@@ -17,7 +17,7 @@ public class ScheduleDAO extends BaseBusinessDAO<ScheduleModel> {
     /**
      * @param context Base context for this business DAO
      */
-    public ScheduleDAO(DAOContext context) {
+    public ScheduleDAO(BusinessDAOContext context) {
         super(context, ScheduleModel.class);
     }
 

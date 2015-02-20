@@ -17,7 +17,7 @@ public class ShiftDAO extends BaseBusinessDAO<ShiftModel> {
     /**
      * @param context Base context for this business DAO
      */
-    public ShiftDAO(DAOContext context) {
+    public ShiftDAO(BusinessDAOContext context) {
         super(context, ShiftModel.class);
     }
 

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import smartshift.accounts.hibernate.dao.AccountsDAOContext;
 import smartshift.accounts.hibernate.dao.ServerDAO;
 import smartshift.accounts.hibernate.dao.SessionDAO;
 import smartshift.accounts.hibernate.model.BusinessModel;
@@ -16,7 +17,7 @@ import smartshift.common.rmi.RMIClient;
 import smartshift.common.rmi.interfaces.AccountsServiceInterface;
 import smartshift.common.rmi.interfaces.BusinessServiceInterface;
 import smartshift.common.util.PrimativeUtils;
-import smartshift.common.util.collections.ROList;
+import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
 
@@ -51,7 +52,7 @@ public class AccountsService extends BaseRemote implements AccountsServiceInterf
     @Override
     public void businessConnected(String clientHostname, int clientPort, Integer ... developmentBusinesses) throws RemoteException {
         logger.info(clientHostname + ":" + clientPort + " has connected via RMI.");
-        ServerModel server = ServerDAO.getServerByHostname(clientHostname);
+        ServerModel server = AccountsDAOContext.dao(ServerDAO.class).uniqueByHostname(clientHostname);
         if(server == null)
             logger.warn("An application has connected that is not registered in the database: " + clientHostname);
         BusinessServiceInterface businessService = null;
@@ -86,7 +87,7 @@ public class AccountsService extends BaseRemote implements AccountsServiceInterf
             for(Integer businessID:businessIDs) {
                 try {
                     businessService.invalidateAllUserSessions(businessID);
-                    ROList<GetActiveSessionsModel> sessions = SessionDAO.getBusinessSessions(businessID, minLastAccess);
+                    ROCollection<GetActiveSessionsModel> sessions = AccountsDAOContext.dao(SessionDAO.class).listByBusiessAccess(businessID, minLastAccess);
                     for(GetActiveSessionsModel session:sessions) {
                         businessService.addUserSession(session.username, session.sessionKey, session.businessID,
                                 session.employeeID, session.lastActivity.getTime(), AppConstants.SESSION_TIMEOUT);

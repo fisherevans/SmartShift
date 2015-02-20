@@ -18,7 +18,7 @@ public class AvailabilityInstanceDAO extends BaseBusinessDAO<AvailabilityInstanc
      * Initializes the object.
      * @param context
      */
-    public AvailabilityInstanceDAO(DAOContext context) {
+    public AvailabilityInstanceDAO(BusinessDAOContext context) {
         super(context, AvailabilityInstanceModel.class);
     }
     

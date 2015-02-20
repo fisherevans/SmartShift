@@ -1,29 +1,25 @@
 package smartshift.accounts.hibernate.dao;
 
-import java.util.List;
 import smartshift.accounts.hibernate.model.ContactMethodModel;
-import smartshift.common.util.hibernate.GenericHibernateUtil;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * The access methods for Contact methods
  * @author D. Fisher Evans <contact@fisherevans.com>
  *
  */
-public class ContactMethodDAO extends BaseAccountsDAO {
-    /**
-     * get all contact method types
-     * @return the list of contact methods
-     */
-    public static List<ContactMethodModel> getContactMethods() {
-        return GenericHibernateUtil.list(getAccountsSession(), ContactMethodModel.class);
-    }
+public class ContactMethodDAO extends BaseAccountsDAO<ContactMethodModel> {
+    private static final SmartLogger logger = new SmartLogger(ContactMethodDAO.class);
     
     /**
-     * get a contact method
-     * @param id the id to lookup
-     * @return the contact method
+     * Initializes the object.
      */
-    public static ContactMethodModel getContactMethod(Integer id) {
-        return GenericHibernateUtil.unique(getAccountsSession(), ContactMethodModel.class, id);
+    public ContactMethodDAO() {
+        super(ContactMethodModel.class);
+    }
+
+    @Override
+    protected SmartLogger getLogger() {
+        return logger;
     }
 }
