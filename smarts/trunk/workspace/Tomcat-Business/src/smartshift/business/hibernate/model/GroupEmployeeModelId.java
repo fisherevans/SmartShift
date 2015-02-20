@@ -24,6 +24,16 @@ public class GroupEmployeeModelId implements Serializable {
     public GroupEmployeeModelId() {
         
     }
+
+    /**
+     * Initializes the object.
+     * @param groupID
+     * @param employeeID
+     */
+    public GroupEmployeeModelId(Integer groupID, Integer employeeID) {
+        this.groupID = groupID;
+        this.employeeID = employeeID;
+    }
     
     /**
      * @see java.lang.Object#hashCode()

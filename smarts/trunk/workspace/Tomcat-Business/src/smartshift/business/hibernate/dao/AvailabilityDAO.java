@@ -1,51 +1,33 @@
 package smartshift.business.hibernate.dao;
 
-import java.util.List;
 import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.model.AvailabilityModel;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.util.collections.ROCollection;
-import smartshift.common.util.hibernate.GenericHibernateUtil;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * @author "D. Fisher Evans <contact@fisherevans.com>"
  * data access object for availability templates
  */
-public class AvailabilityDAO extends BaseBusinessDAO {
-
+public class AvailabilityDAO extends BaseBusinessDAO<AvailabilityModel> {
+    private static final SmartLogger logger = new SmartLogger(AvailabilityDAO.class);
+    
     /**
      * Initializes the object.
      * @param context
      */
     public AvailabilityDAO(DAOContext context) {
-        super(context);
-    }
-    
-    /** gets all avails
-     * @return list of avails
-     */
-    public ROCollection<AvailabilityModel> getAvailabilities() {
-        List<AvailabilityModel> avails = GenericHibernateUtil.list(getBusinessSession(), AvailabilityModel.class);
-        return ROCollection.wrap(avails);
+        super(context, AvailabilityModel.class);
     }
     
     /** gets all avails of a template
      * @param templateID the template id
      * @return list of avails
      */
-    public ROCollection<AvailabilityModel> getAvailabilitiesByTemplate(Integer templateID) {
-        List<AvailabilityModel> templates = GenericHibernateUtil.list(getBusinessSession(), AvailabilityModel.class,
-                Restrictions.eq("templateID", templateID));
-        return ROCollection.wrap(templates);
-    }
-    
-    /** gets a unique avail
-     * @param id the unique id
-     * @return the avail, null if not found
-     */
-    public AvailabilityModel getAvailability(Integer id) {
-        AvailabilityModel avail = GenericHibernateUtil.unique(getBusinessSession(), AvailabilityModel.class, id);
-        return avail;
+    public ROCollection<AvailabilityModel> getByTemplate(Integer templateID) {
+        ROCollection<AvailabilityModel> models = list(Restrictions.eq("templateID", templateID));
+        return models;
     }
     
     /** saves a new avail, by params
@@ -59,7 +41,7 @@ public class AvailabilityDAO extends BaseBusinessDAO {
      * @return the saved model
      * @throws DBException
      */
-    public AvailabilityModel addAvailability(Integer templateID, Integer start, Integer duration, Integer repeatEvery, Integer repeatCount, Integer repeateOffset, Boolean unavailable) throws DBException {
+    public AvailabilityModel add(Integer templateID, Integer start, Integer duration, Integer repeatEvery, Integer repeatCount, Integer repeateOffset, Boolean unavailable) throws DBException {
         AvailabilityModel avail = new AvailabilityModel();
         avail.setTemplateID(templateID);
         avail.setStart(start);
@@ -68,32 +50,11 @@ public class AvailabilityDAO extends BaseBusinessDAO {
         avail.setRepeatCount(repeatCount);
         avail.setRepeateOffset(repeateOffset);
         avail.setUnavailable(unavailable);
-        return addAvailability(avail);
+        return add(avail);
     }
-    
-    /** save a new avail by a newly constructed model
-     * @param newAvail the newly constructed avail model
-     * @return the saved model
-     * @throws DBException
-     */
-    public AvailabilityModel addAvailability(AvailabilityModel newAvail) throws DBException {
-        newAvail = (AvailabilityModel) GenericHibernateUtil.save(getBusinessSession(), newAvail);
-        return newAvail;
-    }
-    
-    /** delete an avail by id
-     * @param id the unique id
-     * @throws DBException
-     */
-    public void deleteAvailabilityByID(Integer id) throws DBException {
-        deleteAvailability(getAvailability(id));
-    }
-    
-    /** delete an avail by model reference
-     * @param avail the avail model to delete
-     * @throws DBException
-     */
-    public void deleteAvailability(AvailabilityModel avail) throws DBException {
-        GenericHibernateUtil.delete(getBusinessSession(), avail);
+
+    @Override
+    protected SmartLogger getLogger() {
+        return logger;
     }
 }

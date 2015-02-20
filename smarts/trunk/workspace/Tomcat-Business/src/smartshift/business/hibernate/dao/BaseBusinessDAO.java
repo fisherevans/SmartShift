@@ -1,25 +1,30 @@
 package smartshift.business.hibernate.dao;
 
 import org.hibernate.Session;
+import smartshift.common.hibernate.BaseDAO;
 
 /** the base object for all business DAOs.
  * impl's MUST have a constructor that only takes a DAOContext and passes it to this super
  * @author D. Fisher Evans <contact@fisherevans.com>
+ * @param <T> the model type of this dao
  */
-public abstract class BaseBusinessDAO {
+public abstract class BaseBusinessDAO<T> extends BaseDAO<T> {
     private DAOContext context;
 
     /** creates the dao
      * @param context the business dao context
+     * @param modelClass the model class of this dao
      */
-    public BaseBusinessDAO(DAOContext context) {
+    public BaseBusinessDAO(DAOContext context, Class<T> modelClass) {
+        super(modelClass);
         this.context = context;
     }
 
     /**
-     * @return the hibernate session for this business's schema
+     * @see smartshift.common.hibernate.BaseDAO#getSession()
      */
-    public Session getBusinessSession() {
+    @Override
+    public Session getSession() {
         return context.getBusinessSession();
     }
     

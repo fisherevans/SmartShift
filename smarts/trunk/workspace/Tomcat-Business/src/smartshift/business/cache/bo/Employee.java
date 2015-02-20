@@ -97,7 +97,7 @@ public class Employee extends CachedObject {
                         getBusinessID()).getBusinessSession(), _model);
             } else {
                 _homeGroup.save();
-                _model = getDAO(EmployeeDAO.class).addEmployee(_firstName, _lastName, _homeGroup.getID());
+                _model = getDAO(EmployeeDAO.class).add(_firstName, _lastName, _homeGroup.getID());
             }
         } catch (DBException e) {
             logger.debug(e.getStackTrace());
@@ -107,7 +107,7 @@ public class Employee extends CachedObject {
     @Override
     public void loadAllChildren() {
         try {
-            for(GroupModel gm : getDAO(GroupDAO.class).getEmployeeGroups(getID())) {
+            for(GroupModel gm : getDAO(GroupDAO.class).listByEmployee(getID())) {
                 _roles.put(Group.load(getCache(), gm.getId()), new HashSet<Role>()); 
             }
         } catch(Exception e) {
@@ -132,7 +132,7 @@ public class Employee extends CachedObject {
         if(cache.contains(uid))
             return cache.getEmployee(empID); 
         else {
-            EmployeeModel model = cache.getDAOContext().dao(EmployeeDAO.class).getEmployeeById(empID);
+            EmployeeModel model = cache.getDAOContext().dao(EmployeeDAO.class).uniqueByID(empID);
             Employee employee = null;
             if(model != null) {
                 employee = new Employee(cache, model);
