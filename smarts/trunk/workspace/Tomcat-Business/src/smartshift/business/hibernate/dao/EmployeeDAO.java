@@ -1,51 +1,22 @@
 package smartshift.business.hibernate.dao;
 
-import java.util.List;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.common.hibernate.DBException;
-import smartshift.common.util.collections.ROList;
-import smartshift.common.util.hibernate.GenericHibernateUtil;
+import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * The data access object for the EmployeeModel Object
  * @author D. Fisher Evans <contact@fisherevans.com>
- *
  */
-public class EmployeeDAO extends BaseBusinessDAO {
-    /**
-     * Logger for this DAO
-     */
+public class EmployeeDAO extends BaseBusinessDAO<EmployeeModel> {
     private static SmartLogger logger = new SmartLogger(EmployeeDAO.class);
 
     /**
      * @param context Base context for this business DAO
      */
     public EmployeeDAO(DAOContext context) {
-        super(context);
-    }
-    
-    /**
-     * Fetch a EmployeeModel by id
-     * @param id the id to lookup
-     * @return the EmployeeModel - null if not found
-     */
-    public EmployeeModel getEmployeeById(Integer id) {
-        logger.debug("EmployeeDAO.getEmployeeById() Enter - " + id);
-        EmployeeModel employeeModel = GenericHibernateUtil.unique(getBusinessSession(), EmployeeModel.class, id);
-        logger.debug("EmployeeDAO.getEmployeeById() Got " + (employeeModel == null ? "null" : employeeModel.getFirstName() + " " + employeeModel.getLastName()));
-        return employeeModel;
-    }
-    
-    /**
-     * Get all EmployeeModels
-     * @return the list of EmployeeModels
-     */
-    public List<EmployeeModel> getEmployees() {
-        logger.debug("EmployeeDAO.getEmployee() Enter");
-        List<EmployeeModel> employeeModels = GenericHibernateUtil.list(getBusinessSession(), EmployeeModel.class);
-        logger.debug("EmployeeDAO.getEmployee() Got EmployeeModel count: " + employeeModels.size());
-        return employeeModels;
+        super(context, EmployeeModel.class);
     }
     
     /**
@@ -56,28 +27,23 @@ public class EmployeeDAO extends BaseBusinessDAO {
      * @return the created EmployeeModel
      * @throws DBException if there was an error creating the EmployeeModel
      */
-    public EmployeeModel addEmployee(String firstName, String lastName, Integer defaultGroupID) throws DBException {
-        logger.debug("EmployeeDAO.addEmployee() Enter");
-        EmployeeModel employeeModel = new EmployeeModel();
-        employeeModel.setFirstName(firstName);
-        employeeModel.setLastName(lastName);
-        employeeModel.setDefaultGroupID(defaultGroupID);
-        GenericHibernateUtil.save(getBusinessSession(), employeeModel);
-        logger.debug("EmployeeDAO.addEmployee() Success");
-        return employeeModel;
+    public EmployeeModel add(String firstName, String lastName, Integer defaultGroupID) throws DBException {
+        EmployeeModel model = new EmployeeModel();
+        model.setFirstName(firstName);
+        model.setLastName(lastName);
+        model.setDefaultGroupID(defaultGroupID);
+        model = add(model);
+        return model;
     }
 
     /** gets a list of employees in a group
      * @param groupID the group in question
-     * @return the list of employees ids
+     * @return the list of employees
      */
-    public ROList<EmployeeModel> getGroupEmployees(Integer groupID) {
-        @SuppressWarnings("unchecked")
-        List<EmployeeModel> employees = getBusinessSession()
-                .getNamedQuery(EmployeeModel.GET_GROUP_EMPLOYEES)
-                .setParameter(EmployeeModel.GET_GROUP_EMPLOYEES_GROUP_ID, groupID)
-                .list();
-        return new ROList<EmployeeModel>(employees);
+    public ROCollection<EmployeeModel> listByGroup(Integer groupID) {
+        ROCollection<EmployeeModel> models = listNamedQuery(EmployeeModel.GET_GROUP_EMPLOYEES,
+                new NamedParameter(EmployeeModel.GET_GROUP_EMPLOYEES_GROUP_ID, groupID));
+        return models;
     }
 
     /** gets a list of employees in a group role
@@ -85,26 +51,25 @@ public class EmployeeDAO extends BaseBusinessDAO {
      * @param roleID the role
      * @return the list of employees ids
      */
-    public ROList<EmployeeModel> getGroupRoleEmployees(Integer groupID, Integer roleID) {
-        @SuppressWarnings("unchecked")
-        List<EmployeeModel> employees = getBusinessSession()
-                .getNamedQuery(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES)
-                .setParameter(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_GROUP_ID, groupID)
-                .setParameter(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_ROLE_ID, roleID)
-                .list();
-        return new ROList<EmployeeModel>(employees);
+    public ROCollection<EmployeeModel> listByGroupRole(Integer groupID, Integer roleID) {
+        ROCollection<EmployeeModel> models = listNamedQuery(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES,
+                new NamedParameter(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_GROUP_ID, groupID),
+                new NamedParameter(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_ROLE_ID, roleID));
+        return models;
     }
 
     /** gets a list of employees in a group role
      * @param groupRoleID the group role
      * @return the list of employees ids
      */
-    public ROList<EmployeeModel> getGroupRoleEmployeesByGR(Integer groupRoleID) {
-        @SuppressWarnings("unchecked")
-        List<EmployeeModel> employees = getBusinessSession()
-                .getNamedQuery(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_BY_GR)
-                .setParameter(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_BY_GR_GR_ID, groupRoleID)
-                .list();
-        return new ROList<EmployeeModel>(employees);
+    public ROCollection<EmployeeModel> listByGroupRoleID(Integer groupRoleID) {
+        ROCollection<EmployeeModel> models = listNamedQuery(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_BY_GR,
+                new NamedParameter(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_BY_GR_GR_ID, groupRoleID));
+        return models;
+    }
+
+    @Override
+    protected SmartLogger getLogger() {
+        return logger;
     }
 }

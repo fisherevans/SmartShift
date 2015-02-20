@@ -3,7 +3,6 @@ package smartshift.business.hibernate.dao;
 import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.business.hibernate.model.GroupEmployeeModelId;
 import smartshift.common.hibernate.DBException;
-import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -11,7 +10,7 @@ import smartshift.common.util.log4j.SmartLogger;
  * @author D. Fisher Evans <contact@fisherevans.com>
  *
  */
-public class GroupEmployeeDAO extends BaseBusinessDAO {
+public class GroupEmployeeDAO extends BaseBusinessDAO<GroupEmployeeModel> {
     /**
      * Logger for this DAO
      */
@@ -21,7 +20,7 @@ public class GroupEmployeeDAO extends BaseBusinessDAO {
      * @param context Base context for this business DAO
      */
     public GroupEmployeeDAO(DAOContext context) {
-        super(context);
+        super(context, GroupEmployeeModel.class);
     }
     
     /** Links an employee to a group
@@ -29,12 +28,14 @@ public class GroupEmployeeDAO extends BaseBusinessDAO {
      * @param employeeID the employee id
      * @throws DBException if there's an error
      */
-    public void linkGroupEmployee(Integer groupID, Integer employeeID) throws DBException {
+    public void link(Integer groupID, Integer employeeID) throws DBException {
         logger.debug("Linking G" + groupID + " E" + employeeID);
-        GroupEmployeeModel link = new GroupEmployeeModel();
-        link.setGroupID(groupID);
-        link.setEmployeeID(employeeID);
-        GenericHibernateUtil.save(getBusinessSession(), link);
+        if(isLinked(groupID, employeeID))
+            return;
+        GroupEmployeeModel model = new GroupEmployeeModel();
+        model.setGroupID(groupID);
+        model.setEmployeeID(employeeID);
+        add(model);
     }
 
     /** Unlinks an employee from a group
@@ -42,14 +43,11 @@ public class GroupEmployeeDAO extends BaseBusinessDAO {
      * @param employeeID the employee id
      * @throws DBException if there's an error
      */
-    public void unlinkGroupEmployee(Integer groupID, Integer employeeID) throws DBException {
+    public void unlink(Integer groupID, Integer employeeID) throws DBException {
         logger.debug("Unlinking G" + groupID + " E" + employeeID);
-        GroupEmployeeModelId id = new GroupEmployeeModelId();
-        id.groupID = groupID;
-        id.employeeID = employeeID;
-        GroupEmployeeModel link = GenericHibernateUtil.unique(getBusinessSession(), GroupEmployeeModel.class, id);
-        if(link != null)
-            GenericHibernateUtil.delete(getBusinessSession(), link);
+        GroupEmployeeModel model = uniqueByID(new GroupEmployeeModelId(groupID, employeeID));
+        if(model != null)
+            delete(model);
     }
     
     /** Checks to see if an employee is linked to a group
@@ -58,11 +56,13 @@ public class GroupEmployeeDAO extends BaseBusinessDAO {
      * @return true if link exists
      * @throws DBException if there's an error
      */
-    public boolean isGroupEmployeeLinked(Integer groupID, Integer employeeID) throws DBException {
-        GroupEmployeeModelId id = new GroupEmployeeModelId();
-        id.groupID = groupID;
-        id.employeeID = employeeID;
-        GroupEmployeeModel link = GenericHibernateUtil.unique(getBusinessSession(), GroupEmployeeModel.class, id);
-        return link != null;
+    public boolean isLinked(Integer groupID, Integer employeeID) throws DBException {
+        GroupEmployeeModel model = uniqueByID(new GroupEmployeeModelId(groupID, employeeID));
+        return model != null;
+    }
+
+    @Override
+    protected SmartLogger getLogger() {
+        return logger;
     }
 }

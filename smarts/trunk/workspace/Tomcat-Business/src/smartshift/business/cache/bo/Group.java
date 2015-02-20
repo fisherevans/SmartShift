@@ -4,11 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import smartshift.business.hibernate.dao.DAOContext;
-import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
-import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.common.hibernate.DBException;
@@ -73,6 +70,7 @@ public class Group extends CachedObject {
     	return ROCollection.wrap(_employees.keySet());
     }
 
+    @Override
     public void save() {
         try {
             if(_model != null) {
@@ -80,7 +78,7 @@ public class Group extends CachedObject {
                 GenericHibernateUtil.update(DAOContext.business(getCache().
                         getBusinessID()).getBusinessSession(), _model);
             } else {
-                _model = getDAO(GroupDAO.class).addGroup(_name, null);
+                _model = getDAO(GroupDAO.class).add(_name, null);
             }
         } catch (DBException e) {
             logger.debug(e.getStackTrace());
@@ -109,7 +107,7 @@ public class Group extends CachedObject {
         if(cache.contains(uid))
             return cache.getGroup(grpID); 
         else {
-            GroupModel model = cache.getDAOContext().dao(GroupDAO.class).getGroupById(grpID);
+            GroupModel model = cache.getDAOContext().dao(GroupDAO.class).uniqueByID(grpID);
             Group group = null;
             if(model != null) {
             	group = new Group(cache, model);

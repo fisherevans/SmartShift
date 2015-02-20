@@ -47,18 +47,39 @@ import org.hibernate.annotations.NamedQuery;
         )
 })
 public class EmployeeModel {
+    /**
+     * named query to get employees in group
+     */
     public static final String GET_GROUP_EMPLOYEES = "getGroupEmployees";
     
+    /**
+     * groupi id for GET_GROUP_EMPLOYEES
+     */
     public static final String GET_GROUP_EMPLOYEES_GROUP_ID = "groupID";
     
+    /**
+     * named query to get employees in a group role
+     */
     public static final String GET_GROUP_ROLE_EMPLOYEES = "getGroupRoleEmployees";
     
+    /**
+     * group id for GET_GROUP_ROLE_EMPLOYEES
+     */
     public static final String GET_GROUP_ROLE_EMPLOYEES_GROUP_ID = "groupID";
     
+    /**
+     * role id for GET_GROUP_ROLE_EMPLOYEES
+     */
     public static final String GET_GROUP_ROLE_EMPLOYEES_ROLE_ID = "roleID";
     
+    /**
+     * named query to get employee in group role by gr id
+     */
     public static final String GET_GROUP_ROLE_EMPLOYEES_BY_GR = "getGroupRoleEmployeesByGR";
     
+    /**
+     * group role id for GET_GROUP_ROLE_EMPLOYEES_BY_GR
+     */
     public static final String GET_GROUP_ROLE_EMPLOYEES_BY_GR_GR_ID = "groupRoleID";
     
     @Id
@@ -75,6 +96,9 @@ public class EmployeeModel {
     @Column(name = "lName", length = 60)
     private String lastName;
     
+    /**
+     * Initializes the object.
+     */
     public EmployeeModel() {
     }
 
