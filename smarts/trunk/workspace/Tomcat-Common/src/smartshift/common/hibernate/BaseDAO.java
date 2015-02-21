@@ -154,7 +154,7 @@ public abstract class BaseDAO<T> {
         return model;
     }
     
-    private Query prepareNamedQuery(String queryName, NamedParameter ... parameters) {
+    protected Query prepareNamedQuery(String queryName, NamedParameter ... parameters) {
         getLogger().debug("prepareNamedQuery() enter. Name: " + queryName);
         Query query = getSession().getNamedQuery(queryName);
         for(NamedParameter parameter:parameters) {

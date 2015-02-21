@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import org.hibernate.annotations.NamedQueries;
+import org.hibernate.annotations.NamedQuery;
 
 /**
  * @author "D. Fisher Evans <contact@fisherevans.com>"
@@ -13,7 +15,15 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "SchedTemplateVersion")
+@NamedQueries({
+    @NamedQuery(name = ScheduleTemplateVersionModel.GET_MAX_TEMPLATE_ID,
+                query = "select max(stv.schedTemplateID) "
+                      + "  from ScheduleTemplateVersionModel as stv"
+    )
+})
 public class ScheduleTemplateVersionModel {
+    public static final String GET_MAX_TEMPLATE_ID = "getMaxScheduleTemplateId";
+    
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
