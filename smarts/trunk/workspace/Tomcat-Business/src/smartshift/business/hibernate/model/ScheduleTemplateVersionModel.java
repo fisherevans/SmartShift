@@ -17,7 +17,7 @@ import org.hibernate.annotations.NamedQuery;
 @Table(name = "SchedTemplateVersion")
 @NamedQueries({
     @NamedQuery(name = ScheduleTemplateVersionModel.GET_MAX_TEMPLATE_ID,
-                query = "select max(stv.schedTemplateID) "
+                query = "select max(stv.scheduleTemplateID) "
                       + "  from ScheduleTemplateVersionModel as stv"
     )
 })
