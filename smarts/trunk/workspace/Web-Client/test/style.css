@@ -13,3 +13,7 @@
   background-color: #888;
   margin: 12px 10px;
 }
+
+input {
+  width: 300px;
+}
