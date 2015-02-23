@@ -4,12 +4,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import smartshift.business.hibernate.dao.BusinessDAOContext;
 import smartshift.business.hibernate.dao.RoleDAO;
 import smartshift.business.hibernate.model.RoleModel;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.util.UID;
-import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.log4j.SmartLogger;
 
 public class Role extends CachedObject {
@@ -55,8 +53,7 @@ public class Role extends CachedObject {
         try {
             if(_model != null) {
                 _model.setName(_name);
-                GenericHibernateUtil.update(BusinessDAOContext.business(getCache().
-                        getBusinessID()).getBusinessSession(), _model);
+                getDAO(RoleDAO.class).update(_model);
             } else {
                 _model = getDAO(RoleDAO.class).addRole(_name);
             }
