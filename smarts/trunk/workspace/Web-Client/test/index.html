@@ -8,7 +8,17 @@
         <script src="script.js"></script>
     </head>
     <body>
-      <button id="start" onClick="startTest();" type="button">Start Test</button>
+      <div id="setup">
+        Server ---- <input type="text" id="server" value="http://lando.smartshift.info:6380" /> <a href="javascript:$('#server').val('http://localhost:8080');">localhost</a><br/>
+        Username -- <input type="text" id="username" value="fisher" /><br/>
+        Password -- <input type="text" id="password" value="password" /><br/>
+        Business -- <input type="text" id="business" value="1" /><br/>
+        Employee -- <input type="text" id="employee" value="2" /><br/>
+        Groups ---- <input type="text" id="groups" value="1-2" /><br/>
+        Roles ----- <input type="text" id="roles" value="3-4-5" /><br/>
+        <br/><button id="start" onClick="startTest();" type="button">Start Test</button>
+      </div>
       <div id="log"></div>
+      <a name="bottom"></a>
     </body>
 </html>

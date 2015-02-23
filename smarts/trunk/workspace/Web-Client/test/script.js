@@ -1,6 +1,7 @@
 function print(text) {
   console.log(text);
   $("#log").append(text);
+  location.hash = "#bottom";
 }
 
 function println(text) {
@@ -26,7 +27,7 @@ function die(response) {
 function api(method, action, data, username, password, sucFunction, errFunction) {
   print("<div class='rule'></div>");
   var json = JSON.stringify(data);
-  action = "http://lando.smartshift.info:6380" + action;
+  action = conf.server + action;
   printlnb(method + " " + action);
   println("User/Pass: " + username + "/" + password);
   printobj(data);
@@ -57,8 +58,17 @@ function api(method, action, data, username, password, sucFunction, errFunction)
   return response;
 }
 
+var conf = {};
+
 function startTest() {
-  $("#start").hide();
+  conf.server = $("#server").val();
+  conf.username = $("#username").val();
+  conf.password = $("#password").val();
+  conf.business = $("#business").val();
+  conf.employee = $("#employee").val();
+  conf.groups = $("#groups").val();
+  conf.roles = $("#roles").val();
+  $("#setup").hide();
   println("Staring tests");
   try {
     var user = "fisher";
@@ -69,22 +79,22 @@ function startTest() {
     var log = $("#log");
     $(log)
     .queue(function() {
-      api("GET", "/accounts/user/self", {}, user, pass, function(response) {
+      api("GET", "/accounts/user/self", {}, conf.username, conf.password, function(response) {
         userSelf = response;
         $(log).dequeue();
       }, die);
     })
     .queue(function() {
-      api("GET", "/accounts/user/full", {}, user, pass, function(response) {
+      api("GET", "/accounts/user/full", {}, conf.username, conf.password, function(response) {
         userFull = response;
         $(log).dequeue();
       }, die);
     })
     .queue(function() {
       api("PUT", "/accounts/user/session", {
-        "businessID" : 1,
-        "employeeID" : 2
-      }, user, pass, function(response) {
+        "businessID" : conf.business,
+        "employeeID" : conf.employee
+      }, conf.username, conf.password, function(response) {
         sessionPut1 = response;
         session = sessionPut1.data.sessionKey;
         $(log).dequeue();
@@ -110,31 +120,36 @@ function startTest() {
 //      }, die);
 //    })
     .queue(function() {
-      api("GET", "/business/employee/2", {}, user, session, function(response) {
+      api("GET", "/business/employee/" + conf.employee, {}, conf.username, session, function(response) {
         employee = response;
         $(log).dequeue();
       }, die);
     })
     .queue(function() {
-      api("GET", "/business/employee/full/2", {}, user, session, function(response) {
+      api("GET", "/business/employee/full/" + conf.employee, {}, conf.username, session, function(response) {
         employeeFull = response;
         $(log).dequeue();
       }, die);
     })
     .queue(function() {
-      api("GET", "/business/group/1-2", {}, user, session, function(response) {
+      api("GET", "/business/group/" + conf.groups, {}, conf.username, session, function(response) {
         group = response;
         $(log).dequeue();
       }, die);
     })
     .queue(function() {
-      api("GET", "/business/role/3-5", {}, user, session, function(response) {
+      api("GET", "/business/role/" + conf.roles, {}, conf.username, session, function(response) {
         role = response;
         $(log).dequeue();
       }, die);
     })
+    .queue(function() {
+      print("<div class='rule'></div>");
+      println("Test finished!");
+    })
     ;
   } catch (e) {
+    print("<div class='rule'></div>");
     println(e);
     die();
   }
