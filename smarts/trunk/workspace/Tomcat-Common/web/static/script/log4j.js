@@ -1,6 +1,6 @@
 function setLogger(id) { 
-	var level = $("#level-" + id).val();
-	var logger = $("#logger-" + id).val();
+  var level = $("#level-" + id).val();
+  var logger = $("#logger-" + id).val();
     $.ajax({
       type: "POST",
       async: false,
