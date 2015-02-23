@@ -51,7 +51,7 @@ public class UserActions extends AccountsActionBase {
         for(Business business:user.getBusinesses()) {
             BusinessJSON businessJson = new BusinessJSON(business);
             businessJson.employeeID = user.getEmployeeID(business);
-            userFull.businesses.put(business.getID(), businessJson);
+            userFull.businesses.add(businessJson);
         }
         userFull.user = new UserJSON(getRequestUser());
         return getObjectResponse(Status.OK, userFull);
