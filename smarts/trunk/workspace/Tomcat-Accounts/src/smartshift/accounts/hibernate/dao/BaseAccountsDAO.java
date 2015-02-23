@@ -6,7 +6,7 @@ import smartshift.common.hibernate.HibernateFactory;
 import smartshift.common.util.properties.AppConstants;
 
 /**
- * Base data acess object for accounts
+ * Base data acess object for accounts. Implementors MUST have a default constructor
  * @author D. Fisher Evans <contact@fisherevans.com>
  * @param <T> the db model class
  *
