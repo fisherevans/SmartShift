@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import smartshift.common.util.log4j.SmartLogger;
 
-/** context for DAOs per business
+/** context for DAOs per business.
  * @author D. Fisher Evans <contact@fisherevans.com>
  */
-public class AccountsDAOContext {
+public abstract class AccountsDAOContext {
     private static final SmartLogger logger = new SmartLogger(AccountsDAOContext.class);
     
     @SuppressWarnings("rawtypes")
@@ -23,7 +23,7 @@ public class AccountsDAOContext {
         try {
             T dao = (T) daos.get(clazz);
             if(dao == null) {
-                dao = clazz.getConstructor(AccountsDAOContext.class).newInstance();
+                dao = clazz.getConstructor().newInstance();
                 daos.put(clazz, dao);
             }
             return dao;
