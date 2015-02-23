@@ -49,9 +49,9 @@ public class Log4JManager extends SmartServlet {
         Collections.sort(otherLoggers, new LoggerSorter());
         
         out.println("<div class='content'><h1>Log4J Logger Configuration</h1>");
-        out.println("<input type='text' id='logger-custom' />");
+        out.println("<center><input type='text' id='logger-custom' />");
         out.println(getLevelSelect("custom", getLevels(), Level.DEBUG));
-        out.println("<button onclick=\"setLogger('custom');\">SET Custom Logger</button><table>");
+        out.println("<button onclick=\"setLogger('custom');\">SET Custom Logger</button></center><table>");
         
         int id = 1;
         
