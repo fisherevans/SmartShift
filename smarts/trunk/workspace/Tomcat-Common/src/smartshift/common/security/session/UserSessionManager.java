@@ -23,6 +23,7 @@ public class UserSessionManager {
     public static synchronized void addSession(UserSession session) {
         logger.info("Adding session: " + getDebugStr(session) + "... for " + session.username + ":" + session.employeeID);
         if(sessions.get(session.sessionID) != null) {
+            logger.warn("Attempted to add an existing session!");
             throw new IllegalAddException("A session already exists with the sessionID: " + session.sessionID);
         }
         sessions.put(session.sessionID, session);
