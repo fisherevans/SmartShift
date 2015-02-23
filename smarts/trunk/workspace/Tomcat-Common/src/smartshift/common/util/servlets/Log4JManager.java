@@ -48,7 +48,11 @@ public class Log4JManager extends SmartServlet {
         Collections.sort(smartLoggers, new LoggerSorter());
         Collections.sort(otherLoggers, new LoggerSorter());
         
-        out.println("<div class='content'><h1>Log4J Logger Configuration</h1><table>");
+        out.println("<div class='content'><h1>Log4J Logger Configuration</h1>");
+        out.println("<input type='text' id='logger-custom' />");
+        out.println(getLevelSelect("custom", getLevels(), Level.DEBUG));
+        out.println("<button onclick=\"setLogger('custom');\">SET Custom Logger</button><table>");
+        
         int id = 1;
         
         out.println("<tr class='head'><td><b>Smart Loggers</b></td><td><b>Set Level</b></td></tr>");
@@ -90,16 +94,23 @@ public class Log4JManager extends SmartServlet {
         String loggerName = logger.getName();
         @SuppressWarnings("unused")
         String levelName = level.toString();
-        html += String.format("<tr><td>%s</td><td><select id='level-" + id + "'>", logger.getName());
-        for(Level availLevel:levels) {
-            boolean selected = availLevel.toString().equals(level.toString());
-            html += String.format("<option value='%s'%s>%s</option>", availLevel.toString(), selected ? " selected" : "", availLevel.toString());
-        }
-        html += "</select>&nbsp;&nbsp;&nbsp;<button onclick=\"setLogger('" + id + "');\">SET</button>";
+        html += String.format("<tr><td>%s</td><td>", logger.getName());
+        html += getLevelSelect("" + id, levels, level);
+        html += "&nbsp;&nbsp;&nbsp;<button onclick=\"setLogger('" + id + "');\">SET</button>";
         html += "<input id='logger-" + id + "' type='hidden' value='" + loggerName + "'/></td></tr>";
         return html;
     }
     
+    private String getLevelSelect(String id, List<Level> levels, Level level) {
+        String html = "<select id='level-" + id + "'>";
+        for(Level availLevel:levels) {
+            boolean selected = availLevel.toString().equals(level.toString());
+            html += String.format("<option value='%s'%s>%s</option>", availLevel.toString(), selected ? " selected" : "", availLevel.toString());
+        }
+        html += "</select>";
+        return html;
+    }
+        
     private List<Level> getLevels() {
         List<Level> levels = new ArrayList<>();
         levels.add(Level.TRACE);
