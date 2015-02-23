@@ -2,6 +2,7 @@ package smartshift.business.hibernate.dao;
 
 import org.hibernate.Query;
 import smartshift.business.hibernate.model.ScheduleTemplateVersionModel;
+import smartshift.common.hibernate.DBAction;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -30,9 +31,16 @@ public class ScheduleTemplateVersionDAO extends BaseBusinessDAO<ScheduleTemplate
     public Integer getNextTemplateID() {
         Integer id = null;
         synchronized(maxTemplateID) {
-            Query query = prepareNamedQuery(ScheduleTemplateVersionModel.GET_MAX_TEMPLATE_ID);
-            Integer dbMaxId = (Integer) query.uniqueResult();
-            id = Math.max(maxTemplateID, dbMaxId);
+            DBAction action = new DBAction(getSession());
+            try {
+                Query query = prepareNamedQuery(action.session(), ScheduleTemplateVersionModel.GET_MAX_TEMPLATE_ID);
+                Integer dbMaxId = (Integer) query.uniqueResult();
+                id = Math.max(maxTemplateID, dbMaxId);
+            } catch(Exception e) {
+                action.rolback();
+                throw e;
+            }
+            action.commit();
             maxTemplateID = id + 1;
         }
         return id;

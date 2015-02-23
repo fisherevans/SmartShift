@@ -2,12 +2,11 @@ package smartshift.common.hibernate;
 
 import java.io.Serializable;
 import java.util.List;
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.criterion.Criterion;
 import smartshift.common.util.collections.ROCollection;
-import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -30,33 +29,66 @@ public abstract class BaseDAO<T> {
      * @param criterions any criteria required
      * @return the list of models
      */
+    @SuppressWarnings("unchecked")
     public ROCollection<T> list(Criterion ... criterions) {
         getLogger().debug("list() enter. Criterions: " + criterions.length);
-        List<T> models = GenericHibernateUtil.list(getSession(), _modelClass, criterions);
-        getLogger().debug("list() exit. Got: " + models.size());
-        return ROCollection.wrap(models);
+        DBAction action = new DBAction(getSession());
+        try {
+            Criteria criteria = action.session().createCriteria(_modelClass);
+            for(Criterion criterion : criterions)
+                criteria.add(criterion);
+            List<T> models = criteria.list();
+            action.commit();
+            getLogger().debug("list() exit. Got: " + (models == null ? null : models.size()));
+            return ROCollection.wrap(models);
+        } catch(Exception e) {
+            getLogger().warn("list() Got exception! - " + e.getLocalizedMessage());
+            action.rolback();
+            throw e;
+        }
     }
     
     /** Gets a unique model by id
      * @param id the id
      * @return the model, null if not found
      */
+    @SuppressWarnings("unchecked")
     public T uniqueByID(Serializable id) {
         getLogger().debug("uniqueByID() enter. ID: " + id);
-        T model = GenericHibernateUtil.unique(getSession(), _modelClass, id);
-        getLogger().debug("uniqueByID() exit. Got: " + model);
-        return model;
+        DBAction action = new DBAction(getSession());
+        try {
+            T model = (T) action.session().get(_modelClass, id);
+            action.commit();
+            getLogger().debug("uniqueByID() exit. Got: " + model);
+            return model;
+        } catch(Exception e) {
+            getLogger().warn("uniqueByID() Got exception! - " + e.getLocalizedMessage());
+            action.rolback();
+            throw e;
+        }
     }
     
     /** Gets a unique model by a set of criteria
      * @param criterions the restrictions
      * @return the model. null if not found.
      */
+    @SuppressWarnings("unchecked")
     public T uniqueByCriteria(Criterion ... criterions) {
         getLogger().debug("uniqueByCriteria() enter. Criterions: " + criterions.length);
-        T model = GenericHibernateUtil.uniqueByCriterea(getSession(), _modelClass, criterions);
-        getLogger().debug("uniqueByCriteria() exit. Got: " + model);
-        return model;
+        DBAction action = new DBAction(getSession());
+        try {
+            Criteria criteria = action.session().createCriteria(_modelClass);
+            for(Criterion criterion : criterions)
+                criteria.add(criterion);
+            T model = (T) criteria.uniqueResult();
+            action.commit();
+            getLogger().debug("uniqueByCriteria() exit. Got: " + model);
+            return model;
+        } catch(Exception e) {
+            getLogger().warn("uniqueByCriteria() Got exception! - " + e.getLocalizedMessage());
+            action.rolback();
+            throw e;
+        }
     }
     
     /** adds a model. Must not already exist
@@ -66,9 +98,17 @@ public abstract class BaseDAO<T> {
      */
     public T add(T model) throws DBException {
         getLogger().debug("add() enter. Model: " + model);
-        GenericHibernateUtil.save(getSession(), model);
-        getLogger().debug("add() exit. added.");
-        return model;
+        DBAction action = new DBAction(getSession());
+        try {
+            action.session().save(model);
+            action.commit();
+            getLogger().debug("add() exit. Got: " + model);
+            return model;
+        } catch(Exception e) {
+            getLogger().warn("add() Got exception! - " + e.getLocalizedMessage());
+            action.rolback();
+            throw e;
+        }
     }
     
     /** updates an existing model
@@ -77,10 +117,18 @@ public abstract class BaseDAO<T> {
      * @throws DBException if the db does something
      */
     public T update(T model) throws DBException {
-        getLogger().debug("update() enter. Model: " + model);
-        GenericHibernateUtil.update(getSession(), model);
-        getLogger().debug("update() exit. updated.");
-        return model;
+        getLogger().debug("add() enter. Model: " + model);
+        DBAction action = new DBAction(getSession());
+        try {
+            action.session().update(model);
+            action.commit();
+            getLogger().debug("add() exit. Got: " + model);
+            return model;
+        } catch(Exception e) {
+            getLogger().warn("add() Got exception! - " + e.getLocalizedMessage());
+            action.rolback();
+            throw e;
+        }
     }
     
     /** delete all model by criteria
@@ -90,20 +138,17 @@ public abstract class BaseDAO<T> {
     public void deleteAllByCriteria(Criterion ... criterions) throws DBException {
         getLogger().debug("deleteAllByCriteria() enter. Criterions: " + criterions.length);
         ROCollection<T> models = list(criterions);
-        getLogger().debug("deleteAllByCriteria() Models: " + models.size());
-        Session session = getSession();
-        Transaction transaction = session.beginTransaction();
+        DBAction action = new DBAction(getSession());
         try {
-            for(T model:models) {
-                GenericHibernateUtil.delete(getSession(), model, false);
-            }
+            for(T model:models)
+                action.session().delete(model);
+            action.commit();
+            getLogger().debug("deleteAllByCriteria() exit.");
         } catch(Exception e) {
-            getLogger().warn("deleteAllByCriteria() Got error: " + e.getLocalizedMessage());
-            transaction.rollback();
+            getLogger().warn("deleteAllByCriteria() Got exception! - " + e.getLocalizedMessage());
+            action.rolback();
             throw e;
         }
-        transaction.commit();
-        getLogger().debug("deleteAllByCriteria() exit.");
     }
     
     /** deletes a single model by first fetching it by id
@@ -122,8 +167,16 @@ public abstract class BaseDAO<T> {
      */
     public void delete(T model) throws DBException {
         getLogger().debug("delete() enter. Model: " + model);
-        GenericHibernateUtil.delete(getSession(), model);
-        getLogger().debug("delete() exit.");
+        DBAction action = new DBAction(getSession());
+        try {
+            action.session().delete(model);
+            action.commit();
+            getLogger().debug("delete() exit.");
+        } catch(Exception e) {
+            getLogger().warn("delete() Got exception! - " + e.getLocalizedMessage());
+            action.rolback();
+            throw e;
+        }
     }
     
     /** calls a named query and returns the list result
@@ -131,13 +184,21 @@ public abstract class BaseDAO<T> {
      * @param parameters the parameters
      * @return the list of models
      */
+    @SuppressWarnings("unchecked")
     public ROCollection<T> listNamedQuery(String queryName, NamedParameter ... parameters) {
         getLogger().debug("listNamedQuery() enter.");
-        Query query = prepareNamedQuery(queryName, parameters);
-        @SuppressWarnings("unchecked")
-        List<T> models = query.list();
-        getLogger().debug("listNamedQuery() exit. Got: " + models.size());
-        return ROCollection.wrap(models);
+        DBAction action = new DBAction(getSession());
+        try {
+            Query query = prepareNamedQuery(action.session(), queryName, parameters);
+            List<T> models = query.list();
+            action.commit();
+            getLogger().debug("listNamedQuery() exit. Got: " + (models == null ? null : models.size()));
+            return ROCollection.wrap(models);
+        } catch(Exception e) {
+            getLogger().warn("listNamedQuery() Got exception! - " + e.getLocalizedMessage());
+            action.rolback();
+            throw e;
+        }
     }
     
     /** calls a named query and returns the unique result
@@ -145,18 +206,26 @@ public abstract class BaseDAO<T> {
      * @param parameters the params
      * @return the unique result, null if not found
      */
+    @SuppressWarnings("unchecked")
     public T uniqueNamedQuery(String queryName, NamedParameter ... parameters) {
         getLogger().debug("uniqueNamedQuery() enter.");
-        Query query = prepareNamedQuery(queryName, parameters);
-        @SuppressWarnings("unchecked")
-        T model = (T) query.uniqueResult();
-        getLogger().debug("uniqueNamedQuery() exit. Got: " + model);
-        return model;
+        DBAction action = new DBAction(getSession());
+        try {
+            Query query = prepareNamedQuery(action.session(), queryName, parameters);
+            T model = (T) query.uniqueResult();
+            action.commit();
+            getLogger().debug("uniqueNamedQuery() exit. Got: " + model);
+            return model;
+        } catch(Exception e) {
+            getLogger().warn("uniqueNamedQuery() Got exception! - " + e.getLocalizedMessage());
+            action.rolback();
+            throw e;
+        }
     }
     
-    protected Query prepareNamedQuery(String queryName, NamedParameter ... parameters) {
+    protected Query prepareNamedQuery(Session session, String queryName, NamedParameter ... parameters) {
         getLogger().debug("prepareNamedQuery() enter. Name: " + queryName);
-        Query query = getSession().getNamedQuery(queryName);
+        Query query = session.getNamedQuery(queryName);
         for(NamedParameter parameter:parameters) {
             getLogger().debug("prepareNamedQuery() Param: " + parameter.key + ", " + parameter.value);
             if(parameter.key instanceof String)

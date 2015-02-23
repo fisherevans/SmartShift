@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import smartshift.business.hibernate.dao.BusinessDAOContext;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
 import smartshift.business.hibernate.model.EmployeeModel;
@@ -14,7 +13,6 @@ import smartshift.business.hibernate.model.GroupRoleEmployeeModel;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.util.UID;
 import smartshift.common.util.collections.ROCollection;
-import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.log4j.SmartLogger;
 
 public class Employee extends CachedObject {
@@ -93,8 +91,7 @@ public class Employee extends CachedObject {
                 _model.setFirstName(_firstName);
                 _model.setLastName(_lastName);
                 _model.setDefaultGroupID(_homeGroup.getID());
-                GenericHibernateUtil.update(BusinessDAOContext.business(getCache().
-                        getBusinessID()).getBusinessSession(), _model);
+                getDAO(EmployeeDAO.class).update(_model);
             } else {
                 _homeGroup.save();
                 _model = getDAO(EmployeeDAO.class).add(_firstName, _lastName, _homeGroup.getID());

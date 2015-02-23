@@ -24,14 +24,13 @@ function die(response) {
   println('Test Failed!');
 }
 
-function api(method, action, data, username, password, sucFunction, errFunction) {
+function api(method, action, data, username, password, callback) {
   print("<div class='rule'></div>");
   var json = JSON.stringify(data);
   action = conf.server + action;
   printlnb(method + " " + action);
-  println("User/Pass: " + username + "/" + password);
-  printobj(data);
   var response = null;
+  var failed = false;
   var start = new Date().getTime();
   $.ajax({
     type : method,
@@ -43,16 +42,25 @@ function api(method, action, data, username, password, sucFunction, errFunction)
       xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
     },
     success : function(sucResponse) {
-      printlnb("<span style='color:green'>SUCCESS</span>");
-      printobj(sucResponse);
-      printlnb("Took: " + ((new Date().getTime()) - start) + "ms");
-      sucFunction(sucResponse);
+      response = sucResponse;
     },
     error : function(errResponse) {
-      printlnb("<span style='color:red;font-size:18px;'>ERROR</span>");
-      printobj(errResponse.responseText);
-      printlnb("Took: " + ((new Date().getTime()) - start) + "ms");
-      errFunction(jQuery.parseJSON(errResponse.responseText));
+      response = sucResponse.responseText;
+      failed = true;
+    },
+    complete : function() {
+      println("User/Pass: " + username + "/" + password);
+      printlnb("Sent:");
+      printobj(data);
+      printlnb("Got:");
+      printobj(response);
+      var text = (failed ? "FAILED" : "SUCCESS") + " (" + ((new Date().getTime()) - start) + "ms)";
+      var color = (failed ? "red" : "green");
+      printlnb("<span style='color:" + color + ";font-size:18px;'>" + text + "</span>");
+      if(!failed)
+        callback(response);
+      else
+        throw "Failed a call!";
     }
   });
   return response;
@@ -82,13 +90,13 @@ function startTest() {
       api("GET", "/accounts/user/self", {}, conf.username, conf.password, function(response) {
         userSelf = response;
         $(log).dequeue();
-      }, die);
+      });
     })
     .queue(function() {
       api("GET", "/accounts/user/full", {}, conf.username, conf.password, function(response) {
         userFull = response;
         $(log).dequeue();
-      }, die);
+      });
     })
     .queue(function() {
       api("PUT", "/accounts/user/session", {
@@ -98,7 +106,7 @@ function startTest() {
         sessionPut1 = response;
         session = sessionPut1.data.sessionKey;
         $(log).dequeue();
-      }, die);
+      });
     })
 //    .queue(function() {
 //      api("PUT", "/accounts/user/session", {
@@ -107,7 +115,7 @@ function startTest() {
 //      }, user, pass, function(response) {
 //        sessionPut2 = response;
 //        $(log).dequeue();
-//      }, die);
+//      });
 //    })
 //    .queue(function() {
 //      api("DELETE", "/accounts/user/session", {
@@ -117,31 +125,31 @@ function startTest() {
 //      }, user, pass, function(response) {
 //        sessionDel = response;
 //        $(log).dequeue();
-//      }, die);
+//      });
 //    })
     .queue(function() {
       api("GET", "/business/employee/" + conf.employee, {}, conf.username, session, function(response) {
         employee = response;
         $(log).dequeue();
-      }, die);
+      });
     })
     .queue(function() {
       api("GET", "/business/employee/full/" + conf.employee, {}, conf.username, session, function(response) {
         employeeFull = response;
         $(log).dequeue();
-      }, die);
+      });
     })
     .queue(function() {
       api("GET", "/business/group/" + conf.groups, {}, conf.username, session, function(response) {
         group = response;
         $(log).dequeue();
-      }, die);
+      });
     })
     .queue(function() {
       api("GET", "/business/role/" + conf.roles, {}, conf.username, session, function(response) {
         role = response;
         $(log).dequeue();
-      }, die);
+      });
     })
     .queue(function() {
       print("<div class='rule'></div>");

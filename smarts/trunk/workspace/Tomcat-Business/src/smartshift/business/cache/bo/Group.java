@@ -4,14 +4,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import smartshift.business.hibernate.dao.BusinessDAOContext;
 import smartshift.business.hibernate.dao.GroupDAO;
 import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.common.hibernate.DBException;
 import smartshift.common.util.UID;
 import smartshift.common.util.collections.ROCollection;
-import smartshift.common.util.hibernate.GenericHibernateUtil;
 import smartshift.common.util.log4j.SmartLogger;
 
 public class Group extends CachedObject {
@@ -75,8 +73,7 @@ public class Group extends CachedObject {
         try {
             if(_model != null) {
                 _model.setName(_name);
-                GenericHibernateUtil.update(BusinessDAOContext.business(getCache().
-                        getBusinessID()).getBusinessSession(), _model);
+                getDAO(GroupDAO.class).update(_model);
             } else {
                 _model = getDAO(GroupDAO.class).add(_name, null);
             }
