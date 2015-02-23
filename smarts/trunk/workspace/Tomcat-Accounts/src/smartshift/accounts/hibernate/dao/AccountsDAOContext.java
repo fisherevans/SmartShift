@@ -18,9 +18,10 @@ public abstract class AccountsDAOContext {
      * @param clazz the class
      * @return the dao. creates it if it doesn't exist
      */
-    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @SuppressWarnings("rawtypes")
     public static <T extends BaseAccountsDAO> T dao(Class<T> clazz) {
         try {
+            @SuppressWarnings("unchecked")
             T dao = (T) daos.get(clazz);
             if(dao == null) {
                 dao = clazz.getConstructor().newInstance();

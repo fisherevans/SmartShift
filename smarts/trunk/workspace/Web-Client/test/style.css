@@ -1,0 +1,15 @@
+* {
+  font-family: "Ubuntu Mono", Consolas, sans-serif;
+  font-size: 14px;
+}
+
+#log {
+    white-space: pre;
+}
+
+.rule {
+  width: 60%;
+  height: 2px;
+  background-color: #888;
+  margin: 12px 10px;
+}

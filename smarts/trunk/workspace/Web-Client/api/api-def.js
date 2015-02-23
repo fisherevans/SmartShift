@@ -39,8 +39,8 @@ var apiDef = {
                 "username" : "username",
                 "email" : "email@address.com"
               },
-              "businesses" : {
-                1 : {
+              "businesses" : [
+                {
                   "id" : 1,
                   "name" : "Business Name",
                   "server" : "some.domain",
@@ -58,8 +58,27 @@ var apiDef = {
                     "postalCode" : "12345",
                     "phoneNumber" : "18885551234"
                   }
+                },
+                {
+                  "id" : 2,
+                  "name" : "Business Name 2",
+                  "server" : "some.domain2",
+                  "employeeID" : 3,
+                  "image" : {
+                    "id" : 2,
+                    "alt" : "Alternate text"
+                  },
+                  "address" : {
+                    "street1" : "101 Loop Lane",
+                    "street2" : "Suite 8",
+                    "city" : "Somewhere",
+                    "subDivision" : "In Cali",
+                    "country" : "USA",
+                    "postalCode" : "12345",
+                    "phoneNumber" : "18885551234"
+                  }
                 }
-              }
+              ]
             }
           }
         }
