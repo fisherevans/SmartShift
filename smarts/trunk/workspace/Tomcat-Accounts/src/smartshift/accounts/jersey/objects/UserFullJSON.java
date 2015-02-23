@@ -1,7 +1,7 @@
 package smartshift.accounts.jersey.objects;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import com.google.gson.annotations.Expose;
 
 /**
@@ -19,5 +19,5 @@ public class UserFullJSON {
      * the map of businesses available to the user
      */
     @Expose
-    public Map<Integer, BusinessJSON> businesses = new HashMap<>();
+    public List<BusinessJSON> businesses = new ArrayList<>();
 }
