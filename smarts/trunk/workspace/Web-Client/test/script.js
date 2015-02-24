@@ -45,7 +45,7 @@ function api(method, action, data, username, password, callback) {
       response = sucResponse;
     },
     error : function(errResponse) {
-      response = sucResponse.responseText;
+      response = errResponse.responseText;
       failed = true;
     },
     complete : function() {
