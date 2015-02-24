@@ -2,8 +2,8 @@ package smartshift.business.hibernate.dao;
 
 import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.model.AvailabilityModel;
-import smartshift.common.hibernate.DBException;
-import smartshift.common.util.collections.ROCollection;
+import smartshift.common.hibernate.dao.tasks.AddTask;
+import smartshift.common.hibernate.dao.tasks.ListTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -21,16 +21,15 @@ public class AvailabilityDAO extends BaseBusinessDAO<AvailabilityModel> {
         super(context, AvailabilityModel.class);
     }
     
-    /** gets all avails of a template
+    /** gets a task that gets all avails of a template
      * @param templateID the template id
-     * @return list of avails
+     * @return the task object
      */
-    public ROCollection<AvailabilityModel> getByTemplate(Integer templateID) {
-        ROCollection<AvailabilityModel> models = list(Restrictions.eq("templateID", templateID));
-        return models;
+    public ListTask<AvailabilityModel> getByTemplate(Integer templateID) {
+        return list(Restrictions.eq("templateID", templateID));
     }
     
-    /** saves a new avail, by params
+    /** gets a task that saves a new avail, by params
      * @param templateID the template id
      * @param start the start time in minutes from 12am
      * @param duration the duration of the block in minutes
@@ -38,10 +37,9 @@ public class AvailabilityDAO extends BaseBusinessDAO<AvailabilityModel> {
      * @param repeatCount repeat this many times
      * @param repeateOffset offset this by so many
      * @param unavailable if its an unavailable block or not
-     * @return the saved model
-     * @throws DBException
+     * @return the task object
      */
-    public AvailabilityModel add(Integer templateID, Integer start, Integer duration, Integer repeatEvery, Integer repeatCount, Integer repeateOffset, Boolean unavailable) throws DBException {
+    public AddTask<AvailabilityModel> add(Integer templateID, Integer start, Integer duration, Integer repeatEvery, Integer repeatCount, Integer repeateOffset, Boolean unavailable) {
         AvailabilityModel avail = new AvailabilityModel();
         avail.setTemplateID(templateID);
         avail.setStart(start);

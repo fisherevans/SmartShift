@@ -1,8 +1,8 @@
 package smartshift.business.hibernate.dao;
 
 import smartshift.business.hibernate.model.EmployeeModel;
-import smartshift.common.hibernate.DBException;
-import smartshift.common.util.collections.ROCollection;
+import smartshift.common.hibernate.dao.tasks.AddTask;
+import smartshift.common.hibernate.dao.tasks.ListNamedQueryTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -20,52 +20,47 @@ public class EmployeeDAO extends BaseBusinessDAO<EmployeeModel> {
     }
     
     /**
-     * Add a EmployeeModel
+     * get a task that Adds a EmployeeModel
      * @param firstName 
      * @param lastName 
      * @param defaultGroupID 
-     * @return the created EmployeeModel
-     * @throws DBException if there was an error creating the EmployeeModel
+     * @return the task object
      */
-    public EmployeeModel add(String firstName, String lastName, Integer defaultGroupID) throws DBException {
+    public AddTask<EmployeeModel> add(String firstName, String lastName, Integer defaultGroupID) {
         EmployeeModel model = new EmployeeModel();
         model.setFirstName(firstName);
         model.setLastName(lastName);
         model.setDefaultGroupID(defaultGroupID);
-        model = add(model);
-        return model;
+        return add(model);
     }
 
-    /** gets a list of employees in a group
+    /** get a task that gets a list of employees in a group
      * @param groupID the group in question
-     * @return the list of employees
+     * @return the task object
      */
-    public ROCollection<EmployeeModel> listByGroup(Integer groupID) {
-        ROCollection<EmployeeModel> models = listNamedQuery(EmployeeModel.GET_GROUP_EMPLOYEES,
+    public ListNamedQueryTask<EmployeeModel> listByGroup(Integer groupID) {
+        return listNamedQuery(EmployeeModel.GET_GROUP_EMPLOYEES,
                 new NamedParameter(EmployeeModel.GET_GROUP_EMPLOYEES_GROUP_ID, groupID));
-        return models;
     }
 
-    /** gets a list of employees in a group role
+    /** get a task that gets a list of employees in a group role
      * @param groupID the group
      * @param roleID the role
-     * @return the list of employees ids
+     * @return the task object
      */
-    public ROCollection<EmployeeModel> listByGroupRole(Integer groupID, Integer roleID) {
-        ROCollection<EmployeeModel> models = listNamedQuery(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES,
+    public ListNamedQueryTask<EmployeeModel> listByGroupRole(Integer groupID, Integer roleID) {
+        return listNamedQuery(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES,
                 new NamedParameter(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_GROUP_ID, groupID),
                 new NamedParameter(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_ROLE_ID, roleID));
-        return models;
     }
 
-    /** gets a list of employees in a group role
+    /** get a task that gets a list of employees in a group role
      * @param groupRoleID the group role
-     * @return the list of employees ids
+     * @return the task object
      */
-    public ROCollection<EmployeeModel> listByGroupRoleID(Integer groupRoleID) {
-        ROCollection<EmployeeModel> models = listNamedQuery(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_BY_GR,
+    public ListNamedQueryTask<EmployeeModel> listByGroupRoleID(Integer groupRoleID) {
+        return listNamedQuery(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_BY_GR,
                 new NamedParameter(EmployeeModel.GET_GROUP_ROLE_EMPLOYEES_BY_GR_GR_ID, groupRoleID));
-        return models;
     }
 
     @Override

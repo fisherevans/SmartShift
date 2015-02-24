@@ -2,8 +2,8 @@ package smartshift.business.hibernate.dao;
 
 import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.model.AvailabilityTemplateModel;
-import smartshift.common.hibernate.DBException;
-import smartshift.common.util.collections.ROCollection;
+import smartshift.common.hibernate.dao.tasks.AddTask;
+import smartshift.common.hibernate.dao.tasks.ListTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -21,22 +21,20 @@ public class AvailabilityTemplateDAO extends BaseBusinessDAO<AvailabilityTemplat
         super(context, AvailabilityTemplateModel.class);
     }
     
-    /** gets all templates for one employee
+    /** get a task that gets all templates for one employee
      * @param employeeID the owner
-     * @return all templates belonging to the given employee
+     * @return the task object
      */
-    public ROCollection<AvailabilityTemplateModel> listByEmployee(Integer employeeID) {
-        ROCollection<AvailabilityTemplateModel> models = list(Restrictions.eq("employeeID", employeeID));
-        return models;
+    public ListTask<AvailabilityTemplateModel> listByEmployee(Integer employeeID) {
+        return list(Restrictions.eq("employeeID", employeeID));
     }
     
-    /** adds a template with the given params
+    /** get a task that adds a template with the given params
      * @param name the template name
      * @param employeeID the owner
-     * @return the newly saved template
-     * @throws DBException
+     * @return the task object
      */
-    public AvailabilityTemplateModel add(String name, Integer employeeID) throws DBException {
+    public AddTask<AvailabilityTemplateModel> add(String name, Integer employeeID) {
         AvailabilityTemplateModel template = new AvailabilityTemplateModel();
         template.setName(name);
         template.setEmployeeID(employeeID);

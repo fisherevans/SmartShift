@@ -87,7 +87,7 @@ public class AccountsService extends BaseRemote implements AccountsServiceInterf
             for(Integer businessID:businessIDs) {
                 try {
                     businessService.invalidateAllUserSessions(businessID);
-                    ROCollection<GetActiveSessionsModel> sessions = AccountsDAOContext.dao(SessionDAO.class).listByBusiessAccess(businessID, minLastAccess);
+                    ROCollection<GetActiveSessionsModel> sessions = AccountsDAOContext.dao(SessionDAO.class).listByBusinessAccess(businessID, minLastAccess).execute();
                     for(GetActiveSessionsModel session:sessions) {
                         businessService.addUserSession(session.username, session.sessionKey, session.businessID,
                                 session.employeeID, session.lastActivity.getTime(), AppConstants.SESSION_TIMEOUT);

@@ -22,6 +22,9 @@ import org.hibernate.annotations.NamedQuery;
     )
 })
 public class ScheduleTemplateVersionModel {
+    /**
+     * named query to get the max id of all schedule template ids
+     */
     public static final String GET_MAX_TEMPLATE_ID = "getMaxScheduleTemplateId";
     
     @Id

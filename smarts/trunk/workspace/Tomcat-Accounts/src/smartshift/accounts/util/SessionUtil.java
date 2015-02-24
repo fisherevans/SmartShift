@@ -33,7 +33,7 @@ public class SessionUtil {
         do {
             logger.debug("generateSessionKey() Generating key");
             key = getRandomSessionKey(keyLength);
-        } while(AccountsDAOContext.dao(SessionDAO.class).list(Restrictions.eq("sessionKey", key)).size() > 0);
+        } while(AccountsDAOContext.dao(SessionDAO.class).list(Restrictions.eq("sessionKey", key)).execute().size() > 0);
         return key;
     }
     

@@ -25,7 +25,7 @@ public class ServerDAO extends BaseAccountsDAO<ServerModel> {
      * @return The server - null if not found
      */
     public ServerModel uniqueByHostname(String hostname) {
-        ServerModel model = uniqueByCriteria(Restrictions.eq("hostname", hostname));
+        ServerModel model = uniqueByCriteria(Restrictions.eq("hostname", hostname)).execute();
         return model;
     }
 

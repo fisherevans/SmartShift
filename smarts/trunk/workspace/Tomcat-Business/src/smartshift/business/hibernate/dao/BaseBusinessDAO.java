@@ -1,7 +1,7 @@
 package smartshift.business.hibernate.dao;
 
 import org.hibernate.Session;
-import smartshift.common.hibernate.BaseDAO;
+import smartshift.common.hibernate.dao.BaseDAO;
 
 /** the base object for all business DAOs.
  * impl's MUST have a constructor that only takes a DAOContext and passes it to this super
@@ -21,7 +21,7 @@ public abstract class BaseBusinessDAO<T> extends BaseDAO<T> {
     }
 
     /**
-     * @see smartshift.common.hibernate.BaseDAO#getSession()
+     * @see smartshift.common.hibernate.dao.BaseDAO#getSession()
      */
     @Override
     public Session getSession() {

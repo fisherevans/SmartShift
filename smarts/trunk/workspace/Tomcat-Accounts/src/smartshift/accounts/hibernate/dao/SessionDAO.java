@@ -1,13 +1,12 @@
 package smartshift.accounts.hibernate.dao;
 
 import java.util.Date;
-import java.util.List;
 import org.hibernate.criterion.Restrictions;
+import smartshift.accounts.hibernate.dao.tasks.GetActiveSessionsTask;
 import smartshift.accounts.hibernate.model.SessionModel;
-import smartshift.accounts.hibernate.model.custom.GetActiveSessionsModel;
 import smartshift.accounts.util.SessionUtil;
-import smartshift.common.hibernate.DBException;
-import smartshift.common.util.collections.ROCollection;
+import smartshift.common.hibernate.dao.tasks.AddTask;
+import smartshift.common.hibernate.dao.tasks.UniqueByCriteriaTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -26,42 +25,33 @@ public class SessionDAO extends BaseAccountsDAO<SessionModel> {
     }
     
     /**
-     * Gets an existing session
+     * Gets a task that gets an existing session by session key
      * @param key the key string
-     * @return the session object, null if it doesn't exist
+     * @return the task object
      */
-    public SessionModel uniqueByKey(String key) {
-        SessionModel session = uniqueByCriteria(Restrictions.eq("sessionKey", key));
-        return session;
+    public UniqueByCriteriaTask<SessionModel> uniqueByKey(String key) {
+       return uniqueByCriteria(Restrictions.eq("sessionKey", key));
     }
     
     /**
-     * creates a new session with a random key
+     * Gets a task that creates a new session with a random key
      * @param ubeID the user business employee relationship for this session
-     * @return the new session
-     * @throws DBException 
+     * @return the task object
      */
-    public SessionModel createNewSession(Integer ubeID) throws DBException {
+    public AddTask<SessionModel> createNewSession(Integer ubeID) {
         SessionModel model = new SessionModel();
         model.setSessionKey(SessionUtil.generateSessionKey());
         model.setUserBusinessEmployeeID(ubeID);
-        model = add(model);
-        return model;
+        return new AddTask<SessionModel>(this, model);
     }
 
-    /** gets a list of active sessions in a group
+    /** Gets a task that gets a list of active sessions in a group
      * @param businessID the business in question
      * @param lastAccess the minimum last access time
-     * @return the list of employees ids
+     * @return the task object
      */
-    public ROCollection<GetActiveSessionsModel> listByBusiessAccess(Integer businessID, Date lastAccess) {
-        @SuppressWarnings("unchecked")
-        List<GetActiveSessionsModel> models = getSession()
-                .getNamedQuery(SessionModel.GET_ACTIVE_SESSIONS)
-                .setParameter(SessionModel.GET_ACTIVE_SESSIONS_BUSINESS_ID, businessID)
-                .setParameter(SessionModel.GET_ACTIVE_SESSIONS_LAST_ACCESS, lastAccess)
-                .list();
-        return ROCollection.wrap(models);
+    public GetActiveSessionsTask listByBusinessAccess(Integer businessID, Date lastAccess) {
+        return new GetActiveSessionsTask(this, businessID, lastAccess);
     }
 
     @Override

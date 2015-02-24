@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import org.hibernate.HibernateException;
 import smartshift.accounts.cache.bo.Business;
 import smartshift.accounts.cache.bo.User;
 import smartshift.accounts.hibernate.dao.AccountsDAOContext;
@@ -19,7 +20,6 @@ import smartshift.accounts.hibernate.dao.UserBusinessEmployeeDAO;
 import smartshift.accounts.hibernate.model.SessionModel;
 import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
 import smartshift.accounts.rmi.BusinessServiceManager;
-import smartshift.common.hibernate.DBException;
 import smartshift.common.rmi.interfaces.BusinessServiceInterface;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
@@ -86,13 +86,14 @@ public class SessionActions extends AccountsActionBase {
         if(employeeID == null)
             return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_CREATE_400);
         
-        UserBusinessEmployeeModel ube = AccountsDAOContext.dao(UserBusinessEmployeeDAO.class).uniqueByUserBusinessEmployee(user.getID(), sessionRequest.businessID, sessionRequest.employeeID);
+        UserBusinessEmployeeModel ube = AccountsDAOContext.dao(UserBusinessEmployeeDAO.class)
+                .uniqueByUserBusinessEmployee(user.getID(), sessionRequest.businessID, sessionRequest.employeeID).execute();
         if(ube == null)
             return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_CREATE_400);
         SessionModel session;
         try {
-            session = AccountsDAOContext.dao(SessionDAO.class).createNewSession(ube.getId());
-        } catch(DBException e) {
+            session = AccountsDAOContext.dao(SessionDAO.class).createNewSession(ube.getId()).execute();
+        } catch(HibernateException e) {
             logger.warn("Failed to create session", e);
             return getMessageResponse(Status.INTERNAL_SERVER_ERROR, "An internal error occured");
         }
@@ -126,17 +127,18 @@ public class SessionActions extends AccountsActionBase {
             return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_DELETE_400);
         }
         User user = getRequestUser();
-        UserBusinessEmployeeModel ube = AccountsDAOContext.dao(UserBusinessEmployeeDAO.class).uniqueByUserBusinessEmployee(user.getID(), sessionRequest.businessID, sessionRequest.employeeID);
+        UserBusinessEmployeeModel ube = AccountsDAOContext.dao(UserBusinessEmployeeDAO.class)
+                .uniqueByUserBusinessEmployee(user.getID(), sessionRequest.businessID, sessionRequest.employeeID).execute();
         if(ube == null)
             return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_CREATE_400);
-        SessionModel session = AccountsDAOContext.dao(SessionDAO.class).uniqueByKey(sessionRequest.sessionKey);
+        SessionModel session = AccountsDAOContext.dao(SessionDAO.class).uniqueByKey(sessionRequest.sessionKey).execute();
         if(session == null) {
             logger.debug("SessionActions.deleteSession() Session not found");
             return getMessageResponse(Status.BAD_REQUEST, MSG_SESSION_DELETE_400);
         }
         try {
-            AccountsDAOContext.dao(SessionDAO.class).delete(session);
-        } catch(DBException e) {
+            AccountsDAOContext.dao(SessionDAO.class).delete(session).execute();
+        } catch(HibernateException e) {
             logger.warn("Failed to delete session", e);
             return getObjectResponse(Status.INTERNAL_SERVER_ERROR, MSG_SESSION_DELETE_501);
         }
