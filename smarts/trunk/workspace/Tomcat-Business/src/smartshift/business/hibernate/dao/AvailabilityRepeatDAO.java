@@ -6,7 +6,7 @@ import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDateModel;
 import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDayModel;
 import smartshift.business.hibernate.model.AvailabilityRepeatWeeklyModel;
 import smartshift.business.hibernate.model.AvailabilityRepeatYearlyModel;
-import smartshift.common.util.collections.ROCollection;
+import smartshift.common.hibernate.dao.tasks.ListTask;
 
 /**
  * @author "D. Fisher Evans <contact@fisherevans.com>"
@@ -36,12 +36,11 @@ public abstract class AvailabilityRepeatDAO<T extends AvailabilityRepeatInterfac
     };
 
     
-    /** gets the repeats for a type for an avail
+    /** get a task that gets the repeats for a type for an avail
      * @param availabilityID the avail id
-     * @return the list of avail repeats of this type for this avail id
+     * @return the task object
      */
-    public ROCollection<T> listByAvailability(Integer availabilityID) {
-        ROCollection<T> models = list(Restrictions.eq("availabilityID", availabilityID));
-        return models;
+    public ListTask<T> listByAvailability(Integer availabilityID) {
+        return list(Restrictions.eq("availabilityID", availabilityID));
     }
 }

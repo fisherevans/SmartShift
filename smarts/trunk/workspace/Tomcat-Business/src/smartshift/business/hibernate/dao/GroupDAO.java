@@ -1,8 +1,8 @@
 package smartshift.business.hibernate.dao;
 
 import smartshift.business.hibernate.model.GroupModel;
-import smartshift.common.hibernate.DBException;
-import smartshift.common.util.collections.ROCollection;
+import smartshift.common.hibernate.dao.tasks.AddTask;
+import smartshift.common.hibernate.dao.tasks.ListNamedQueryTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -24,30 +24,25 @@ public class GroupDAO extends BaseBusinessDAO<GroupModel> {
     }
     
     /**
-     * Add a EmployeeModel
+     * get a task that adds a EmployeeModel
      * @param name 
      * @param parentID 
-     * @return the created EmployeeModel
-     * @throws DBException if there was an error creating the EmployeeModel
+     * @return the task object
      */
-    public GroupModel add(String name, Integer parentID) throws DBException {
-        logger.debug("GroupDAO.addGroup() Enter");
+    public AddTask<GroupModel> add(String name, Integer parentID) {
         GroupModel model = new GroupModel();
         model.setName(name);
         model.setParentID(parentID);
-        model = add(model);
-        logger.debug("GroupDAO.addGroup() Success");
-        return model;
+        return add(model);
     }
     
-    /** gets a list of groups an employee belongs to
+    /** get a task that gets a list of groups an employee belongs to
      * @param employeeID the employee in question
      * @return the list of employees ids
      */
-    public ROCollection<GroupModel> listByEmployee(Integer employeeID) {
-        ROCollection<GroupModel> models = listNamedQuery(GroupModel.GET_EMPLOYEE_GROUPS, 
+    public ListNamedQueryTask<GroupModel> listByEmployee(Integer employeeID) {
+        return listNamedQuery(GroupModel.GET_EMPLOYEE_GROUPS, 
                 new NamedParameter(GroupModel.GET_EMPLOYEE_GROUPS_EMP_ID, employeeID));
-        return models;
     }
 
     @Override

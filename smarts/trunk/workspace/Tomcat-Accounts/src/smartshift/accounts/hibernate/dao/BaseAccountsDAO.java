@@ -1,8 +1,8 @@
 package smartshift.accounts.hibernate.dao;
 
 import org.hibernate.Session;
-import smartshift.common.hibernate.BaseDAO;
 import smartshift.common.hibernate.HibernateFactory;
+import smartshift.common.hibernate.dao.BaseDAO;
 import smartshift.common.util.properties.AppConstants;
 
 /**
@@ -22,7 +22,7 @@ public abstract class BaseAccountsDAO<T> extends BaseDAO<T> {
     }
 
     /**
-     * @see smartshift.common.hibernate.BaseDAO#getSession()
+     * @see smartshift.common.hibernate.dao.BaseDAO#getSession()
      */
     @Override
     public Session getSession() {

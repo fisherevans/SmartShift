@@ -1,8 +1,11 @@
 package smartshift.business.hibernate.dao;
 
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.model.GroupRoleEmployeeModel;
-import smartshift.common.hibernate.DBException;
+import smartshift.common.hibernate.dao.tasks.AddTask;
+import smartshift.common.hibernate.dao.tasks.DeleteByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.UniqueByCriteriaTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -23,57 +26,42 @@ public class GroupRoleEmployeeDAO extends BaseBusinessDAO<GroupRoleEmployeeModel
         super(context, GroupRoleEmployeeModel.class);
     }
     
-    /** Links an group role to an employee
+    /** get a task to get Links an group role to an employee
      * @param groupRoleID the group role id
      * @param employeeID the employee id
-     * @throws DBException if there's an error
+     * @return the task object
      */
-    public void link(Integer groupRoleID, Integer employeeID) throws DBException {
-        if(isLinked(groupRoleID, employeeID))
-            return;
+    public AddTask<GroupRoleEmployeeModel> link(Integer groupRoleID, Integer employeeID) {
         GroupRoleEmployeeModel model = new GroupRoleEmployeeModel();
         model.setGroupRoleID(groupRoleID);
         model.setEmployeeID(employeeID);
-        add(model);
+        return add(model);
     }
 
-    /** Unlinks an employee from a group role
+    /** get a task that Unlinks an employee from a group role
      * @param groupRoleID the group role id
      * @param employeeID the employee id
-     * @throws DBException if there's an error
+     * @return the task object
      */
-    public void unlink(Integer groupRoleID, Integer employeeID) throws DBException {
-        GroupRoleEmployeeModel model = uniqueByGroupRoleEmployee(groupRoleID, employeeID);
-        if(model != null)
-            delete(model);
+    public DeleteByCriteriaTask<GroupRoleEmployeeModel> unlink(Integer groupRoleID, Integer employeeID) {
+        return deleteByCriteria(getGroupRoleEmployeeCriterion(groupRoleID, employeeID));
     }
     
-    /** Checks to see if an employee is linked to a group role
+    /** get a task that gets the model of a group role linked to a group
      * @param groupRoleID the group role id
      * @param employeeID the employee id
-     * @return true if link exists
-     * @throws DBException if there's an error
+     * @return the task object
      */
-    public boolean isLinked(Integer groupRoleID, Integer employeeID) throws DBException {
-        GroupRoleEmployeeModel model = uniqueByGroupRoleEmployee(groupRoleID, employeeID);
-        return model != null;
-    }
-    
-    /** gets the model of a group role linked to a group
-     * @param groupRoleID the group role id
-     * @param employeeID the employee id
-     * @return the link model if it exists
-     * @throws DBException if there's an error
-     */
-    public GroupRoleEmployeeModel uniqueByGroupRoleEmployee(Integer groupRoleID, Integer employeeID) throws DBException {
-        GroupRoleEmployeeModel model = uniqueByCriteria(
-                Restrictions.eq("groupRoleID", groupRoleID),
-                Restrictions.eq("employeeID", employeeID));
-        return model;
+    public UniqueByCriteriaTask<GroupRoleEmployeeModel> uniqueByGroupRoleEmployee(Integer groupRoleID, Integer employeeID) {
+        return uniqueByCriteria(getGroupRoleEmployeeCriterion(groupRoleID, employeeID));
     }
 
     @Override
     protected SmartLogger getLogger() {
         return logger;
+    }
+    
+    private Criterion[] getGroupRoleEmployeeCriterion(Integer groupRoleID, Integer employeeID) {
+        return new Criterion[] { Restrictions.eq("groupRoleID", groupRoleID), Restrictions.eq("employeeID", employeeID) };
     }
 }

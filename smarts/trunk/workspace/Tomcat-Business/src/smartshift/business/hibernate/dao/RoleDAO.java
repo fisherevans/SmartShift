@@ -1,8 +1,8 @@
 package smartshift.business.hibernate.dao;
 
 import smartshift.business.hibernate.model.RoleModel;
-import smartshift.common.hibernate.DBException;
-import smartshift.common.util.collections.ROCollection;
+import smartshift.common.hibernate.dao.tasks.AddTask;
+import smartshift.common.hibernate.dao.tasks.ListNamedQueryTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -24,39 +24,35 @@ public class RoleDAO extends BaseBusinessDAO<RoleModel> {
     }
     
     /**
-     * Get all roles for an employee and group 
+     * Get a task that get all roles for an employee and group 
      * @param groupID  the group
      * @param employeeID the employee
-     * @return the list of roles
+     * @return the task object
      */
-    public ROCollection<RoleModel> listByGroupEmployee(Integer groupID, Integer employeeID) {
-        ROCollection<RoleModel> models = listNamedQuery(RoleModel.GET_EMPLOYEE_GROUP_ROLES,
+    public ListNamedQueryTask<RoleModel> listByGroupEmployee(Integer groupID, Integer employeeID) {
+        return listNamedQuery(RoleModel.GET_EMPLOYEE_GROUP_ROLES,
                 new NamedParameter(RoleModel.GET_EMPLOYEE_GROUP_ROLES_EMP_ID, employeeID),
                 new NamedParameter(RoleModel.GET_EMPLOYEE_GROUP_ROLES_GRP_ID, groupID));
-        return models;
     }
     
-    /** gets a list of roles belonging to a group
+    /** get a task that gets a list of roles belonging to a group
      * @param groupID the group
-     * @return the ro list of roles
+     * @return the task object
      */
-    public ROCollection<RoleModel> listByGroup(Integer groupID) {
-        ROCollection<RoleModel> models = listNamedQuery(RoleModel.GET_GROUP_ROLES,
+    public ListNamedQueryTask<RoleModel> listByGroup(Integer groupID) {
+        return listNamedQuery(RoleModel.GET_GROUP_ROLES,
                 new NamedParameter(RoleModel.GET_GROUP_ROLES_GRP_ID, groupID));
-        return models;
     }
     
     /**
-     * Add a Role
+     * get a task that Adds a Role
      * @param name 
-     * @return the created EmployeeModel
-     * @throws DBException if there was an error creating the EmployeeModel
+     * @return the task object
      */
-    public RoleModel addRole(String name) throws DBException {
+    public AddTask<RoleModel> add(String name) {
         RoleModel model = new RoleModel();
         model.setName(name);
-        model = add(model);
-        return model;
+        return add(model);
     }
 
     @Override

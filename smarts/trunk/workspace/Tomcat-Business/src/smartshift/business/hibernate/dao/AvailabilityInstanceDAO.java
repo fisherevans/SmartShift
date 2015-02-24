@@ -3,8 +3,8 @@ package smartshift.business.hibernate.dao;
 import java.util.Date;
 import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.model.AvailabilityInstanceModel;
-import smartshift.common.hibernate.DBException;
-import smartshift.common.util.collections.ROCollection;
+import smartshift.common.hibernate.dao.tasks.AddTask;
+import smartshift.common.hibernate.dao.tasks.ListTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -22,43 +22,39 @@ public class AvailabilityInstanceDAO extends BaseBusinessDAO<AvailabilityInstanc
         super(context, AvailabilityInstanceModel.class);
     }
     
-    /** gets all instances owner by an owner
+    /** get a task that gets all instances owner by an owner
      * @param employeeID the owner
-     * @return all instances owned by this owner
+     * @return the task object
      */
-    public ROCollection<AvailabilityInstanceModel> listByEmployee(Integer employeeID) {
-        ROCollection<AvailabilityInstanceModel> models = list(Restrictions.eq("employeeID", employeeID));
-        return models;
+    public ListTask<AvailabilityInstanceModel> listByEmployee(Integer employeeID) {
+        return list(Restrictions.eq("employeeID", employeeID));
     }
     
-    /** gets all instances of a template
+    /** gets a task that gets all instances of a template
      * @param templateID the template id
-     * @return all instances of a template
+     * @return the task object
      */
-    public ROCollection<AvailabilityInstanceModel> listByTemplate(Integer templateID) {
-        ROCollection<AvailabilityInstanceModel> models = list(Restrictions.eq("templateID", templateID));
-        return models;
+    public ListTask<AvailabilityInstanceModel> listByTemplate(Integer templateID) {
+        return list(Restrictions.eq("templateID", templateID));
     }
     
-    /** gets all instances owned by an owner of a template
+    /** get a task that gets all instances owned by an owner of a template
      * @param employeeID the owner
      * @param templateID the template id
-     * @return all instances of a template owned by this owner
+     * @return the task object
      */
-    public ROCollection<AvailabilityInstanceModel> listByEmployeeTemplate(Integer employeeID, Integer templateID) {
-        ROCollection<AvailabilityInstanceModel> models = list(Restrictions.eq("employeeID", employeeID), Restrictions.eq("templateID", templateID));
-        return models;
+    public ListTask<AvailabilityInstanceModel> listByEmployeeTemplate(Integer employeeID, Integer templateID) {
+        return list(Restrictions.eq("templateID", templateID), Restrictions.eq("employeeID", employeeID));
     }
     
-    /** add an instance with the parameters given
+    /** get a task that adds an instance with the parameters given
      * @param templateID the template id
      * @param startDate when the instance starts
      * @param endDate when it ends
      * @param employeeID the owner
-     * @return the saved model
-     * @throws DBException
+     * @return the task object
      */
-    public AvailabilityInstanceModel add(Integer templateID, Date startDate, Date endDate, Integer employeeID) throws DBException {
+    public AddTask<AvailabilityInstanceModel> add(Integer templateID, Date startDate, Date endDate, Integer employeeID) {
         AvailabilityInstanceModel instance = new AvailabilityInstanceModel();
         instance.setTemplateID(templateID);
         instance.setStartDate(startDate);

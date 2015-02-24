@@ -3,7 +3,8 @@ package smartshift.accounts.hibernate.dao;
 import org.hibernate.criterion.Restrictions;
 import org.mindrot.jbcrypt.BCrypt;
 import smartshift.accounts.hibernate.model.UserModel;
-import smartshift.common.hibernate.DBException;
+import smartshift.common.hibernate.dao.tasks.AddTask;
+import smartshift.common.hibernate.dao.tasks.UniqueByCriteriaTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -25,40 +26,36 @@ public class UserDAO extends BaseAccountsDAO<UserModel> {
     }
     
     /**
-     * Fetch a UserModel by Username
+     * Gets a task that fetch a UserModel by Username
      * @param username the username to lookup
-     * @return the UserModel - null if not found
+     * @return the task object
      */
-    public UserModel uniqueByUsername(String username) {
-        UserModel model = uniqueByCriteria(Restrictions.eq("username", username));
-        return model;
+    public UniqueByCriteriaTask<UserModel> uniqueByUsername(String username) {
+        return uniqueByCriteria(Restrictions.eq("username", username));
     }
     
     /**
-     * Fetch a UserModel by email
+     * Gets a task that fetch a UserModel by email
      * @param email the email to lookup
-     * @return the UserModel - null if not found
+     * @return the task object
      */
-    public UserModel uniqueByEmail(String email) {
-        UserModel model = uniqueByCriteria(Restrictions.eq("email", email));
-        return model;
+    public UniqueByCriteriaTask<UserModel> uniqueByEmail(String email) {
+        return uniqueByCriteria(Restrictions.eq("email", email));
     }
     
     /**
-     * Add a UserModel
+     * Gets a task that adds a UserModel
      * @param username 
      * @param email 
      * @param password 
-     * @return the created UserModel
-     * @throws DBException if there was an error creating the UserModel
+     * @return the task object
      */
-    public UserModel add(String username, String email, String password) throws DBException {
+    public AddTask<UserModel> add(String username, String email, String password) {
         UserModel model = new UserModel();
         model.setUsername(username);
         model.setEmail(email);
         model.setPassHash(BCrypt.hashpw(password, BCrypt.gensalt()));
-        model = add(model);
-        return model;
+        return add(model);
     }
 
     @Override
