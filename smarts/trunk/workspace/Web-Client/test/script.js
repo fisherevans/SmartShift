@@ -108,25 +108,25 @@ function startTest() {
         $(log).dequeue();
       });
     })
-//    .queue(function() {
-//      api("PUT", "/accounts/user/session", {
-//        "businessID" : 1,
-//        "employeeID" : 2
-//      }, user, pass, function(response) {
-//        sessionPut2 = response;
-//        $(log).dequeue();
-//      });
-//    })
-//    .queue(function() {
-//      api("DELETE", "/accounts/user/session", {
-//        "businessID" : 1,
-//        "employeeID" : 2,
-//        "sessionKey" : sessionPut2['data']['sessionKey']
-//      }, user, pass, function(response) {
-//        sessionDel = response;
-//        $(log).dequeue();
-//      });
-//    })
+    .queue(function() {
+      api("PUT", "/accounts/user/session", {
+        "businessID" : 1,
+        "employeeID" : 2
+      }, user, pass, function(response) {
+        sessionPut2 = response;
+        $(log).dequeue();
+      });
+    })
+    .queue(function() {
+      api("DELETE", "/accounts/user/session", {
+        "businessID" : 1,
+        "employeeID" : 2,
+        "sessionKey" : sessionPut2['data']['sessionKey']
+      }, user, pass, function(response) {
+        sessionDel = response;
+        $(log).dequeue();
+      });
+    })
     .queue(function() {
       api("GET", "/business/employee/" + conf.employee, {}, conf.username, session, function(response) {
         employee = response;
