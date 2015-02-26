@@ -1,5 +1,8 @@
-// Main controller for the API app
-function APIDocController($scope) {
+
+'use strict'
+
+var app = angular.module('smartsApi', []);
+app.controller('APIDocController', [ '$scope', function($scope) {
   // Scope variables
   $scope.api = apiDef;
   $scope.currentPath = '';
@@ -74,4 +77,4 @@ function APIDocController($scope) {
     }
     return size;
   };
-}
+}]);
