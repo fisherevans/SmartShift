@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.hibernate.HibernateException;
+import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
-import smartshift.business.hibernate.model.GroupEmployeeModel;
+import smartshift.business.hibernate.dao.RoleDAO;
+import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
-import smartshift.common.hibernate.DBException;
+import smartshift.business.hibernate.model.RoleModel;
 import smartshift.common.util.UID;
 import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.log4j.SmartLogger;
@@ -22,7 +25,6 @@ public class Group extends CachedObject {
     private Map<Role, Set<Employee>> _employees;
     
     private GroupModel _model;
-    private GroupEmployeeModel _grpEmpModel;
 
     public Group(Cache cache, String name) {
         super(cache);
@@ -75,16 +77,27 @@ public class Group extends CachedObject {
                 _model.setName(_name);
                 getDAO(GroupDAO.class).update(_model);
             } else {
-                _model = getDAO(GroupDAO.class).add(_name, null);
+                _model = getDAO(GroupDAO.class).add(_name, null).execute();
             }
-        } catch (DBException e) {
+        } catch (HibernateException e) {
             logger.debug(e.getStackTrace());
         }
     }
 
     @Override
     public void loadAllChildren() {
-        // TODO Load group roles        
+        try {
+            for(RoleModel rm : getDAO(RoleDAO.class).listByGroup(getID()).execute()){
+                int roleID = rm.getId();
+                Role role = Role.load(getCache(), roleID);
+                _employees.put(role, new HashSet<Employee>());
+                for(EmployeeModel em : getDAO(EmployeeDAO.class).listByGroupRole(getID(), roleID).execute()){
+                    _employees.get(role).add(Employee.load(getCache(), em.getId()));
+                }
+            }
+        } catch(Exception e) {
+            logger.error("Failed to load children", e);
+        }     
     }
 
     @Override
@@ -104,7 +117,7 @@ public class Group extends CachedObject {
         if(cache.contains(uid))
             return cache.getGroup(grpID); 
         else {
-            GroupModel model = cache.getDAOContext().dao(GroupDAO.class).uniqueByID(grpID);
+            GroupModel model = cache.getDAOContext().dao(GroupDAO.class).uniqueByID(grpID).execute();
             Group group = null;
             if(model != null) {
             	group = new Group(cache, model);
