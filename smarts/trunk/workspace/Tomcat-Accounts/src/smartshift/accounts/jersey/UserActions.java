@@ -23,7 +23,7 @@ import smartshift.common.util.log4j.SmartLogger;
 @Path("/user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class UserActions extends AccountsActionBase {
+public class UserActions extends BaseAccountActions {
     private static final SmartLogger logger = new SmartLogger(UserActions.class);
 
     /**

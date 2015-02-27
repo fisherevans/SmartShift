@@ -12,7 +12,7 @@ import smartshift.common.util.json.APIResultFactory;
  * @author D. Fisher Evans <contact@fisherevans.com>
  *
  */
-public abstract class ActionBase {
+public abstract class BaseActions {
     /**
      * The HTTP Request
      */

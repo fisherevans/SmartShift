@@ -33,7 +33,7 @@ import com.google.gson.annotations.Expose;
 @Path("/user/session")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class SessionActions extends AccountsActionBase {
+public class SessionActions extends BaseAccountActions {
     private static final SmartLogger logger = new SmartLogger(SessionActions.class);
 
     /**

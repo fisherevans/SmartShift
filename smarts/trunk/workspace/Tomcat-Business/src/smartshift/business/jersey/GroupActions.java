@@ -24,8 +24,8 @@ import smartshift.common.util.log4j.SmartLogger;
 @Path("/group")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class GroupActions extends BusinessActionBase {
-    private static final SmartLogger logger = new SmartLogger(BusinessActionBase.class);
+public class GroupActions extends BaseBusinessActions {
+    private static final SmartLogger logger = new SmartLogger(BaseBusinessActions.class);
 
     /** get a map of groupid -> group objects
      * @param groupIDs the dahs eperated list of grp ids

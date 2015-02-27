@@ -13,7 +13,7 @@ import smartshift.common.util.log4j.SmartLogger;
  *          A "hello, world!" style landing page
  */
 @Path("/hello")
-public class Hello extends ActionBase {
+public class Hello extends BaseActions {
     private static final SmartLogger logger = new SmartLogger(Hello.class);
     
     /**
