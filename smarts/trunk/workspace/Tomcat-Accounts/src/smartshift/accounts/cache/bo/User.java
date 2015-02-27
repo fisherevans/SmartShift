@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.hibernate.HibernateException;
 import smartshift.accounts.hibernate.dao.AccountsDAOContext;
 import smartshift.accounts.hibernate.dao.UserBusinessEmployeeDAO;
 import smartshift.accounts.hibernate.dao.UserDAO;
@@ -73,7 +74,7 @@ public class User implements Stored {
         _employeeIDs.put(bus, empID);
         if(_busEmpModels == null)
             _busEmpModels = new ArrayList<UserBusinessEmployeeModel>();
-        _busEmpModels.add(AccountsDAOContext.dao(UserBusinessEmployeeDAO.class).add(getID(), bus.getID(), empID));
+        _busEmpModels.add(AccountsDAOContext.dao(UserBusinessEmployeeDAO.class).add(getID(), bus.getID(), empID).execute());
         if(_busEmpModels.get(_busEmpModels.size()-1) == null)
             logger.error("constraint violation trying to connect user to employee: U" + getID()
                     + "@B"+bus.getID()+"--E"+empID);
@@ -90,9 +91,9 @@ public class User implements Stored {
                 _model.setPassHash(_passHash);
                 AccountsDAOContext.dao(UserDAO.class).update(_model);      
             } else {
-                _model = AccountsDAOContext.dao(UserDAO.class).add(_uname, _email, _passHash); 
+                _model = AccountsDAOContext.dao(UserDAO.class).add(_uname, _email, _passHash).execute(); 
             }
-        } catch(DBException e) {
+        } catch(HibernateException e) {
             logger.debug(e.getStackTrace());
         }
     }
@@ -100,7 +101,7 @@ public class User implements Stored {
     @Override
     public void loadAllChildren() {
         try {
-            for(UserBusinessEmployeeModel ube : AccountsDAOContext.dao(UserBusinessEmployeeDAO.class).listByUser(_model.getId()))
+            for(UserBusinessEmployeeModel ube : AccountsDAOContext.dao(UserBusinessEmployeeDAO.class).listByUser(_model.getId()).execute())
                 _employeeIDs.put(Business.load(ube.getBusinessID()), ube.getEmployeeID());
         } catch(Exception e) {
             logger.error("Failed to load children", e);
@@ -111,7 +112,7 @@ public class User implements Stored {
         if(users == null)
             users = new HashMap<String, User>();
         if(!users.containsKey(username)) {
-            UserModel model = AccountsDAOContext.dao(UserDAO.class).uniqueByUsername(username);
+            UserModel model = AccountsDAOContext.dao(UserDAO.class).uniqueByUsername(username).execute();
             if(model == null)
                 return null;
             users.put(username, new User(model));
