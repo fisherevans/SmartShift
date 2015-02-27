@@ -40,14 +40,22 @@ app.config(function($routeProvider){
 
 });
 
-app.controller('MainController', ['$scope', '$rootScope', '$modal', '$location', 'accountsService',
-    function($scope, $rootScope, $modal, $location, accountsService){
+app.controller('MainController', ['$scope', '$rootScope', '$modal', '$location', 'accountsService', 'utilService',
+    function($scope, $rootScope, $modal, $location, accountsService, utilService){
         $scope.session = {
             id: 0
         };
 
 
         $scope.init = function(){
+            Array.prototype.findBy = function( key, value ) {
+              for(var i in this){
+                  if(this[i].hasOwnProperty(key) && this[i][key] == value)
+                    return this[i];
+              }
+              return undefined;
+            };
+
             if(!$rootScope.sessionID){
                 var modalInstance = $modal.open({
                     templateUrl: 'templates/login.html',
@@ -63,10 +71,14 @@ app.controller('MainController', ['$scope', '$rootScope', '$modal', '$location',
                     console.log($rootScope.username);
                     console.log($rootScope.password);
                     console.log(result.full);
-                    if(result.full.businesses.length > 1){
+                    console.log(result.full.businesses.length);
+                    if(utilService.getSize(result.full.businesses) > 1){
+                        console.log('Multiple businesses');
                         var modalInstance = $modal.open({
                             templateUrl: 'templates/business-modal.html',
                             controller: 'BusinessModalController',
+                            backdrop: 'static',
+                            backdropClass: 'dim',
                             resolve: {
                                 businesses: function(){
                                     var bus = result.full.businesses;
@@ -81,6 +93,7 @@ app.controller('MainController', ['$scope', '$rootScope', '$modal', '$location',
                                 .success(function(result){
                                     $rootScope.sessionID = result.data;
                                     console.log($rootScope.sessionID);
+                                    console.log($location.url());
                                     $location.url('/newsfeed');
                                 });
                             //$rootScope.sessionId = selectedItem;
@@ -94,8 +107,8 @@ app.controller('MainController', ['$scope', '$rootScope', '$modal', '$location',
 
         $scope.init();
 }]);
-app.controller('BusinessModalController', ['$scope', '$modalInstance', 'businesses',
-    function($scope, $modalInstance, businesses){
+app.controller('BusinessModalController', ['$scope', '$modalInstance', 'utilService', 'businesses',
+    function($scope, $modalInstance, utilService, businesses){
         $scope.businesses = businesses;
         $scope.selected = $scope.businesses[0].id;
 
