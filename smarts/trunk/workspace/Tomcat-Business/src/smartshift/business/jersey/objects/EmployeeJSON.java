@@ -63,6 +63,7 @@ public class EmployeeJSON {
      * @return the json rep
      */
     public static EmployeeJSON getSimple(Employee employee) {
+        logger.debug("Creating employee JSON for: " + employee.getID());
         EmployeeJSON employeeJson = new EmployeeJSON(employee);
         return employeeJson;
     }
@@ -72,7 +73,6 @@ public class EmployeeJSON {
      * @return the json rep
      */
     public static EmployeeJSON getFull(Employee employee) {
-        logger.debug("Creating employee JSON for: " + employee.getID());
         EmployeeJSON employeeJson = getSimple(employee);
         employeeJson.groupRoles = new HashMap<>();
         for(Group group:employee.getGroups()) {
