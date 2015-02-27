@@ -49,6 +49,8 @@ public class GroupJSON {
         parentGroupID = parent == null ? null : parent.getID();
         roles = new HashSet<Integer>();
         for(Role role:g.getRoles()) {
+            if(role.getID() < 0)
+                continue;
             logger.debug("Add role: " + role.getID() + ":" + role.getName());
         	roles.add(role.getID());
         }
