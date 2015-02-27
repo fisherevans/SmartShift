@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
+import smartshift.common.util.log4j.SmartLogger;
 import com.google.gson.annotations.Expose;
 
 /**
@@ -11,6 +12,7 @@ import com.google.gson.annotations.Expose;
  * json rep of a group
  */
 public class GroupJSON {
+    private static final SmartLogger logger = new SmartLogger(GroupJSON.class);
     /**
      * the group id
      */
@@ -40,12 +42,15 @@ public class GroupJSON {
      * @param g the base group
      */
     public GroupJSON(Group g) {
+        logger.debug("Creating group JSON for : " + g.getID());
         id = g.getID();
         name = g.getName();
         Group parent = g.getParent();
         parentGroupID = parent == null ? null : parent.getID();
         roles = new HashSet<Integer>();
-        for(Role role:g.getRoles())
+        for(Role role:g.getRoles()) {
+            logger.debug("Add role: " + role.getID() + ":" + role.getName());
         	roles.add(role.getID());
+        }
     }
 }
