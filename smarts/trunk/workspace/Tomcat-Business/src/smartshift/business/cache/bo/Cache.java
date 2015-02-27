@@ -37,8 +37,7 @@ public class Cache {
     }
     
     public void cache(UID uid, CachedObject toCache) {
-        if(!contains(uid))
-            _cached.put(uid, toCache);
+        _cached.put(uid, toCache);
     }
     
     public void decache(UID uid) {
