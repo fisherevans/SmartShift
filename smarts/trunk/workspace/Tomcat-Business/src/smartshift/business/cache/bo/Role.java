@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.hibernate.HibernateException;
 import smartshift.business.hibernate.dao.RoleDAO;
 import smartshift.business.hibernate.model.RoleModel;
-import smartshift.common.hibernate.DBException;
 import smartshift.common.util.UID;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -55,16 +55,16 @@ public class Role extends CachedObject {
                 _model.setName(_name);
                 getDAO(RoleDAO.class).update(_model);
             } else {
-                _model = getDAO(RoleDAO.class).addRole(_name);
+                _model = getDAO(RoleDAO.class).add(_name).execute();
             }
-        } catch (DBException e) {
+        } catch (HibernateException e) {
             logger.debug(e.getStackTrace());
         }
     }
 
     @Override
     public void loadAllChildren() {
-        // TODO Auto-generated method stub
+        // do nothing
     }
 
     @Override
@@ -84,7 +84,7 @@ public class Role extends CachedObject {
         if(cache.contains(uid))
             return cache.getRole(roleID); 
         else {
-            RoleModel model = cache.getDAOContext().dao(RoleDAO.class).uniqueByID(roleID);
+            RoleModel model = cache.getDAOContext().dao(RoleDAO.class).uniqueByID(roleID).execute();
             Role role = null;
             if(model != null) {
             	role = new Role(cache, model);

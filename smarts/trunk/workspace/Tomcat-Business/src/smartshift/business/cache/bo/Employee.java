@@ -1,16 +1,16 @@
 package smartshift.business.cache.bo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.hibernate.HibernateException;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
-import smartshift.business.hibernate.model.GroupRoleEmployeeModel;
-import smartshift.common.hibernate.DBException;
 import smartshift.common.util.UID;
 import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.log4j.SmartLogger;
@@ -24,9 +24,9 @@ public class Employee extends CachedObject {
     private String _lastName;
     private Group _homeGroup;
     private Map<Group, Set<Role>> _roles;
+    private List<Availability> _availabilities;
     
     private EmployeeModel _model;
-    private List<GroupRoleEmployeeModel> _grpRoleEmpModels;
     
     public Employee(Cache cache, String first, String last, Group home) {
         super(cache);
@@ -34,6 +34,7 @@ public class Employee extends CachedObject {
         _lastName = last;
         _homeGroup = home;
         _roles = new HashMap<Group, Set<Role>>();
+        _availabilities = new ArrayList<Availability>();
     }
     
     private Employee(Cache cache, EmployeeModel model) {
@@ -94,9 +95,9 @@ public class Employee extends CachedObject {
                 getDAO(EmployeeDAO.class).update(_model);
             } else {
                 _homeGroup.save();
-                _model = getDAO(EmployeeDAO.class).add(_firstName, _lastName, _homeGroup.getID());
+                _model = getDAO(EmployeeDAO.class).add(_firstName, _lastName, _homeGroup.getID()).execute();
             }
-        } catch (DBException e) {
+        } catch (HibernateException e) {
             logger.debug(e.getStackTrace());
         }
     }
@@ -104,7 +105,7 @@ public class Employee extends CachedObject {
     @Override
     public void loadAllChildren() {
         try {
-            for(GroupModel gm : getDAO(GroupDAO.class).listByEmployee(getID())) {
+            for(GroupModel gm : getDAO(GroupDAO.class).listByEmployee(getID()).execute()) {
                 _roles.put(Group.load(getCache(), gm.getId()), new HashSet<Role>()); 
             }
         } catch(Exception e) {
@@ -129,7 +130,7 @@ public class Employee extends CachedObject {
         if(cache.contains(uid))
             return cache.getEmployee(empID); 
         else {
-            EmployeeModel model = cache.getDAOContext().dao(EmployeeDAO.class).uniqueByID(empID);
+            EmployeeModel model = cache.getDAOContext().dao(EmployeeDAO.class).uniqueByID(empID).execute();
             Employee employee = null;
             if(model != null) {
                 employee = new Employee(cache, model);
