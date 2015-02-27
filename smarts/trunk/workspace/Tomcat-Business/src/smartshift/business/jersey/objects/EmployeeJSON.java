@@ -7,6 +7,7 @@ import java.util.Set;
 import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
+import smartshift.common.util.log4j.SmartLogger;
 import com.google.gson.annotations.Expose;
 
 /**
@@ -14,6 +15,8 @@ import com.google.gson.annotations.Expose;
  * json representation of an employee
  */
 public class EmployeeJSON {
+    private static final SmartLogger logger = new SmartLogger(EmployeeJSON.class);
+    
     /**
      * the employee id
      */
@@ -69,12 +72,15 @@ public class EmployeeJSON {
      * @return the json rep
      */
     public static EmployeeJSON getFull(Employee employee) {
+        logger.debug("Creating employee JSON for: " + employee.getID());
         EmployeeJSON employeeJson = getSimple(employee);
         employeeJson.groupRoles = new HashMap<>();
         for(Group group:employee.getGroups()) {
             Set<Integer> roles = new HashSet<>();
-            for(Role role:employee.getRoles(group))
+            for(Role role:employee.getRoles(group)) {
+                logger.debug("Adding Role: " + role.getID() + ":" + role.getName());
             	roles.add(role.getID());
+            }
             employeeJson.groupRoles.put(group.getID(), roles);
         }
         return employeeJson;
