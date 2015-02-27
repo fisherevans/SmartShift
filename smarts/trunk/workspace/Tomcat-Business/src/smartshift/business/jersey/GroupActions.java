@@ -41,7 +41,7 @@ public class GroupActions extends BaseBusinessActions {
         for(String id : ids) {
             try {
                 Integer intId = new Integer(id);
-                Group group = Group.load(getBusinessCache(), intId);
+                Group group = Group.load(getCache(), intId);
                 if(group == null)
                     error.append(id + " is an invalid group id. ");
                 else

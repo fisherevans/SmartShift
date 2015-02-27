@@ -42,7 +42,7 @@ public class RoleActions extends BaseBusinessActions {
     	for(String id:ids) {
     		try {
     			Integer intId = new Integer(id);
-    			Role role = Role.load(getBusinessCache(), intId);
+    			Role role = Role.load(getCache(), intId);
     			if(role == null)
     				error.append(id + " is an invalid role id. ");
     			else
