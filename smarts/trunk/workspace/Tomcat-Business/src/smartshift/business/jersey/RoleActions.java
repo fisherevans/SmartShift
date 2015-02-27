@@ -25,8 +25,8 @@ import smartshift.common.util.log4j.SmartLogger;
 @Path("/role")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class RoleActions extends BusinessActionBase {
-    private static final SmartLogger logger = new SmartLogger(BusinessActionBase.class);
+public class RoleActions extends BaseBusinessActions {
+    private static final SmartLogger logger = new SmartLogger(BaseBusinessActions.class);
     
     /** gets the map of role id -> role
      * @param roleIDs the rolesid to query
