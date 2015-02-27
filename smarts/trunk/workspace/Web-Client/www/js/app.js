@@ -62,8 +62,6 @@ app.controller('MainController', ['$scope', '$rootScope', '$modal', '$location',
                     controller: 'LoginModalController',
                     backdrop: 'static',
                     backdropClass: 'dim'
-
-
                 });
                 modalInstance.result.then(function (result){
                     $rootScope.username = result.username;
@@ -88,9 +86,10 @@ app.controller('MainController', ['$scope', '$rootScope', '$modal', '$location',
 
                         });
                         modalInstance.result.then(function (business){
-                            console.log(business);
-                            accountsService.getSession(business.id, business.employeeID)
-                                .success(function(result){
+                            $scope.business = business;
+                            console.log($scope.business);
+                            accountsService.getSession($scope.business.id, $scope.business.employeeID)
+                                .success(function (result) {
                                     $rootScope.sessionID = result.data;
                                     console.log($rootScope.sessionID);
                                     console.log($location.url());
@@ -98,6 +97,16 @@ app.controller('MainController', ['$scope', '$rootScope', '$modal', '$location',
                                 });
                             //$rootScope.sessionId = selectedItem;
                         })
+                    }
+                    else {
+                        $scope.business = result.full.businesses[0];
+                        accountsService.getSession($scope.business.id, $scope.business.employeeID)
+                            .success(function (result) {
+                                $rootScope.sessionID = result.data.sessionKey;
+                                console.log($rootScope.sessionID);
+                                console.log($location.url());
+                                $location.url('/newsfeed');
+                            });
                     }
                     // $rootScope.sessionId = result.sessionId;
                 })
@@ -173,9 +182,9 @@ app.controller('TabController', ['$location', function($location){
 
 }]);
 
-app.controller('NewsfeedController', function($location){
-	this.route = $location.path();
-});
+app.controller('NewsfeedController', ['businessService', '$scope', function(businessService, $scope) {
+    businessService.getFull($scope.$parent.business.employeeID)
+}]);
 
 app.controller('MessagesController', function(){
 	this.threads = threads;

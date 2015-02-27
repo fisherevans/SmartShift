@@ -51,6 +51,14 @@ angular.module('storefrontApp.services', [])
     .factory('groupService', [function(){
 
     }])
+    .factory('businessService', ['httpService', '$rootScope', function(httpService, $rootScope){
+        return{
+            getFull: function(id){
+                httpService.setAuth($rootScope.username, $rootScope.sessionID);
+                return httpService.get('business/employee/full/' + id.toString());
+            }
+        }
+    }])
     .factory('utilService', [function(){
         return {
             getSize : function( obj ){
