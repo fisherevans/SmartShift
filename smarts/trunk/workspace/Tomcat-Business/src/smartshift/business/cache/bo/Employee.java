@@ -133,6 +133,7 @@ public class Employee extends CachedObject {
             EmployeeModel model = cache.getDAOContext().dao(EmployeeDAO.class).uniqueByID(empID).execute();
             Employee employee = null;
             if(model != null) {
+                cache.cache(uid, null);
                 employee = new Employee(cache, model);
                 cache.cache(uid, employee);
             }

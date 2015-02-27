@@ -120,6 +120,7 @@ public class Group extends CachedObject {
             GroupModel model = cache.getDAOContext().dao(GroupDAO.class).uniqueByID(grpID).execute();
             Group group = null;
             if(model != null) {
+                cache.cache(uid, null);
             	group = new Group(cache, model);
                 cache.cache(uid, group);
             }
