@@ -9,8 +9,10 @@ import java.util.Set;
 import org.hibernate.HibernateException;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
+import smartshift.business.hibernate.dao.RoleDAO;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
+import smartshift.business.hibernate.model.RoleModel;
 import smartshift.common.util.UID;
 import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.log4j.SmartLogger;
@@ -106,7 +108,12 @@ public class Employee extends CachedObject {
     public void loadAllChildren() {
         try {
             for(GroupModel gm : getDAO(GroupDAO.class).listByEmployee(getID()).execute()) {
-                _roles.put(Group.load(getCache(), gm.getId()), new HashSet<Role>()); 
+                Group group = Group.load(getCache(), gm.getId());
+                _roles.put(group, new HashSet<Role>());
+                for(RoleModel roleModel : getDAO(RoleDAO.class).listByGroupEmployee(gm.getId(), getID()).execute()) {
+                    Role role = Role.load(getCache(), roleModel.getId());
+                    _roles.get(group).add(role);
+                }
             }
         } catch(Exception e) {
             logger.error("Failed to load children", e);
