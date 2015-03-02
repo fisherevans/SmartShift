@@ -8,10 +8,14 @@ import smartshift.common.jersey.BaseActions;
  * @author D. Fisher Evans <contact@fisherevans.com>
  */
 public abstract class BaseAccountActions extends BaseActions {
+    private User user = null;
+    
     /**
      * @return The User from the Request
      */
     protected User getRequestUser() {
-        return (User) getRequest().getAttribute("user");
+        if(user == null)
+            user = (User) getRequest().getAttribute("user");
+        return user;
     }
 }

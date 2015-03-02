@@ -77,7 +77,12 @@ public class Employee extends CachedObject {
     
     public boolean manages(Employee other) {
     	// TODO Drew, need to find out if this employee manages the other, or is the same
-    	return false;
+    	return true;
+    }
+
+    public boolean manages(Group group) {
+        // TODO Drew, need to find out if this employee manages this group
+        return true;
     }
 
     public static Employee getEmployee(Cache cache, EmployeeModel model) {     
