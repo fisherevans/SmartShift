@@ -5,6 +5,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.ext.Provider;
 import smartshift.business.cache.bo.Cache;
+import smartshift.business.cache.bo.Employee;
 import smartshift.business.hibernate.dao.BusinessDAOContext;
 import smartshift.common.jersey.providers.AbstractAuthFilter;
 import smartshift.common.security.session.UserSession;
@@ -23,14 +24,19 @@ public class SessionAuthFilter extends AbstractAuthFilter {
     @Override
     protected void processCredentials(ContainerRequestContext containerRequest, String username, String authString) {
         logger.debug("Processing auth for " + username + ":" + authString.charAt(0) + "..." + authString.charAt(authString.length()-1));
+        
         UserSession userSession = UserSessionManager.getSession(authString, true);
         if(userSession == null)
             throw new WebApplicationException(getInvalidCredentialsResponse());
         logger.debug("processCredentials() Session found");
+        
         BusinessDAOContext daoContext = BusinessDAOContext.business(userSession.businessID);
         Cache cache = Cache.getCache(userSession.businessID);
+        Employee employee = Employee.load(cache, userSession.employeeID);
+        
         containerRequest.setProperty("userSession", userSession);
         containerRequest.setProperty("daoContext", daoContext);
         containerRequest.setProperty("cache", cache);
+        containerRequest.setProperty("employee", employee);
     }
 }

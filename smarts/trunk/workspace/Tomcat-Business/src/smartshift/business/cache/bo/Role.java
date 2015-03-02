@@ -80,7 +80,7 @@ public class Role extends CachedObject {
     }
     
     public static Role load(Cache cache, int roleID) {
-    	UID uid = new UID(TYPE_IDENTIFIER, roleID);
+        UID uid = new UID(TYPE_IDENTIFIER, roleID);
         if(cache.contains(uid))
             return cache.getRole(roleID); 
         else {
@@ -88,11 +88,16 @@ public class Role extends CachedObject {
             Role role = null;
             if(model != null) {
                 cache.cache(uid, null);
-            	role = new Role(cache, model);
+                role = new Role(cache, model);
                 cache.cache(uid, role);
             }
             return role;
         }
+    }
+    
+    public static Role loadByName(Cache cache, String roleName) {
+        // TODO - Need to be abke to get the Role based on a name
+        return null;
     }
     
     public static Role create(int businessID, String name) {
