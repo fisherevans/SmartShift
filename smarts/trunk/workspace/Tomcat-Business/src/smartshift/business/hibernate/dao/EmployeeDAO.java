@@ -21,13 +21,15 @@ public class EmployeeDAO extends BaseBusinessDAO<EmployeeModel> {
     
     /**
      * get a task that Adds a EmployeeModel
+     * @param id
      * @param firstName 
      * @param lastName 
      * @param defaultGroupID 
      * @return the task object
      */
-    public AddTask<EmployeeModel> add(String firstName, String lastName, Integer defaultGroupID) {
+    public AddTask<EmployeeModel> add(Integer id, String firstName, String lastName, Integer defaultGroupID) {
         EmployeeModel model = new EmployeeModel();
+        model.setId(id);
         model.setFirstName(firstName);
         model.setLastName(lastName);
         model.setDefaultGroupID(defaultGroupID);

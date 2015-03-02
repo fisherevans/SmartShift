@@ -102,7 +102,9 @@ public class Employee extends CachedObject {
                 getDAO(EmployeeDAO.class).update(_model);
             } else {
                 _homeGroup.save();
-                _model = getDAO(EmployeeDAO.class).add(_firstName, _lastName, _homeGroup.getID()).execute();
+                // TODO - get next ID from Accounts
+                Integer id = 10000 + (int)(Math.random()*1000);
+                _model = getDAO(EmployeeDAO.class).add(id, _firstName, _lastName, _homeGroup.getID()).execute();
             }
         } catch (HibernateException e) {
             logger.debug(e.getStackTrace());
