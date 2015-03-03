@@ -48,7 +48,7 @@ public abstract class BaseHibernateTask<T1, T2> {
             logger.trace("Exit");
             return result;
         } catch(HibernateException e) {
-            logger.warn("An error was thrown, rolling back! Error: " + e.getLocalizedMessage());
+            logger.warn("An error was thrown, rolling back!", e);
             action.rolback();
             throw e;
         }
