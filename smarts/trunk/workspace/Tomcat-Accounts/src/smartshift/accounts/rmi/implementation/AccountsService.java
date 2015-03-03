@@ -43,7 +43,7 @@ public class AccountsService extends BaseRemote implements AccountsServiceInterf
      * @see smartshift.common.rmi.interfaces.AccountsServiceInterface#getNextID(java.lang.String)
      */
     @Override
-    public Integer getNextID(String name) {
+    public Integer getNextID(String name) throws RemoteException {
         try {
             Integer id = AccountsDAOContext.dao(NextIDDAO.class).getNextID(name);
             return id;
