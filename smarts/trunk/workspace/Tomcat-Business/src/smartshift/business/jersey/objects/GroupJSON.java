@@ -35,7 +35,7 @@ public class GroupJSON {
      * the role ids within the group
      */
     @Expose
-    public Set<Integer> roles;
+    public Set<Integer> roleIDs;
     
     /**
      * Initializes the object.
@@ -47,12 +47,12 @@ public class GroupJSON {
         name = g.getName();
         Group parent = g.getParent();
         parentGroupID = parent == null ? null : parent.getID();
-        roles = new HashSet<Integer>();
+        roleIDs = new HashSet<Integer>();
         for(Role role:g.getRoles()) {
             if(role.getID() < 0)
                 continue;
             logger.debug("Add role: " + role.getID() + ":" + role.getName());
-        	roles.add(role.getID());
+        	roleIDs.add(role.getID());
         }
     }
 }

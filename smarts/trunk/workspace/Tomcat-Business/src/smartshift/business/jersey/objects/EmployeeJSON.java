@@ -45,7 +45,7 @@ public class EmployeeJSON {
      * the map of group ids -> roles they belong to in them
      */
     @Expose
-    public Map<Integer, Set<Integer>> groupRoles;
+    public Map<Integer, Set<Integer>> groupRoleIDs;
     
     /**
      * Initializes the object.
@@ -74,14 +74,14 @@ public class EmployeeJSON {
      */
     public static EmployeeJSON getFull(Employee employee) {
         EmployeeJSON employeeJson = getSimple(employee);
-        employeeJson.groupRoles = new HashMap<>();
+        employeeJson.groupRoleIDs = new HashMap<>();
         for(Group group:employee.getGroups()) {
             Set<Integer> roles = new HashSet<>();
             for(Role role:employee.getRoles(group)) {
                 logger.debug("Adding Role: " + role.getID() + ":" + role.getName());
             	roles.add(role.getID());
             }
-            employeeJson.groupRoles.put(group.getID(), roles);
+            employeeJson.groupRoleIDs.put(group.getID(), roles);
         }
         return employeeJson;
     }
