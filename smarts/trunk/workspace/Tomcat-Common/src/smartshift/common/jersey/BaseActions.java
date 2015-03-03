@@ -45,7 +45,7 @@ public abstract class BaseActions {
      * @param object The data to return
      * @return The built response object
      */
-    protected static Response getObjectResponse(Status status, Object object) {
+    public static Response getObjectResponse(Status status, Object object) {
         return APIResultFactory.getResponse(status, object, null);
     }
 
@@ -55,7 +55,7 @@ public abstract class BaseActions {
      * @param message The message to return
      * @return The built response object
      */
-    protected static Response getMessageResponse(Status status, String message) {
+    public static Response getMessageResponse(Status status, String message) {
         return APIResultFactory.getResponse(status, null, message);
     }
 }

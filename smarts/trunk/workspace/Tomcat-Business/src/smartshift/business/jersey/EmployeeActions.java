@@ -104,9 +104,8 @@ public class EmployeeActions extends BaseBusinessActions {
         }
         Employee newEmployee = Employee.create(getCache().getBusinessID(), firstName, lastName, homeGroup.getID());
         for(Group group:groupRoles.keySet()) {
-            group.addEmployee(newEmployee, Role.getBasicRole(getCache(), group));
             for(Role role:groupRoles.get(group)) {
-                newEmployee.addRole(role, group);
+                GroupRoleEmployeeUtil.linkGroupRoleEmployee(getCache(), group, role, newEmployee);
             }
         }
         return getObjectResponse(Status.ACCEPTED, EmployeeJSON.getFull(newEmployee));

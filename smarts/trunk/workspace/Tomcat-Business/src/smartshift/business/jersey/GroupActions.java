@@ -1,9 +1,7 @@
 package smartshift.business.jersey;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.ws.rs.Consumes;
@@ -19,10 +17,10 @@ import javax.ws.rs.ext.Provider;
 import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
+import smartshift.business.jersey.objects.GroupJSON;
 import smartshift.business.jersey.objects.GroupRequestJSON;
 import smartshift.business.jersey.objects.GroupRoleEmployeeRequestJSON;
 import smartshift.business.jersey.objects.GroupRoleRequestJSON;
-import smartshift.business.jersey.objects.GroupJSON;
 import smartshift.business.util.GroupRoleEmployeeUtil;
 import smartshift.common.util.ValidationUtil;
 import smartshift.common.util.log4j.SmartLogger;
@@ -71,77 +69,67 @@ public class GroupActions extends BaseBusinessActions {
         return getObjectResponse(Status.OK, groupJsons);
     }
     
+    /** adds a new group
+     * @param request
+     * @return the group json object
+     */
     @PUT
     public Response addGroup(GroupRequestJSON request) {
         String name = ValidationUtil.validateName(request.getName());
         if(name == null)
             return getMessageResponse(Status.BAD_REQUEST, "Groups must have a valid name.");
         Group parent = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.getParentGroupID(), true);
-        if(parent == null)
-            return getMessageResponse(Status.BAD_REQUEST, "Groups must have a valid parent group that you manage.");
         Group group = Group.create(getCache().getBusinessID(), name, parent);
         return getObjectResponse(Status.OK, new GroupJSON(group));
     }
     
+    /** adds a list of employees to a group
+     * @param request
+     * @return an ok response
+     */
     @PUT
     @Path("/employee")
     public Response addGroupEmployees(GroupEmployeeRequestJSON request) {
         // TODO - error if employee already exists in group?
-        Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.getGroup(), true);
-        if(group == null)
-            return getMessageResponse(Status.BAD_REQUEST, "You must manage the group to add employees to it.");
-        if(request.getEmployees() == null || request.getEmployees().size() == 0)
-            return getMessageResponse(Status.BAD_REQUEST, "You must pass employees to add.");
-        List<Employee> employees = new ArrayList<>();
-        for(Integer employeeID:request.getEmployees()) {
-            Employee employee = Employee.load(getCache(), employeeID);
-            if(employee == null || !getEmployee().manages(employee))
-                return getMessageResponse(Status.BAD_REQUEST, "You  do not manage the employee: " + employeeID);
-            employees.add(employee);
-        }
-        for(Employee employee:employees)
-            group.addEmployee(employee, Role.getBasicRole(getCache(), group));
+        Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.getGroupID(), true);
+        for(Employee employee:GroupRoleEmployeeUtil.getEmployeesFromIDs(getCache(), getEmployee(), request.getEmployeeIDs()))
+            GroupRoleEmployeeUtil.linkGroupEmployee(getCache(), group, employee);
         return getMessageResponse(Status.OK, "All employees were added to the group.");
     }
 
+    /** adds a list of roles to a group
+     * @param request
+     * @return the group json object
+     */
     @PUT
     @Path("/role")
     public Response addGroupRoles(GroupRoleRequestJSON request) {
         // TODO - error if role already exists in group?
         Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.getGroupID(), true);
-        if(group == null)
-            return getMessageResponse(Status.BAD_REQUEST, "You must manage the group to add roles to it.");
         if(request.getRoleNames() == null || request.getRoleNames().size() == 0)
             return getMessageResponse(Status.BAD_REQUEST, "You must pass roles to add.");
         // TODO - need to lookup role's in case one with a name already exists
         for(String roleName:request.getRoleNames()) {
             Role role = Role.create(getCache().getBusinessID(), roleName, group);
-            group.addRole(role);
+            GroupRoleEmployeeUtil.linkGroupRole(getCache(), group, role);
         }
         return getObjectResponse(Status.OK, new GroupJSON(group));
     }
     
+    /** adds a list emp's to a group role
+     * @param request
+     * @return an ok response
+     */
     @PUT
     @Path("/role/employee")
     public Response addGroupRoleEmployees(GroupRoleEmployeeRequestJSON request) {
         // TODO - error if employee already exists in group role?
         Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.getGroupID(), true);
-        if(group == null)
-            return getMessageResponse(Status.BAD_REQUEST, "You must manage the group to add employees to it.");
         Role role = Role.load(getCache(), request.getRoleID());
         if(role == null || !group.hasRole(role))
             return getMessageResponse(Status.BAD_REQUEST, "The group must have this role to add employees to it.");
-        if(request.getEmployeeIDs() == null || request.getEmployeeIDs().size() == 0)
-            return getMessageResponse(Status.BAD_REQUEST, "You must pass employees to add.");
-        List<Employee> employees = new ArrayList<>();
-        for(Integer employeeID:request.getEmployeeIDs()) {
-            Employee employee = Employee.load(getCache(), employeeID);
-            if(employee == null || !getEmployee().manages(employee))
-                return getMessageResponse(Status.BAD_REQUEST, "You  do not manage the employee: " + employeeID);
-            employees.add(employee);
-        }
-        for(Employee employee:employees)
-            group.addEmployee(employee, role);
+        for(Employee employee:GroupRoleEmployeeUtil.getEmployeesFromIDs(getCache(), getEmployee(), request.getEmployeeIDs()))
+            GroupRoleEmployeeUtil.linkGroupRoleEmployee(getCache(), group, role, employee);
         return getMessageResponse(Status.OK, "All employees were added to the group role.");
     }
 }
