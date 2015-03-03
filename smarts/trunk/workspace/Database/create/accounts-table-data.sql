@@ -1,5 +1,7 @@
 
 -- Initial Dara
+INSERT INTO `Accounts`.`NextID` (`name`, `nextID`) VALUES ('employee', 100);
+
 INSERT INTO `Accounts`.`ContactMethod` (`id`, `name`) VALUES (1, 'email');
 INSERT INTO `Accounts`.`ContactMethod` (`id`, `name`) VALUES (2, 'phone');
 

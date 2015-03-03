@@ -13,9 +13,12 @@ import smartshift.business.hibernate.dao.RoleDAO;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.business.hibernate.model.RoleModel;
+import smartshift.common.rmi.RMIClient;
+import smartshift.common.rmi.interfaces.AccountsServiceInterface;
 import smartshift.common.util.UID;
 import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.log4j.SmartLogger;
+import smartshift.common.util.properties.AppConstants;
 
 public class Employee extends CachedObject {
     public static final String TYPE_IDENTIFIER = "E";
@@ -102,8 +105,15 @@ public class Employee extends CachedObject {
                 getDAO(EmployeeDAO.class).update(_model);
             } else {
                 _homeGroup.save();
-                // TODO - get next ID from Accounts
-                Integer id = 10000 + (int)(Math.random()*1000);
+                Integer id;
+                try {
+                    AccountsServiceInterface accts = RMIClient.getAccountsService();
+                    id = accts.getNextID(AppConstants.NEXT_ID_NAME_EMPLOYEE);
+                    logger.info("Adding employee, got next ID from accounts: " + id);
+                } catch(Exception e) {
+                    logger.error("Failed to get next employee id from accounts servive!");
+                    throw new RuntimeException("Not currently connected to the Accounts Service!", e);
+                }
                 _model = getDAO(EmployeeDAO.class).add(id, _firstName, _lastName, _homeGroup.getID()).execute();
             }
         } catch (HibernateException e) {

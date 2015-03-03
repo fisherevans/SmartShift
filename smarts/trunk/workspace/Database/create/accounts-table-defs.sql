@@ -150,6 +150,15 @@ CREATE TABLE `Accounts`.`Session` (
 	PRIMARY KEY (`id`)
 );
 
+DROP TABLE IF EXISTS `Accounts`.`NextID`;
+CREATE TABLE `Accounts`.`NextID` (
+	`id` INT NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(50) NOT NULL,
+	`nextID` INT NOT NULL DEFAULT 0,
+	PRIMARY KEY (`id`),
+	UNIQUE (`name`)
+);
+
 ALTER TABLE `Accounts`.`Session`
 ADD CONSTRAINT `session_userbusiness`
 	FOREIGN KEY (`userBusEmpID`)

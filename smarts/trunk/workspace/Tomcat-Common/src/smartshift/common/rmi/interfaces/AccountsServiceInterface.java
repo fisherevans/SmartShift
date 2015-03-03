@@ -9,11 +9,11 @@ import java.rmi.RemoteException;
  */
 public interface AccountsServiceInterface extends BaseRemoteInterface {
     /**
-     * A test method
-     * @return a string
-     * @throws RemoteException
+     * gets the global next id to use
+     * @param name the name of the id to get
+     * @return the next id to use
      */
-    public String hello() throws RemoteException;
+    public Integer getNextID(String name);
 
     /**
      * Called by the client informing the server i has connected
