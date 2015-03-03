@@ -38,6 +38,26 @@ public class GroupRoleEmployeeUtil {
         return group;
     }
     
+    public static Role getRole(Cache cache, Integer roleID) {
+        logger.debug("getRole() Enter: " + roleID);
+        Role role = Role.load(cache, roleID);
+        if(role == null) {
+            String error = "The role does not exist: " + roleID;
+            throw new WebApplicationException(BaseActions.getMessageResponse(Status.BAD_REQUEST, error));
+        }
+        logger.debug("getRole() Valid role found");
+        return role;
+    }
+    
+    public static List<Role> getRolesByIDs(Cache cache, List<Integer> roleIDs) {
+        logger.debug("getRoles() Enter");
+        List<Role> roles = new ArrayList<Role>();
+        for(Integer roleID:roleIDs)
+            roles.add(getRole(cache, roleID));
+        logger.debug("getRoles() All rols valid");
+        return roles;
+    }
+    
     /**
      * @param cache
      * @param self the employee loading the employees
@@ -46,15 +66,22 @@ public class GroupRoleEmployeeUtil {
      * @throws WebApplicationException if any of the emp ids are invalid, or the caller does not manage one of the employees
      */
     public static List<Employee> getEmployeesFromIDs(Cache cache, Employee self, List<Integer> employeeIDs) {
-        if(employeeIDs == null || employeeIDs.size() == 0)
+        if(employeeIDs == null || employeeIDs.size() == 0) {
+            logger.debug("getEmployeesFromIDs() list is null or empty");
             throw new WebApplicationException(BaseActions.getMessageResponse(Status.BAD_REQUEST, "You must pass employees to add."));
+        }
+        logger.debug("getEmployeesFromIDs() Size: " + employeeIDs.size());
         List<Employee> employees = new ArrayList<>();
         for(Integer employeeID:employeeIDs) {
             Employee employee = Employee.load(cache, employeeID);
-            if(employee == null || !self.manages(employee))
+            if(employee == null || !self.manages(employee)) {
+                logger.debug("getEmployeesFromIDs() Invalid id: " + employeeID);
                 throw new WebApplicationException(BaseActions.getMessageResponse(Status.BAD_REQUEST, "You  do not manage the employee: " + employeeID));
+            }
+            logger.debug("getEmployeesFromIDs() Got employee for: " + employeeID);
             employees.add(employee);
         }
+        logger.debug("getEmployeesFromIDs() Exit");
         return employees;
     }
     
@@ -64,6 +91,7 @@ public class GroupRoleEmployeeUtil {
      * @param role the role to link to
      */
     public static void linkGroupRole(Cache chache, Group group, Role role) {
+        logger.debug("linkGroupRole() Linking role:" + role.getID() + " to group:" + group.getID());
         group.addRole(role);
     }
     
@@ -73,6 +101,7 @@ public class GroupRoleEmployeeUtil {
      * @param employee the employee to link to
      */
     public static void linkGroupEmployee(Cache chache, Group group, Employee employee) {
+        logger.debug("linkGroupEmployee() Linking employee:" + employee.getID() + " to group:" + group.getID());
         group.addEmployee(employee);
         employee.addGroup(group);
     }
@@ -87,6 +116,7 @@ public class GroupRoleEmployeeUtil {
     public static void linkGroupRoleEmployee(Cache cache, Group group, Role role, Employee employee) {
         linkGroupRole(cache, group, role);
         linkGroupEmployee(cache, group, employee);
+        logger.debug("linkGroupRoleEmployee() Linking employee:" + employee.getID() + " to group:" + group.getID() + " role:" + role.getID());
         group.addEmployeeRole(employee, role);
         employee.addGroupRole(role, group);
     }

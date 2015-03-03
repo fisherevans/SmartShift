@@ -1,6 +1,5 @@
 package smartshift.business.jersey;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -81,33 +80,17 @@ public class EmployeeActions extends BaseBusinessActions {
         String lastName = ValidationUtil.validateName(request.getLastName());
         if(firstName == null || lastName == null)
             return getMessageResponse(Status.BAD_REQUEST, "Employees must have a valid first and last name.");
-        Integer homeGroupID = request.getHomeGroupID();
-        Group homeGroup = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), homeGroupID, true);
-        if(homeGroup == null)
-            return getMessageResponse(Status.BAD_REQUEST, INVALID_GROUP + homeGroupID);
+        Group homeGroup = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.getHomeGroupID(), true);
         Map<Group, List<Role>> groupRoles = new HashMap<>();
         Map<Integer, List<Integer>> groupRoleIDs = request.getGroupRoleIDs();
-        if(groupRoleIDs != null) {
-            for(Integer groupID:groupRoleIDs.keySet()) {
-                Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), groupID, true);
-                if(group == null)
-                    return getMessageResponse(Status.BAD_REQUEST, INVALID_GROUP + groupID);
-                List<Role> roles = new ArrayList<>();
-                for(Integer roleID:groupRoleIDs.get(groupID)) {
-                    Role role = Role.load(getCache(), roleID);
-                    if(!group.hasRole(role))
-                        return getMessageResponse(Status.BAD_REQUEST, String.format(INVALID_GROUP_ROLE, groupID, roleID));
-                    roles.add(role);
-                }
-                groupRoles.put(group, roles);
-            }
-        }
+        if(groupRoleIDs != null)
+            for(Integer groupID:groupRoleIDs.keySet())
+                groupRoles.put(GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), groupID, true),
+                        GroupRoleEmployeeUtil.getRolesByIDs(getCache(), groupRoleIDs.get(groupID)));
         Employee newEmployee = Employee.create(getCache().getBusinessID(), firstName, lastName, homeGroup.getID());
-        for(Group group:groupRoles.keySet()) {
-            for(Role role:groupRoles.get(group)) {
+        for(Group group:groupRoles.keySet())
+            for(Role role:groupRoles.get(group))
                 GroupRoleEmployeeUtil.linkGroupRoleEmployee(getCache(), group, role, newEmployee);
-            }
-        }
         return getObjectResponse(Status.ACCEPTED, EmployeeJSON.getFull(newEmployee));
     }
 }
