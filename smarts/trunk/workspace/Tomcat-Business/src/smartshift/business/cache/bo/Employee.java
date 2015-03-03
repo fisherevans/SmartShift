@@ -119,7 +119,7 @@ public class Employee extends CachedObject {
                 _model = getDAO(EmployeeDAO.class).add(id, _firstName, _lastName, _homeGroup.getID()).execute();
             }
         } catch (HibernateException e) {
-            logger.debug(e.getStackTrace());
+            logger.warn("Failed to save the employee!", e);
         }
     }
 
