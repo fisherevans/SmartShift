@@ -11,9 +11,10 @@ public interface AccountsServiceInterface extends BaseRemoteInterface {
     /**
      * gets the global next id to use
      * @param name the name of the id to get
-     * @return the next id to use
+     * @return the next id to use, null if there was an error
+     * @throws RemoteException if an exception occurs
      */
-    public Integer getNextID(String name);
+    public Integer getNextID(String name) throws RemoteException;
 
     /**
      * Called by the client informing the server i has connected
