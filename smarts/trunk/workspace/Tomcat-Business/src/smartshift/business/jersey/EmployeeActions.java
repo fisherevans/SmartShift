@@ -17,8 +17,8 @@ import javax.ws.rs.ext.Provider;
 import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
-import smartshift.business.jersey.objects.EmployeeRequestJSON;
 import smartshift.business.jersey.objects.EmployeeJSON;
+import smartshift.business.jersey.objects.EmployeeRequestJSON;
 import smartshift.business.util.GroupRoleEmployeeUtil;
 import smartshift.common.util.ValidationUtil;
 import smartshift.common.util.log4j.SmartLogger;
@@ -104,6 +104,7 @@ public class EmployeeActions extends BaseBusinessActions {
         }
         Employee newEmployee = Employee.create(getCache().getBusinessID(), firstName, lastName, homeGroup.getID());
         for(Group group:groupRoles.keySet()) {
+            group.addEmployee(newEmployee, Role.getBasicRole(getCache(), group));
             for(Role role:groupRoles.get(group)) {
                 newEmployee.addRole(role, group);
             }
