@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import org.hibernate.HibernateException;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
 import smartshift.business.hibernate.dao.RoleDAO;
@@ -110,15 +109,15 @@ public class Employee extends CachedObject {
                     AccountsServiceInterface accts = RMIClient.getAccountsService();
                     id = accts.getNextID(AppConstants.NEXT_ID_NAME_EMPLOYEE);
                     if(id == null)
-                        throw new RuntimeException("An error occurred on the accounts side! ID was null");
+                        throw new Exception("An error occurred on the accounts side! ID was null");
                     logger.info("Adding employee, got next ID from accounts: " + id);
                 } catch(Exception e) {
                     logger.error("Failed to get next employee id from accounts servive!");
-                    throw new RuntimeException("Not currently connected to the Accounts Service!", e);
+                    throw new Exception("Not currently connected to the Accounts Service!", e);
                 }
                 _model = getDAO(EmployeeDAO.class).add(id, _firstName, _lastName, _homeGroup.getID()).execute();
             }
-        } catch (HibernateException e) {
+        } catch (Exception e) {
             logger.warn("Failed to save the employee!", e);
         }
     }
@@ -168,6 +167,7 @@ public class Employee extends CachedObject {
     }
     
     public static Employee create(int businessID, String first, String last, int homeGroupID) {
+        // TODO - Drew, the group role stuff isn't populated when the employee is created
         Cache cache = Cache.getCache(businessID);
         Employee emp = new Employee(cache, first, last, Group.load(cache, homeGroupID));
         emp.save();

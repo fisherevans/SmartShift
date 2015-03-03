@@ -54,7 +54,7 @@ public class NextIDDAO extends BaseAccountsDAO<NextIDModel> {
                         model.setName(name);
                         add(model);
                     }
-                    nextID = model.getId();
+                    nextID = model.getNextID();
                     logger.debug("NextID cached for " + name + " is " + nextID);
                 }
                 _nextIDs.put(name, nextID + 1);

@@ -2,8 +2,6 @@ package smartshift.accounts.jersey.initializers;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import smartshift.accounts.hibernate.dao.AccountsDAOContext;
-import smartshift.accounts.hibernate.dao.NextIDDAO;
 import smartshift.accounts.hibernate.model.BusinessModel;
 import smartshift.accounts.hibernate.model.NextIDModel;
 import smartshift.accounts.hibernate.model.SessionModel;
@@ -37,7 +35,6 @@ public class AccountsHibernateMapperListener implements ServletContextListener {
      */
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
-        AccountsDAOContext.dao(NextIDDAO.class).saveNextIDs();
     }
 
 }

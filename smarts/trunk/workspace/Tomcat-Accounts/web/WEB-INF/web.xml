@@ -12,6 +12,7 @@
 	<listener><listener-class>smartshift.accounts.jersey.initializers.AccountsHibernateMapperListener</listener-class></listener>
 	<listener><listener-class>smartshift.common.jersey.initializers.HibernateListener</listener-class></listener>
 	<listener><listener-class>smartshift.accounts.jersey.initializers.AccountsRMIListener</listener-class></listener>
+	<listener><listener-class>smartshift.accounts.jersey.initializers.CleanupListener</listener-class></listener>
 
 	<servlet>
 		<servlet-name>smartshift-accounts</servlet-name>
