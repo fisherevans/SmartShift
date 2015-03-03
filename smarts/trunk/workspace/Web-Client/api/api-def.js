@@ -317,7 +317,7 @@ var apiDef = {
                 "lastName" : "Shmoe",
                 "defaultGroupID" : 1
               },
-              "groupRoles" : {
+              "groupRoleIDs" : {
                 1 : [ 1, 2 ],
                 2 : [ 2, 3 ]
               }
@@ -344,7 +344,7 @@ var apiDef = {
                 "lastName" : "Shmoe",
                 "defaultGroupID" : 1
               },
-              "groupRoles" : {
+              "groupRoleIDs" : {
                 1 : [ 1, 2 ],
                 2 : [ 2, 3 ]
               }

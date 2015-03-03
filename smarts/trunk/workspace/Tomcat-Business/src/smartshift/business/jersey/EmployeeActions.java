@@ -83,10 +83,12 @@ public class EmployeeActions extends BaseBusinessActions {
         Group homeGroup = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.getHomeGroupID(), true);
         Map<Group, List<Role>> groupRoles = new HashMap<>();
         Map<Integer, List<Integer>> groupRoleIDs = request.getGroupRoleIDs();
-        if(groupRoleIDs != null)
+        if(groupRoleIDs != null) {
             for(Integer groupID:groupRoleIDs.keySet())
                 groupRoles.put(GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), groupID, true),
                         GroupRoleEmployeeUtil.getRolesByIDs(getCache(), groupRoleIDs.get(groupID)));
+        } else
+            logger.debug("Null base group role ids");
         Employee newEmployee = Employee.create(getCache().getBusinessID(), firstName, lastName, homeGroup.getID());
         for(Group group:groupRoles.keySet())
             for(Role role:groupRoles.get(group))
