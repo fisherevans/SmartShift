@@ -112,7 +112,7 @@ public class SessionActions extends BaseAccountActions {
         SessionRequest response = new SessionRequest();
         response.sessionKey = session.getSessionKey();
         response.timeout = AppConstants.SESSION_TIMEOUT;
-        response.server = "smartshift.info:6380"; // TODO - hard coded server for now!
+        response.server = "lando.smartshift.info:6380"; // TODO - hard coded server for now!
         return getObjectResponse(Status.OK, response);
     }
     
@@ -172,9 +172,15 @@ public class SessionActions extends BaseAccountActions {
         @Expose
         public String sessionKey;
         
+        /**
+         * 
+         */
         @Expose
         public String server;
         
+        /**
+         * 
+         */
         @Expose
         public Long timeout;
         

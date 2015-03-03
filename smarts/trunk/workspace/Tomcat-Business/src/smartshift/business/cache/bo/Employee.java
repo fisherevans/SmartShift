@@ -63,10 +63,14 @@ public class Employee extends CachedObject {
         return _homeGroup;
     }
     
-    public void addRole(Role role, Group parent) {
-        if(!_roles.containsKey(parent))
-            _roles.put(parent, new HashSet<Role>());
-        _roles.get(parent).add(role);
+    public void addGroup(Group group) {
+        if(!_roles.containsKey(group))
+            _roles.put(group, new HashSet<Role>());
+    }
+    
+    public void addGroupRole(Role role, Group group) {
+        addGroup(group);
+        _roles.get(group).add(role);
     }
     
     public ROCollection<Role> getRoles(Group group) {
@@ -135,6 +139,7 @@ public class Employee extends CachedObject {
             }
         } catch(Exception e) {
             logger.error("Failed to load children", e);
+            throw e;
         }
     }
 

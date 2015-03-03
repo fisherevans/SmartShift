@@ -6,27 +6,27 @@ import smartshift.common.util.log4j.SmartLogger;
 public class GroupEmployeeRequestJSON {
     private static final SmartLogger logger = new SmartLogger(GroupEmployeeRequestJSON.class);
     
-    private Integer group;
+    private Integer groupID;
     
-    private List<Integer> employees;
+    private List<Integer> employeeIDs;
     
     public GroupEmployeeRequestJSON() {
         
     }
 
-    public Integer getGroup() {
-        return group;
+    public Integer getGroupID() {
+        return groupID;
     }
 
-    public void setGroup(Integer group) {
-        this.group = group;
+    public void setGroupID(Integer groupID) {
+        this.groupID = groupID;
     }
 
-    public List<Integer> getEmployees() {
-        return employees;
+    public List<Integer> getEmployeeIDs() {
+        return employeeIDs;
     }
 
-    public void setEmployees(List<Integer> employees) {
-        this.employees = employees;
+    public void setEmployeeIDs(List<Integer> employeeIDs) {
+        this.employeeIDs = employeeIDs;
     }
 }

@@ -60,10 +60,14 @@ public class Group extends CachedObject {
             _employees.put(role, new HashSet<Employee>());
     }
     
-    public void addEmployee(Employee employee, Role role) {
+    public void addEmployeeRole(Employee employee, Role role) {
         addRole(role);
         if(!_employees.get(role).contains(employee))
             _employees.get(role).add(employee);
+    }
+    
+    public void addEmployee(Employee employee) {
+        addEmployeeRole(employee, Role.getBasicRole(getCache(), this));
     }
     
     public ROCollection<Role> getRoles() {
