@@ -11,7 +11,7 @@ import javax.persistence.Table;
  * address model
  */
 @Entity
-@Table(name = "Address")
+@Table(name = "NextID")
 public class NextIDModel {
     @Id
     @GeneratedValue
