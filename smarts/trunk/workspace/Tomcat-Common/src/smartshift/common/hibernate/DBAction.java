@@ -58,7 +58,7 @@ public class DBAction {
             return;
         logger.trace("Commiting transaction");
         _transaction.commit();
-        close();
+        close(true);
     }
 
     /**
@@ -69,18 +69,20 @@ public class DBAction {
             return;
         logger.trace("Rolling back transaction");
         _transaction.rollback();
-        close();
+        close(false);
     }
 
     /**
      * if not completed - flushes and closes the session. sets this action state to complete.
+     * @param doFlush Pass true to flush the session before closing. DO NOT flush the session if an exception occurred.
      */
-    public void close() {
+    public void close(boolean doFlush) {
         if(_complete)
             return;
         _complete = true;
         logger.trace("Flushing and Closing the session");
-        _session.flush();
+        if(doFlush)
+            _session.flush();
         _session.close();
     }
 }

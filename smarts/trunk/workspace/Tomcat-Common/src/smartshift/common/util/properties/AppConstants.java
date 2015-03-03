@@ -16,6 +16,10 @@ import smartshift.common.util.log4j.SmartLogger;
 public class AppConstants {
     private static final SmartLogger logger = new SmartLogger(AppConstants.class);
     
+    // TRUE CONSTANTS
+    
+    public static final String NEXT_ID_NAME_EMPLOYEE = "employee";
+    
     // NON-PROPERTY CONSTANTS
     
     /** The hostname that that application is running on */

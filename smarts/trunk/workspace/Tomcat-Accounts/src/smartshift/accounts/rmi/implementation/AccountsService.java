@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import smartshift.accounts.hibernate.dao.AccountsDAOContext;
+import smartshift.accounts.hibernate.dao.NextIDDAO;
 import smartshift.accounts.hibernate.dao.ServerDAO;
 import smartshift.accounts.hibernate.dao.SessionDAO;
 import smartshift.accounts.hibernate.model.BusinessModel;
@@ -37,13 +38,19 @@ public class AccountsService extends BaseRemote implements AccountsServiceInterf
     public AccountsService() throws RemoteException {
         super();
     }
-    
+
     /**
-     * @see smartshift.common.rmi.interfaces.AccountsServiceInterface#hello()
+     * @see smartshift.common.rmi.interfaces.AccountsServiceInterface#getNextID(java.lang.String)
      */
     @Override
-    public String hello() throws RemoteException {
-        return "The answer to everything is 42";
+    public Integer getNextID(String name) {
+        try {
+            Integer id = AccountsDAOContext.dao(NextIDDAO.class).getNextID(name);
+            return id;
+        } catch(Exception e) {
+            logger.error("Failed to get next id for " + name, e);
+            return null;
+        }
     }
 
     /**

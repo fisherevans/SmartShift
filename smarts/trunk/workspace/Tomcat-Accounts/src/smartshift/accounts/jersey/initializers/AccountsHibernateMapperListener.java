@@ -2,7 +2,10 @@ package smartshift.accounts.jersey.initializers;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import smartshift.accounts.hibernate.dao.AccountsDAOContext;
+import smartshift.accounts.hibernate.dao.NextIDDAO;
 import smartshift.accounts.hibernate.model.BusinessModel;
+import smartshift.accounts.hibernate.model.NextIDModel;
 import smartshift.accounts.hibernate.model.SessionModel;
 import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
 import smartshift.accounts.hibernate.model.UserModel;
@@ -26,6 +29,7 @@ public class AccountsHibernateMapperListener implements ServletContextListener {
         HibernateFactory.addAnnotatedClass(BusinessModel.class);
         HibernateFactory.addAnnotatedClass(SessionModel.class);
         HibernateFactory.addAnnotatedClass(GetActiveSessionsModel.class);
+        HibernateFactory.addAnnotatedClass(NextIDModel.class);
     }
 
     /**
@@ -33,6 +37,7 @@ public class AccountsHibernateMapperListener implements ServletContextListener {
      */
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        AccountsDAOContext.dao(NextIDDAO.class).saveNextIDs();
     }
 
 }
