@@ -140,6 +140,7 @@ app.controller('LoginModalController', ['$scope', '$modalInstance', 'accountsSer
         $scope.error = '';
 
         $scope.submit = function() {
+            $scope.error = '';
             accountsService.getFull($scope.account.username, $scope.account.password)
                 .success(function(data){
                     $scope.account.full = data.data;
