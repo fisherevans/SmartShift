@@ -1,0 +1,33 @@
+.loginInputWrapper.smartInputWrapper {
+  width: 55%;
+  margin: 10px auto;
+}
+
+.loginError {
+  float: left;
+  font-weight: 700;
+  color: #ff0000;
+  margin-top: 8px;
+  margin-left: 10px;
+}
+
+.loginRememberWrapper {
+  width: 55%;
+  margin: 10px auto;
+  margin-bottom: 0px;
+}
+
+.loginRemember {
+  line-height: 10px;
+  font-weight: 300;
+  cursor: pointer;
+}
+
+.loginRemember input {
+  margin: 10px;
+}
+
+.loginRegister {
+  line-height: 40px;
+  float: left;
+}
