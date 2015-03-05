@@ -1,0 +1,41 @@
+.smartButton {
+  background-color: #808080;
+  color:#ffffff;
+  border: 0;
+  display: inline-block;
+  margin: 2px 4px;
+  padding: 8px 20px;
+  line-height: 20px;
+  font-weight: 700;
+  font-size: 14px;
+  vertical-align: middle;
+}
+
+.smartInputWrapper {
+  position: relative;
+}
+
+.smartInputText {
+  margin: 0px auto;
+  border-radius: 0px;
+  border: 1px solid #ccc;
+  width: 100%;
+  line-height: 20px;
+  padding: 12px;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+       -o-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.smartInputText:focus {
+  border: 1px solid #0080ff;
+  box-shadow: 0;
+  outline: none;
+}
+
+.smartInputText.inputError {
+  background-color: #FFF0F1;
+  border: 1px solid #aaa;
+}
