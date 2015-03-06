@@ -58,6 +58,17 @@ public class GroupRoleEmployeeUtil {
         return roles;
     }
     
+    public static Employee getEmployee(Cache cache, Employee self, Integer employeeID, boolean requireManages) {
+        logger.debug("getRole() Enter: " + employeeID);
+        Employee employee = Employee.load(cache, employeeID);
+        if(employee == null || !self.manages(employee)) {
+            String error = "The employee does not exist or you do not manage this employee: " + employeeID;
+            throw new WebApplicationException(BaseActions.getMessageResponse(Status.BAD_REQUEST, error));
+        }
+        logger.debug("getRole() Valid employee found");
+        return employee;
+    }
+    
     /**
      * @param cache
      * @param self the employee loading the employees
@@ -104,6 +115,7 @@ public class GroupRoleEmployeeUtil {
         logger.debug("linkGroupEmployee() Linking employee:" + employee.getID() + " to group:" + group.getID());
         group.addEmployee(employee);
         employee.addGroup(group);
+        group = group.getParent();
     }
     
     /**
