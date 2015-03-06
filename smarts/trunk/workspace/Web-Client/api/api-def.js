@@ -35,6 +35,7 @@ var invalidID400 = {
 
 var apiDef = {
   "paths" : {
+    // ---------------------------------------------------------------------------------------------------
     "/accounts/user/full" : {
       "GET" : {
         "shortDescription" : "Gets all Account data for a user",
@@ -94,6 +95,7 @@ var apiDef = {
         }
       }
     },
+    // ---------------------------------------------------------------------------------------------------
     "/accounts/user/self" : {
       "GET" : {
         "shortDescription" : "Gets basic user info",
@@ -111,6 +113,7 @@ var apiDef = {
         }
       }
     },
+    // ---------------------------------------------------------------------------------------------------
     "/accounts/user/session" : {
       "PUT" : {
         "shortDescription" : "Creates a new session token",
@@ -148,6 +151,7 @@ var apiDef = {
         }
       }
     },
+    // ---------------------------------------------------------------------------------------------------
     "/business/group/{ids}" : {
       "GET" : {
         "shortDescription" : "Gets simple group data",
@@ -172,6 +176,7 @@ var apiDef = {
         }
       }
     },
+    // ---------------------------------------------------------------------------------------------------
     "/business/group" : {
       "PUT" : {
         "shortDescription" : "Adds a group",
@@ -190,6 +195,7 @@ var apiDef = {
         }
       }
     },
+    // ---------------------------------------------------------------------------------------------------
     "/business/group/employee" : {
       "PUT" : {
         "shortDescription" : "Adds an employee to a group",
@@ -207,6 +213,7 @@ var apiDef = {
         }
       }
     },
+    // ---------------------------------------------------------------------------------------------------
     "/business/group/role" : {
       "PUT" : {
         "shortDescription" : "Adds an role to a group",
@@ -232,6 +239,7 @@ var apiDef = {
         }
       }
     },
+    // ---------------------------------------------------------------------------------------------------
     "/business/group/role/employee" : {
       "PUT" : {
         "shortDescription" : "Adds an employee to a group role",
@@ -250,6 +258,7 @@ var apiDef = {
         }
       }
     },
+    // ---------------------------------------------------------------------------------------------------
     "/business/role/{ids}" : {
       "GET" : {
         "shortDescription" : "Gets simple role data",
@@ -272,6 +281,7 @@ var apiDef = {
         }
       }
     },
+    // ---------------------------------------------------------------------------------------------------
     "/business/employee/{id}" : {
       "GET" : {
         "shortDescription" : "Gets basic information about an employee",
@@ -285,6 +295,7 @@ var apiDef = {
           200 : {
             "result" : "The base employee object",
             "data" : {
+              "employeeID":1,
               "firstName" : "Joe",
               "lastName" : "Shmoe",
               "defaultGroupID" : 1
@@ -293,6 +304,7 @@ var apiDef = {
         }
       }
     },
+    // ---------------------------------------------------------------------------------------------------
     "/business/employee" : {
       "PUT" : {
         "shortDescription" : "Adds a new employee",
@@ -313,6 +325,7 @@ var apiDef = {
             "result" : "The employee was added",
             "data" : {
               "employee" : {
+                "employeeID":1,
                 "firstName" : "Joe",
                 "lastName" : "Shmoe",
                 "defaultGroupID" : 1
@@ -326,6 +339,7 @@ var apiDef = {
         }
       }
     },
+    // ---------------------------------------------------------------------------------------------------
     "/business/employee/full/{id}" : {
       "GET" : {
         "shortDescription" : "Gets all information about an employee",
@@ -340,6 +354,7 @@ var apiDef = {
             "explanation" : "The 'groupRoles' object contains a map of <GroupID -> Array<RoleID>>.",
             "data" : {
               "employee" : {
+                "employeeID":1,
                 "firstName" : "Joe",
                 "lastName" : "Shmoe",
                 "defaultGroupID" : 1
@@ -353,5 +368,6 @@ var apiDef = {
         }
       }
     }
+    // ---------------------------------------------------------------------------------------------------
   }
 };

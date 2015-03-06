@@ -1,3 +1,10 @@
+.loginModal p {
+  width: 50%;
+  margin: 10px auto;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
 .loginInputWrapper.smartInputWrapper {
   width: 55%;
   margin: 10px auto;
@@ -30,4 +37,41 @@
 .loginRegister {
   line-height: 40px;
   float: left;
+}
+
+.selectBusinessModal p {
+  width: 80%;
+  text-align: center;
+  margin: 10px auto;
+  padding-bottom: 5px;
+  display: block;
+}
+
+.loginBusinessBlock {
+  width: 70%;
+  margin: 15px auto;
+  background-color: #f8f8f8;
+  cursor: pointer;
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+}
+
+.loginBusinessBlock:hover {
+  background-color: #f0f0f0;
+  border-color:#0080ff;
+}
+
+.loginBusinessName {
+  padding: 10px 30px;
+  line-height: 30px;
+  font-size: 20px;
+}
+
+.loginBusinessArrow {
+  float: right;
+  padding-top: 16px;
+  padding-right: 25px;
+  line-height: 50px;
+  font-size: 50px;
+  height
 }

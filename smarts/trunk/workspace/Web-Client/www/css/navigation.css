@@ -46,6 +46,10 @@
   padding-left: 80px;
 }
 
+.navElementAdd20.navElement:not(.current):not(.noScroll):hover {
+  padding-left: 100px;
+}
+
 .navLabel {
   position: absolute;
   width: 100px;
@@ -60,6 +64,10 @@
 
 .navElement:not(.current):not(.noScroll):hover .navLabel {
   left:-20px;
+}
+
+.navElementAdd20.navElement:not(.current):not(.noScroll):hover .navLabel {
+  left:0px;
 }
 
 .navElement.current {
