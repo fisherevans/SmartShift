@@ -87,7 +87,8 @@ angular.module('storefrontApp.services', [])
                     templateUrl: 'templates/login.html',
                     controller: 'LoginModalController',
                     backdrop: 'static',
-                    backdropClass: 'dim'
+                    backdropClass: 'dim',
+                    keyboard: false
                 }).result;
             },
             businessModal: function( businesses ) {

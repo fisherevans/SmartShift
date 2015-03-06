@@ -49,9 +49,16 @@
             <div class="navIcon icon-calendar"></div>
         </div>
     </a>
-    <a href="#/settings">
-        <div class="navElement fadeNav" ng-class="{ current: tabCtrl.isSet(5) }" data-window-class=".settingsWindow"
+    <a href="#/organization">
+        <div class="navElement fadeNav navElementAdd20" ng-class="{ current: tabCtrl.isSet(5) }" data-window-class=".organizationWindow"
              ng-click="tabCtrl.setTab(5)">
+            <div class="navLabel fadeLeft">Organization</div>
+            <div class="navIcon icon-users"></div>
+        </div>
+    </a>
+    <a href="#/settings">
+        <div class="navElement fadeNav" ng-class="{ current: tabCtrl.isSet(6) }" data-window-class=".settingsWindow"
+             ng-click="tabCtrl.setTab(6)">
             <div class="navLabel fadeLeft">Settings</div>
             <div class="navIcon icon-cog"></div>
         </div>
