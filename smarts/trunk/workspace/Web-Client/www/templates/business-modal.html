@@ -3,7 +3,7 @@
 </div>
 <div class="modal-body selectBusinessModal">
     <p>Please select which business you would like to access.</p>
-    <div ng-repeat="business in businesses" ng-click="selectBusiness(business.id)" class="loginBusinessBlock fadeColors">
+    <div ng-repeat="business in businesses" ng-click="selectBusiness(business)" class="loginBusinessBlock fadeColors">
         <img src="arrow.png" class="loginBusinessArrow" />
         <div class="loginBusinessName">{{business.name}}</div>
     </div>

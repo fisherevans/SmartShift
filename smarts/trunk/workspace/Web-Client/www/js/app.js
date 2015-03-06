@@ -54,13 +54,11 @@ app.controller('MainController', ['$scope', '$rootScope', 'modalService', '$loca
               return undefined;
             };
         }();
-
+        $scope.hasSession = function(){
+            return $rootScope.sessionID;
+        };
         $scope.$watch('$rootScope.sessionID', function(){
             if(!$rootScope.sessionID){
-                var path = $location.url( );
-                if( !path )
-                    path = '/newsfeed';
-                $location.url('/');
                 var result = modalService.loginModal(  );
                 result.then(function (result){
                     $rootScope.username = result.username;
@@ -74,24 +72,28 @@ app.controller('MainController', ['$scope', '$rootScope', 'modalService', '$loca
                         modalService.businessModal( result.full.businesses ).then(function (business){
                             accountsService.getSession(business.id, business.employeeID)
                                 .success(function (result) {
-                                    $rootScope.sessionID = result.data;
+                                    $rootScope.sessionID = result.data.sessionKey;
+                                    httpService.setRootPath(result.data.server);
                                     console.log($rootScope.sessionID);
                                     console.log($location.url());
-                                    $location.url( path );
+                                    if( !$location.url() )
+                                        $location.url('/newsfeed');
                                     $scope.business = business;
                                 });
                             //$rootScope.sessionId = selectedItem;
                         })
                     }
                     else {
+                        $scope.business = result.full.businesses[0];
                         accountsService.getSession(result.full.businesses[0].id, result.full.businesses[0].employeeID)
                             .success(function (result) {
                                 $rootScope.sessionID = result.data.sessionKey;
                                 console.log($rootScope.sessionID);
                                 console.log($location.url());
                                 httpService.setRootPath(result.data.server);
-                                $location.url( path );
-                                $scope.business = result.full.businesses[0];
+                                if( !$location.url() )
+                                    $location.url('/newsfeed');
+
                             });
                     }
                     // $rootScope.sessionId = result.sessionId;
@@ -103,14 +105,11 @@ app.controller('BusinessModalController', ['$scope', '$modalInstance', 'utilServ
     function($scope, $modalInstance, utilService, businesses){
         $scope.businesses = businesses;
       
-        $scope.selectBusiness = function(id) {
-            for( var business in $scope.businesses ) {
-                if($scope.businesses[business].id == id )
-                    $modalInstance.close($scope.businesses[business]);
-            }
-        }
+        $scope.selectBusiness = function(business) {
+            $modalInstance.close(business);
+        };
       
-        $scope.cancel = function() { } // TODO logout when its implemented
+        $scope.cancel = function() { }; // TODO logout when its implemented
     }]);
 app.controller('LoginModalController', ['$scope', '$modalInstance', 'accountsService',
     function($scope, $modalInstance, accountsService){
@@ -166,7 +165,7 @@ app.controller('TabController', ['$location', function($location){
 }]);
 
 app.controller('NewsfeedController', ['businessService', '$scope', function(businessService, $scope) {
-    businessService.getFull($scope.$parent.business.employeeID)
+    //businessService.getFull($scope.$parent.business.employeeID)
 }]);
 
 app.controller('MessagesController', [ '$scope', function($scope){
