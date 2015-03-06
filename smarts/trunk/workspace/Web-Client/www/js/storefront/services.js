@@ -5,7 +5,7 @@
  */
 angular.module('storefrontApp.services', [])
     .factory('httpService', ['$http', function($http) {
-        var API_URL = 'http://lando.smartshift.info:6380/';
+        var API_URL = 'http://lando.smartshift.info:6380';
         return {
             get: function(path){
                 var req = {
@@ -33,18 +33,18 @@ angular.module('storefrontApp.services', [])
         httpService.setAuth($rootScope.username, $rootScope.password);
         return {
             getSelf: function(){
-                return httpService.get('accounts/user/self');
+                return httpService.get('/accounts/user/self');
             },
             getFull: function(user, pass){
                 httpService.setAuth(user, pass);
-                return httpService.get('accounts/user/full');
+                return httpService.get('/accounts/user/full');
             },
             getSession: function(businessId, employeeId){
                 var data = {
                     businessID: businessId,
                     employeeID: employeeId
                 };
-                return httpService.put('accounts/user/session', data);
+                return httpService.put('/accounts/user/session', data);
 
             }
         }
@@ -56,7 +56,7 @@ angular.module('storefrontApp.services', [])
         return{
             getFull: function(id){
                 httpService.setAuth($rootScope.username, $rootScope.sessionID);
-                return httpService.get('business/employee/' + id.toString());
+                return httpService.get('/business/dev/fullCache');
             }
         }
     }])
@@ -91,15 +91,16 @@ angular.module('storefrontApp.services', [])
                     keyboard: false
                 }).result;
             },
-            businessModal: function( businesses ) {
+            businessModal: function( business ) {
                 return $modal.open({
                     templateUrl: 'templates/business-modal.html',
                     controller: 'BusinessModalController',
                     backdrop: 'static',
                     backdropClass: 'dim',
+                    keyboard: false,
                     resolve: {
                         businesses: function(){
-                            return businesses;
+                            return business;
                         }
                     }
                 }).result;
