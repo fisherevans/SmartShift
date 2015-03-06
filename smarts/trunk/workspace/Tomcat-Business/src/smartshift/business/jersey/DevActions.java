@@ -75,8 +75,9 @@ public class DevActions extends BaseBusinessActions {
                 logger.debug("  Role: " +  role.getID());
                 Set<Integer> employeeIDs = new HashSet<>();
                 for(Employee employee:group.getRoleEmployees(role)) {
-                    logger.debug("    Employee: " +  employee.getID());
-                    employeeIDs.add(employee.getID());
+                    logger.debug("    Employee: " +  (employee == null ? null : employee.getID()));
+                    if(employee != null)
+                        employeeIDs.add(employee.getID());
                 }
                 roleEmployeeIDs.put(role.getID(), employeeIDs);
             }

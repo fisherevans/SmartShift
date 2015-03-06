@@ -12,6 +12,7 @@
 	<listener><listener-class>smartshift.business.jersey.initializers.BusinessHibernateMapperListener</listener-class></listener>
 	<listener><listener-class>smartshift.common.jersey.initializers.HibernateListener</listener-class></listener>
 	<listener><listener-class>smartshift.business.jersey.initializers.BusinessRMIListener</listener-class></listener>
+	<listener><listener-class>smartshift.business.jersey.initializers.TopBusinessListener</listener-class></listener>
 
 	<servlet>
 		<servlet-name>smartshift-business</servlet-name>
