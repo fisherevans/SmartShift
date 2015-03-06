@@ -40,8 +40,8 @@ app.config(function($routeProvider){
 
 });
 
-app.controller('MainController', ['$scope', '$rootScope', 'modalService', '$location', 'httpService', 'accountsService', 'utilService',
-    function($scope, $rootScope, modalService, $location, httpService, accountsService, utilService){
+app.controller('MainController', ['$scope', '$rootScope', 'modalService', '$location', 'httpService', 'accountsService', 'utilService', 'cacheService',
+    function($scope, $rootScope, modalService, $location, httpService, accountsService, utilService, cacheService){
 
         $scope.init = function(){
             Array.prototype.findBy = function( key, value ) {
@@ -79,6 +79,7 @@ app.controller('MainController', ['$scope', '$rootScope', 'modalService', '$loca
                                     if( !$location.url() )
                                         $location.url('/newsfeed');
                                     $scope.business = business;
+                                    cacheService.loadCache();
                                 });
                             //$rootScope.sessionId = selectedItem;
                         })
@@ -93,7 +94,7 @@ app.controller('MainController', ['$scope', '$rootScope', 'modalService', '$loca
                                 httpService.setRootPath(result.data.server);
                                 if( !$location.url() )
                                     $location.url('/newsfeed');
-
+                                cacheService.loadCache();
                             });
                     }
                     // $rootScope.sessionId = result.sessionId;
@@ -177,9 +178,11 @@ app.controller('RequestsController', function($location){
 	this.route = $location.path();
 });
 
-app.controller('ScheduleController', function($location){
+app.controller('ScheduleController', ['$location', 'cacheService', function($location, cacheService){
 	this.route = $location.path();
-});
+    this.cache = cacheService.getCache();
+    console.log(this.cache);
+}]);
 
 app.controller('SettingsController', function($location){
 	this.route = $location.path();
