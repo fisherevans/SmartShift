@@ -29,11 +29,16 @@ app.config(function($routeProvider){
 			controller: 'ScheduleController',
 			controllerAs: 'scheduleCtrl'
 		})
-		.when('/settings', {
-			templateUrl: 'templates/settings.html',
-			controller: 'SettingsController',
-			controllerAs: 'settingsCtrl'
-		})
+    .when('/groups', {
+        templateUrl: 'templates/group-list.html',
+        controller: 'GroupListController',
+        controllerAs: 'groupListCtrl'
+    })
+    .when('/settings', {
+        templateUrl: 'templates/settings.html',
+        controller: 'SettingsController',
+        controllerAs: 'settingsCtrl'
+    })
 		/*.otherwise({
 			redirectTo: '/'
 		})*/
@@ -92,9 +97,10 @@ app.controller('MainController', ['$scope', '$rootScope', 'modalService', '$loca
                                 console.log($rootScope.sessionID);
                                 console.log($location.url());
                                 httpService.setRootPath(result.data.server);
+                                cacheService.loadCache();
                                 if( !$location.url() )
                                     $location.url('/newsfeed');
-                                cacheService.loadCache();
+
                             });
                     }
                     // $rootScope.sessionId = result.sessionId;
@@ -145,9 +151,12 @@ app.controller('TabController', ['$location', function($location){
 		case '/schedule':
 			return 4;
 			break;
-		case '/settings':
-			return 5;
-			break;
+    case '/groups':
+        return 5;
+        break;
+    case '/settings':
+        return 6;
+        break;
 		default :
 			return 1;
 	}})();
@@ -178,15 +187,21 @@ app.controller('RequestsController', function($location){
 	this.route = $location.path();
 });
 
-app.controller('ScheduleController', ['$location', 'cacheService', function($location, cacheService){
+app.controller('ScheduleController', function($location){
 	this.route = $location.path();
     this.cache = cacheService.getCache();
     console.log(this.cache);
+});
+
+app.controller('GroupListController', [ '$location', 'cacheService', function($location, cacheService){
+    this.route = $location.path();
+    this.groups = cacheService.getGroups();
 }]);
 
 app.controller('SettingsController', function($location){
-	this.route = $location.path();
+    this.route = $location.path();
 });
+
 var threads = [{
 		name: "Charlie Babcock",
 		text: "Fuck Eclipse",
