@@ -23,6 +23,11 @@ public class UID {
     }
     
     @Override
+    public String toString() {
+        return _type + ":" + _id;
+    }
+    
+    @Override
     public int hashCode() {
         return _type.hashCode() * 13 + _id.hashCode();
     }

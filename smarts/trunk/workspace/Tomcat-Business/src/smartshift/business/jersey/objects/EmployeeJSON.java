@@ -51,6 +51,6 @@ public class EmployeeJSON {
         this.id = e.getID();
         this.firstName = e.getFirstName();
         this.lastName = e.getLastName();
-        this.homeGroupID = e.getHomeGroup().getID();
+        this.homeGroupID = e.getHomeGroup() == null ? null : e.getHomeGroup().getID();
     }
 }

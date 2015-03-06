@@ -4,7 +4,12 @@ import java.util.HashMap;
 import java.util.Map;
 import org.hibernate.Session;
 import smartshift.business.hibernate.dao.BusinessDAOContext;
+import smartshift.business.hibernate.dao.EmployeeDAO;
+import smartshift.business.hibernate.dao.GroupDAO;
+import smartshift.business.hibernate.model.EmployeeModel;
+import smartshift.business.hibernate.model.GroupModel;
 import smartshift.common.util.UID;
+import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.collections.ROMap;
 
 public class Cache {
@@ -94,11 +99,25 @@ public class Cache {
         _cached.clear();
     }
     
+    private void loadAllData() {
+        ROCollection<EmployeeModel> employees = getDAOContext().dao(EmployeeDAO.class).list().execute();
+        for(EmployeeModel employee:employees)
+            Employee.load(this, employee.getId());
+
+        ROCollection<GroupModel> groups = getDAOContext().dao(GroupDAO.class).list().execute();
+        for(GroupModel group:groups)
+            Group.load(this, group.getId());
+        
+    }
+    
     public static Cache getCache(Integer busID) {
         if(caches == null)
             caches = new HashMap<Integer, Cache>();
-        if(!caches.containsKey(busID))
-            caches.put(busID, new Cache(busID));
+        if(!caches.containsKey(busID)) {
+            Cache newCache = new Cache(busID);
+            caches.put(busID, newCache);
+            newCache.loadAllData();
+        }
         return caches.get(busID);
     }
 }
