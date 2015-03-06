@@ -54,7 +54,7 @@ angular.module('storefrontApp.services', [])
     }])
     .factory('businessService', ['httpService', '$rootScope', function(httpService, $rootScope){
         return{
-            getFull: function(id){
+            getFull: function(){
                 httpService.setAuth($rootScope.username, $rootScope.sessionID);
                 return httpService.get('/business/dev/fullCache');
             }
@@ -105,5 +105,19 @@ angular.module('storefrontApp.services', [])
                     }
                 }).result;
             }
+        }
+    }])
+    .factory('cacheService', ['businessService', function(businessService){
+        var cache;
+        return {
+            loadCache: function() {
+                businessService.getFull().success(function(data) {
+                    cache = data.data;
+                })
+            },
+            getCache: function(){
+                return cache;
+            }
+
         }
     }]);
