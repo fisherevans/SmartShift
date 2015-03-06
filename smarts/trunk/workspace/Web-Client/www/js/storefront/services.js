@@ -4,10 +4,8 @@
  * Created by charlie on 1/27/15.
  */
 angular.module('storefrontApp.services', [])
-    .value('API_URL', 'http://lando.smartshift.info:6380/')
-    .factory('httpService', ['$http', 'API_URL',
-            function($http, API_URL) {
-
+    .factory('httpService', ['$http', function($http) {
+        var API_URL = 'http://lando.smartshift.info:6380/';
         return {
             get: function(path){
                 var req = {
@@ -24,6 +22,9 @@ angular.module('storefrontApp.services', [])
             setAuth: function(user, pass){
                 var base64 = window.btoa(user + ':' + pass);
                 $http.defaults.headers.common.Authorization = 'Basic ' + base64;
+            },
+            setRootPath: function(server){
+              API_URL = 'http://' + server;
             }
 
         }
@@ -55,7 +56,7 @@ angular.module('storefrontApp.services', [])
         return{
             getFull: function(id){
                 httpService.setAuth($rootScope.username, $rootScope.sessionID);
-                return httpService.get('business/employee/full/' + id.toString());
+                return httpService.get('business/employee/' + id.toString());
             }
         }
     }])
@@ -75,6 +76,32 @@ angular.module('storefrontApp.services', [])
                     if( obj.hasOwnProperty(key)) keys.push(key);
                 }
                 return keys;
+            }
+        }
+    }])
+    .factory('modalService', ['$modal', '$rootScope', '$location', 'httpService', 'utilService', 'accountsService',
+        function( $modal, $rootScope, $location, httpService, utilService, accountsService){
+        return {
+            loginModal: function( path ){
+                return $modal.open({
+                    templateUrl: 'templates/login.html',
+                    controller: 'LoginModalController',
+                    backdrop: 'static',
+                    backdropClass: 'dim'
+                }).result;
+            },
+            businessModal: function( businesses ) {
+                return $modal.open({
+                    templateUrl: 'templates/business-modal.html',
+                    controller: 'BusinessModalController',
+                    backdrop: 'static',
+                    backdropClass: 'dim',
+                    resolve: {
+                        businesses: function(){
+                            return businesses;
+                        }
+                    }
+                }).result;
             }
         }
     }]);
