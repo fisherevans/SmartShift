@@ -63,6 +63,18 @@ public class Employee extends CachedObject {
         return _homeGroup;
     }
     
+    public void setFirstName(String firstName) {
+        _firstName = firstName;
+    }
+    
+    public void setLastName(String lastName) {
+        _lastName = lastName;
+    }
+    
+    public void setHomeGroup(Group homeGroup) {
+        _homeGroup = homeGroup;
+    }
+    
     public void addGroup(Group group) {
         if(!_roles.containsKey(group))
             _roles.put(group, new HashSet<Role>());

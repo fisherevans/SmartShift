@@ -5,6 +5,7 @@ import java.util.Map;
 import org.hibernate.Session;
 import smartshift.business.hibernate.dao.BusinessDAOContext;
 import smartshift.common.util.UID;
+import smartshift.common.util.collections.ROMap;
 
 public class Cache {
     private static Map<Integer, Cache> caches;
@@ -19,6 +20,10 @@ public class Cache {
         _rootBusID = rootBusID;
         _cached = new HashMap<UID, CachedObject>();
         _daoContext = BusinessDAOContext.business(_rootBusID);
+    }
+    
+    public ROMap<UID, CachedObject> getROCacheMap() {
+        return new ROMap<UID, CachedObject>(_cached);
     }
     
     @SuppressWarnings("unchecked")

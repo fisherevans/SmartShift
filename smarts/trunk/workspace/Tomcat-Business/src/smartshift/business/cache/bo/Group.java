@@ -1,5 +1,6 @@
 package smartshift.business.cache.bo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -58,6 +59,11 @@ public class Group extends CachedObject {
     public void addRole(Role role) {
         if(!hasRole(role))
             _employees.put(role, new HashSet<Employee>());
+    }
+    
+    public ROCollection<Employee> getRoleEmployees(Role role) {
+        Set<Employee> roleEmployees = _employees.get(role);
+        return ROCollection.wrap(roleEmployees == null ? new ArrayList() : roleEmployees);
     }
     
     public void addEmployeeRole(Employee employee, Role role) {
