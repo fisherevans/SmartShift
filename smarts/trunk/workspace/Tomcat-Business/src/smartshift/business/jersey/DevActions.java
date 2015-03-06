@@ -44,19 +44,23 @@ public class DevActions extends BaseBusinessActions {
         ROMap<UID, CachedObject> cache = getCache().getROCacheMap();
         
         for(UID uid:cache.keySet()) {
+            logger.debug("Loading UID" + uid.toString());
             switch(uid.getType()) {
                 case Employee.TYPE_IDENTIFIER: {
                     Employee employee = (Employee) cache.get(uid);
+                    logger.debug("  Employee: " + (employee == null ? employee : "ID:" + employee.getID()));
                     json.employees.put(employee.getID(), new EmployeeJSON(employee));
                     break;
                 }
                 case Group.TYPE_IDENTIFIER: {
                     Group group = (Group) cache.get(uid);
+                    logger.debug("  Group: " + (group == null ? group : "ID:" + group.getID()));
                     json.groups.put(group.getID(), new GroupJSON(group));
                     break;
                 }
                 case Role.TYPE_IDENTIFIER: {
                     Role role = (Role) cache.get(uid);
+                    logger.debug("  Role: " + (role == null ? role : "ID:" + role.getID()));
                     json.roles.put(role.getID(), new RoleJSON(role));
                     break;
                 }
@@ -65,10 +69,13 @@ public class DevActions extends BaseBusinessActions {
         
         for(Integer groupID:json.groups.keySet()) {
             Group group = Group.load(getCache(), groupID);
+            logger.debug("Getting GRE for Group: " + groupID + ":" + group);
             Map<Integer, Set<Integer>> roleEmployeeIDs = new HashMap<>();
             for(Role role:group.getRoles()) {
+                logger.debug("  Role: " +  role.getID());
                 Set<Integer> employeeIDs = new HashSet<>();
                 for(Employee employee:group.getRoleEmployees(role)) {
+                    logger.debug("    Employee: " +  employee.getID());
                     employeeIDs.add(employee.getID());
                 }
                 roleEmployeeIDs.put(role.getID(), employeeIDs);
