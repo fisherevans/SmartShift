@@ -102,16 +102,15 @@ app.controller('MainController', ['$scope', '$rootScope', 'modalService', '$loca
 app.controller('BusinessModalController', ['$scope', '$modalInstance', 'utilService', 'businesses',
     function($scope, $modalInstance, utilService, businesses){
         $scope.businesses = businesses;
-        $scope.selected = $scope.businesses[0].id;
-
-        $scope.ok = function() {
-            for( var business in $scope.businesses ){
-                if( $scope.businesses.hasOwnProperty(business)){
-                    if($scope.businesses[business].id == $scope.selected )
-                        $modalInstance.close($scope.businesses[business]);
-                }
+      
+        $scope.selectBusiness = function(id) {
+            for( var business in $scope.businesses ) {
+                if($scope.businesses[business].id == id )
+                    $modalInstance.close($scope.businesses[business]);
             }
         }
+      
+        $scope.cancel = function() { } // TODO logout when its implemented
     }]);
 app.controller('LoginModalController', ['$scope', '$modalInstance', 'accountsService',
     function($scope, $modalInstance, accountsService){
