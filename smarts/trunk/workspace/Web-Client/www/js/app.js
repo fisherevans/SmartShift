@@ -40,30 +40,29 @@ app.config(function($routeProvider){
 
 });
 
-app.controller('MainController', ['$scope', '$rootScope', '$modal', '$location', 'accountsService', 'utilService',
-    function($scope, $rootScope, $modal, $location, accountsService, utilService){
-        $scope.session = {
-            id: 0
-        };
-
+app.controller('MainController', ['$scope', '$rootScope', 'modalService', '$location', 'httpService', 'accountsService', 'utilService',
+    function($scope, $rootScope, modalService, $location, httpService, accountsService, utilService){
 
         $scope.init = function(){
             Array.prototype.findBy = function( key, value ) {
               for(var i in this){
-                  if(this[i].hasOwnProperty(key) && this[i][key] == value)
-                    return this[i];
+                  if(this.hasOwnProperty(i)){
+                      if(this[i].hasOwnProperty(key) && this[i][key] == value)
+                          return this[i];
+                  }
               }
               return undefined;
             };
+        }();
 
+        $scope.$watch('$rootScope.sessionID', function(){
             if(!$rootScope.sessionID){
-                var modalInstance = $modal.open({
-                    templateUrl: 'templates/login.html',
-                    controller: 'LoginModalController',
-                    backdrop: 'static',
-                    backdropClass: 'dim'
-                });
-                modalInstance.result.then(function (result){
+                var path = $location.url( );
+                if( !path )
+                    path = '/newsfeed';
+                $location.url('/');
+                var result = modalService.loginModal(  );
+                result.then(function (result){
                     $rootScope.username = result.username;
                     $rootScope.password = result.password;
                     console.log($rootScope.username);
@@ -72,49 +71,33 @@ app.controller('MainController', ['$scope', '$rootScope', '$modal', '$location',
                     console.log(result.full.businesses.length);
                     if(utilService.getSize(result.full.businesses) > 1){
                         console.log('Multiple businesses');
-                        var modalInstance = $modal.open({
-                            templateUrl: 'templates/business-modal.html',
-                            controller: 'BusinessModalController',
-                            backdrop: 'static',
-                            backdropClass: 'dim',
-                            resolve: {
-                                businesses: function(){
-                                    var bus = result.full.businesses;
-                                    return bus;
-                                }
-                            }
-
-                        });
-                        modalInstance.result.then(function (business){
-                            $scope.business = business;
-                            console.log($scope.business);
-                            accountsService.getSession($scope.business.id, $scope.business.employeeID)
+                        modalService.businessModal( result.full.businesses ).then(function (business){
+                            accountsService.getSession(business.id, business.employeeID)
                                 .success(function (result) {
                                     $rootScope.sessionID = result.data;
                                     console.log($rootScope.sessionID);
                                     console.log($location.url());
-                                    $location.url('/newsfeed');
+                                    $location.url( path );
+                                    $scope.business = business;
                                 });
                             //$rootScope.sessionId = selectedItem;
                         })
                     }
                     else {
-                        $scope.business = result.full.businesses[0];
-                        accountsService.getSession($scope.business.id, $scope.business.employeeID)
+                        accountsService.getSession(result.full.businesses[0].id, result.full.businesses[0].employeeID)
                             .success(function (result) {
                                 $rootScope.sessionID = result.data.sessionKey;
                                 console.log($rootScope.sessionID);
                                 console.log($location.url());
-                                $location.url('/newsfeed');
+                                httpService.setRootPath(result.data.server);
+                                $location.url( path );
+                                $scope.business = result.full.businesses[0];
                             });
                     }
                     // $rootScope.sessionId = result.sessionId;
-                })
+                });
             }
-
-        };
-
-        $scope.init();
+        });
 }]);
 app.controller('BusinessModalController', ['$scope', '$modalInstance', 'utilService', 'businesses',
     function($scope, $modalInstance, utilService, businesses){
@@ -123,11 +106,11 @@ app.controller('BusinessModalController', ['$scope', '$modalInstance', 'utilServ
 
         $scope.ok = function() {
             for( var business in $scope.businesses ){
-                if($scope.businesses[business].id == $scope.selected )
-                    $modalInstance.close($scope.businesses[business]);
+                if( $scope.businesses.hasOwnProperty(business)){
+                    if($scope.businesses[business].id == $scope.selected )
+                        $modalInstance.close($scope.businesses[business]);
+                }
             }
-
-
         }
     }]);
 app.controller('LoginModalController', ['$scope', '$modalInstance', 'accountsService',
@@ -187,10 +170,10 @@ app.controller('NewsfeedController', ['businessService', '$scope', function(busi
     businessService.getFull($scope.$parent.business.employeeID)
 }]);
 
-app.controller('MessagesController', function(){
+app.controller('MessagesController', [ '$scope', function($scope){
 	this.threads = threads;
-
-});
+    $scope.threadSearch = '';
+}]);
 
 app.controller('RequestsController', function($location){
 	this.route = $location.path();
