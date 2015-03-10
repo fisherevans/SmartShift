@@ -9,7 +9,7 @@ var app = angular.module('smartsApp', [
 
 app.config(function($routeProvider){
 	$routeProvider
-        .when('/newsfeed', {
+    .when('/newsfeed', {
 			templateUrl: 'templates/newsfeed.html',
 			controller: 'NewsfeedController',
 			controllerAs: 'newsfeedCtrl'
@@ -32,7 +32,12 @@ app.config(function($routeProvider){
     .when('/groups', {
         templateUrl: 'templates/group-list.html',
         controller: 'GroupListController',
-        controllerAs: 'groupListCtrl'
+        controllerAs: 'groupListCtrl',
+        resolve: {
+          loadCache: function(cacheService) {
+            return cacheService.loadCache();
+          }
+        }
     })
     .when('/settings', {
         templateUrl: 'templates/settings.html',
@@ -45,8 +50,8 @@ app.config(function($routeProvider){
 
 });
 
-app.controller('MainController', ['$scope', '$rootScope', 'modalService', '$location', 'httpService', 'accountsService', 'utilService', 'cacheService',
-    function($scope, $rootScope, modalService, $location, httpService, accountsService, utilService, cacheService){
+app.controller('MainController', ['$scope', '$rootScope', 'modalService', '$location', '$route', 'httpService', 'accountsService', 'utilService', 'cacheService',
+    function($scope, $rootScope, modalService, $location, $route, httpService, accountsService, utilService, cacheService){
 
         $scope.init = function(){
             Array.prototype.findBy = function( key, value ) {
@@ -58,6 +63,16 @@ app.controller('MainController', ['$scope', '$rootScope', 'modalService', '$loca
               }
               return undefined;
             };
+            
+            $rootScope.$on("$locationChangeStart", function(event, next, current){
+                var splitCurrent = current.split("#");
+                if(splitCurrent.length > 1
+                        && $rootScope.sessionID === undefined
+                        && splitCurrent[1] != "/") {
+                    console.log("Preventing page load due to missing session");
+                    event.preventDefault();
+                }
+            });
         }();
         $scope.hasSession = function(){
             return $rootScope.sessionID;
@@ -81,8 +96,7 @@ app.controller('MainController', ['$scope', '$rootScope', 'modalService', '$loca
                                     httpService.setRootPath(result.data.server);
                                     console.log($rootScope.sessionID);
                                     console.log($location.url());
-                                    if( !$location.url() )
-                                        $location.url('/newsfeed');
+                                    $route.reload();
                                     $scope.business = business;
                                     cacheService.loadCache();
                                 });
@@ -98,9 +112,7 @@ app.controller('MainController', ['$scope', '$rootScope', 'modalService', '$loca
                                 console.log($location.url());
                                 httpService.setRootPath(result.data.server);
                                 cacheService.loadCache();
-                                if( !$location.url() )
-                                    $location.url('/newsfeed');
-
+                                $route.reload();
                             });
                     }
                     // $rootScope.sessionId = result.sessionId;
@@ -171,7 +183,6 @@ app.controller('TabController', ['$location', function($location){
 	this.isSet = function(tab){
 		return this.currentTab === tab;
 	};
-
 }]);
 
 app.controller('NewsfeedController', ['businessService', '$scope', function(businessService, $scope) {
@@ -193,7 +204,7 @@ app.controller('ScheduleController', function($location){
     console.log(this.cache);
 });
 
-app.controller('GroupListController', [ '$location', 'cacheService', function($location, cacheService){
+app.controller('GroupListController', [ '$location', 'cacheService', function($location, cacheService, loadCache){
     this.route = $location.path();
     this.groups = cacheService.getGroups();
 }]);

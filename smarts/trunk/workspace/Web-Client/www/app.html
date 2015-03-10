@@ -49,8 +49,8 @@
             <div class="navIcon icon-calendar"></div>
         </div>
     </a>
-    <a href="#/organization">
-        <div class="navElement fadeNav navElementAdd20" ng-class="{ current: tabCtrl.isSet(5) }" data-window-class=".organizationWindow"
+    <a href="#/groups">
+        <div class="navElement fadeNav navElementAdd20" ng-class="{ current: tabCtrl.isSet(5) }" data-window-class=".groupListWindow"
              ng-click="tabCtrl.setTab(5)">
             <div class="navLabel fadeLeft">Organization</div>
             <div class="navIcon icon-users"></div>
@@ -65,7 +65,7 @@
     </a>
 </div>
 <div class="appWindowBg"></div>
-<div ng-view ng-show="hasSession()"></div>
+<div ng-view ng-if="hasSession()"></div>
 
 
 <script src="lib/jquery-2.1.1.min.js"></script>
