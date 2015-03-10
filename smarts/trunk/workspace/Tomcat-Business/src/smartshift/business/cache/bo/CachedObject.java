@@ -24,4 +24,9 @@ public abstract class CachedObject implements Identifiable, Stored{
     public <T extends BaseBusinessDAO> T getDAO(Class<T> clazz) {
         return getCache().getDAOContext().dao(clazz);
     }
+    
+    protected void finalize() throws Throwable {
+        _cache.decache(getUID());
+        super.finalize();
+    }
 }

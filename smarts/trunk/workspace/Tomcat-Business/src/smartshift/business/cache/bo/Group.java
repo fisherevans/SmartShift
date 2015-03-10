@@ -23,6 +23,7 @@ public class Group extends CachedObject {
     
     private String _name;
     private Group _parent;
+    private Set<Group> _children;
     private Map<Role, Set<Employee>> _employees;
     
     private GroupModel _model;
@@ -30,6 +31,7 @@ public class Group extends CachedObject {
     public Group(Cache cache, String name) {
         super(cache);
         _name = name;
+        _children = new HashSet<Group>();
         _employees = new HashMap<Role, Set<Employee>>();
         _employees.put(Role.getBasicRole(cache, this), new HashSet<Employee>());
     }
@@ -50,6 +52,14 @@ public class Group extends CachedObject {
     
     public Group getParent() {
     	return _parent;
+    }
+    
+    public ROCollection<Group> getChildGroups() {
+        return ROCollection.wrap(_children);
+    }
+    
+    public boolean addChild(Group grp) {
+        return _children.add(grp);
     }
     
     public boolean hasRole(Role role) {
@@ -85,6 +95,7 @@ public class Group extends CachedObject {
         try {
             if(_model != null) {
                 _model.setName(_name);
+                _model.setParentID(_parent.getID());
                 getDAO(GroupDAO.class).update(_model);
             } else {
                 _model = getDAO(GroupDAO.class).add(_name, null).execute();
@@ -97,6 +108,13 @@ public class Group extends CachedObject {
     @Override
     public void loadAllChildren() {
         try {
+             // load child groups
+             for(GroupModel gm : getDAO(GroupDAO.class).listChildGroups(getID()).execute()){
+                 int grpID = gm.getId();
+                 Group grp = Group.load(getCache(), grpID);
+                 _children.add(grp);
+             }
+            
             for(RoleModel rm : getDAO(RoleDAO.class).listByGroup(getID()).execute()){
                 int roleID = rm.getId();
                 Role role = Role.load(getCache(), roleID);

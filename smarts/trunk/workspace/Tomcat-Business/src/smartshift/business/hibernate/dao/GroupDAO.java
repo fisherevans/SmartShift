@@ -1,8 +1,10 @@
 package smartshift.business.hibernate.dao;
 
+import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.common.hibernate.dao.tasks.AddTask;
 import smartshift.common.hibernate.dao.tasks.ListNamedQueryTask;
+import smartshift.common.hibernate.dao.tasks.ListTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -38,11 +40,20 @@ public class GroupDAO extends BaseBusinessDAO<GroupModel> {
     
     /** get a task that gets a list of groups an employee belongs to
      * @param employeeID the employee in question
-     * @return the list of employees ids
+     * @return the task
      */
     public ListNamedQueryTask<GroupModel> listByEmployee(Integer employeeID) {
         return listNamedQuery(GroupModel.GET_EMPLOYEE_GROUPS, 
                 new NamedParameter(GroupModel.GET_EMPLOYEE_GROUPS_EMP_ID, employeeID));
+    }
+    
+    /**
+     * get a task that gets a list of groups that have a specific parent
+     * @param parentID the id of the parent to check
+     * @return the task
+     */
+    public ListTask<GroupModel> listChildGroups(Integer parentID) {
+        return list(Restrictions.eq("parentID", parentID));
     }
 
     @Override

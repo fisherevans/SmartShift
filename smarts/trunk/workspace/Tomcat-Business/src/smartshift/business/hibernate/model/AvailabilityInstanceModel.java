@@ -13,7 +13,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "AvailInstance")
-public class AvailabilityInstanceModel {
+public class AvailabilityInstanceModel implements InstanceInterface{
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
@@ -27,9 +27,6 @@ public class AvailabilityInstanceModel {
     
     @Column(name = "endDate", nullable = false)
     private Date endDate;
-    
-    @Column(name = "empID", nullable = false)
-    private Integer employeeID;
     
     /**
      * Initializes the object.
@@ -92,19 +89,5 @@ public class AvailabilityInstanceModel {
      */
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-    }
-
-    /**
-     * @return the employeeID
-     */
-    public Integer getEmployeeID() {
-        return employeeID;
-    }
-
-    /**
-     * @param employeeID the employeeID to set
-     */
-    public void setEmployeeID(Integer employeeID) {
-        this.employeeID = employeeID;
     }
 }

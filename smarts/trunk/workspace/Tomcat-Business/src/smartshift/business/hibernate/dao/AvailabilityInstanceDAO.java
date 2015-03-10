@@ -11,7 +11,7 @@ import smartshift.common.util.log4j.SmartLogger;
  * @author "D. Fisher Evans <contact@fisherevans.com>"
  * data access object for availability templates
  */
-public class AvailabilityInstanceDAO extends BaseBusinessDAO<AvailabilityInstanceModel> {
+public class AvailabilityInstanceDAO extends BaseBusinessDAO<AvailabilityInstanceModel>{
     private static final SmartLogger logger = new SmartLogger(AvailabilityInstanceDAO.class);
     
     /**
@@ -51,15 +51,13 @@ public class AvailabilityInstanceDAO extends BaseBusinessDAO<AvailabilityInstanc
      * @param templateID the template id
      * @param startDate when the instance starts
      * @param endDate when it ends
-     * @param employeeID the owner
      * @return the task object
      */
-    public AddTask<AvailabilityInstanceModel> add(Integer templateID, Date startDate, Date endDate, Integer employeeID) {
+    public AddTask<AvailabilityInstanceModel> add(Integer templateID, Date startDate, Date endDate) {
         AvailabilityInstanceModel instance = new AvailabilityInstanceModel();
         instance.setTemplateID(templateID);
         instance.setStartDate(startDate);
         instance.setEndDate(endDate);
-        instance.setEmployeeID(employeeID);
         return add(instance);
     }
 

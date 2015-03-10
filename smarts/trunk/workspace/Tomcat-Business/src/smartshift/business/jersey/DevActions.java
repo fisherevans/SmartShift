@@ -1,5 +1,6 @@
 package smartshift.business.jersey;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -41,25 +42,25 @@ public class DevActions extends BaseBusinessActions {
         json.roles = new HashMap<Integer, RoleJSON>();
         json.groupRoleEmployeeIDs = new HashMap<Integer, Map<Integer, Set<Integer>>>();
         
-        ROMap<UID, CachedObject> cache = getCache().getROCacheMap();
+        ROMap<UID, WeakReference<CachedObject>> cache = getCache().getROCacheMap();
         
         for(UID uid:cache.keySet()) {
             logger.debug("Loading UID" + uid.toString());
             switch(uid.getType()) {
                 case Employee.TYPE_IDENTIFIER: {
-                    Employee employee = (Employee) cache.get(uid);
+                    Employee employee = (Employee) cache.get(uid).get();
                     logger.debug("  Employee: " + (employee == null ? employee : "ID:" + employee.getID()));
                     json.employees.put(employee.getID(), new EmployeeJSON(employee));
                     break;
                 }
                 case Group.TYPE_IDENTIFIER: {
-                    Group group = (Group) cache.get(uid);
+                    Group group = (Group) cache.get(uid).get();
                     logger.debug("  Group: " + (group == null ? group : "ID:" + group.getID()));
                     json.groups.put(group.getID(), new GroupJSON(group));
                     break;
                 }
                 case Role.TYPE_IDENTIFIER: {
-                    Role role = (Role) cache.get(uid);
+                    Role role = (Role) cache.get(uid).get();
                     logger.debug("  Role: " + (role == null ? role : "ID:" + role.getID()));
                     json.roles.put(role.getID(), new RoleJSON(role));
                     break;
