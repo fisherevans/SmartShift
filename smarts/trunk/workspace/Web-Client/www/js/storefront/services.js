@@ -107,17 +107,30 @@ angular.module('storefrontApp.services', [])
             }
         }
     }])
-    .factory('cacheService', ['businessService', function(businessService){
-        var cache;
+    .factory('cacheService', ['$q', 'businessService', function($q, businessService){
+        var cache = null;
         return {
             loadCache: function() {
-                businessService.getFull().success(function(data) {
-                    cache = data.data;
-                })
+              var defer = $q.defer();
+              if(cache === null) {
+                businessService.getFull()
+                  .success(function(response) {
+                    cache = response.data;
+                    defer.resolve(true);
+                  })
+                  .error(function(response) {
+                    defer.reject(false);
+                  });
+              } else {
+                defer.resolve(true);
+              }
+              return defer.promise;
             },
-            getCache: function(){
-                return cache;
+            getGroups: function() {
+              return cache.groups;
+            },
+            getRoles: function() {
+              return angular.copy(cache.roles);
             }
-
         }
     }]);
