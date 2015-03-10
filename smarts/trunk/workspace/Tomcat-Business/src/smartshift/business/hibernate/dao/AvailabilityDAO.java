@@ -10,7 +10,7 @@ import smartshift.common.util.log4j.SmartLogger;
  * @author "D. Fisher Evans <contact@fisherevans.com>"
  * data access object for availability templates
  */
-public class AvailabilityDAO extends BaseBusinessDAO<AvailabilityModel> {
+public class AvailabilityDAO extends BaseBusinessDAO<AvailabilityModel>{
     private static final SmartLogger logger = new SmartLogger(AvailabilityDAO.class);
     
     /**

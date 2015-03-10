@@ -1,5 +1,6 @@
 package smartshift.business.cache.bo;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 import org.hibernate.Session;
@@ -19,16 +20,16 @@ public class Cache {
     
     private BusinessDAOContext _daoContext;
     
-    private Map<UID, CachedObject> _cached;
+    private Map<UID, WeakReference<CachedObject>> _cached;
     
     public Cache(int rootBusID) {
         _rootBusID = rootBusID;
-        _cached = new HashMap<UID, CachedObject>();
+        _cached = new HashMap<UID, WeakReference<CachedObject>>();
         _daoContext = BusinessDAOContext.business(_rootBusID);
     }
     
-    public ROMap<UID, CachedObject> getROCacheMap() {
-        return new ROMap<UID, CachedObject>(_cached);
+    public ROMap<UID, WeakReference<CachedObject>> getROCacheMap() {
+        return new ROMap<UID, WeakReference<CachedObject>>(_cached);
     }
     
     @SuppressWarnings("unchecked")
@@ -36,7 +37,7 @@ public class Cache {
         if(!_cached.containsKey(cachedUID))
             return null;
         try {
-            return (T) _cached.get(cachedUID);
+            return (T) _cached.get(cachedUID).get();
         } catch (Exception e) {
             return null;
         }
@@ -47,7 +48,7 @@ public class Cache {
     }
     
     public void cache(UID uid, CachedObject toCache) {
-        _cached.put(uid, toCache);
+        _cached.put(uid, new WeakReference<CachedObject>(toCache));
     }
     
     public void decache(UID uid) {
@@ -59,21 +60,21 @@ public class Cache {
         UID uid = new UID(Employee.TYPE_IDENTIFIER, empID);
         if(!_cached.containsKey(uid))
             return null;
-        return (Employee) _cached.get(uid);
+        return (Employee) _cached.get(uid).get();
     }
     
     public Role getRole(int roleID) {
         UID uid = new UID(Role.TYPE_IDENTIFIER, roleID);
         if(!_cached.containsKey(uid))
             return null;
-        return (Role) _cached.get(uid);
+        return (Role) _cached.get(uid).get();
     }
     
     public Group getGroup(int groupID) {
         UID uid = new UID(Group.TYPE_IDENTIFIER, groupID);
         if(!_cached.containsKey(uid))
             return null;
-        return (Group) _cached.get(uid);
+        return (Group) _cached.get(uid).get();
     } 
 
     public int getBusinessID() {
@@ -89,8 +90,8 @@ public class Cache {
     }
 
     public void save() {
-        for(CachedObject co : _cached.values()) {
-            co.save();
+        for(WeakReference<CachedObject> co : _cached.values()) {
+            co.get().save();
         }
         clean();
     }
