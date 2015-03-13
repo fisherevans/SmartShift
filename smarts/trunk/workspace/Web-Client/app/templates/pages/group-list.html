@@ -1,4 +1,9 @@
 <div class="appWindow scheduleWindow fadeOpacity">
+    <div class="appNavigationTree">
+        <a class="icon-home appNavigationHome" href="#/newsfeed"></a>
+        <div class="subArrow icon-arrow-right"></div>
+        <div class="currentElement">Group Management</div>
+    </div>
   <h1>Manage Organization</h1>
   <div ng-repeat="(groupID, group) in groupListCtrl.groups">
     <a href="#/groups/{{group.id}}">{{group.name}}</a>

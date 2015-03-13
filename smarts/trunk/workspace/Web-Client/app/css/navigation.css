@@ -46,28 +46,33 @@
   padding-left: 80px;
 }
 
-.navElementAdd20.navElement:not(.current):not(.noScroll):hover {
-  padding-left: 100px;
+.navElementAddPadding.navElement:not(.current):not(.noScroll):hover {
+  padding-left: 140px;
 }
 
 .navLabel {
-  position: absolute;
-  width: 100px;
-  height: 60px;
-  top:0;
-  left:-110px;
-  color:#fff;
-  line-height: 60px;
-  font-size: 14px;
-  text-align: right;
+    position: absolute;
+    width: 100px;
+    height: 60px;
+    top:0;
+    left:-110px;
+    color:#fff;
+    line-height: 60px;
+    font-size: 14px;
+    text-align: right;
+}
+
+.navElementAddPadding .navLabel {
+    width: 130px;
+    left: -140px;
 }
 
 .navElement:not(.current):not(.noScroll):hover .navLabel {
   left:-20px;
 }
 
-.navElementAdd20.navElement:not(.current):not(.noScroll):hover .navLabel {
-  left:0px;
+.navElementAddPadding.navElement:not(.current):not(.noScroll):hover .navLabel {
+  left:10px;
 }
 
 .navElement.current {
