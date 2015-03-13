@@ -1,6 +1,6 @@
 <div class="appWindow scheduleWindow fadeOpacity">
   <h1>Manage Organization</h1>
   <div ng-repeat="(groupID, group) in groupListCtrl.groups">
-    {{group.name}}
+    <a href="#/groups/{{group.id}}">{{group.name}}</a>
   </div>
 </div>

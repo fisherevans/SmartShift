@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="storefrontApp">
+    <head>
+        <title>Smart Shift | SampleLayout</title>
+        <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
+        <link href="../www/css/styleIcomoon.css" rel="stylesheet" />
+        <link href="../www/css/style.css" rel="stylesheet" />
+        <link href='css/styleSmall.css' rel='stylesheet' type='text/css' media="(max-width:700px)">
+        <link href='css/bootstrap.css'rel="stylesheet" type="text/css"/>
+        <link href="../www/css/storefront.css" rel="stylesheet" type="text/css"/>
+        <script src='../global/js/lib/bootstrap/bootstrap.js'></script>
+    </head>
+    <body>
+
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="#">SmartShift</a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="#/login">Log in</a></li>
+                    <li><a href="#/register">Register</a> </li>
+                </ul>
+            </div>
+
+        </nav>
+
+        <div class="container" ng-view ></div>
+
+        <br>
+        <br>
+        <br>
+        <footer class="footer">
+            <div id="copy" class="text-center">Copyright &copy; Babcock &amp; Sons 2015</div>
+            <ul class="list-inline text-center">
+                <li class=""><a href="http://dunari.cis.vtc.edu:8001/smarts">Trac</a></li>
+                <li>|</li>
+                <li class=""><a href="http://home.fisherevans.com/smarts/update.php">Repository</a></li>
+            </ul>
+
+        </footer>
+
+        <script src="../global/js/lib/jquery/jquery-2.1.1.min.js"></script>
+        <script src="../global/js/lib/angular/angular.js"></script>
+        <script src="../global/js/lib/bootstrap/ui-bootstrap-tpls-0.12.0.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular-route.js"></script>
+        <script src="../www/js/storefront/storefront.js"></script>
+        <script src="js/storefront/services.js"></script>
+
+    </body>
+</html>
