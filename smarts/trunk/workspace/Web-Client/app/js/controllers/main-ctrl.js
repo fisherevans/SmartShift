@@ -45,7 +45,6 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                                     console.log($location.url());
                                     $route.reload();
                                     $scope.business = business;
-                                    cacheService.loadCache();
                                 });
                             //$rootScope.sessionId = selectedItem;
                         })
@@ -58,7 +57,6 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                                 console.log($rootScope.sessionID);
                                 console.log($location.url());
                                 httpService.setRootPath(result.data.server);
-                                cacheService.loadCache();
                                 $route.reload();
                             });
                     }

@@ -12,24 +12,24 @@
   box-shadow: none;
 }
 
+.noTextSelect {
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
 /** ------------------------------------------------------------------------ */
 /** ------------------------------------------ COLORING CLASSES ------------ */
 /** ------------------------------------------------------------------------ */
 
-.grayBG
-{ background-color: #808080; }
-.grayBG:hover, .grayBG:focus, .grayBG:active, .grayBG.active
-{ background-color: #616161; }
+.blueBG { background-color: #0080ff; }
+.blueBG:hover, .blueBG:focus, .blueBG:active, .blueBG.active { background-color: #0070e1; }
+.blueBG:disabled { background-color: #a0a0a0; }
 
-.blueBG
-{ background-color: #0080ff; }
-.blueBG:hover, .blueBG:focus, .blueBG:active, .blueBG.active
-{ background-color: #0070e1; }
-
-.orangeBG
-{ background-color: #FF7F00; }
-.orangeBG:hover, .orangeBG:focus, .orangeBG:active, .orangeBG.active
-{  background-color: #E17100; }
+.orangeBG { background-color: #FF7F00; }
+.orangeBG:hover, .orangeBG:focus, .orangeBG:active, .orangeBG.active  {  background-color: #E17100; }
+.orangeBG:disabled { background-color: #a0a0a0; }
 
 /** ------------------------------------------------------------------------ */
 /** ------------------------------------------TRANSITION CLASSES ----------- */
@@ -44,11 +44,11 @@
 }
 
 .fadeColors {
-    -webkit-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
-       -moz-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
-        -ms-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
-         -o-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
-            transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+    -webkit-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+       -moz-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        -ms-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+         -o-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+            transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .fadeOpacity {

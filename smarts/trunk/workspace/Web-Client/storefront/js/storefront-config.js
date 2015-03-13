@@ -11,7 +11,7 @@ angular.module('storefrontApp').config(function($routeProvider){
             controller: 'RegisterController'
         })
         .when('/login', {
-            templateUrl: 'templates/login.html',
+            templateUrl: 'templates/login-modal.html',
             controller: 'LoginController'
         })
         .otherwise({

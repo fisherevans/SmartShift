@@ -1,25 +1,25 @@
 <form name="loginForm" ng-submit="submit()">
   <div class="modal-header">
-    <h3 class="modal-title">Log in</h3>
+    <h3 class="modal-title">SmartShift Login</h3>
   </div>
-  <div class="modal-body loginModal">
-    <p>Please log in with you user credentials.</p>
+  <div class="modal-body" id="loginModal">
+    <p>Please log in with your user credentials.</p>
     <div class="loginInputWrapper smartInputWrapper">
-      <input ng-model="account.username" type="text" ng-class="{inputError:error}" 
+      <input ng-model="account.username" type="text" ng-class="{inputError:error}"
           alt="Username"
-          class="smartInputText fadeColors" id="username" 
+          class="smartInputText fadeColors" id="loginModalUsername"
           placeholder="User Name">
     </div>
     <div class="loginInputWrapper smartInputWrapper">
       <input ng-model="account.password" type="password" ng-class="{inputError:error}"
           alt="Password"
-          class="smartInputText fadeColors" id="password"
+          class="smartInputText fadeColors" id="loginModalPassword"
           placeholder="Password">
     </div>
     <div class="loginInputWrapper smartInputWrapper">
       <div ng-show="error" class="loginError">{{error}}</div>
     </div>
-    <div class="loginRememberWrapper smartInputWrapper textAlignRight">
+    <div class="loginRememberWrapper smartInputWrapper textAlignRight noTextSelect">
       <label class="loginRemember">Remember me<input type="checkbox"></label>
     </div>
   </div>
@@ -27,6 +27,6 @@
     <div class="loginRegister">
       Not registered? <a href="#/register">Click here</a> to register your business.
     </div>
-    <button type="submit" class="smartButton fadeColors blueBG">Sign in</button>
+    <button type="submit" class="smartButton fadeColors blueBG" id="loginModalSubmit">Sign in</button>
   </div>
 </form>

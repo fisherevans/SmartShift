@@ -1,7 +1,7 @@
 /**
  * Created by charlie on 1/27/15.
  */
-angular.module('storefrontApp', [])
+angular.module('smartsDirectives', [])
     .directive('username', function() {
         return {
             restrict: 'A',
@@ -18,4 +18,5 @@ angular.module('storefrontApp', [])
                 })
             }
         }
-    });
+    })
+;
