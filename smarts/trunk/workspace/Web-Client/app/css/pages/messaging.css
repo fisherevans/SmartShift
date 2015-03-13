@@ -1,11 +1,12 @@
 .chatThreadsBox {
-  position: absolute;
-  top:20px;
-  left:20px;
-  bottom:20px;
-  width: 400px;
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
+    position: absolute;
+    top:20px;
+    left:20px;
+    bottom:20px;
+    width: 400px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius:3px;
 }
 
 .newChatThread {

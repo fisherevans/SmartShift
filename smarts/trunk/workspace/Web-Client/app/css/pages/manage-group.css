@@ -1,0 +1,80 @@
+.employeeListWrapper {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    bottom: 10px;
+    width: 250px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius:3px;
+}
+
+.employeeList {
+    position: absolute;
+    top: 50px;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    overflow-y: scroll;
+    border-top: 1px solid #ccc;
+}
+
+.employeeWrapper {
+    cursor: pointer;
+    background-color: #f0f0f0;
+    position: relative;
+    height: 60px;
+}
+
+.employeeWrapper:hover {
+    background-color: #d0d0d0;
+}
+
+.employeeWrapper * {
+    display: inline-block;
+}
+
+.employeeImage {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.employeeText {
+    margin-left: 60px;
+    margin-top: 8px;
+}
+
+.employeeText * {
+    display: block;
+}
+
+.employeeName {
+    font-size: 16px;
+}
+
+.employeeDefaultGroup {
+    color: #888;
+}
+
+.employeeMenuButton {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    font-size: 10px;
+    padding: 3px 5px;
+    background-color: #b0b0b0;
+    border-bottom-left-radius: 3px;
+    opacity: 0;
+}
+
+.employeeWrapper:hover .employeeMenuButton {
+    opacity: 1;
+}
+
+.employeeMenuButton:hover {
+    background-color: #a0a0a0;
+    color: #000;
+}

@@ -14,10 +14,11 @@
 
     <link href="../app/css/style.css" rel="stylesheet" type="text/css" />
 
-    <link href="../app/css/pages/navigation.css" rel="stylesheet" type="text/css" />
+    <link href="css/navigation.css" rel="stylesheet" type="text/css" />
     <link href="../app/css/modals/login.css" rel="stylesheet" type="text/css" />
     <link href="../app/css/pages/newsFeed.css" rel="stylesheet" type="text/css" />
     <link href="../app/css/pages/messaging.css" rel="stylesheet" type="text/css" />
+    <link href="../app/css/pages/manage-group.css" rel="stylesheet" type="text/css" />
 </head>
 <body ng-controller="MainController" >
 <div class="navPane" ng-controller="TabController as tabCtrl">
@@ -51,9 +52,9 @@
         </div>
     </a>
     <a href="#/groups">
-        <div class="navElement fadeNav navElementAdd20" ng-class="{ current: tabCtrl.isSet(5) }" data-window-class=".groupListWindow"
+        <div class="navElement fadeNav navElementAddPadding" ng-class="{ current: tabCtrl.isSet(5) }" data-window-class=".groupListWindow"
              ng-click="tabCtrl.setTab(5)">
-            <div class="navLabel fadeLeft">Organization</div>
+            <div class="navLabel fadeLeft">Group Management</div>
             <div class="navIcon icon-users"></div>
         </div>
     </a>
@@ -62,6 +63,13 @@
              ng-click="tabCtrl.setTab(6)">
             <div class="navLabel fadeLeft">Settings</div>
             <div class="navIcon icon-cog"></div>
+        </div>
+    </a>
+    <a href="#/logout">
+        <div class="navElement fadeNav" ng-class="{ current: tabCtrl.isSet(7) }" data-window-class=".settingsWindow"
+             ng-click="tabCtrl.setTab(7)">
+            <div class="navLabel fadeLeft">Logout</div>
+            <div class="navIcon icon-exit"></div>
         </div>
     </a>
 </div>

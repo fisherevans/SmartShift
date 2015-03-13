@@ -21,17 +21,41 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
                 return defer.promise;
             },
             getGroups: function() {
-                return cache.groups;
+                return angular.copy(cache.groups);
             },
             getRoles: function() {
                 return angular.copy(cache.roles);
             },
+            getEmployees: function() {
+                return angular.copy(cache.employees);
+            },
             getGroup: function(groupID) {
-                var group = cache.groups[groupID];
-                if(group === undefined) {
-                    console.log("Group ID not cached! " + groupID);
+                return angular.copy(cache.groups[groupID]);
+            },
+            getRole: function(roleID) {
+                return angular.copy(cache.roles[roleID]);
+            },
+            getEmployee: function(employeeID) {
+                return angular.copy(cache.employees[employeeID]);
+            },
+            getEmployeesByGroup: function(groupID) {
+                var groupMap = cache.groupRoleEmployeeIDs[groupID];
+                var employees = {};
+                for(var roleID in groupMap) {
+                    var employeeIDs = groupMap[roleID];
+                    for(var employeeID in employeeIDs) {
+                        employees[employeeID] = this.getEmployee(employeeID);
+                    }
                 }
-                return group;
+                return employees;
+            },
+            getRolesByGroup: function(groupID) {
+                var groupMap = cache.groupRoleEmployeeIDs[groupID];
+                var roles = {};
+                for(var roleID in groupMap) {
+                    roles[roleID] = this.getRole(roleID);
+                }
+                return roles;
             }
         }
     }
