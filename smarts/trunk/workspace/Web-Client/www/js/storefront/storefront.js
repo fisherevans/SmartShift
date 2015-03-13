@@ -84,7 +84,7 @@ storeApp.controller('LoginController', ['$scope', '$window', '$modal', 'accounts
                         });
                         modalInstance.result.then(function (selectedItem){
                             console.log(selectedItem);
-                            $window.location.href = 'app.html';
+                            $window.location.href = 'index.html';
                         })
                     }
 
