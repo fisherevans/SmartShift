@@ -12,16 +12,16 @@
     <link href="../global/css/components.css" rel="stylesheet" type="text/css" />
     <link href="../global/css/styleElements.css" rel="stylesheet" type="text/css" />
 
-    <link href="css/style.css" rel="stylesheet" type="text/css" />
+    <link href="../app/css/style.css" rel="stylesheet" type="text/css" />
 
-    <link href="css/pages/navigation.css" rel="stylesheet" type="text/css" />
-    <link href="css/modals/login.css" rel="stylesheet" type="text/css" />
-    <link href="css/pages/newsFeed.css" rel="stylesheet" type="text/css" />
-    <link href="css/pages/messaging.css" rel="stylesheet" type="text/css" />
+    <link href="../app/css/pages/navigation.css" rel="stylesheet" type="text/css" />
+    <link href="../app/css/modals/login.css" rel="stylesheet" type="text/css" />
+    <link href="../app/css/pages/newsFeed.css" rel="stylesheet" type="text/css" />
+    <link href="../app/css/pages/messaging.css" rel="stylesheet" type="text/css" />
 </head>
 <body ng-controller="MainController" >
 <div class="navPane" ng-controller="TabController as tabCtrl">
-    <img class="navLogo" src="images/logoicon.png" />
+    <img class="navLogo" src="../app/images/logoicon.png" />
     <a href="#/newsfeed">
         <div class="navElement fadeNav" ng-class="{ current: tabCtrl.isSet(1) }" data-window-class=".newsfeedWindow"
              ng-click="tabCtrl.setTab(1)">
@@ -75,7 +75,7 @@
 <script src="../global/js/lib/angular/angular-route.min.js"></script>
 <script src="../global/js/lib/bootstrap/bootstrap.js"></script>
 
-<script src="js/app.js"></script>
+<script src="../app/js/app.js"></script>
 
 <script src="../global/js/services/util-service.js"></script>
 <script src="../global/js/services/http-service.js"></script>
@@ -85,21 +85,21 @@
 <script src="../global/js/services/cache-service.js"></script>
 <script src="../global/js/services/group-service.js"></script>
 
-<script src="js/controllers/main-ctrl.js"></script>
-<script src="js/controllers/tab-ctrl.js"></script>
+<script src="../app/js/controllers/main-ctrl.js"></script>
+<script src="../app/js/controllers/tab-ctrl.js"></script>
 
-<script src="js/controllers/modals/login-modal-ctrl.js"></script>
-<script src="js/controllers/modals/business-modal-ctrl.js"></script>
+<script src="../app/js/controllers/modals/login-modal-ctrl.js"></script>
+<script src="../app/js/controllers/modals/business-modal-ctrl.js"></script>
 
-<script src="js/controllers/pages/group-list-ctrl.js"></script>
-<script src="js/controllers/pages/manage-group-ctrl.js"></script>
-<script src="js/controllers/pages/messages-ctrl.js"></script>
-<script src="js/controllers/pages/news-feed-ctrl.js"></script>
-<script src="js/controllers/pages/requests-ctrl.js"></script>
-<script src="js/controllers/pages/schedule-ctrl.js"></script>
-<script src="js/controllers/pages/settings-ctrl.js"></script>
+<script src="../app/js/controllers/pages/group-list-ctrl.js"></script>
+<script src="../app/js/controllers/pages/manage-group-ctrl.js"></script>
+<script src="../app/js/controllers/pages/messages-ctrl.js"></script>
+<script src="../app/js/controllers/pages/news-feed-ctrl.js"></script>
+<script src="../app/js/controllers/pages/requests-ctrl.js"></script>
+<script src="../app/js/controllers/pages/schedule-ctrl.js"></script>
+<script src="../app/js/controllers/pages/settings-ctrl.js"></script>
 
-<script src="js/app-config.js"></script>
+<script src="../app/js/app-config.js"></script>
 
 </body>
 </html>
