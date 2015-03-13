@@ -5,5 +5,3 @@ var app = angular.module('smartsApp', [
     'ui.bootstrap',
     'smartsServices'
 ]);
-
-var services = angular.module('smartsServices', []);
