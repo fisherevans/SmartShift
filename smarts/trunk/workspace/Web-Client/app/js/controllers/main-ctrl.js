@@ -1,5 +1,5 @@
-angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope', 'modalService', '$location', '$route', 'httpService', 'accountsService', 'utilService', 'cacheService',
-    function($scope, $rootScope, modalService, $location, $route, httpService, accountsService, utilService, cacheService){
+angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope', 'modalService', '$location', '$route', '$cookieStore', '$cookies', 'httpService', 'accountsService', 'utilService', 'cacheService',
+    function($scope, $rootScope, modalService, $location, $route, $cookieStore, $cookies, httpService, accountsService, utilService, cacheService){
         $scope.init = function(){
             Array.prototype.findBy = function( key, value ) {
                 for(var i in this){
@@ -9,7 +9,13 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                     }
                 }
                 return undefined;
+
             };
+
+            if($cookieStore.get('sessionID'))
+                $rootScope.sessionID = $cookieStore.get('sessionID');
+            console.log('Cookie: ' + $cookieStore.get('sessionID'));
+
 
             $rootScope.$on("$locationChangeStart", function(event, next, current){
                 var splitCurrent = current.split("#");
@@ -21,11 +27,15 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                 }
             });
         }();
+
+
         $scope.hasSession = function(){
             return $rootScope.sessionID;
         };
         $scope.$watch('$rootScope.sessionID', function(){
             if(!$rootScope.sessionID){
+                console.log("rootscope not set: " + $rootScope.sessionID);
+
                 var result = modalService.loginModal(  );
                 result.then(function (result){
                     $rootScope.username = result.username;
@@ -39,7 +49,12 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                         modalService.businessModal( result.full.businesses ).then(function (business){
                             accountsService.getSession(business.id, business.employeeID)
                                 .success(function (result) {
+                                    var d = new Date();
+                                    d.setTime(d.getTime() + 15*60*1000);
                                     $rootScope.sessionID = result.data.sessionKey;
+                                    $cookies.put('sessionID', $rootScope.sessionID, {
+                                        expires: d
+                                    });
                                     httpService.setRootPath(result.data.server);
                                     console.log($rootScope.sessionID);
                                     console.log($location.url());
@@ -53,7 +68,12 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                         $scope.business = result.full.businesses[0];
                         accountsService.getSession(result.full.businesses[0].id, result.full.businesses[0].employeeID)
                             .success(function (result) {
+                                var d = new Date();
+                                d.setTime(d.getTime() + 15*60*1000);
                                 $rootScope.sessionID = result.data.sessionKey;
+                                $cookieStore.put('sessionID', $rootScope.sessionID, {
+                                    expires: d
+                                });
                                 console.log($rootScope.sessionID);
                                 console.log($location.url());
                                 httpService.setRootPath(result.data.server);
