@@ -5,7 +5,7 @@ angular.module('smartsServices').factory('modalService', ['$modal', '$rootScope'
         return {
             loginModal: function( path ){
                 return $modal.open({
-                    templateUrl: 'templates/login.html',
+                    templateUrl: '../app/templates/modals/login.html',
                     controller: 'LoginModalController',
                     backdrop: 'static',
                     backdropClass: 'dim',
@@ -14,7 +14,7 @@ angular.module('smartsServices').factory('modalService', ['$modal', '$rootScope'
             },
             businessModal: function( business ) {
                 return $modal.open({
-                    templateUrl: 'templates/business-modal.html',
+                    templateUrl: '../app/templates/modals/business-modal.html',
                     controller: 'BusinessModalController',
                     backdrop: 'static',
                     backdropClass: 'dim',
