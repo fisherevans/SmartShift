@@ -17,7 +17,11 @@ Business.phoneNumber
 
 <form name="registrationForm" ng-submit="registrationForm.$valid && submit()" novalidate>
 
-    <
+    <div class="form-group">
+        <input ng-model="user.username" ng-blur="checkUsername()" type="text" ng-class="{inputError:error}"
+                class="smartInputText fadeColors" id="username"
+                placeholder="User Name" required>
+    </div>
 
     <div> Registration is {{registrationForm.$valid }}</div>
 </form>
