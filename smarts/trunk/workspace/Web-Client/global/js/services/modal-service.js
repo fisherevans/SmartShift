@@ -5,7 +5,7 @@ angular.module('smartsServices').factory('modalService', ['$modal', '$rootScope'
         return {
             loginModal: function( path ){
                 return $modal.open({
-                    templateUrl: '../app/templates/modals/login.html',
+                    templateUrl: '../app/templates/modals/login-modal.html',
                     controller: 'LoginModalController',
                     backdrop: 'static',
                     backdropClass: 'dim',

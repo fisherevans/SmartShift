@@ -1,4 +1,4 @@
-.loginModal p {
+#loginModal p {
   width: 50%;
   margin: 10px auto;
   padding-bottom: 10px;
@@ -73,5 +73,4 @@
   padding-right: 25px;
   line-height: 50px;
   font-size: 50px;
-  height
 }
