@@ -45,7 +45,7 @@ body {
     color: #222;
     font-weight: 700;
     text-decoration: none;
-    padding: 0px 15px;
+    padding: 0px 10px;
 }
 
 .appNavigationHome:hover {
@@ -55,14 +55,15 @@ body {
 }
 
 #dynamicAppNavigationTree .textElement {
-    padding: 0px 15px;
+    padding: 0px 10px;
     font-weight: 700;
 }
 
 #dynamicAppNavigationTree .linkElement, #dynamicAppNavigationTree .linkElement:active, #dynamicAppNavigationTree .linkElement:focus {
     color: #0080ff;
     font-weight: 700;
-    padding: 0px 15px;
+    padding: 0px 5px;
+    margin: 0px 5px;
     text-decoration: none;
 }
 
