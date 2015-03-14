@@ -35,5 +35,9 @@ angular.module('smartsApp').controller('MessagesController', [ '$scope',
     function($scope){
         this.threads = threads;
         $scope.threadSearch = '';
+
+        updateNavigation([
+            { "type":"text", "text":"Messaging" }
+        ]);
     }
 ]);

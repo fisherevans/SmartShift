@@ -12,6 +12,7 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
 
             };
 
+            //$cookieStore.remove('sessionID')
             if($cookieStore.get('sessionID'))
                 $rootScope.sessionID = $cookieStore.get('sessionID');
             console.log('Cookie: ' + $cookieStore.get('sessionID'));
@@ -24,7 +25,9 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                     && splitCurrent[1] != "/") {
                     console.log("Preventing page load due to missing session");
                     event.preventDefault();
+                    return;
                 }
+                // TODO update tab based on URL
             });
         }();
 

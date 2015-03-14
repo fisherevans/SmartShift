@@ -1,7 +1,6 @@
 'use strict'
 
 angular.module('smartsApp').config(function($routeProvider){
-
     $routeProvider
         .when('/newsfeed', {
             templateUrl: '../app/templates/pages/newsfeed.html',
