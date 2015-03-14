@@ -65,16 +65,25 @@
             <div class="navIcon icon-cog"></div>
         </div>
     </a>
-    <a href="#/logout">
-        <div class="navElement fadeNav" ng-class="{ current: tabCtrl.isSet(7) }" data-window-class=".settingsWindow"
-             ng-click="tabCtrl.setTab(7)">
-            <div class="navLabel fadeLeft">Logout</div>
-            <div class="navIcon icon-exit"></div>
-        </div>
-    </a>
 </div>
-<div class="appWindowBg"></div>
-<div ng-view ng-if="hasSession()"></div>
+<div class="appPane" ng-if="hasSession()">
+    <div class="appNavigationTree appBlock noTextSelect">
+        <div id="logoutWrapper" class="fadeColors noTextSelect">
+            <div class="icon-exit logoutIcon fadeColors"></div>
+            <div class="logoutText fadeColors">Logout</div>
+        </div>
+        <div id="staticAppNavigationTree">
+            <a class="icon-home appNavigationHome fadeColors" href="#/newsfeed"></a>
+            <div class="icon-arrow-right appNavigationArrow"></div>
+        </div>
+        <div id="dynamicAppNavigationTree">
+            <a class="linkElement fadeColors" href="#/groups">Group Management</a>
+            <div class="subArrow icon-arrow-right"></div>
+            <div class="textElement">Group Name</div>
+        </div>
+    </div>
+    <div ng-view class="appContent fadeOpacity "></div>
+</div>
 
 
 <script src="../global/js/lib/jquery/jquery-2.1.1.min.js"></script>
