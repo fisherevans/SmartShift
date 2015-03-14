@@ -31,6 +31,14 @@
 .orangeBG:hover, .orangeBG:focus, .orangeBG:active, .orangeBG.active  {  background-color: #E17100; }
 .orangeBG:disabled { background-color: #a0a0a0; }
 
+.redBG { background-color: #FF2F00; }
+.redBG:hover, .redBG:focus, .redBG:active, .redBG.active  {  background-color: #E12900; }
+.redBG:disabled { background-color: #a0a0a0; }
+
+.greenBG { background-color: #0DFF00; }
+.greenBG:hover, .greenBG:focus, .greenBG:active, .greenBG.active  {  background-color: #0BE100; }
+.greenBG:disabled { background-color: #a0a0a0; }
+
 /** ------------------------------------------------------------------------ */
 /** ------------------------------------------TRANSITION CLASSES ----------- */
 /** ------------------------------------------------------------------------ */

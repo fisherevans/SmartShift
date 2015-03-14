@@ -1,0 +1,52 @@
+<form name="addEmployeeForm" ng-submit="submit()">
+    <div class="modal-header">
+        <h3 class="modal-title">Add a New Employee</h3>
+    </div>
+    <div class="modal-body" id="addEmployeeModal">
+        <div class="smartInputLine">
+            <div class="smartInputLabel">First Name</div>
+            <div class="smartInputWrapper">
+                <input ng-model="employee.firstName" type="text" ng-class="{inputError:error}"
+                       alt="Username" class="smartInputText fadeColors" placeholder="Required">
+            </div>
+        </div>
+        <div class="smartInputLine">
+            <div class="smartInputLabel">Last Name</div>
+            <div class="smartInputWrapper">
+                <input ng-model="employee.lastName" type="text" ng-class="{inputError:error}"
+                       alt="Username" class="smartInputText fadeColors" placeholder="Required">
+            </div>
+        </div>
+        <div class="smartInputLine">
+            <div class="smartInputLabel">Email Address<div class="sub">Used for registration</div></div>
+            <div class="smartInputWrapper">
+                <input ng-model="employee.email" type="text" ng-class="{inputError:error}"
+                       alt="Username" class="smartInputText fadeColors" placeholder="Optional">
+            </div>
+        </div>
+        <div class="smartInputLine">
+            <div class="smartInputLabel">Home Group</div>
+            <div class="smartInputWrapper">
+                <select alt="Home Group" class="smartInputSelect fadeColors" ng-model="employee.homeGroup">
+                    <option value="{{group.id}}">{{group.name}} (Currently Managing)</option>
+                    <option value="-2">Dummy Group 1</option>
+                    <option value="-3">Dummy Group 2</option>
+                </select>
+            </div>
+        </div>
+        <div class="smartInputLine">
+            <div class="smartInputLabel">Roles<div class="sub">The roles that this initially be in</div></div>
+            <div class="smartInputWrapper">
+                <label class="smartCheckboxLabel noTextSelect fadeColors" ng-repeat="(roleID, role) in roles">
+                    <input type="checkbox" class="smartCheckbox" value="{{role.id}}">
+                    <div class="smartCheckboxCheck icon-not-checked fadeColors"></div>
+                    {{role.name}}
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="smartButton fadeColors redBG addEmployeeModalButton floatLeft" ng-click="closeAddEmployeeModal()">Cancel</div>
+        <button type="submit" class="smartButton fadeColors blueBG addEmployeeModalButton">Create Employee</button>
+    </div>
+</form>

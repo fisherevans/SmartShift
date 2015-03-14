@@ -25,6 +25,19 @@ angular.module('smartsServices').factory('modalService', ['$modal', '$rootScope'
                         }
                     }
                 }).result;
+            },
+            addEmployeeModal: function( group, roles ) {
+                return $modal.open({
+                    templateUrl: '../app/templates/modals/add-employee-modal.html',
+                    controller: 'AddEmployeeModalController',
+                    backdrop: 'static',
+                    backdropClass: 'dim',
+                    keyboard: false,
+                    resolve: {
+                        "group": function() { return group; },
+                        "roles": function() { return roles; }
+                    }
+                }).result;
             }
         }
     }

@@ -44,12 +44,10 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                                     alert("Something went terribly wrong");
                                 });
                         };
-                        if(utilService.getSize(result.full.businesses) > 1) {
+                        if(utilService.getSize(result.full.businesses) > 1)
                             modalService.businessModal( result.full.businesses).then(executeLogin)
-                        }
-                        else {
+                        else
                             executeLogin(result.full.businesses[0]);
-                        }
                     } // end then function
                 ); // end modalService.loginModal
             } // end if no session

@@ -86,3 +86,7 @@
     background-color: #c0c0c0;
     color: #000;
 }
+
+.employeeWrapper img {
+    pointer-events: none;
+}
