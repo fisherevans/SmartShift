@@ -39,5 +39,10 @@ angular.module('smartsApp').controller('MessagesController', [ '$scope',
         updateNavigation([
             { "type":"text", "text":"Messaging" }
         ]);
+
+
+        $scope.$on("$routeChangeSuccess", function (scope, next, current) {
+            $scope.transitionState = "active"
+        });
     }
 ]);
