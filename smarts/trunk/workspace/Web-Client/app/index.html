@@ -33,7 +33,7 @@
             </div>
         </div>
 
-        <div class="appPane" ng-if="hasSession()">
+        <div class="appPane">
             <div class="appNavigationTree appBlock noTextSelect">
                 <div id="logoutWrapper" class="fadeColors noTextSelect" ng-click="mainCtrl.forceLogout()">
                     <div class="icon-exit logoutIcon fadeColors"></div>
@@ -45,7 +45,7 @@
                 </div>
                 <div id="dynamicAppNavigationTree"></div>
             </div>
-            <div ng-view class="appContent fadeOpacity "></div>
+            <div ng-view class="appContent {{transitionState}}" ng-if="hasSession()"></div>
         </div>
 
         <script src="../global/js/lib/jquery/jquery-2.1.1.min.js"></script>
@@ -54,6 +54,7 @@
         <script src="../global/js/lib/angular/angular-route.min.js"></script>
         <script src="../global/js/lib/bootstrap/bootstrap.js"></script>
         <script src="//code.angularjs.org/1.2.10/angular-cookies.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-animate.js"></script>
 
         <script src="../global/js/directives.js"></script>
 

@@ -101,4 +101,4 @@
 
 .textAlignRight {
   text-align: right;
-}
+}          { animation: slideOutRight 0.5s both ease-in; z-index: 9999; }

@@ -41,6 +41,7 @@ function updateNavigation(elementDefs) { // TODO - charlie, i don't know where t
 
 var app = angular.module('smartsApp', [
     'ngRoute',
+    'ngAnimate',
     'ui.bootstrap',
     'smartsServices',
     'ngCookies'
