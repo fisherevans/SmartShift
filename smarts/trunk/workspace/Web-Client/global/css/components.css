@@ -10,6 +10,7 @@
     font-weight: 700;
     font-size: 14px;
     vertical-align: middle;
+    cursor: pointer;
 }
 
 .smartButton:hover, .grayBG:focus, .grayBG:active, .grayBG.active {

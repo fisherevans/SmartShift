@@ -1,73 +1,109 @@
 @font-face {
-	font-family: 'icomoon';
-	src:url('fonts/icomoon.eot?9p5vmy');
-	src:url('fonts/icomoon.eot?#iefix9p5vmy') format('embedded-opentype'),
-		url('fonts/icomoon.woff?9p5vmy') format('woff'),
-		url('fonts/icomoon.ttf?9p5vmy') format('truetype'),
-		url('fonts/icomoon.svg?9p5vmy#icomoon') format('svg');
-	font-weight: normal;
-	font-style: normal;
+  font-family: 'icomoon';
+  src:url('fonts/icomoon.eot?-ocaskl');
+  src:url('fonts/icomoon.eot?#iefix-ocaskl') format('embedded-opentype'),
+    url('fonts/icomoon.woff?-ocaskl') format('woff'),
+    url('fonts/icomoon.ttf?-ocaskl') format('truetype'),
+    url('fonts/icomoon.svg?-ocaskl#icomoon') format('svg');
+  font-weight: normal;
+  font-style: normal;
 }
 
 [class^="icon-"], [class*=" icon-"] {
-	font-family: 'icomoon';
-	speak: none;
-	font-style: normal;
-	font-weight: normal;
-	font-variant: normal;
-	text-transform: none;
-	line-height: 1;
+  font-family: 'icomoon';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
 
-	/* Better Font Rendering =========== */
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.icon-chat:before {
-	content: "\e60a";
+.icon-pencil:before {
+  content: "\e60b";
 }
 
 .icon-home:before {
-	content: "\e604";
+  content: "\e604";
 }
 
 .icon-newspaper:before {
-	content: "\e605";
+  content: "\e605";
 }
 
 .icon-drawer:before {
-	content: "\e600";
+  content: "\e600";
 }
 
 .icon-user:before {
-	content: "\e606";
+  content: "\e606";
 }
 
 .icon-users:before {
-	content: "\e607";
+  content: "\e607";
 }
 
 .icon-cog:before {
-	content: "\e601";
+  content: "\e601";
 }
 
 .icon-list:before {
-	content: "\e608";
+  content: "\e608";
 }
 
 .icon-exit:before {
-	content: "\e609";
+  content: "\e609";
 }
 
 .icon-add:before {
-	content: "\e602";
+  content: "\e602";
+}
+
+.icon-chat:before {
+  content: "\e60a";
+}
+
+.icon-newspaper:before {
+  content: "\e605";
+}
+
+.icon-drawer:before {
+  content: "\e600";
+}
+
+.icon-user:before {
+  content: "\e606";
+}
+
+.icon-users:before {
+  content: "\e607";
+}
+
+.icon-cog:before {
+  content: "\e601";
+}
+
+.icon-list:before {
+  content: "\e608";
+}
+
+.icon-exit:before {
+  content: "\e609";
+}
+
+.icon-add:before {
+  content: "\e602";
 }
 
 .icon-calendar:before {
-	content: "\e603";
+  content: "\e603";
 }
 
 .icon-arrow-right:before {
-	content: "\e60c";
+  content: "\e60c";
 }
 
