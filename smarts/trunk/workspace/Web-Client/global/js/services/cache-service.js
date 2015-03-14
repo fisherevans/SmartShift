@@ -53,7 +53,8 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
                 var groupMap = cache.groupRoleEmployeeIDs[groupID];
                 var roles = {};
                 for(var roleID in groupMap) {
-                    roles[roleID] = this.getRole(roleID);
+                    if(roleID > 0)
+                        roles[roleID] = this.getRole(roleID);
                 }
                 return roles;
             }
