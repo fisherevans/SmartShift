@@ -1,4 +1,9 @@
 <div class="employeeListWrapper">
+    <div class="smartButton blueBG fadeColors addEmployeeButton">
+        <span class="icon-add"></span>
+        &nbsp;&nbsp;
+        Add Employee
+    </div>
     <div class="employeeList">
         <div class="employeeWrapper fadeColors noTextSelect" draggable="true" ng-repeat="(employeeID, employee) in manageGroupCtrl.employees">
             <img src="../global/images/default.png" class="employeeImage" />
@@ -6,7 +11,7 @@
                 <div class="employeeName">{{employee.firstName}} {{employee.lastName}}</div>
                 <div class="employeeDefaultGroup">Default Group</div>
             </div>
-            <div class="employeeMenuButton fadeColorOpacity">Manage v</div>
+            <div class="employeeMenuButton fadeColorOpacity icon-cog"></div>
         </div>
     </div>
 </div>

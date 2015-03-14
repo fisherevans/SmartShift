@@ -1,122 +1,87 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="smartsApp" ng-strict-di>
-<head>
-    <title>Smart Shift | SampleLayout</title>
-    <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
+    <head>
+        <title>Smart Shift | SampleLayout</title>
+        <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
 
-    <link href="../global/css/root.css" rel="stylesheet" type="text/css" />
-    <link href="../global/css/icomoon/icomoon.css" rel="stylesheet" />
-    <link href='../global/css/lib/bootstrap/bootstrap.min.css' rel="stylesheet" type="text/css" />
-    <link href="../global/css/bootstrapOverride.css" rel="stylesheet" type="text/css" />
+        <link href="../global/css/root.css" rel="stylesheet" type="text/css" />
+        <link href="../global/css/icomoon/icomoon.css" rel="stylesheet" />
+        <link href='../global/css/lib/bootstrap/bootstrap.min.css' rel="stylesheet" type="text/css" />
+        <link href="../global/css/bootstrapOverride.css" rel="stylesheet" type="text/css" />
 
-    <link href="../global/css/components.css" rel="stylesheet" type="text/css" />
-    <link href="../global/css/styleElements.css" rel="stylesheet" type="text/css" />
+        <link href="../global/css/components.css" rel="stylesheet" type="text/css" />
+        <link href="../global/css/styleElements.css" rel="stylesheet" type="text/css" />
 
-    <link href="../app/css/style.css" rel="stylesheet" type="text/css" />
+        <link href="../app/css/style.css" rel="stylesheet" type="text/css" />
 
-    <link href="css/navigation.css" rel="stylesheet" type="text/css" />
-    <link href="../app/css/modals/login.css" rel="stylesheet" type="text/css" />
-    <link href="../app/css/pages/newsFeed.css" rel="stylesheet" type="text/css" />
-    <link href="../app/css/pages/messaging.css" rel="stylesheet" type="text/css" />
-    <link href="../app/css/pages/manage-group.css" rel="stylesheet" type="text/css" />
-</head>
-<body ng-controller="MainController" >
-<div class="navPane" ng-controller="TabController as tabCtrl">
-    <img class="navLogo" src="../global/images/logoicon.png" />
-    <a href="#/newsfeed">
-        <div class="navElement fadeNav" ng-class="{ current: tabCtrl.isSet(1) }" data-window-class=".newsfeedWindow"
-             ng-click="tabCtrl.setTab(1)">
-            <div class="navLabel fadeLeft">News Feed</div>
-            <div class="navIcon icon-newspaper"></div>
+        <link href="css/navigation.css" rel="stylesheet" type="text/css" />
+        <link href="../app/css/modals/login.css" rel="stylesheet" type="text/css" />
+        <link href="../app/css/pages/newsFeed.css" rel="stylesheet" type="text/css" />
+        <link href="../app/css/pages/messaging.css" rel="stylesheet" type="text/css" />
+        <link href="../app/css/pages/manage-group.css" rel="stylesheet" type="text/css" />
+    </head>
+    <body ng-controller="MainController as mainCtrl" >
+        <div class="navPane" ng-controller="TabController as tabCtrl">
+            <img class="navLogo" src="../global/images/logoicon.png" />
+            <div ng-repeat="navTab in tabCtrl.navTabs">
+                <a href="#/{{navTab.link}}" ng-click="tabCtrl.setTab(navTab.tabID)">
+                    <div class="navElement fadeNav {{navTab.otherClass}}" ng-class="{ current: tabCtrl.isSet(navTab.tabID) }">
+                        <div class="navLabel fadeLeft">{{navTab.label}}</div>
+                        <div class="navIcon {{navTab.iconClass}}"></div>
+                    </div>
+                </a>
+            </div>
         </div>
-    </a>
-    <a href="#/messages">
-        <div class="navElement fadeNav" ng-class="{ current: tabCtrl.isSet(2) }" data-window-class=".chatWindow"
-             ng-click="tabCtrl.setTab(2)">
-            <div class="navLabel fadeLeft">Messages</div>
-            <div class="navIcon icon-chat"></div>
+
+        <div class="appPane" ng-if="hasSession()">
+            <div class="appNavigationTree appBlock noTextSelect">
+                <div id="logoutWrapper" class="fadeColors noTextSelect" ng-click="mainCtrl.forceLogout()">
+                    <div class="icon-exit logoutIcon fadeColors"></div>
+                    <div class="logoutText fadeColors">Logout</div>
+                </div>
+                <div id="staticAppNavigationTree">
+                    <a class="icon-home appNavigationHome fadeColors" href="#/newsfeed"></a>
+                    <div class="icon-arrow-right appNavigationArrow"></div>
+                </div>
+                <div id="dynamicAppNavigationTree"></div>
+            </div>
+            <div ng-view class="appContent fadeOpacity "></div>
         </div>
-    </a>
-    <a href="#/requests">
-        <div class="navElement fadeNav" ng-class="{ current: tabCtrl.isSet(3) }" data-window-class=".requestsWindow"
-             ng-click="tabCtrl.setTab(3)">
-            <div class="navLabel fadeLeft">Requests</div>
-            <div class="navIcon icon-drawer"></div>
-        </div>
-    </a>
-    <a href="#/schedule">
-        <div class="navElement fadeNav" ng-class="{ current: tabCtrl.isSet(4) }" data-window-class=".scheduleWindow"
-             ng-click="tabCtrl.setTab(4)">
-            <div class="navLabel fadeLeft">Schedule</div>
-            <div class="navIcon icon-calendar"></div>
-        </div>
-    </a>
-    <a href="#/groups">
-        <div class="navElement fadeNav navElementAddPadding" ng-class="{ current: tabCtrl.isSet(5) }" data-window-class=".groupListWindow"
-             ng-click="tabCtrl.setTab(5)">
-            <div class="navLabel fadeLeft">Group Management</div>
-            <div class="navIcon icon-users"></div>
-        </div>
-    </a>
-    <a href="#/settings">
-        <div class="navElement fadeNav" ng-class="{ current: tabCtrl.isSet(6) }" data-window-class=".settingsWindow"
-             ng-click="tabCtrl.setTab(6)">
-            <div class="navLabel fadeLeft">Settings</div>
-            <div class="navIcon icon-cog"></div>
-        </div>
-    </a>
-</div>
-<div class="appPane" ng-if="hasSession()">
-    <div class="appNavigationTree appBlock noTextSelect">
-        <div id="logoutWrapper" class="fadeColors noTextSelect">
-            <div class="icon-exit logoutIcon fadeColors"></div>
-            <div class="logoutText fadeColors">Logout</div>
-        </div>
-        <div id="staticAppNavigationTree">
-            <a class="icon-home appNavigationHome fadeColors" href="#/newsfeed"></a>
-            <div class="icon-arrow-right appNavigationArrow"></div>
-        </div>
-        <div id="dynamicAppNavigationTree"></div>
-    </div>
-    <div ng-view class="appContent fadeOpacity "></div>
-</div>
 
+        <script src="../global/js/lib/jquery/jquery-2.1.1.min.js"></script>
+        <script src="../global/js/lib/angular/angular.js"></script>
+        <script src="../global/js/lib/bootstrap/ui-bootstrap-tpls-0.12.0.min.js"></script>
+        <script src="../global/js/lib/angular/angular-route.min.js"></script>
+        <script src="../global/js/lib/bootstrap/bootstrap.js"></script>
+        <script src="//code.angularjs.org/1.2.10/angular-cookies.js"></script>
 
-<script src="../global/js/lib/jquery/jquery-2.1.1.min.js"></script>
-<script src="../global/js/lib/angular/angular.js"></script>
-<script src="../global/js/lib/bootstrap/ui-bootstrap-tpls-0.12.0.min.js"></script>
-<script src="../global/js/lib/angular/angular-route.min.js"></script>
-<script src="../global/js/lib/bootstrap/bootstrap.js"></script>
-<script src="//code.angularjs.org/1.2.10/angular-cookies.js"></script>
+        <script src="../global/js/directives.js"></script>
 
-<script src="../global/js/directives.js"></script>
+        <script src="../app/js/app.js"></script>
 
-<script src="../app/js/app.js"></script>
+        <script src="../global/js/services.js"></script>
+        <script src="../global/js/services/util-service.js"></script>
+        <script src="../global/js/services/http-service.js"></script>
+        <script src="../global/js/services/modal-service.js"></script>
+        <script src="../global/js/services/accounts-service.js"></script>
+        <script src="../global/js/services/business-service.js"></script>
+        <script src="../global/js/services/cache-service.js"></script>
+        <script src="../global/js/services/group-service.js"></script>
 
-<script src="../global/js/services.js"></script>
-<script src="../global/js/services/util-service.js"></script>
-<script src="../global/js/services/http-service.js"></script>
-<script src="../global/js/services/modal-service.js"></script>
-<script src="../global/js/services/accounts-service.js"></script>
-<script src="../global/js/services/business-service.js"></script>
-<script src="../global/js/services/cache-service.js"></script>
-<script src="../global/js/services/group-service.js"></script>
+        <script src="../app/js/controllers/main-ctrl.js"></script>
+        <script src="../app/js/controllers/tab-ctrl.js"></script>
 
-<script src="../app/js/controllers/main-ctrl.js"></script>
-<script src="../app/js/controllers/tab-ctrl.js"></script>
+        <script src="../app/js/controllers/modals/login-modal-ctrl.js"></script>
+        <script src="../app/js/controllers/modals/business-modal-ctrl.js"></script>
 
-<script src="../app/js/controllers/modals/login-modal-ctrl.js"></script>
-<script src="../app/js/controllers/modals/business-modal-ctrl.js"></script>
+        <script src="../app/js/controllers/pages/group-list-ctrl.js"></script>
+        <script src="../app/js/controllers/pages/manage-group-ctrl.js"></script>
+        <script src="../app/js/controllers/pages/messages-ctrl.js"></script>
+        <script src="../app/js/controllers/pages/news-feed-ctrl.js"></script>
+        <script src="../app/js/controllers/pages/requests-ctrl.js"></script>
+        <script src="../app/js/controllers/pages/schedule-ctrl.js"></script>
+        <script src="../app/js/controllers/pages/settings-ctrl.js"></script>
 
-<script src="../app/js/controllers/pages/group-list-ctrl.js"></script>
-<script src="../app/js/controllers/pages/manage-group-ctrl.js"></script>
-<script src="../app/js/controllers/pages/messages-ctrl.js"></script>
-<script src="../app/js/controllers/pages/news-feed-ctrl.js"></script>
-<script src="../app/js/controllers/pages/requests-ctrl.js"></script>
-<script src="../app/js/controllers/pages/schedule-ctrl.js"></script>
-<script src="../app/js/controllers/pages/settings-ctrl.js"></script>
-
-<script src="../app/js/app-config.js"></script>
-
-</body>
+        <script src="../app/js/app-config.js"></script>
+    </body>
 </html>

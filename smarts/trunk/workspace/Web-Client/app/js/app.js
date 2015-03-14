@@ -1,5 +1,16 @@
 'use strict';
 
+Array.prototype.findBy = function(key, value) {
+    for(var i in this){
+        if(this.hasOwnProperty(i)
+            && this[i].hasOwnProperty(key)
+            && this[i][key] == value) {
+            return this[i];
+        }
+    }
+    return undefined;
+};
+
 function updateNavigation(elementDefs) { // TODO - charlie, i don't know where to put this
     var navElements = [];
     for(var id in elementDefs) {

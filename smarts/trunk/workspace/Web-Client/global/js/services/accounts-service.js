@@ -16,6 +16,11 @@ angular.module('smartsServices').factory('accountsService', ['$rootScope', 'http
                 };
                 return httpService.put('/accounts/user/session', data);
 
+            },
+            util: {
+                login: function() {
+
+                }
             }
         }
     }
