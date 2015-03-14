@@ -1,8 +1,8 @@
 .employeeListWrapper {
     position: absolute;
-    top: 50px;
-    left: 10px;
-    bottom: 10px;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
     width: 250px;
     background-color: #f0f0f0;
     border: 1px solid #ccc;

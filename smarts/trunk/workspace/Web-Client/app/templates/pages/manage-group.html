@@ -1,27 +1,17 @@
-<div class="appWindow manageGroupWindow fadeOpacity">
-    <div class="appNavigationTree">
-        <a class="icon-home appNavigationHome" href="#/newsfeed"></a>
-        <div class="subArrow icon-arrow-right"></div>
-        <a class="linkElement fadeColors" href="#/groups">Group Management</a>
-        <div class="subArrow icon-arrow-right"></div>
-        <div class="currentElement">{{manageGroupCtrl.group.name}}</div>
-    </div>
-
-    <div class="employeeListWrapper">
-        <div class="employeeList">
-            <div class="employeeWrapper fadeColors noTextSelect" draggable="true" ng-repeat="(employeeID, employee) in manageGroupCtrl.employees">
-                <img src="../global/images/default.png" class="employeeImage" />
-                <div class="employeeText">
-                    <div class="employeeName">{{employee.firstName}} {{employee.lastName}}</div>
-                    <div class="employeeDefaultGroup">Default Group</div>
-                </div>
-                <div class="employeeMenuButton fadeColorOpacity">Manage v</div>
+<div class="employeeListWrapper">
+    <div class="employeeList">
+        <div class="employeeWrapper fadeColors noTextSelect" draggable="true" ng-repeat="(employeeID, employee) in manageGroupCtrl.employees">
+            <img src="../global/images/default.png" class="employeeImage" />
+            <div class="employeeText">
+                <div class="employeeName">{{employee.firstName}} {{employee.lastName}}</div>
+                <div class="employeeDefaultGroup">Default Group</div>
             </div>
+            <div class="employeeMenuButton fadeColorOpacity">Manage v</div>
         </div>
     </div>
-
-    <!-- <h2>Roles</h2>
-    <div ng-repeat="(roleID, role) in manageGroupCtrl.roles">
-        {{role.name}}
-    </div> -->
 </div>
+
+<!-- <h2>Roles</h2>
+<div ng-repeat="(roleID, role) in manageGroupCtrl.roles">
+    {{role.name}}
+</div> -->
