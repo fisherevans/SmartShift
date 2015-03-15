@@ -17,6 +17,13 @@ angular.module('smartsServices').factory('utilService', [
                     if( obj.hasOwnProperty(key)) keys.push(key);
                 }
                 return keys;
+            },
+            validName: function(name) {
+                if(name == null || name === undefined)
+                    return false;
+                if(name.length < 1 || name.length > 40)
+                    return false;
+                return true;
             }
         }
     }

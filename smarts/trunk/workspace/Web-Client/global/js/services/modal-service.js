@@ -26,7 +26,7 @@ angular.module('smartsServices').factory('modalService', ['$modal', '$rootScope'
                     }
                 }).result;
             },
-            addEmployeeModal: function( group, roles ) {
+            addEmployeeModal: function( defaultModel ) {
                 return $modal.open({
                     templateUrl: '../app/templates/modals/add-employee-modal.html',
                     controller: 'AddEmployeeModalController',
@@ -34,8 +34,7 @@ angular.module('smartsServices').factory('modalService', ['$modal', '$rootScope'
                     backdropClass: 'dim',
                     keyboard: false,
                     resolve: {
-                        "group": function() { return group; },
-                        "roles": function() { return roles; }
+                        "defaultModel": function() { return defaultModel; }
                     }
                 }).result;
             }

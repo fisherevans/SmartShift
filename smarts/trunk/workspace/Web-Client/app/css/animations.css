@@ -1,0 +1,41 @@
+@keyframes         fadeInAnim { 0%, 50% { opacity: 0; } 100% { opacity: 1; } }
+@-moz-keyframes    fadeInAnim { 0%, 50% { opacity: 0; } 100% { opacity: 1; } }
+@-webkit-keyframes fadeInAnim { 0%, 50% { opacity: 0; } 100% { opacity: 1; } }
+
+@keyframes         fadeOutAnim { 0% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@-moz-keyframes    fadeOutAnim { 0% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@-webkit-keyframes fadeOutAnim { 0% { opacity: 1; } 50%, 100% { opacity: 0; } }
+
+@keyframes         vertAccordIn { 0% { max-height:0px; } 100% { max-height:0px; } }
+@-moz-keyframes    vertAccordIn { 0% { -moz-transform: scaleY(0); } 100% { -moz-transform: scaleY(1); } }
+@-webkit-keyframes vertAccordIn { 0% { -webkit-transform: scaleY(0); } 100% { -webkit-transform: scaleY(1); } }
+
+@keyframes         vertAccordOut { 0% { transform: scaleY(1); } 100% { transform: scaleY(0); } }
+@-moz-keyframes    vertAccordOut { 0% { -moz-transform: scaleY(1); } 100% { -moz-transform: scaleY(0); } }
+@-webkit-keyframes vertAccordOut { 0% { -webkit-transform: scaleY(1); } 100% { -webkit-transform: scaleY(0); } }
+
+.ngAnimateFade.ng-enter {
+    -webkit-animation: fadeInAnim 0.25s both ease-in;
+    -moz-animation: fadeInAnim 0.25s both ease-in;
+    animation: fadeInAnim 0.25s both ease-in;
+    z-index: 9999;
+}
+
+.ngAnimateFade.ng-leave {
+    -webkit-animation: fadeOutAnim 0.25s both ease-in;
+    -moz-animation: fadeOutAnim 0.25s both ease-in;
+    animation: fadeOutAnim 0.25s both ease-in;
+    z-index: 8888;
+}
+
+.ngAnimateAccord.ng-enter {
+    -webkit-animation: vertAccordIn 0.25s both ease-in;
+    -moz-animation: vertAccordIn 0.25s both ease-in;
+    animation: vertAccordIn 0.25s both ease-in;
+}
+
+.ngAnimateAccord.ng-leave {
+    -webkit-animation: vertAccordOut 0.25s both ease-in;
+    -moz-animation: vertAccordOut 0.25s both ease-in;
+    animation: vertAccordOut 0.25s both ease-in;
+}
