@@ -145,3 +145,21 @@
     width: 70%;
     vertical-align: middle;
 }
+
+.smartModalHR {
+    height: 0px;
+    width: 80%;
+    margin: 10px auto;
+    border-bottom: solid 1px #ccc;
+}
+
+.smartModelPara {
+    text-align: center;
+    width: 70%;
+    margin: 5px auto;
+}
+
+.smartModelError {
+    color: #f00;
+    font-weight: 700;
+}

@@ -13,6 +13,7 @@
         <link href="../global/css/styleElements.css" rel="stylesheet" type="text/css" />
 
         <link href="../app/css/style.css" rel="stylesheet" type="text/css" />
+        <link href="../app/css/animations.css" rel="stylesheet" type="text/css" />
 
         <link href="css/navigation.css" rel="stylesheet" type="text/css" />
         <link href="../app/css/modals/login.css" rel="stylesheet" type="text/css" />
@@ -45,7 +46,7 @@
                 </div>
                 <div id="dynamicAppNavigationTree"></div>
             </div>
-            <div ng-view class="appContent {{transitionState}}" ng-if="hasSession()"></div>
+            <div ng-view class="appContent angular-animate ngAnimateFade" ng-if="hasSession()"></div>
         </div>
 
         <script src="../global/js/lib/jquery/jquery-2.1.1.min.js"></script>

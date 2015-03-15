@@ -11,7 +11,7 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
 
         mngGrpCtrl.openAddEmployeeModal = function() {
             console.log("Opening add emp modal");
-            modalService.addEmployeeModal(mngGrpCtrl.group, mngGrpCtrl.roles).then(function(newEmployee) {
+            modalService.addEmployeeModal({"homeGroupID":mngGrpCtrl.group.id}).then(function(newEmployee) {
                 if(newEmployee != null) {
                     mngGrpCtrl.employees[newEmployee.id] = newEmployee;
                 }

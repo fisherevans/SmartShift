@@ -3,6 +3,7 @@
 angular.module('smartsServices').factory('cacheService', ['$q', 'businessService',
     function($q, businessService){
         var cache = null;
+        var cacheService = this;
         return {
             loadCache: function() {
                 var defer = $q.defer();
@@ -57,6 +58,37 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
                         roles[roleID] = this.getRole(roleID);
                 }
                 return roles;
+            },
+            getChildGroups: function(parentGroupID, recurse) {
+                var selfCall = function(parentGroupID, recurse) {
+                    var childGroups = {};
+                    var allGroups = cache.groups;
+                    for(var groupID in allGroups) {
+                        var group = allGroups[groupID];
+                        if(group.parentGroupID == parentGroupID) {
+                            var groupCopy = angular.copy(group);
+                            if(recurse)
+                                groupCopy.childGroups = selfCall(groupID, true);
+                            else
+                                groupCopy.childGroups = {};
+                            childGroups[groupID] = groupCopy;
+                        }
+                    }
+                    return childGroups;
+                };
+                return selfCall(parentGroupID, recurse);
+            },
+            addEmployee: function(employeeModel) {
+                var defer = $q.defer();
+                businessService.addEmployee(employeeModel)
+                    .success(function(response) {
+                        cache.employees[response.data.id] = response.data;
+                        defer.resolve(angular.copy(response.data));
+                    })
+                    .error(function(response) {
+                        defer.reject(response.message);
+                    });
+                return defer.promise;
             }
         }
     }

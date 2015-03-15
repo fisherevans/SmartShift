@@ -6,47 +6,47 @@
         <div class="smartInputLine">
             <div class="smartInputLabel">First Name</div>
             <div class="smartInputWrapper">
-                <input ng-model="employee.firstName" type="text" ng-class="{inputError:error}"
-                       alt="Username" class="smartInputText fadeColors" placeholder="Required">
+                <input ng-model="employee.firstName" type="text" ng-class="{inputError:error.name}"
+                       alt="First Name" class="smartInputText fadeColors" placeholder="Required">
             </div>
         </div>
         <div class="smartInputLine">
             <div class="smartInputLabel">Last Name</div>
             <div class="smartInputWrapper">
-                <input ng-model="employee.lastName" type="text" ng-class="{inputError:error}"
-                       alt="Username" class="smartInputText fadeColors" placeholder="Required">
+                <input ng-model="employee.lastName" type="text" ng-class="{inputError:error.name}"
+                       alt="Last Name" class="smartInputText fadeColors" placeholder="Required">
             </div>
         </div>
-        <div class="smartInputLine">
+        <!--<div class="smartInputLine">
             <div class="smartInputLabel">Email Address<div class="sub">Used for registration</div></div>
             <div class="smartInputWrapper">
                 <input ng-model="employee.email" type="text" ng-class="{inputError:error}"
-                       alt="Username" class="smartInputText fadeColors" placeholder="Optional">
+                       alt="Email" class="smartInputText fadeColors" placeholder="Optional">
             </div>
-        </div>
+        </div>-->
         <div class="smartInputLine">
             <div class="smartInputLabel">Home Group</div>
             <div class="smartInputWrapper">
-                <select alt="Home Group" class="smartInputSelect fadeColors" ng-model="employee.homeGroup">
-                    <option value="{{group.id}}">{{group.name}} (Currently Managing)</option>
-                    <option value="-2">Dummy Group 1</option>
-                    <option value="-3">Dummy Group 2</option>
+                <select alt="Home Group" class="smartInputSelect fadeColors" ng-class="{inputError:error.group}"
+                        ng-model="selectedGroup"
+                        ng-options="group.name for group in groupOptions track by group.id">
                 </select>
             </div>
         </div>
         <div class="smartInputLine">
-            <div class="smartInputLabel">Roles<div class="sub">The roles that this initially be in</div></div>
+            <div class="smartInputLabel">Roles<div class="sub"><span class="fakeLink">Add Role</span></div></div>
             <div class="smartInputWrapper">
-                <label class="smartCheckboxLabel noTextSelect fadeColors" ng-repeat="(roleID, role) in roles">
-                    <input type="checkbox" class="smartCheckbox" value="{{role.id}}">
-                    <div class="smartCheckboxCheck icon-not-checked fadeColors"></div>
+                <label class="smartCheckboxLabel noTextSelect fadeColors" ng-repeat="(roleID, role) in getGroupRoles(selectedGroup.id)">
+                    <input type="checkbox" class="smartCheckbox" value="{{role.id}}" name="role" ng-model="role.checked">
+                    <div class="smartCheckboxCheck icon-not-checked"></div>
                     {{role.name}}
                 </label>
             </div>
         </div>
+        <p class="smartModelError smartModelPara" ng-if="error">{{error.message}}</p>
     </div>
     <div class="modal-footer">
-        <div class="smartButton fadeColors redBG addEmployeeModalButton floatLeft" ng-click="closeAddEmployeeModal()">Cancel</div>
+        <button type="button" class="smartButton fadeColors redBG addEmployeeModalButton floatLeft" ng-click="closeAddEmployeeModal()">Cancel</button>
         <button type="submit" class="smartButton fadeColors blueBG addEmployeeModalButton">Create Employee</button>
     </div>
 </form>
