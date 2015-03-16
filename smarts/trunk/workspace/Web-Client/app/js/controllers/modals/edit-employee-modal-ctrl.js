@@ -1,11 +1,16 @@
-angular.module('smartsApp').controller('EditEmployeeModalController', ['$scope', '$modalInstance', 'utilService', 'cacheService', 'employee',
-    function($scope, $modalInstance, utilService, cacheService, employee){
+angular.module('smartsApp').controller('EditEmployeeModalController', ['$scope', '$modalInstance', '$location', '$interval', 'utilService', 'cacheService', 'employee',
+    function($scope, $modalInstance, $location, $interval, utilService, cacheService, employee){
         console.log("In add employee modal");
 
         $scope.originalEmployee = employee;
         $scope.formData = angular.copy(employee);
-        $scope.groupRoles = cacheService.getGroupRolesByEmployee();
+        $scope.groupRoles = cacheService.getGroupRolesByEmployee(employee.id);
 
+        $scope.manageGroup = function(groupID) {
+            $(".editEmployeeModalButton").prop("disabled",true);
+            $location.path("groups/" + groupID);
+            $modalInstance.close(null);
+        }
 
         $scope.closeAddEmployeeModal = function() {
             $modalInstance.close(null);
@@ -13,7 +18,9 @@ angular.module('smartsApp').controller('EditEmployeeModalController', ['$scope',
 
         $scope.deleteMe = function() {
             $scope.originalEmployee.deleteMe = true;
-            $modalInstance.close($scope.originalEmployee);
+            $interval(function() {
+                $modalInstance.close($scope.originalEmployee);
+            }, 250, 1);
         };
 
         $scope.submit = function() {

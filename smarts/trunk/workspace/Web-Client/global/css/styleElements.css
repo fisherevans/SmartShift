@@ -117,6 +117,10 @@
     font-weight: 700;
 }
 
+.fakeLink:hover {
+    color: #0073E6;
+}
+
 .deleteLink {
     color: #ff0000;
     font-weight: 300;
