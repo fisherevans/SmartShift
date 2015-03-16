@@ -65,7 +65,7 @@ angular.module('smartsApp').controller('AddEmployeeModalController', ['$scope', 
                 function(employee){ // Success
                     $modalInstance.close(employee);
                 },
-                function(employee){ // Error
+                function(message){ // Error
                     alert(message);
                     $(".addEmployeeModalButton").prop("disabled",false);
                 }
