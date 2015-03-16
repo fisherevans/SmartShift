@@ -36,7 +36,7 @@
 
         <div class="appPane">
             <div class="appNavigationTree appBlock noTextSelect">
-                <div id="logoutWrapper" class="fadeColors noTextSelect" ng-click="mainCtrl.forceLogout()">
+                <div id="logoutWrapper" class="fadeColors noTextSelect" ng-click="$rootScope.forceLogout()">
                     <div class="icon-exit logoutIcon fadeColors"></div>
                     <div class="logoutText fadeColors">Logout</div>
                 </div>
@@ -76,6 +76,8 @@
         <script src="../app/js/controllers/modals/login-modal-ctrl.js"></script>
         <script src="../app/js/controllers/modals/business-modal-ctrl.js"></script>
         <script src="../app/js/controllers/modals/add-employee-modal-ctrl.js"></script>
+        <script src="../app/js/controllers/modals/edit-employee-modal-ctrl.js"></script>
+        <script src="../app/js/controllers/modals/delete-employee-modal-ctrl.js"></script>
 
         <script src="../app/js/controllers/pages/group-list-ctrl.js"></script>
         <script src="../app/js/controllers/pages/manage-group-ctrl.js"></script>

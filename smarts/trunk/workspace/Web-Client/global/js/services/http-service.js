@@ -16,6 +16,12 @@ angular.module('smartsServices').factory('httpService', ['$http',
                 $http.defaults.headers.put = { 'Content-Type' : 'application/json'};
                 return $http.put((API_URL + path), data);
             },
+            post: function(path, data){
+                console.log("Path: " + path);
+                console.log(data);
+                $http.defaults.headers.put = { 'Content-Type' : 'application/json'};
+                return $http.post((API_URL + path), data);
+            },
             setAuth: function(user, pass){
                 var base64 = window.btoa(user + ':' + pass);
                 $http.defaults.headers.common.Authorization = 'Basic ' + base64;

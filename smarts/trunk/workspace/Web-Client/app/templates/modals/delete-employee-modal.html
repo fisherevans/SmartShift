@@ -1,0 +1,13 @@
+<form name="addEmployeeForm" ng-submit="submit()">
+    <div class="modal-header">
+        <h3 class="modal-title">Delete an Employee</h3>
+    </div>
+    <div class="modal-body" id="addEmployeeModal">
+        <p class="smartModelPara">Are you sure you want to delete the employee: <b>{{employee.firstName}} {{employee.lastName}}</b>?</p>
+        <p class="smartModelPara">This action CANNOT be undone.</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="smartButton fadeColors orangeBG deleteEmployeeModalButton floatLeft" ng-click="close()">Cancel</button>
+        <button type="submit" class="smartButton fadeColors redBG deleteEmployeeModalButton">Delete Employee Forever</button>
+    </div>
+</form>
