@@ -21,10 +21,19 @@
         <div class="smartInputLine">
             <div class="smartInputLabel">Groups</div>
             <div class="smartInputWrapper">
-                <div ng-repeat="group in groupRoles">
-                    <div><b>{{group.name}}</b> {{group.id == formData.homeGroupID ? "(Home Group)" : ""}}</div>
-                    <div ng-repeat="role in group.roles">
-                        {{role.name}}
+                <div class="editEmployeeGroupBox appBlock" ng-repeat="group in groupRoles">
+                    <div class="editEmployeeGroupManage fakeLink fadeColors" ng-click="manageGroup(group.id)">
+                        Manage
+                        &nbsp;
+                        <span class="icon-pencil"></span>
+                    </div>
+                    <div class="editEmployeeGroupName">
+                        <b>{{group.name}}</b>
+                        <span class="icon-home" ng-if="group.id == formData.homeGroupID"></span>
+                    <div class="editEmployeeGroupRoles">
+                        <span class="editEmployeeGroupRomeName" ng-repeat="role in group.roles">
+                            {{role.name}}{{$last ? '' : ', '}}
+                        </span>
                     </div>
                 </div>
             </div>

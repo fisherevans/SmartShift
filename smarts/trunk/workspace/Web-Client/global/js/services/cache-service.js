@@ -15,6 +15,7 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
                 businessService.getFull()
                     .success(function(response, status, headers, config) {
                         cache = response.data;
+                        console.log(cache);
                         defer.resolve(true);
                     })
                     .error(function(response, status, headers, config) {
@@ -60,12 +61,15 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
             $.each(cache.groupRoleEmployeeIDs, function(groupID, roleEmployeeIDs) {
                 var group = cacheService.getGroup(groupID)
                 group.roles = {};
+                var addGroup = false;
                 $.each(roleEmployeeIDs, function(roleID, employeeIDs) {
-                    if(employeeIDs.indexOf(employeeID) >= 0) {
+                    if(employeeIDs.indexOf(employeeID) >= 0 && roleID > 0) {
+                        addGroup = true;
                         group.roles[roleID] = cacheService.getRole(roleID);
                     }
                 });
-                groups[groupID] = group;
+                if(addGroup)
+                    groups[groupID] = group;
             });
             return groups;
         };
