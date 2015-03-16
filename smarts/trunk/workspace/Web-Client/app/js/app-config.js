@@ -1,9 +1,23 @@
 'use strict'
 
-
 angular.module('smartsApp').config(function($animateProvider) {
     $animateProvider.classNameFilter(/angular-animate/);
 });
+
+angular.module('smartsApp').filter('orderObjectBy', function() {
+    return function(items, field, reverse) {
+        var filtered = [];
+        angular.forEach(items, function(item) {
+            filtered.push(item);
+        });
+        filtered.sort(function (a, b) {
+            return (a[field] > b[field] ? 1 : -1);
+        });
+        if(reverse) filtered.reverse();
+        return filtered;
+    };
+});
+
 angular.module('smartsApp').config(function($routeProvider){
     $routeProvider
         .when('/newsfeed', {
