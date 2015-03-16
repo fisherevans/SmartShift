@@ -17,6 +17,11 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
             }
         });
 
+        $rootScope.$on("$routeChangeError", function (event, current, previous, rejection) {
+            if(rejection.status >= 400 && rejection.status < 500)
+                mainController.forceLogout();
+        });
+
 
         $scope.hasSession = function(){
             return $rootScope.sessionID;

@@ -9,12 +9,15 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
                 var defer = $q.defer();
                 if(cache === null) {
                     businessService.getFull()
-                        .success(function(response) {
+                        .success(function(response, status, headers, config) {
                             cache = response.data;
                             defer.resolve(true);
                         })
-                        .error(function(response) {
-                            defer.reject(false);
+                        .error(function(response, status, headers, config) {
+                            response.status = status;
+                            response.headers = headers;
+                            response.config = config;
+                            defer.reject(response);
                         });
                 } else {
                     defer.resolve(true);
