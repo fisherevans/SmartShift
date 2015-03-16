@@ -35,6 +35,8 @@ public class SessionAuthFilter extends AbstractAuthFilter {
             throw new WebApplicationException(getInvalidCredentialsResponse());
         }
         
+        userSession.updateLastActivity();
+        
         BusinessDAOContext daoContext = BusinessDAOContext.business(userSession.businessID);
         Cache cache = Cache.getCache(userSession.businessID);
         Employee employee = Employee.load(cache, userSession.employeeID);
