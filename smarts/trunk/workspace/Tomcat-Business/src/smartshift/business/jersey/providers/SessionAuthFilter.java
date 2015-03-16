@@ -30,6 +30,11 @@ public class SessionAuthFilter extends AbstractAuthFilter {
             throw new WebApplicationException(getInvalidCredentialsResponse());
         logger.debug("processCredentials() Session found");
         
+        if(!userSession.username.equals(username)) {
+            logger.debug("processCredentials() Invalid username for session!");
+            throw new WebApplicationException(getInvalidCredentialsResponse());
+        }
+        
         BusinessDAOContext daoContext = BusinessDAOContext.business(userSession.businessID);
         Cache cache = Cache.getCache(userSession.businessID);
         Employee employee = Employee.load(cache, userSession.employeeID);
