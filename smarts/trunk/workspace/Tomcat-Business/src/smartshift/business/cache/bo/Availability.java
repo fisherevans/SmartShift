@@ -9,6 +9,7 @@ import smartshift.business.hibernate.model.AvailabilityModel;
 import smartshift.business.hibernate.model.AvailabilityTemplateModel;
 import smartshift.business.hibernate.model.InstanceInterface;
 import smartshift.business.hibernate.model.TemplateInterface;
+import smartshift.common.hibernate.dao.BaseDAO;
 import smartshift.common.util.log4j.SmartLogger;
 
 public abstract class Availability extends CachedObject implements Templatable {
@@ -85,6 +86,28 @@ public abstract class Availability extends CachedObject implements Templatable {
         @Override
         public SmartLogger getLogger() {
             return logger;
+        }
+
+        @Override
+        public BaseDAO<? extends TemplateInterface> getTemplateDAO() {
+            return _templateDAO;
+        }
+
+        @Override
+        public BaseDAO<? extends InstanceInterface> getInstanceDAO() {
+            return _instanceDAO;
+        }
+
+        @Override
+        public void loadTemplate(Cache cache, Integer id) {
+            // TODO Auto-generated method stub
+            
+        }
+
+        @Override
+        public void loadInterface(Cache cache, Integer id) {
+            // TODO Auto-generated method stub
+            
         }
     }
     

@@ -2,8 +2,6 @@ package smartshift.business.cache.bo;
 
 import java.util.ArrayList;
 import java.util.List;
-import smartshift.business.hibernate.model.InstanceInterface;
-import smartshift.business.hibernate.model.TemplatableInterface;
 import smartshift.business.hibernate.model.TemplateInterface;
 import smartshift.common.util.collections.ROCollection;
 
@@ -48,12 +46,12 @@ public class Template<T extends Templatable> extends CachedObject{
 
     @Override
     public void save() {
-        _archetype.save();
+        _archetype.saveTemplate(this, _name, _owner);
     }
 
     @Override
     public void loadAllChildren() {
-
+        // do nothing
     }
 
     public ROCollection<T> getComponents() {

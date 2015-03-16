@@ -10,4 +10,9 @@ public interface InstanceInterface {
      * @return the id
      */
     public Integer getId();
+
+    /**
+     * @return the templateID
+     */
+    public Integer getTemplateID();
 }

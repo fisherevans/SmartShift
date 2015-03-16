@@ -51,7 +51,6 @@ CREATE TABLE `AvailInstance` (
 	`templateID` INT NOT NULL,
 	`startDate` DATE NOT NULL,
 	`endDate` DATE NOT NULL,
-	`empID` INT NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
@@ -129,6 +128,7 @@ CREATE TABLE `SchedTemplateVersion` (
 
 CREATE TABLE `Schedule` (
 	`id` INT NOT NULL AUTO_INCREMENT,
+	`schedTempVersionID` INT NOT NULL,
 	`startDate` DATE NULL,
 	PRIMARY KEY (`id`)
 );
@@ -338,10 +338,10 @@ ADD CONSTRAINT `repeatyearly_avail`
 	ON UPDATE NO ACTION
 ;
 
-ALTER TABLE `SchedTemplateVersion`
-ADD CONSTRAINT `schedtempvers_sched`
-	FOREIGN KEY (`schedTempID`)
-	REFERENCES `Schedule` (`id`)
+ALTER TABLE `Schedule`
+ADD CONSTRAINT `sched_schedtempvers`
+	FOREIGN KEY (`schedTempVersionID`)
+	REFERENCES `SchedTemplateVersion` (`id`)
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION
 ;
@@ -358,25 +358,6 @@ ADD CONSTRAINT `empsched_emp`
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION
 ;
-
---   I think this table is old and no longer exists
---  ALTER TABLE `EmpSchedShift`
---  ADD CONSTRAINT `empschedshift_sched`
---  	FOREIGN KEY (`empSchedID`)
---  	REFERENCES `EmpSchedule` (`id`)
---  	ON DELETE NO ACTION
---  	ON UPDATE NO ACTION,
---  ADD CONSTRAINT `empschedshift_shift`
---  	FOREIGN KEY (`shiftID`)
---  	REFERENCES `Shift` (`id`)
---  	ON DELETE NO ACTION
---  	ON UPDATE NO ACTION,
---  ADD CONSTRAINT `empschedshift_role`
---  	FOREIGN KEY (`grpRoleID`)
---  	REFERENCES `GroupRole` (`id`)
---  	ON DELETE NO ACTION
---  	ON UPDATE NO ACTION
---  ;
 
 ALTER TABLE `RoleSchedule`
 ADD CONSTRAINT `rolesched_sched`
