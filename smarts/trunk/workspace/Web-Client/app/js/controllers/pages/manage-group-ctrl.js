@@ -7,12 +7,18 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
         mngGrpCtrl.group = cacheService.getGroup($routeParams.groupID);
         //mngGrpCtrl.groups = cacheService.getHeiar();
         mngGrpCtrl.employees = cacheService.getEmployees();
+        for(var employeeID in mngGrpCtrl.employees) {
+            var emp = mngGrpCtrl.employees[employeeID];
+            emp.sortName = emp.firstName + " " + emp.lastName;
+        }
         mngGrpCtrl.roles = cacheService.getRolesByGroup($routeParams.groupID);
 
         mngGrpCtrl.openAddEmployeeModal = function() {
             console.log("Opening add emp modal");
             modalService.addEmployeeModal({"homeGroupID":mngGrpCtrl.group.id}).then(function(newEmployee) {
                 if(newEmployee != null) {
+                    newEmployee.cssClass = "listJustAdded";
+                    newEmployee.sortName = newEmployee.firstName + " " + newEmployee.lastName;
                     mngGrpCtrl.employees[newEmployee.id] = newEmployee;
                 }
             });

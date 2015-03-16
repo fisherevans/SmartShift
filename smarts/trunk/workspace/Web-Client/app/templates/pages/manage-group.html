@@ -5,7 +5,8 @@
         Add Employee
     </div>
     <div class="employeeList">
-        <div class="employeeWrapper fadeColors noTextSelect" draggable="true" ng-repeat="(employeeID, employee) in manageGroupCtrl.employees">
+        <div ng-repeat="(employeeID, employee) in manageGroupCtrl.employees | orderObjectBy:'sortName'"
+                class="employeeWrapper fadeColors noTextSelect {{employee.cssClass}}" draggable="true">
             <img src="../global/images/default.png" class="employeeImage" />
             <div class="employeeText">
                 <div class="employeeName">{{employee.firstName}} {{employee.lastName}}</div>
