@@ -55,14 +55,12 @@ public class Instance <T extends Templatable> extends CachedObject{
 
     @Override
     public void save() {
-        // TODO Auto-generated method stub
-        
+        _archetype.saveInstance(this, _template.getID(), _properties.values());
     }
 
     @Override
     public void loadAllChildren() {
-        // TODO Auto-generated method stub
-        
+        _archetype.loadTemplate(getCache(), _archetype.getTemplateDAO().uniqueByID(_model.getTemplateID()).execute().getId());      
     }
     
     // PROPERTY NAMES

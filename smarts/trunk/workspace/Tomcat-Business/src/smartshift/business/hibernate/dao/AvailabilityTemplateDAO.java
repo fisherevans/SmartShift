@@ -29,7 +29,8 @@ public class AvailabilityTemplateDAO extends BaseBusinessDAO<AvailabilityTemplat
         return list(Restrictions.eq("employeeID", employeeID));
     }
     
-    /** get a task that adds a template with the given params
+    /** 
+     * get a task that adds a template with the given params
      * @param name the template name
      * @param employeeID the owner
      * @return the task object
