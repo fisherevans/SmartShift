@@ -37,6 +37,30 @@ angular.module('smartsServices').factory('modalService', ['$modal', '$rootScope'
                         "defaultModel": function() { return defaultModel; }
                     }
                 }).result;
+            },
+            editEmployeeModal: function( employee ) {
+                return $modal.open({
+                    templateUrl: '../app/templates/modals/edit-employee-modal.html',
+                    controller: 'EditEmployeeModalController',
+                    backdrop: 'static',
+                    backdropClass: 'dim',
+                    keyboard: false,
+                    resolve: {
+                        "employee": function() { return employee; }
+                    }
+                }).result;
+            },
+           deleteEmployeeModal: function( employee ) {
+                return $modal.open({
+                    templateUrl: '../app/templates/modals/delete-employee-modal.html',
+                    controller: 'DeleteEmployeeModalController',
+                    backdrop: 'static',
+                    backdropClass: 'dim',
+                    keyboard: false,
+                    resolve: {
+                        "employee": function() { return employee; }
+                    }
+                }).result;
             }
         }
     }

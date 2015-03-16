@@ -1,19 +1,38 @@
-<div class="employeeListWrapper">
-    <div class="smartButton blueBG fadeColors addEmployeeButton" ng-click="manageGroupCtrl.openAddEmployeeModal()">
-        <span class="icon-add"></span>
-        &nbsp;&nbsp;
-        Add Employee
+<div class="employeeListWrapper appBlock">
+    <div class="employeeListButtons">
+        <div class="smartButton blueBG fadeColors employeeListButton" ng-click="manageGroupCtrl.openFilterEmployeeListModal()">
+            <span class="icon-filter"></span>
+            &nbsp;&nbsp;
+            Filter
+        </div>
+        <div class="smartButton blueBG fadeColors employeeListButton" ng-click="manageGroupCtrl.openAddEmployeeModal()">
+            <span class="icon-add"></span>
+            &nbsp;&nbsp;
+            Add Employee
+        </div>
+    </div>
+    <div class="employeeListSearchWrapper">
+        <div class="employeeListSearchInputWrapper">
+            <input type="text" class="employeeListSearchInput smartInputText" placeholder="Name Filter" ng-model="manageGroupCtrl.employeeListNameFilter" />
+            <div class="employeeListSearchInputClear fadeColors" ng-show="manageGroupCtrl.employeeListNameFilter" ng-click="manageGroupCtrl.employeeListNameFilter = ''">Clear</div>
+        </div>
     </div>
     <div class="employeeList">
-        <div ng-repeat="(employeeID, employee) in manageGroupCtrl.employees | orderObjectBy:'sortName'"
-                class="employeeWrapper fadeColors noTextSelect {{employee.cssClass}}" draggable="true">
+        <div ng-repeat="(employeeID, employee) in manageGroupCtrl.employees | filter:employeeListNameFilter | orderObjectBy:'sortName'"
+                class="employeeWrapper fadeColors noTextSelect" draggable="true" ng-show="manageGroupCtrl.nameFilterCheck(employee)">
+            <div ng-if="employee.justAdded" class="justAdded"></div>
             <img src="../global/images/default.png" class="employeeImage" />
             <div class="employeeText">
                 <div class="employeeName">{{employee.firstName}} {{employee.lastName}}</div>
                 <div class="employeeDefaultGroup">Default Group</div>
             </div>
-            <div class="employeeMenuButton fadeColorOpacity icon-cog"></div>
+            <div class="employeeMenuButton fadeColorOpacity icon-cog" ng-click="manageGroupCtrl.openEditEmployeeModal(employee)"></div>
         </div>
+    </div>
+</div>
+<div class="roleListWrapper appBlock">
+    <div ng-repeat="(roleID, role) in manageGroupCtrl.roles" class="antiAppBlock roleBox">
+        {{role.name}}
     </div>
 </div>
 

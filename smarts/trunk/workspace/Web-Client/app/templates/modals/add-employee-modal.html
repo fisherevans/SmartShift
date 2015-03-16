@@ -36,7 +36,7 @@
         <div class="smartInputLine">
             <div class="smartInputLabel">Roles<div class="sub"><span class="fakeLink">Add Role</span></div></div>
             <div class="smartInputWrapper">
-                <label class="smartCheckboxLabel noTextSelect fadeColors" ng-repeat="(roleID, role) in getGroupRoles(selectedGroup.id)">
+                <label class="smartCheckboxLabel noTextSelect fadeColors" ng-repeat="(roleID, role) in getGroupRoles(selectedGroup.id)" ng-class="{inputError:error.role}">
                     <input type="checkbox" class="smartCheckbox" value="{{role.id}}" name="role" ng-model="role.checked">
                     <div class="smartCheckboxCheck icon-not-checked"></div>
                     {{role.name}}
@@ -46,7 +46,7 @@
         <p class="smartModelError smartModelPara" ng-if="error">{{error.message}}</p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="smartButton fadeColors redBG addEmployeeModalButton floatLeft" ng-click="closeAddEmployeeModal()">Cancel</button>
+        <button type="button" class="smartButton fadeColors orangeBG addEmployeeModalButton floatLeft" ng-click="closeAddEmployeeModal()">Cancel</button>
         <button type="submit" class="smartButton fadeColors blueBG addEmployeeModalButton">Create Employee</button>
     </div>
 </form>

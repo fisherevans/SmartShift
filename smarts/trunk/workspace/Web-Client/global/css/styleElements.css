@@ -116,3 +116,25 @@
     cursor: pointer;
     font-weight: 700;
 }
+
+.deleteLink {
+    color: #ff0000;
+    font-weight: 300;
+    cursor: pointer;
+    display: inline-block;
+    padding: 4px;
+    vertical-align: middle;
+    background-color: #fff;
+    border-radius: 3px;
+}
+
+.deleteLink:hover {
+    color: #fff;
+    background-color: #ff0000;
+}
+
+.modalHeaderLink {
+    float:right;
+    padding: 4px;
+    margin-top: 3px;
+}

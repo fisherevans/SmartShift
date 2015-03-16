@@ -14,9 +14,9 @@
 @-moz-keyframes    vertAccordOut { 0% { -moz-transform: scaleY(1); } 100% { -moz-transform: scaleY(0); } }
 @-webkit-keyframes vertAccordOut { 0% { -webkit-transform: scaleY(1); } 100% { -webkit-transform: scaleY(0); } }
 
-@keyframes         listJustAdded { 0% { background-color: #f0f0f0; } 15% { background-color: #0080ff; } 100% { background-color: #f0f0f0; } }
-@-moz-keyframes    listJustAdded { 0% { background-color: #f0f0f0; } 15% { background-color: #0080ff; } 100% { background-color: #f0f0f0; } }
-@-webkit-keyframes listJustAdded { 0% { background-color: #f0f0f0; } 15% { background-color: #0080ff; } 100% { background-color: #f0f0f0; } }
+@keyframes         fadeInOut { 0% { opacity: 0; } 15% { opacity: 1; } 100% { opacity: 0; } }
+@-moz-keyframes    fadeInOut { 0% { opacity: 0; } 15% { opacity: 1; } 100% { opacity: 0; } }
+@-webkit-keyframes fadeInOut { 0% { opacity: 0; } 15% { opacity: 1; } 100% { opacity: 0; } }
 
 .ngAnimateFade.ng-enter {
     -webkit-animation: fadeInAnim 0.25s both ease-in;
@@ -44,8 +44,14 @@
     animation: vertAccordOut 0.25s both ease-in;
 }
 
-.listJustAdded {
-    -webkit-animation: listJustAdded 1s both ease-in;
-    -moz-animation: listJustAdded 1s both ease-in;
-    animation: listJustAdded 1s both ease-in;
+.justAdded {
+    position:absolute;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    right: 0px;
+    background-color: #0080ff;
+    -webkit-animation: fadeInOut 1.5s both ease-in;
+    -moz-animation: fadeInOut 1.5s both ease-in;
+    animation: fadeInOut 1.5s both ease-in;
 }

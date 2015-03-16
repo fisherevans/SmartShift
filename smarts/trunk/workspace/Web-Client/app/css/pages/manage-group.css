@@ -3,20 +3,58 @@
     top: 0px;
     left: 0px;
     bottom: 0px;
-    width: 250px;
-    background-color: #f0f0f0;
-    border: 1px solid #ccc;
-    border-radius:3px;
+    width: 300px;
 }
 
-.addEmployeeButton {
+.employeeListButtons {
+    text-align: center;
+    width: 100%;
+    margin-top: 4px;
+}
+
+.employeeListButton {
     position: relative;
-    margin: 7px 42px;
+    margin: 7px 4px;
+}
+
+.employeeListSearchWrapper {
+    position: absolute;
+    top: 58px;
+    left: 0px;
+    right: 0px;
+    height: 50px;
+}
+
+.employeeListSearchInputWrapper {
+    padding: 0px 14px;
+}
+
+.employeeListSearchInput {
+    padding: 4px 10px;
+    padding-right: 42px;
+    width: 100%;
+}
+
+.employeeListSearchInputClear {
+    position: absolute;
+    top: 5px;
+    right: 20px;
+    border-radius: 3px;
+    background-color: #e00;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px;
+    cursor: pointer;
+}
+
+.employeeListSearchInputClear:hover {
+    background-color: #d00;
 }
 
 .employeeList {
     position: absolute;
-    top: 50px;
+    top: 100px;
     right: 0px;
     left: 0px;
     bottom: 0px;
@@ -25,7 +63,7 @@
 }
 
 .employeeWrapper {
-    cursor: pointer;
+    cursor: move;
     background-color: #f0f0f0;
     position: relative;
     height: 60px;
@@ -58,10 +96,12 @@
 
 .employeeName {
     font-size: 16px;
+    white-space: nowrap;
 }
 
 .employeeDefaultGroup {
     color: #888;
+    white-space: nowrap;
 }
 
 .employeeMenuButton {
@@ -73,6 +113,7 @@
     background-color: #cacaca;
     border-bottom-left-radius: 3px;
     opacity: 0;
+    cursor: pointer;
     color: #666;
     border-left: solid 1px #aaa;
     border-bottom: solid 1px #aaa;
@@ -89,4 +130,21 @@
 
 .employeeWrapper img {
     pointer-events: none;
+}
+
+.roleListWrapper {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 315px;
+    padding-top: 7px;
+    padding-bottom: 8px;
+}
+
+.roleBox {
+    margin-top: 8px;
+    margin-bottom: 7px;
+    margin-left: 15px;
+    margin-right: 15px;
 }

@@ -6,6 +6,8 @@ angular.module('smartsApp').controller('BusinessModalController', ['$rootScope',
             $modalInstance.close(business);
         };
 
-        $scope.cancel = $rootScope.forceLogout;
+        $scope.cancel = function() {
+            $rootScope.forceLogout();
+        }
     }
 ]);

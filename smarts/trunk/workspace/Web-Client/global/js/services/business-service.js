@@ -10,6 +10,10 @@ angular.module('smartsServices').factory('businessService', ['httpService', '$ro
             addEmployee: function(employeeModel){
                 httpService.setAuth($rootScope.username, $rootScope.sessionID);
                 return httpService.put('/business/employee', employeeModel);
+            },
+            updateEmployee: function(employeeModel){
+                httpService.setAuth($rootScope.username, $rootScope.sessionID);
+                return httpService.post('/business/employee', employeeModel);
             }
         }
     }

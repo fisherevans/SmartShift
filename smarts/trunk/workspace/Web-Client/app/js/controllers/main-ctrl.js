@@ -18,8 +18,10 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
         });
 
         $rootScope.$on("$routeChangeError", function (event, current, previous, rejection) {
-            if(rejection.status >= 400 && rejection.status < 500)
-                mainController.forceLogout();
+            if(rejection.status >= 400 && rejection.status < 500) {
+                $cookieStore.remove('sessionID');
+                $rootScope.forceLogout();
+            }
         });
 
 
@@ -39,7 +41,7 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                                 .success(function (result) {
                                     $rootScope.sessionID = result.data.sessionKey;
                                     $rootScope.server = result.data.server;
-                                    var expireDate = new Date(new Date().getTime() + result.data.timeout);
+                                    var expireDate = new Date(new Date().getTime() + result.data.timeout + 999999999); // TODO update cookie on http calls to reflect new expiration
                                     $cookieStore.put('sessionID', $rootScope.sessionID, {expires: expireDate});
                                     $cookieStore.put('server', result.data.server, {expires: expireDate});
                                     httpService.setRootPath(result.data.server);
@@ -58,7 +60,7 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
             } // end if no session
         });
 
-        mainController.forceLogout = function() {
+        $rootScope.forceLogout = function() {
             $cookieStore.remove('sessionID');
             window.location.href = "./";
         }

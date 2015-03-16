@@ -11,6 +11,10 @@
     font-size: 14px;
     vertical-align: middle;
     cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .smartButton:hover, .grayBG:focus, .grayBG:active, .grayBG.active {
@@ -27,7 +31,7 @@
     margin: 0px auto;
     border-radius: 4px;
     border: 1px solid #ccc;
-    width: 100%;
+    width: 80%;
     line-height: 20px;
     padding: 12px;
     -webkit-box-sizing: border-box;
@@ -57,7 +61,7 @@
     margin: 0px auto;
     border-radius: 4px;
     border: 1px solid #ccc;
-    width: 100%;
+    width: 80%;
     line-height: 20px;
     padding: 12px;
     -webkit-box-sizing: border-box;
@@ -77,7 +81,7 @@
     margin: 0px auto;
     border-radius: 3px;
     border: 1px solid #ccc;
-    width: 80%;
+    width: 60%;
     line-height: 16px;
     padding: 5px 8px;
     margin: 4px 0px;
@@ -93,6 +97,10 @@
     color: #444;
 }
 
+.smartCheckboxLabel:hover {
+    background-color: #e8e8e8;
+}
+
 .smartCheckboxLabel * {
     display: inline-block;
     vertical-align: middle;
@@ -102,6 +110,16 @@
     position: absolute;
     right: 30px;
     opacity: 0;
+}
+
+.smartCheckboxLabel.inputError {
+    background-color: #FFF0F1;
+}
+
+.smartCheckboxLabel.inputError:focus, .smartCheckboxLabel.inputError:active, .smartCheckboxLabel.inputError.active, .smartCheckboxLabel.inputError:hover {
+    border: 1px solid #ff0000;
+    outline: none;
+    box-shadow: 0px 0px 3px #aaa;
 }
 
 .smartCheckboxLabel.checked {
@@ -144,6 +162,10 @@
     display: inline-block;
     width: 70%;
     vertical-align: middle;
+}
+
+.smartInputFullWidth {
+    width: 100%;
 }
 
 .smartModalHR {

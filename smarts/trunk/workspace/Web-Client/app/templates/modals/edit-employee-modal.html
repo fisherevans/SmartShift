@@ -1,0 +1,38 @@
+<form name="addEmployeeForm" ng-submit="submit()">
+    <div class="modal-header">
+        <p class="deleteLink fadeColors modalHeaderLink" ng-click="deleteMe()"><span class="icon-trash"></span> Delete this employee</p>
+        <h3 class="modal-title">Update an Employee</h3>
+    </div>
+    <div class="modal-body" id="addEmployeeModal">
+        <div class="smartInputLine">
+            <div class="smartInputLabel">First Name</div>
+            <div class="smartInputWrapper">
+                <input ng-model="formData.firstName" type="text" ng-class="{inputError:error.name}"
+                       alt="First Name" class="smartInputText fadeColors" placeholder="Required">
+            </div>
+        </div>
+        <div class="smartInputLine">
+            <div class="smartInputLabel">Last Name</div>
+            <div class="smartInputWrapper">
+                <input ng-model="formData.lastName" type="text" ng-class="{inputError:error.name}"
+                       alt="Last Name" class="smartInputText fadeColors" placeholder="Required">
+            </div>
+        </div>
+        <div class="smartInputLine">
+            <div class="smartInputLabel">Groups</div>
+            <div class="smartInputWrapper">
+                <div ng-repeat="group in groupRoles">
+                    <div><b>{{group.name}}</b> {{group.id == formData.homeGroupID ? "(Home Group)" : ""}}</div>
+                    <div ng-repeat="role in group.roles">
+                        {{role.name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="smartModelError smartModelPara" ng-if="error">{{error.message}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="smartButton fadeColors orangeBG editEmployeeModalButton floatLeft" ng-click="closeAddEmployeeModal()">Cancel</button>
+        <button type="submit" class="smartButton fadeColors blueBG editEmployeeModalButton">Update Employee</button>
+    </div>
+</form>

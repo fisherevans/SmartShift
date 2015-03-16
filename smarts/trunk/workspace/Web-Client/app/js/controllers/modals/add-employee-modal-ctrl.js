@@ -70,16 +70,16 @@ angular.module('smartsApp').controller('AddEmployeeModalController', ['$scope', 
                     $(".addEmployeeModalButton").prop("disabled",false);
                 }
             );
- ;       }
+        };
 
-        $scope.groupRoles = {};
+        $scope.rolesGroup = -1;
+        $scope.roles = {};
         $scope.getGroupRoles = function(groupID) {
-            var roles = $scope.groupRoles[groupID];
-            if(roles === undefined) {
-                roles = cacheService.getRolesByGroup(groupID);
-                $scope.groupRoles[groupID] = roles;
+            if($scope.rolesGroup != groupID) {
+                $scope.roles = cacheService.getRolesByGroup(groupID);
+                $scope.rolesGroup = groupID;
             }
-            return roles;
+            return $scope.roles;
         }
     }
 ]);
