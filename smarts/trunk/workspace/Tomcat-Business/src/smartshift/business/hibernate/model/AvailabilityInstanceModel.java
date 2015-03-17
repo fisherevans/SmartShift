@@ -13,7 +13,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "AvailInstance")
-public class AvailabilityInstanceModel implements InstanceInterface{
+public class AvailabilityInstanceModel{
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)
