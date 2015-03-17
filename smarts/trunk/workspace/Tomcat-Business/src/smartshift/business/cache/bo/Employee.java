@@ -37,6 +37,7 @@ public class Employee extends CachedObject {
         _firstName = first;
         _lastName = last;
         _homeGroup = home;
+        _homeGroup.addEmployee(this);
         _roles = new HashMap<Group, Set<Role>>();
         _availabilities = new ArrayList<Availability>();
     }
@@ -184,7 +185,6 @@ public class Employee extends CachedObject {
     }
     
     public static Employee create(int businessID, String first, String last, int homeGroupID) {
-        // TODO - Drew, the group role stuff isn't populated when the employee is created
         Cache cache = Cache.getCache(businessID);
         Employee emp = new Employee(cache, first, last, Group.load(cache, homeGroupID));
         emp.save();

@@ -1,8 +1,12 @@
 package smartshift.business.cache.bo;
 
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import org.hibernate.Session;
 import smartshift.business.hibernate.dao.BusinessDAOContext;
 import smartshift.business.hibernate.dao.EmployeeDAO;
@@ -10,7 +14,10 @@ import smartshift.business.hibernate.dao.GroupDAO;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.common.util.UID;
+import smartshift.common.util.collections.Filter;
 import smartshift.common.util.collections.ROCollection;
+import smartshift.common.util.collections.ROFilteredCollection;
+import smartshift.common.util.collections.ROFilteredMap;
 import smartshift.common.util.collections.ROMap;
 
 public class Cache {
@@ -21,6 +28,19 @@ public class Cache {
     private BusinessDAOContext _daoContext;
     
     private Map<UID, WeakReference<CachedObject>> _cached;
+    
+    private static final class UIDFilter implements Filter<UID> {
+        private String _type;
+        
+        public UIDFilter(String type) {
+            _type = type;
+        }
+        
+        @Override
+        public boolean include(UID element) {
+            return element.getType().equals(_type);          
+        }
+    }
     
     public Cache(int rootBusID) {
         _rootBusID = rootBusID;
@@ -33,7 +53,7 @@ public class Cache {
     }
     
     @SuppressWarnings("unchecked")
-    public <T extends CachedObject> T getCached(UID cachedUID, T template) {
+    public <T extends CachedObject> T getCached(UID cachedUID, Class<T> template) {
         if(!_cached.containsKey(cachedUID))
             return null;
         try {
@@ -52,8 +72,14 @@ public class Cache {
     }
     
     public void decache(UID uid) {
-        if(contains(uid))
-            _cached.remove(uid);
+        if(contains(uid)) {
+            _cached.get(uid).get().save();
+            _cached.remove(uid);    
+        }
+    }
+    
+    public Filter<UID> getUIDFilter(String type) {
+        return new UIDFilter(type);
     }
     
     public Employee getEmployee(int empID) {
@@ -68,6 +94,28 @@ public class Cache {
         if(!_cached.containsKey(uid))
             return null;
         return (Role) _cached.get(uid).get();
+    }
+    
+    public ROCollection<Role> getRoles() {
+        List<Role> roles = new ArrayList<Role>();
+        Filter<UID> filter = getUIDFilter(Role.TYPE_IDENTIFIER);
+        for(UID uid : _cached.keySet()) {
+            if(filter.include(uid))
+                roles.add(getCached(uid, Role.class));
+        }
+        return ROCollection.wrap(roles);
+    } 
+    
+    public Role getRole(String roleName) {
+        Filter<UID> filter = getUIDFilter(Role.TYPE_IDENTIFIER);
+        for(UID uid : _cached.keySet()) {
+            if(filter.include(uid)) {
+                Role role = getCached(uid, Role.class);
+                if(role.getName().equals(roleName))
+                    return role;
+            }
+        }
+        return null;
     }
     
     public Group getGroup(int groupID) {
@@ -120,5 +168,11 @@ public class Cache {
             newCache.loadAllData();
         }
         return caches.get(busID);
+    }
+    
+    public static void saveAllCaches() {
+        for(Cache cache : caches.values()) {
+            cache.save();
+        }
     }
 }

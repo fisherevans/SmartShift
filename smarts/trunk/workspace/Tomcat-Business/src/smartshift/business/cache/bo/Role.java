@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import org.hibernate.HibernateException;
+import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.dao.RoleDAO;
 import smartshift.business.hibernate.model.RoleModel;
 import smartshift.common.util.UID;
@@ -14,6 +15,19 @@ public class Role extends CachedObject {
     public static final String TYPE_IDENTIFIER = "R";
     
     private static final SmartLogger logger = new SmartLogger(Role.class);
+    
+    private static String BASIC_ROLE_NAME = "basic";
+    private static int BASIC_ROLE_ID = 0;
+    
+    private static final class BasicRole extends Role {
+        public BasicRole(Cache cache, Group parent) {
+            super(cache, BASIC_ROLE_NAME, parent);
+        }
+        
+        public int getID() {
+            return BASIC_ROLE_ID;
+        }
+    }
     
     private String _name;
     private Map<Group, Set<Capability>> _capabilities;
@@ -29,6 +43,7 @@ public class Role extends CachedObject {
     public Role(Cache cache, String name, Group parent) {
         this(cache, name);
         _capabilities.put(parent, new HashSet<Capability>());
+        parent.addRole(this);
     }
     
     private Role(Cache cache, RoleModel model) {
@@ -42,7 +57,7 @@ public class Role extends CachedObject {
     }
     
     public static Role getBasicRole(Cache cache, Group parent) {
-        Role basicRole = new Role(cache, "basic", parent);
+        Role basicRole = new BasicRole(cache, parent);
         if(!parent.hasRole(basicRole))
             parent.addRole(basicRole);
         return basicRole;
@@ -96,8 +111,17 @@ public class Role extends CachedObject {
     }
     
     public static Role loadByName(Cache cache, String roleName) {
-        // TODO - Need to be abke to get the Role based on a name
-        return null;
+        Role role = cache.getRole(roleName);
+        if(role == null) {
+            RoleModel model = cache.getDAOContext().dao(RoleDAO.class).uniqueByCriteria(Restrictions.eq("name", roleName)).execute();
+            if(model != null) {
+                UID uid = new UID(TYPE_IDENTIFIER, model.getId());
+                cache.cache(uid, null);
+                role = new Role(cache, model);
+                cache.cache(uid, role);
+            }
+        }
+        return role;
     }
     
     public static Role create(int businessID, String name) {
@@ -106,13 +130,15 @@ public class Role extends CachedObject {
     
     public static Role create(int businessID, String name, Group parent) {
         Cache cache = Cache.getCache(businessID);
-        Role role;
-        if(parent == null)
-            role = new Role(cache, name);
-        else
-            role = new Role(cache, name, parent);
-        role.save();
-        cache.cache(new UID(role), role);
+        Role role = loadByName(cache, name);
+        if(role == null) {
+            if(parent == null)
+                role = new Role(cache, name);
+            else
+                role = new Role(cache, name, parent);
+            role.save();
+            cache.cache(new UID(role), role);
+        }
         return role;
     }
 }

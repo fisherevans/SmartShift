@@ -12,7 +12,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "Availability")
-public class AvailabilityModel implements TemplatableInterface{
+public class AvailabilityModel{
     @Id
     @GeneratedValue
     @Column(name = "id", nullable = false)

@@ -21,7 +21,7 @@ import org.hibernate.annotations.NamedQuery;
                       + "  from ScheduleTemplateVersionModel as stv"
     )
 })
-public class ScheduleTemplateVersionModel implements TemplateInterface{
+public class ScheduleTemplateVersionModel{
     /**
      * named query to get the max id of all schedule template ids
      */
