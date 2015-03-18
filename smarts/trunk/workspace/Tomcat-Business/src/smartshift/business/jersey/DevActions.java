@@ -25,6 +25,11 @@ import smartshift.common.util.UID;
 import smartshift.common.util.collections.ROMap;
 import smartshift.common.util.log4j.SmartLogger;
 
+/**
+ * @author "D. Fisher Evans <contact@fisherevans.com>"
+ *
+ *  Temporary actions used for development
+ */
 @Provider
 @Path("/dev")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -32,6 +37,9 @@ import smartshift.common.util.log4j.SmartLogger;
 public class DevActions extends BaseBusinessActions {
     private static final SmartLogger logger = new SmartLogger(DevActions.class);
     
+    /**
+     * @return all groups, roles, employees and how they're linked
+     */
     @GET
     @Path("/fullCache")
     public Response getFullCache() {

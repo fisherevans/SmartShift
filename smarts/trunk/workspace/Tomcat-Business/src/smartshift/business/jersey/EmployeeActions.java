@@ -1,9 +1,9 @@
 package smartshift.business.jersey;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,18 +16,15 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
-
-import com.google.gson.annotations.Expose;
-
 import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
 import smartshift.business.jersey.objects.EmployeeJSON;
 import smartshift.business.util.GroupRoleEmployeeUtil;
 import smartshift.common.util.ValidationUtil;
-import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.params.SimpleIntegerParam;
+import com.google.gson.annotations.Expose;
 
 /**
  * @author D. Fisher Evans <contact@fisherevans.com>
@@ -72,11 +69,18 @@ public class EmployeeActions extends BaseBusinessActions {
     	logger.debug("addEmployee() valid group roles and home group");
         Employee newEmployee = Employee.create(getCache().getBusinessID(), request.firstName, request.lastName, proposedHomeGroup.getID());
     	logger.debug("addEmployee() employee created");
-        for(Group group:groupRoles.keySet())
-            for(Role role:groupRoles.get(group))
+        EmployeeJSON json = new EmployeeJSON(newEmployee);
+        json.groupRoleIDs = new HashMap<>();
+        for(Group group:groupRoles.keySet()) {
+            List<Integer> roles = new ArrayList<>();
+            for(Role role:groupRoles.get(group)) {
                 GroupRoleEmployeeUtil.linkGroupRoleEmployee(getCache(), group, role, newEmployee);
+                roles.add(role.getID());
+            }
+            json.groupRoleIDs.put(group.getID(), roles);
+        }
     	logger.debug("addEmployee() group roles added");
-        return getObjectResponse(Status.ACCEPTED, new EmployeeJSON(newEmployee));
+        return getObjectResponse(Status.ACCEPTED, json);
     }
     
     /** gets simple employee info
@@ -94,11 +98,14 @@ public class EmployeeActions extends BaseBusinessActions {
         return getObjectResponse(Status.OK, new EmployeeJSON(employee));
     }
     
+    /**
+     * @param request the new data
+     * @return the new object
+     */
     @POST
-    @Path("/{id}")
-    public Response editEmployee(@PathParam("id") SimpleIntegerParam employeeID, EditRequest request) {
-    	logger.debug("editEmployee() Enter " + employeeID.getInteger() + " - " + request);
-        Employee employee = GroupRoleEmployeeUtil.getEmployee(getCache(), getEmployee(), employeeID.getInteger(), true);
+    public Response editEmployee(EditRequest request) {
+    	logger.debug("editEmployee() Enter " + request);
+        Employee employee = GroupRoleEmployeeUtil.getEmployee(getCache(), getEmployee(), request.id, true);
         if(request.firstName != null && ValidationUtil.validateName(request.firstName) == null)
             return getMessageResponse(Status.BAD_REQUEST, "Employees must have a valid first name.");
         if(request.lastName != null && ValidationUtil.validateName(request.lastName) == null)
@@ -117,6 +124,10 @@ public class EmployeeActions extends BaseBusinessActions {
         return getObjectResponse(Status.ACCEPTED, new EmployeeJSON(employee));
     }
 
+    /**
+     * @param employeeID the employee to delete
+     * @return the message
+     */
     @DELETE
     @Path("/{id}")
     public Response deleteEmployee(@PathParam("id") SimpleIntegerParam employeeID) {
@@ -130,7 +141,10 @@ public class EmployeeActions extends BaseBusinessActions {
         return getMessageResponse(Status.OK, "The employee was deleted");
     }
     
+    @SuppressWarnings("javadoc")
     public static class EditRequest {
+        @Expose
+        public Integer id;
         @Expose
         public String firstName;
         @Expose
@@ -139,10 +153,11 @@ public class EmployeeActions extends BaseBusinessActions {
         public Integer homeGroupID;
         @Override
         public String toString() {
-        	return String.format("[FN:%s, LS:%s, HG:%d]", firstName, lastName, homeGroupID);
+        	return String.format("[ID:%d, FN:%s, LS:%s, HG:%d]", firstName, lastName, homeGroupID);
         }
     }
     
+    @SuppressWarnings("javadoc")
     public static class AddRequest {
         @Expose
         public String firstName;

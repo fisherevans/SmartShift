@@ -106,7 +106,7 @@ public class Group extends CachedObject {
             if(_model != null) {
                 _model.setName(_name);
                 _model.setActive(_active);
-                _model.setParentID(_parent.getID());
+                _model.setParentID(_parent == null ? null : _parent.getID());
                 getDAO(GroupDAO.class).update(_model);
             } else {
                 _model = getDAO(GroupDAO.class).add(_name, null).execute();
