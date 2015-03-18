@@ -23,21 +23,23 @@ public class Group extends CachedObject {
     
     private String _name;
     private Group _parent;
+    private Boolean _active;
     private Set<Group> _children;
     private Map<Role, Set<Employee>> _employees;
     
     private GroupModel _model;
 
-    public Group(Cache cache, String name) {
+    public Group(Cache cache, String name, Boolean active) {
         super(cache);
         _name = name;
+        _active = active;
         _children = new HashSet<Group>();
         _employees = new HashMap<Role, Set<Employee>>();
         _employees.put(Role.getBasicRole(cache, this), new HashSet<Employee>());
     }
     
     private Group(Cache cache, GroupModel model) {
-        this(cache, model.getName());
+        this(cache, model.getName(), model.getActive());
         _model = model;
         if(model.getParentID() == null)
         	_parent = null;
@@ -54,7 +56,15 @@ public class Group extends CachedObject {
     	return _parent;
     }
     
-    public ROCollection<Group> getChildGroups() {
+    public Boolean getActive() {
+		return _active;
+	}
+
+	public void setActive(Boolean active) {
+		_active = active;
+	}
+
+	public ROCollection<Group> getChildGroups() {
         return ROCollection.wrap(_children);
     }
     
@@ -95,6 +105,7 @@ public class Group extends CachedObject {
         try {
             if(_model != null) {
                 _model.setName(_name);
+                _model.setActive(_active);
                 _model.setParentID(_parent.getID());
                 getDAO(GroupDAO.class).update(_model);
             } else {
@@ -165,7 +176,7 @@ public class Group extends CachedObject {
      */
     public static Group create(int businessID, String name, Group parent) {
         Cache cache = Cache.getCache(businessID);
-        Group grp = new Group(cache, name);
+        Group grp = new Group(cache, name, true);
         grp.save();
         cache.cache(new UID(grp), grp);
         return grp;
