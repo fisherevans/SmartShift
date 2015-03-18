@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -70,6 +71,9 @@ public class RoleModel {
     @Column(name = "name", length = 45)
     private String name;
 
+    @Column(name = "active", nullable = false)
+    private Boolean active;
+
     /**
      * Initializes the object.
      */
@@ -111,4 +115,18 @@ public class RoleModel {
     public void setName(String name) {
         this.name = name;
     }
+
+    /**
+     * @return the active flag
+     */
+	public Boolean getActive() {
+		return active;
+	}
+
+    /**
+     * @param active the active flag
+     */
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 }
