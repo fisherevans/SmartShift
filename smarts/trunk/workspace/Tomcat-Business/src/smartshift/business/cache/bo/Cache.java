@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import org.hibernate.Session;
+
 import smartshift.business.hibernate.dao.BusinessDAOContext;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
@@ -19,8 +21,11 @@ import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.collections.ROFilteredCollection;
 import smartshift.common.util.collections.ROFilteredMap;
 import smartshift.common.util.collections.ROMap;
+import smartshift.common.util.log4j.SmartLogger;
 
 public class Cache {
+	private static SmartLogger logger = new SmartLogger(Cache.class);
+	
     private static Map<Integer, Cache> caches;
     
     private int _rootBusID;
@@ -175,4 +180,10 @@ public class Cache {
             cache.save();
         }
     }
+
+	public void deleteEmployee(Employee employee) {
+		logger.error("Hit a non-implemeneted block! deleteEmployee()");
+		throw new RuntimeException("To implement!");
+		// TODO Drew this needs to set the flag, save to the DB and remove any relations.
+	}
 }

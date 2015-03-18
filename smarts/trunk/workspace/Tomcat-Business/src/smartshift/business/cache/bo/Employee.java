@@ -27,23 +27,25 @@ public class Employee extends CachedObject {
     private String _firstName;
     private String _lastName;
     private Group _homeGroup;
+    private Boolean _active;
     private Map<Group, Set<Role>> _roles;
     private List<Availability> _availabilities;
     
     private EmployeeModel _model;
     
-    public Employee(Cache cache, String first, String last, Group home) {
+    public Employee(Cache cache, String first, String last, Group home, Boolean active) {
         super(cache);
         _firstName = first;
         _lastName = last;
         _homeGroup = home;
+        _active = active;
         _homeGroup.addEmployee(this);
         _roles = new HashMap<Group, Set<Role>>();
         _availabilities = new ArrayList<Availability>();
     }
     
     private Employee(Cache cache, EmployeeModel model) {
-        this(cache, model.getFirstName(), model.getLastName(), Group.load(cache, model.getDefaultGroupID()));
+        this(cache, model.getFirstName(), model.getLastName(), Group.load(cache, model.getDefaultGroupID()), model.getActive());
         _model = model;
         loadAllChildren();
     }
@@ -104,7 +106,15 @@ public class Employee extends CachedObject {
         return true;
     }
 
-    public static Employee getEmployee(Cache cache, EmployeeModel model) {     
+    public Boolean getActive() {
+		return _active;
+	}
+
+	public void setActive(Boolean active) {
+		_active = active;
+	}
+
+	public static Employee getEmployee(Cache cache, EmployeeModel model) {     
         Employee employee = cache.getEmployee(model.getId());
         if(employee == null)
             employee = new Employee(cache, model);
@@ -118,6 +128,7 @@ public class Employee extends CachedObject {
                 _model.setFirstName(_firstName);
                 _model.setLastName(_lastName);
                 _model.setDefaultGroupID(_homeGroup.getID());
+                _model.setActive(_active);
                 getDAO(EmployeeDAO.class).update(_model);
             } else {
                 _homeGroup.save();
@@ -186,7 +197,7 @@ public class Employee extends CachedObject {
     
     public static Employee create(int businessID, String first, String last, int homeGroupID) {
         Cache cache = Cache.getCache(businessID);
-        Employee emp = new Employee(cache, first, last, Group.load(cache, homeGroupID));
+        Employee emp = new Employee(cache, first, last, Group.load(cache, homeGroupID), true);
         emp.save();
         cache.cache(new UID(emp), emp);
         return emp;
