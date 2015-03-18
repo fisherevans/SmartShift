@@ -17,7 +17,6 @@ CREATE TABLE `Group` (
 CREATE TABLE `Role` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(45),
-	`active` TINYINT(1) NOT NULL DEFAULT 1,
 	PRIMARY KEY (`id`)
 );
 
