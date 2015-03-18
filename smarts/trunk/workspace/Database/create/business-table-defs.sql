@@ -10,12 +10,14 @@ CREATE TABLE `Group` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`parentID` INT NULL,
 	`name` VARCHAR(45),
+	`active` TINYINT(1) NOT NULL DEFAULT 1,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `Role` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(45),
+	`active` TINYINT(1) NOT NULL DEFAULT 1,
 	PRIMARY KEY (`id`)
 );
 
@@ -24,6 +26,7 @@ CREATE TABLE `Employee` (
 	`defaultGrpID` INT NOT NULL,
 	`fName` VARCHAR(60) NULL,
 	`lName` VARCHAR(60) NULL,
+	`active` TINYINT(1) NOT NULL DEFAULT 1,
 	PRIMARY KEY (`id`)
 );
 
