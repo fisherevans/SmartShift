@@ -132,4 +132,12 @@ public class GroupRoleEmployeeUtil {
         group.addEmployeeRole(employee, role);
         employee.addGroupRole(role, group);
     }
+    
+    public static boolean isValidHomeGroup(Employee employee, Group proposedHomeGroup) {
+        boolean validHomeGroup = false;
+        for(Group group:employee.getGroups())
+            if(group.getID() == proposedHomeGroup.getID())
+                validHomeGroup = true;
+        return validHomeGroup;
+    }
 }
