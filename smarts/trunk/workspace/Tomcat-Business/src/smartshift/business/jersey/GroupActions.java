@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,20 +16,13 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
-
-import com.google.gson.annotations.Expose;
-
-import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
-import smartshift.business.cache.bo.Role;
 import smartshift.business.jersey.objects.GroupJSON;
-import smartshift.business.jersey.objects.GroupRequestJSON;
-import smartshift.business.jersey.objects.GroupRoleEmployeeRequestJSON;
-import smartshift.business.jersey.objects.GroupRoleRequestJSON;
 import smartshift.business.util.GroupRoleEmployeeUtil;
 import smartshift.common.util.ValidationUtil;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.params.SimpleIntegerParam;
+import com.google.gson.annotations.Expose;
 
 /** @author D. Fisher Evans <contact@fisherevans.com> jersey group actions 
  * jersey actions for groups
@@ -90,12 +82,20 @@ public class GroupActions extends BaseBusinessActions {
         return getObjectResponse(Status.OK, groupJsons);
     }
     
+    /**
+     * @param request the group edit request
+     * @return the new object
+     */
     @POST
     public Response editGroup(EditRequest request) {
     	// TODO
         return getMessageResponse(Status.NOT_IMPLEMENTED, "Please try again later.");
     }
     
+    /**
+     * @param groupID the group to delete
+     * @return the message
+     */
     @DELETE
     @Path("/{id}")
     public Response deleteGroup(@PathParam("id") SimpleIntegerParam groupID) {
@@ -103,6 +103,7 @@ public class GroupActions extends BaseBusinessActions {
         return getMessageResponse(Status.NOT_IMPLEMENTED, "Please try again later.");
     }
     
+    @SuppressWarnings("javadoc")
     public static class AddRequest {
     	@Expose
         public String name;
@@ -114,6 +115,7 @@ public class GroupActions extends BaseBusinessActions {
     	}
     }
     
+    @SuppressWarnings("javadoc")
     public static class EditRequest {
     	@Expose
         public Integer id;
