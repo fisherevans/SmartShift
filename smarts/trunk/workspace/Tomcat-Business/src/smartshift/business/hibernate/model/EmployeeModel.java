@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -93,6 +94,9 @@ public class EmployeeModel {
 
     @Column(name = "lName", length = 60)
     private String lastName;
+
+    @Column(name = "active", nullable = false)
+    private Boolean active;
     
     /**
      * Initializes the object.
@@ -155,4 +159,18 @@ public class EmployeeModel {
     public void setDefaultGroupID(Integer defaultGroupID) {
         this.defaultGroupID = defaultGroupID;
     }
+
+    /**
+     * @return the active flag
+     */
+	public Boolean getActive() {
+		return active;
+	}
+
+    /**
+     * @param active the active flag
+     */
+	public void setActive(Boolean active) {
+		this.active = active;
+	}
 }
