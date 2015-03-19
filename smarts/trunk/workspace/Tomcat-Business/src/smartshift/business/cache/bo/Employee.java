@@ -200,7 +200,7 @@ public class Employee extends CachedObject {
             logger.debug("Got model: " + model);
             Employee employee = null;
             if(model != null) {
-                cache.cache(uid, null);
+                cache.cache(uid, new PlaceHolderObject(cache, TYPE_IDENTIFIER, empID));
                 employee = new Employee(cache, model);
                 cache.cache(uid, employee);
                 logger.debug("Cached employee: " + employee);
