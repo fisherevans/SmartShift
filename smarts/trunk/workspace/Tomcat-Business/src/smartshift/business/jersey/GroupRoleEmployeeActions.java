@@ -1,6 +1,7 @@
 package smartshift.business.jersey;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -48,7 +49,7 @@ public class GroupRoleEmployeeActions extends BaseBusinessActions {
      * @param request the unlink request
      * @return the message
      */
-    @PUT
+    @DELETE
     public Response unlinkGroupRoleEmployee(UnlinkRequest request) {
         logger.debug("unlinkGroupRoleEmployee() Enter");
         Group group = getGroup(request.groupID, true);
