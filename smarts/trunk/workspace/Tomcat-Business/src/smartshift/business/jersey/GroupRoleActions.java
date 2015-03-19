@@ -13,7 +13,6 @@ import javax.ws.rs.ext.Provider;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
 import smartshift.business.jersey.objects.RoleJSON;
-import smartshift.business.util.GroupRoleEmployeeUtil;
 import smartshift.common.util.log4j.SmartLogger;
 import com.google.gson.annotations.Expose;
 
@@ -34,11 +33,14 @@ public class GroupRoleActions extends BaseBusinessActions {
     @PUT
     public Response addGroupRole(AddRequest request) {
         logger.debug("addGroupRole() Enter");
-        Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.groupID, true);
+        Group group = getGroup(request.groupID, true);
+        logger.debug("addGroupRole() valid group");
         Role role = Role.create(getCache().getBusinessID(), request.roleName, group);
         if(group.hasRole(role))
             return getMessageResponse(Status.OK, "Group already has role");
+        logger.debug("addGroupRole() valid role");
         group.addRole(role);
+        logger.debug("addGroupRole() added");
         return getMessageResponse(Status.OK, "Role added to group.");
     }
 
@@ -49,11 +51,14 @@ public class GroupRoleActions extends BaseBusinessActions {
     @POST
     public Response updateGroupRole(EditRequest request) {
         logger.debug("updateGroupRole() Enter");
-        Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.groupID, true);
-        Role role = GroupRoleEmployeeUtil.getRole(getCache(), request.roleID);
+        Group group = getGroup(request.groupID, true);
+        logger.debug("updateGroupRole() valid group");
+        Role role = getRole(request.roleID);
         if(!group.hasRole(role))
             return getMessageResponse(Status.BAD_REQUEST, "Group does not have this role.");
+        logger.debug("updateGroupRole() valid role");
         Role newRole = getCache().renameGroupRole(group, role, request.roleName);
+        logger.debug("updateGroupRole() updated");
         return getObjectResponse(Status.OK, new RoleJSON(newRole));
     }
 
@@ -64,11 +69,14 @@ public class GroupRoleActions extends BaseBusinessActions {
     @DELETE
     public Response deleteGroupRole(DeleteRequest request) {
         logger.debug("deleteGroupRole() Enter");
-        Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.groupID, true);
-        Role role = GroupRoleEmployeeUtil.getRole(getCache(), request.roleID);
+        Group group = getGroup(request.groupID, true);
+        logger.debug("deleteGroupRole() valid group");
+        Role role = getRole(request.roleID);
         if(!group.hasRole(role))
             return getMessageResponse(Status.OK, "Role does not exist for this group");
+        logger.debug("deleteGroupRole() valid role");
         getCache().removeGroupRole(group, role);
+        logger.debug("deleteGroupRole() removed");
         return getMessageResponse(Status.OK, "Role removed from group.");
     }
 

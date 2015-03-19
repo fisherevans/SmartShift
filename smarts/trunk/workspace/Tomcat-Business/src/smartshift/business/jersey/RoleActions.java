@@ -35,27 +35,32 @@ public class RoleActions extends BaseBusinessActions {
     @GET
     @Path("/{ids}")
     public Response getRoles(@PathParam("ids") String roleIDs) {
-        logger.debug("Enter getRoles()");
+        logger.debug("getRoles() enter");
     	Set<Role> roles = new HashSet<Role>();
     	StringBuffer error = new StringBuffer();
     	String[] ids = roleIDs.split("-");
+    	int errorCount = 0;
     	for(String id:ids) {
     		try {
     			Integer intId = new Integer(id);
     			Role role = Role.load(getCache(), intId);
-    			if(role == null)
+    			if(role == null) {
+    				errorCount++;
     				error.append(id + " is an invalid role id. ");
-    			else
+    			} else
     				roles.add(role);
     		} catch(Exception e) {
+				errorCount++;
     			error.append(id + " is an invalid integer. ");
     		}
     	}
+        logger.debug("getRoles() error: " + errorCount);
     	if(error.length() > 0)
     		return getMessageResponse(Status.BAD_REQUEST, error.toString());
     	Map<Integer, RoleJSON> roleJsons = new HashMap<>();
     	for(Role role:roles)
     		roleJsons.put(role.getID(), new RoleJSON(role));
+        logger.debug("getRoles() return role count: " + roleJsons.size());
         return getObjectResponse(Status.OK, roleJsons);
     }
 }

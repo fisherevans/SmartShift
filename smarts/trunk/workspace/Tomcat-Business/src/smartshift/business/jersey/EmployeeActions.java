@@ -20,7 +20,6 @@ import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
 import smartshift.business.jersey.objects.EmployeeJSON;
-import smartshift.business.util.GroupRoleEmployeeUtil;
 import smartshift.common.util.ValidationUtil;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.params.SimpleIntegerParam;
@@ -50,16 +49,18 @@ public class EmployeeActions extends BaseBusinessActions {
         if(ValidationUtil.validateName(request.lastName) == null)
             return getMessageResponse(Status.BAD_REQUEST, "Employees must have a valid last name.");
     	logger.debug("addEmployee() valid names");
-        Group proposedHomeGroup = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.homeGroupID, true);
+        Group proposedHomeGroup = getGroup(request.homeGroupID, true);
         if(request.groupRoleIDs == null || request.groupRoleIDs.size() == 0)
             return getMessageResponse(Status.BAD_REQUEST, "Employees must be in a group and role.");
         Map<Group, List<Role>> groupRoles = new HashMap<>();
         boolean validHomeGroup = false;
         for(Integer groupID:request.groupRoleIDs.keySet()) {
-            Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), groupID, true);
+            Group group = getGroup(groupID, true);
             if(group.getID() == proposedHomeGroup.getID())
                 validHomeGroup = true;
-            List<Role> roles = GroupRoleEmployeeUtil.getRolesByIDs(getCache(), request.groupRoleIDs.get(groupID));
+            List<Role> roles = new ArrayList<Role>();
+            for(Integer roleID:request.groupRoleIDs.get(groupID))
+                roles.add(getRole(roleID));
             if(roles.size() == 0)
                 return getMessageResponse(Status.BAD_REQUEST, "An employee cannot be in a group, but not in a role. " + groupID);
             groupRoles.put(group, roles);
@@ -74,7 +75,7 @@ public class EmployeeActions extends BaseBusinessActions {
         for(Group group:groupRoles.keySet()) {
             List<Integer> roles = new ArrayList<>();
             for(Role role:groupRoles.get(group)) {
-                GroupRoleEmployeeUtil.linkGroupRoleEmployee(getCache(), group, role, newEmployee);
+                getCache().linkGroupRoleEmployee(group, role, newEmployee);
                 roles.add(role.getID());
             }
             json.groupRoleIDs.put(group.getID(), roles);
@@ -105,15 +106,15 @@ public class EmployeeActions extends BaseBusinessActions {
     @POST
     public Response editEmployee(EditRequest request) {
     	logger.debug("editEmployee() Enter " + request);
-        Employee employee = GroupRoleEmployeeUtil.getEmployee(getCache(), getEmployee(), request.id, true);
+        Employee employee = getEmployee(request.id, true);
         if(request.firstName != null && ValidationUtil.validateName(request.firstName) == null)
             return getMessageResponse(Status.BAD_REQUEST, "Employees must have a valid first name.");
         if(request.lastName != null && ValidationUtil.validateName(request.lastName) == null)
             return getMessageResponse(Status.BAD_REQUEST, "Employees must have a valid last name.");
         Group newHomeGroup = null;
         if(request.homeGroupID != null) {
-        	newHomeGroup = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.homeGroupID, true);
-        	if(!GroupRoleEmployeeUtil.isValidHomeGroup(employee, newHomeGroup))
+        	newHomeGroup = getGroup(request.homeGroupID, true);
+        	if(!employee.belongsTo(newHomeGroup))
                 return getMessageResponse(Status.BAD_REQUEST, "The employee must be a member of the home group");
         }
     	logger.debug("editEmployee() Valid data");

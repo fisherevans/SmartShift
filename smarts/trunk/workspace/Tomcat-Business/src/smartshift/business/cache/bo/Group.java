@@ -24,8 +24,8 @@ public class Group extends CachedObject {
     private String _name;
     private Group _parent;
     private Boolean _active;
-    private Set<Group> _children;
-    private Map<Role, Set<Employee>> _employees;
+    private final Set<Group> _children;
+    private final Map<Role, Set<Employee>> _employees;
     
     private GroupModel _model;
 
@@ -193,6 +193,6 @@ public class Group extends CachedObject {
     public boolean isValidParentOf(Group group) {
         logger.error("Hit a non-implemeneted block! isValidParentOf()");
         throw new RuntimeException("To implement!");
-        // TODO drew - prevent infinite loops and what so
+        // TODO drew - true if the passed group is a valid child of this group. Looking to avoid prevent infinite loops and what so
     }
 }

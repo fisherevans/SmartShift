@@ -2,12 +2,10 @@ package smartshift.business.jersey.objects;
 
 import java.util.Map;
 import java.util.Set;
-import smartshift.common.util.log4j.SmartLogger;
 import com.google.gson.annotations.Expose;
 
+@SuppressWarnings("javadoc")
 public class FullCacheJSON {
-    private static final SmartLogger logger = new SmartLogger(FullCacheJSON.class);
-    
     @Expose
     public Integer selfEmployeeID;
 

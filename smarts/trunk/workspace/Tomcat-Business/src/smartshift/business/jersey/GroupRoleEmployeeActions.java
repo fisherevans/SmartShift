@@ -11,7 +11,6 @@ import javax.ws.rs.ext.Provider;
 import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
-import smartshift.business.util.GroupRoleEmployeeUtil;
 import smartshift.common.util.log4j.SmartLogger;
 import com.google.gson.annotations.Expose;
 
@@ -32,12 +31,16 @@ public class GroupRoleEmployeeActions extends BaseBusinessActions {
     @PUT
     public Response linkGroupRoleEmployee(LinkRequest request) {
         logger.debug("linkGroupRoleEmployee() Enter");
-        Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.groupID, true);
+        Group group = getGroup(request.groupID, true);
+        logger.debug("linkGroupRoleEmployee() valid group");
         Role role = Role.load(getCache(), request.roleID);
         if(role == null || !group.hasRole(role))
             return getMessageResponse(Status.BAD_REQUEST, "The group must have this role to add employees to it.");
-        Employee employee = GroupRoleEmployeeUtil.getEmployee(getCache(), getEmployee(), request.employeeID, true);
-        GroupRoleEmployeeUtil.linkGroupRoleEmployee(getCache(), group, role, employee);
+        logger.debug("linkGroupRoleEmployee() valid role");
+        Employee employee = getEmployee(request.employeeID, true);
+        logger.debug("linkGroupRoleEmployee() valid employee");
+        getCache().linkGroupRoleEmployee(group, role, employee);
+        logger.debug("linkGroupRoleEmployee() linked");
         return getMessageResponse(Status.OK, "The employee was added to the group role.");
     }
     
@@ -48,12 +51,16 @@ public class GroupRoleEmployeeActions extends BaseBusinessActions {
     @PUT
     public Response unlinkGroupRoleEmployee(UnlinkRequest request) {
         logger.debug("unlinkGroupRoleEmployee() Enter");
-        Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.groupID, true);
-        Role role = GroupRoleEmployeeUtil.getRole(getCache(), request.groupID);
+        Group group = getGroup(request.groupID, true);
+        logger.debug("unlinkGroupRoleEmployee() valid group");
+        Role role = getRole(request.groupID);
         if(!group.hasRole(role))
             return getMessageResponse(Status.BAD_REQUEST, "The group must have this role to remove employees from it.");
-        Employee employee = GroupRoleEmployeeUtil.getEmployee(getCache(), getEmployee(), request.employeeID, true);
+        logger.debug("unlinkGroupRoleEmployee() valid role");
+        Employee employee = getEmployee(request.employeeID, true);
+        logger.debug("unlinkGroupRoleEmployee() valid employee");
         getCache().removeGroupRoleEmployee(group, role, employee);
+        logger.debug("unlinkGroupRoleEmployee() unlinked");
         return getMessageResponse(Status.OK, "Employee removed from group.");
     }
 

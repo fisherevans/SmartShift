@@ -6,7 +6,6 @@ import org.hibernate.HibernateException;
 import smartshift.accounts.hibernate.dao.AccountsDAOContext;
 import smartshift.accounts.hibernate.dao.BusinessDAO;
 import smartshift.accounts.hibernate.model.BusinessModel;
-import smartshift.common.hibernate.DBException;
 import smartshift.common.util.hibernate.Stored;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -15,8 +14,8 @@ public class Business implements Stored {
 
     private static Map<Integer, Business> businesses;
     
-    private int _id;
-    private String _name;
+    private final int _id;
+    private final String _name;
     
     private BusinessModel _model;
     
@@ -60,8 +59,7 @@ public class Business implements Stored {
 
     @Override
     public void loadAllChildren() {
-        // TODO Auto-generated method stub
-        
+        // TODO Drew, should we initialize the cache here? The business is created when the account rmi service tells this app to connect.
     }
     
     public static Business load(int busID) {
