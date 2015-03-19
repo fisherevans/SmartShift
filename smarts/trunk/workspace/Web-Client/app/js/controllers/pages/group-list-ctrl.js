@@ -1,9 +1,14 @@
-angular.module('smartsApp').controller('GroupListController', [ '$rootScope', '$location', 'cacheService',
+angular.module('smartsApp').controller('GroupListController', [ '$rootScope', '$location', 'cacheService', 'loadCache',
     function($rootScope, $location, cacheService, loadCache){
-        this.route = $location.path();
+        var groupListCtrl = this;
+
         this.groups = cacheService.getGroups();
 
-        updateNavigation([
+        groupListCtrl.manageGroup = function(group) {
+            $location.path("groups/" + group.id);
+        };
+
+        $rootScope.updateNavigationTree([
             { "type":"text", "text":"Group Management" }
         ]);
     }

@@ -6,33 +6,73 @@
             Filter
         </div>
         <div class="smartButton blueBG fadeColors employeeListButton" ng-click="manageGroupCtrl.openAddEmployeeModal()">
-            <span class="icon-add"></span>
+            <span class="icon-plus"></span>
             &nbsp;&nbsp;
-            Add Employee
+            Create Employee
         </div>
     </div>
     <div class="employeeListSearchWrapper">
         <div class="employeeListSearchInputWrapper">
-            <input type="text" class="employeeListSearchInput smartInputText" placeholder="Name Filter" ng-model="manageGroupCtrl.employeeListNameFilter" />
-            <div class="employeeListSearchInputClear fadeColors" ng-show="manageGroupCtrl.employeeListNameFilter" ng-click="manageGroupCtrl.employeeListNameFilter = ''">Clear</div>
+            <input type="text" class="employeeListSearchInput smartInputText" placeholder="Name Filter" ng-model="manageGroupCtrl.filter.name" />
+            <div class="employeeListSearchInputClear fadeColors" ng-show="manageGroupCtrl.filter.name" ng-click="manageGroupCtrl.filter.name = ''">Clear</div>
         </div>
     </div>
     <div class="employeeList">
         <div ng-repeat="(employeeID, employee) in manageGroupCtrl.employees | filter:employeeListNameFilter | orderObjectBy:'sortName'"
-                class="employeeWrapper fadeColors noTextSelect" draggable="true" ng-show="manageGroupCtrl.nameFilterCheck(employee)">
-            <div ng-if="employee.justAdded" class="justAdded"></div>
-            <img src="../global/images/default.png" class="employeeImage" />
-            <div class="employeeText">
-                <div class="employeeName">{{employee.firstName}} {{employee.lastName}}</div>
-                <div class="employeeDefaultGroup">Default Group</div>
+                class="employeeWrapper fadeColors noTextSelect" draggable="true" ng-show="manageGroupCtrl.employeeListFilter(employee)"
+                ng-class="{hover:employee.hover}" ng-mouseenter="employee.hover = true" ng-mouseleave="employee.hover = false">
+            <div class="employeeListItem fadeColors">
+                <div ng-if="employee.justAdded" class="justAdded"></div>
+                <img src="../global/images/default.png" class="employeeImage" />
+                <div class="employeeText">
+                    <div class="employeeName">{{employee.firstName}} {{employee.lastName}}</div>
+                    <div class="employeeDefaultGroup">Default Group</div>
+                </div>
+                <div class="employeeMenuButton fadeColorOpacity icon-pencil" ng-click="manageGroupCtrl.openEditEmployeeModal(employee)"></div>
             </div>
-            <div class="employeeMenuButton fadeColorOpacity icon-cog" ng-click="manageGroupCtrl.openEditEmployeeModal(employee)"></div>
         </div>
     </div>
 </div>
 <div class="roleListWrapper appBlock">
-    <div ng-repeat="(roleID, role) in manageGroupCtrl.roles" class="antiAppBlock roleBox">
-        {{role.name}}
+    <div class="addRoleWrapper">
+        <!--<div class="groupManagingTitle">
+            Managing {{manageGroupCtrl.group.name}}
+        </div>-->
+        <div class="smartInputWrapper addRoleInputWrapper">
+            <input type="text" class="smartInputText smartInputFullWidth" placeholder="Role Name" ng-model="manageGroupCtrl.addRoleInput" />
+        </div>
+        <button id="roleListAddRoleButton" class="smartButton addRoleButton blueBG fadeColors" ng-click="manageGroupCtrl.addRoleSubmit()">
+            <span class="icon-plus"></span>
+            &nbsp;&nbsp;
+            Create Role
+        </button>
+        <div class="addRoleInfo" ng-if="manageGroupCtrl.addRoleInfo">
+            {{manageGroupCtrl.addRoleInfo}}
+        </div>
+        <div class="addRoleError fadeOpacity" ng-class="{visible:manageGroupCtrl.addRoleError}">
+            <span class="icon-warning"></span>
+            {{manageGroupCtrl.addRoleError}}
+        </div>
+    </div>
+    <div ng-repeat="(roleID, role) in manageGroupCtrl.roles | orderObjectBy:'name'"" class="antiAppBlock roleBox">
+        <div class="groupRoleToolbar">
+            <div class="groupRoleTool blue fadeColors">Rename<span class="groupRoleToolIcon icon-pencil"></span></div>
+            <div class="groupRoleTool blue fadeColors">Copy<span class="groupRoleToolIcon icon-copy"></span></div>
+            <div class="groupRoleTool red fadeColors">Delete <span class="groupRoleToolIcon icon-trash"></span></div>
+        </div>
+        <div class="groupRoleName">{{role.name}}</div>
+        <div class="groupRoleEmployees">
+            <div class="groupRoleEmployee appBlock fadeColors" ng-repeat="(employeeID, employee) in role.employees | orderObjectBy:'firstName'"
+                 ng-class="{hover:employee.hover}" ng-mouseenter="employee.hover = true" ng-mouseleave="employee.hover = false" draggable="true">
+                <img src="../global/images/default.png" class="groupRoleEmployeeImage" />
+                <div class="groupRoleEmployeeName fadeColors">{{employee.firstName}} {{employee.lastName}}</div>
+                <div class="groupRoleEmployeeEdit icon-pencil fadeColors" ng-click="manageGroupCtrl.openEditEmployeeModal(employee)"></div>
+                <div class="groupRoleEmployeeDelete icon-x fadeColors"></div>
+            </div>
+            <div ng-show="manageGroupCtrl.isEmpty(role.employees)" class="noGroupRoleEmployee">
+                There are no employees in this role.
+            </div>
+        </div>
     </div>
 </div>
 

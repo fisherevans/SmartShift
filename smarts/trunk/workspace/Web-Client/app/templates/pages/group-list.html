@@ -1,6 +1,3 @@
-
-
-
-<div ng-repeat="(groupID, group) in groupListCtrl.groups">
-    <a href="#/groups/{{group.id}}">{{group.name}}</a>
+<div class="groupListLink appBlock fadeColors" ng-repeat="(groupID, group) in groupListCtrl.groups" ng-click="groupListCtrl.manageGroup(group)">
+    {{group.name}}
 </div>

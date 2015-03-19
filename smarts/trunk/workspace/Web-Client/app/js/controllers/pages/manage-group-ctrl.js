@@ -1,30 +1,81 @@
-angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams', '$location', 'modalService', 'cacheService', 'loadCache',
-    function($routeParams, $location, modalService, cacheService, loadCache){
+angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams', '$rootScope', 'modalService', 'cacheService', 'loadCache',
+    function($routeParams, $rootScope, modalService, cacheService, loadCache){
         var mngGrpCtrl = this;
 
         console.log("Managing group: ");
         console.log($routeParams);
-        mngGrpCtrl.group = cacheService.getGroup($routeParams.groupID);
-        mngGrpCtrl.employees = cacheService.getEmployees();
         mngGrpCtrl.employeeListNameFilter = "";
 
+
+        mngGrpCtrl.filter = {
+            name : "",
+            groupRoles : {}
+        };
+        mngGrpCtrl.filter.groupRoles[$routeParams.groupID] = [];
+
+        mngGrpCtrl.group = cacheService.getGroup($routeParams.groupID);
+        mngGrpCtrl.roles = cacheService.getRolesByGroup($routeParams.groupID);
+
+        mngGrpCtrl.employees = cacheService.getEmployees();
         for(var employeeID in mngGrpCtrl.employees) {
             var emp = mngGrpCtrl.employees[employeeID];
             emp.sortName = emp.firstName + " " + emp.lastName;
         }
-        mngGrpCtrl.roles = cacheService.getRolesByGroup($routeParams.groupID);
+
+        $.each(mngGrpCtrl.roles, function(roleID, role) {
+            var tempEmployees = cacheService.getEmployeesByGroupRole($routeParams.groupID, roleID);
+            role.employees = {};
+            for(var employeeID in tempEmployees) {
+                role.employees[employeeID] = mngGrpCtrl.employees[employeeID];
+            }
+            mngGrpCtrl.filter.groupRoles[$routeParams.groupID].push(roleID);
+        });
+
+        mngGrpCtrl.addRoleSubmit = function() {
+            $("#roleListAddRoleButton").prop("disabled", true);
+            mngGrpCtrl.addRoleError = null;
+            mngGrpCtrl.addRoleInfo = null;
+            alert("Not implemented");
+            $("#roleListAddRoleButton").prop("disabled", false);
+            return;
+            if(!utilService.validName(mngGrpCtrl.addRoleInput)) {
+                mngGrpCtrl.addRoleError = "Role names must be 1-40 characters long.";
+                $("#roleListAddRoleButton").prop("disabled", false);
+                return;
+            }
+            cacheService.addGroupRole(mngGrpCtrl.group.id, mngGrpCtrl.addRoleInput).then(
+                function(response) { // success
+                    $("#roleListAddRoleButton").prop("disabled", false);
+                },
+                function(message) { // error
+                    mngGrpCtrl.addRoleError = message
+                    $("#roleListAddRoleButton").prop("disabled", false);
+                }
+            );
+        }
 
         mngGrpCtrl.setNewEmployee = function(employee) {
             employee.justAdded = true;
             employee.sortName = employee.firstName + " " + employee.lastName;
             mngGrpCtrl.employees[employee.id] = employee;
+            if(employee.groupRoleIDs !== undefined && employee.groupRoleIDs[$routeParams.groupID] !== undefined) {
+                $.each(employee.groupRoleIDs[$routeParams.groupID], function(arrID, roleID) {
+                    if(mngGrpCtrl.roles[roleID] === undefined)
+                        mngGrpCtrl.roles[roleID] = {};
+                    if(mngGrpCtrl.roles[roleID].indexOf(employee) < 0)
+                        mngGrpCtrl.roles[roleID].push(employee)
+                });
+            }
         };
 
-        mngGrpCtrl.nameFilterCheck = function(employee) {
+        mngGrpCtrl.employeeListFilter = function(employee) {
             var name = employee.sortName.toLowerCase();
-            var search = mngGrpCtrl.employeeListNameFilter.toLocaleLowerCase();
-            return name.indexOf(search) >= 0;
-        };
+            var search = mngGrpCtrl.filter.name.toLocaleLowerCase();
+            if(name.indexOf(search) < 0)
+                return false;
+            // TODO filter on group role too
+            return true;
+    };
 
         mngGrpCtrl.openAddEmployeeModal = function() {
             modalService.addEmployeeModal({"homeGroupID":mngGrpCtrl.group.id}).then(function(newEmployee) {
@@ -51,7 +102,16 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
             });
         };
 
-        updateNavigation([
+        mngGrpCtrl.openFilterEmployeeListModal = function() {
+            alert("Not implemented");
+        };
+
+        mngGrpCtrl.isEmpty = function(obj) {
+            for (var i in obj) if (obj.hasOwnProperty(i)) return false;
+            return true;
+        };
+
+        $rootScope.updateNavigationTree([
             { "type":"link", "text":"Group Management", "href":"groups" },
             { "type":"arrow" },
             { "type":"text", "text":this.group.name }

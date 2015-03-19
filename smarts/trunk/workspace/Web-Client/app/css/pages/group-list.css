@@ -1,0 +1,10 @@
+.groupListLink {
+    margin-bottom: 15px;
+    padding: 15px;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+.groupListLink:hover {
+    background-color: #e0e0e0;
+}

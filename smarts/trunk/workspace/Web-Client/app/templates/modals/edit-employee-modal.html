@@ -30,6 +30,7 @@
                     <div class="editEmployeeGroupName">
                         <b>{{group.name}}</b>
                         <span class="icon-home" ng-if="group.id == formData.homeGroupID"></span>
+                    </div>
                     <div class="editEmployeeGroupRoles">
                         <span class="editEmployeeGroupRomeName" ng-repeat="role in group.roles">
                             {{role.name}}{{$last ? '' : ', '}}

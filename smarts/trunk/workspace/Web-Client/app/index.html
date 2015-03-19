@@ -21,6 +21,7 @@
         <link href="../app/css/pages/newsFeed.css" rel="stylesheet" type="text/css" />
         <link href="../app/css/pages/messaging.css" rel="stylesheet" type="text/css" />
         <link href="../app/css/pages/manage-group.css" rel="stylesheet" type="text/css" />
+        <link href="../app/css/pages/group-list.css" rel="stylesheet" type="text/css" />
     </head>
     <body ng-controller="MainController as mainCtrl" >
         <div class="navPane" ng-controller="TabController as tabCtrl">
@@ -37,7 +38,7 @@
 
         <div class="appPane">
             <div class="appNavigationTree appBlock noTextSelect">
-                <div id="logoutWrapper" class="fadeColors noTextSelect" ng-click="$rootScope.forceLogout()">
+                <div id="logoutWrapper" class="fadeColors noTextSelect" ng-click="logout()">
                     <div class="icon-exit logoutIcon fadeColors"></div>
                     <div class="logoutText fadeColors">Logout</div>
                 </div>
@@ -45,7 +46,15 @@
                     <a class="icon-home appNavigationHome fadeColors" href="#/newsfeed"></a>
                     <div class="icon-arrow-right appNavigationArrow"></div>
                 </div>
-                <div id="dynamicAppNavigationTree"></div>
+                <div id="dynamicAppNavigationTree">
+                    <div ng-repeat="element in mainCtrl.navigationElements"
+                            ng-class="{'subArrow icon-arrow-right':element.type == 'arrow',
+                                       'textElement':element.type == 'text',
+                                       'linkElement fadeColors':element.type == 'link'}"
+                            ng-click="element.type == 'link' && mainCtrl.linkClick(element.href)">
+                        {{element.text}}
+                    </div>
+                </div>
             </div>
             <div ng-view class="appContent angular-animate ngAnimateFade" ng-if="hasSession()"></div>
         </div>

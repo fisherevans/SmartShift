@@ -1,9 +1,7 @@
-angular.module('smartsApp').controller('SettingsController',
-    function($location){
-        this.route = $location.path();
-
-        updateNavigation([
+angular.module('smartsApp').controller('SettingsController', ['$rootScope',
+    function($rootScope){
+        $rootScope.updateNavigationTree([
             { "type":"text", "text":"User Settings" }
         ]);
     }
-);
+]);

@@ -1,9 +1,7 @@
-angular.module('smartsApp').controller('RequestsController',
-    function($location) {
-        this.route = $location.path();
-
-        updateNavigation([
+angular.module('smartsApp').controller('RequestsController', ['$rootScope',
+    function($rootScope) {
+        $rootScope.updateNavigationTree([
             { "type":"text", "text":"Request Queue" }
         ]);
     }
-);
+]);
