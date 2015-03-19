@@ -28,8 +28,8 @@ public class Employee extends CachedObject {
     private String _lastName;
     private Group _homeGroup;
     private Boolean _active;
-    private Map<Group, Set<Role>> _roles;
-    private List<Availability> _availabilities;
+    private final Map<Group, Set<Role>> _roles;
+    private final List<Availability> _availabilities;
     
     private EmployeeModel _model;
     
@@ -98,12 +98,22 @@ public class Employee extends CachedObject {
     
     public boolean manages(Employee other) {
     	// TODO Drew, need to find out if this employee manages the other, or is the same
-    	return true;
+        logger.error("Hit a non-implemeneted block! deleteEmployee()");
+        throw new RuntimeException("To implement!");
     }
 
     public boolean manages(Group group) {
         // TODO Drew, need to find out if this employee manages this group
-        return true;
+        logger.error("Hit a non-implemeneted block! deleteEmployee()");
+        throw new RuntimeException("To implement!");
+    }
+    
+    public boolean belongsTo(Group group) {
+        // TODO Drew, true if this employee belongs in the given group - check this work?
+        for(Group employeeGroups:getGroups())
+            if(employeeGroups.getID() == group.getID())
+                return true;
+        return false;
     }
 
     public Boolean getActive() {

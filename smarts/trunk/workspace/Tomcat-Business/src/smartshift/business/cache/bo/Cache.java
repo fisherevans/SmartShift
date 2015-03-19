@@ -22,14 +22,14 @@ public class Cache {
 	
     private static Map<Integer, Cache> caches;
     
-    private int _rootBusID;
+    private final int _rootBusID;
     
-    private BusinessDAOContext _daoContext;
+    private final BusinessDAOContext _daoContext;
     
-    private Map<UID, WeakReference<CachedObject>> _cached;
+    private final Map<UID, WeakReference<CachedObject>> _cached;
     
     private static final class UIDFilter implements Filter<UID> {
-        private String _type;
+        private final String _type;
         
         public UIDFilter(String type) {
             _type = type;
@@ -176,39 +176,55 @@ public class Cache {
     }
 
 	public void deleteEmployee(Employee employee) {
+        // TODO Drew this needs to set the flag, save to the DB and remove any relations.
 		logger.error("Hit a non-implemeneted block! deleteEmployee()");
 		throw new RuntimeException("To implement!");
-		// TODO Drew this needs to set the flag, save to the DB and remove any relations.
 	}
 
     public void deleteGroup(Group group) {
+        // TODO drew - flag this group as inactive - as long as it's not root
         logger.error("Hit a non-implemeneted block! deleteGroup()");
         throw new RuntimeException("To implement!");
-        // TODO drew - flag this group as inactive - as long as it's not root
     }
 
     public Role renameGroupRole(Group group, Role role, String roleName) {
-        logger.error("Hit a non-implemeneted block! deleteGroup()");
-        throw new RuntimeException("To implement!");
         // TODO drew - renames a role. check to see if any other groups use it, 
         // if they do need to make a new role and refactor the relationships, if not just rename
+        logger.error("Hit a non-implemeneted block! deleteGroup()");
+        throw new RuntimeException("To implement!");
     }
 
     public void removeGroupRole(Group group, Role role) {
+        // TODO drew - removes role from group. need to remove employees from group if it was their only role in it
         logger.error("Hit a non-implemeneted block! deleteGroup()");
         throw new RuntimeException("To implement!");
-        // TODO drew - removes role from group. need to remove employees from group if it was their only role in it
     }
 
     public void removeGroupEmployee(Group group, Employee employee) {
+        // TODO drew - remove employee from group and all roles inside group
         logger.error("Hit a non-implemeneted block! deleteGroup()");
         throw new RuntimeException("To implement!");
-        // TODO drew - remove employee from group and all roles inside group
     }
 
     public void removeGroupRoleEmployee(Group group, Role role, Employee employee) {
+        // TODO drew - remove employee from a role in a group. from the whole group if its their last role
         logger.error("Hit a non-implemeneted block! deleteGroup()");
         throw new RuntimeException("To implement!");
-        // TODO drew - remove employee from a role in a group. from the whole group if its their last role
+    }
+    
+    public void linkGroupRoleEmployee(Group group, Role role, Employee employee) {
+        // TODO drew - could you check this logic? I think I did this one right
+        logger.debug("linkGroupRoleEmployee() Linking employee:" + employee.getID() + " to group:" + group.getID() + " role:" + role.getID());
+        group.addRole(role);
+        group.addEmployee(employee);
+        employee.addGroup(group);
+        group.addEmployeeRole(employee, role);
+        employee.addGroupRole(role, group);
+    }
+    
+    public void unlinkGroupRoleEmployee(Group group, Role role, Employee employee) {
+        // TODO drew - remove employee from group role - and remove from group if it was the last role
+        logger.error("Hit a non-implemeneted block! deleteGroup()");
+        throw new RuntimeException("To implement!");
     }
 }

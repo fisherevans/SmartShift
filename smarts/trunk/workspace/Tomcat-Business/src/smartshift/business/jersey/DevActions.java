@@ -44,7 +44,7 @@ public class DevActions extends BaseBusinessActions {
     @Path("/fullCache")
     public Response getFullCache() {
         FullCacheJSON json = new FullCacheJSON();
-        json.selfEmployeeID = getEmployee().getID();
+        json.selfEmployeeID = getRequestEmployee().getID();
         json.employees = new HashMap<Integer, EmployeeJSON>();
         json.groups = new HashMap<Integer, GroupJSON>();
         json.roles = new HashMap<Integer, RoleJSON>();

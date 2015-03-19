@@ -3,7 +3,6 @@ package smartshift.business.jersey.objects;
 import java.util.List;
 import java.util.Map;
 import smartshift.business.cache.bo.Employee;
-import smartshift.common.util.log4j.SmartLogger;
 import com.google.gson.annotations.Expose;
 
 /**
@@ -11,8 +10,6 @@ import com.google.gson.annotations.Expose;
  * json representation of an employee
  */
 public class EmployeeJSON {
-    private static final SmartLogger logger = new SmartLogger(EmployeeJSON.class);
-    
     /**
      * the employee id
      */

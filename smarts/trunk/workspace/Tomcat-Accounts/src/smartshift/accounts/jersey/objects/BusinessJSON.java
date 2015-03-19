@@ -3,6 +3,7 @@ package smartshift.accounts.jersey.objects;
 import smartshift.accounts.cache.bo.Business;
 import com.google.gson.annotations.Expose;
 
+@SuppressWarnings("javadoc")
 public class BusinessJSON {
     @Expose
     public Integer id;
