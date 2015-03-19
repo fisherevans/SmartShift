@@ -20,9 +20,9 @@ public class UserAuthFilter extends AbstractAuthFilter {
     @Override
     protected void processCredentials(ContainerRequestContext containerRequest, String username, String authString) {
         User user = UserAuthentication.checkAuth(username, authString);
+        logger.debug("filter() User = " + (user == null ? "NULL" : username));
         if(user == null)
             throw new WebApplicationException(getInvalidCredentialsResponse());
-        logger.debug("filter() User found");
         containerRequest.setProperty("user", user);
     }
 }
