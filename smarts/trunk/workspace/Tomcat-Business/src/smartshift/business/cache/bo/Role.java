@@ -24,13 +24,14 @@ public class Role extends CachedObject {
             super(cache, BASIC_ROLE_NAME, parent);
         }
         
+        @Override
         public int getID() {
             return BASIC_ROLE_ID;
         }
     }
     
-    private String _name;
-    private Map<Group, Set<Capability>> _capabilities;
+    private final String _name;
+    private final Map<Group, Set<Capability>> _capabilities;
     
     private RoleModel _model;
     
@@ -102,7 +103,7 @@ public class Role extends CachedObject {
             RoleModel model = cache.getDAOContext().dao(RoleDAO.class).uniqueByID(roleID).execute();
             Role role = null;
             if(model != null) {
-                cache.cache(uid, null);
+                cache.cache(uid, new PlaceHolderObject(cache, TYPE_IDENTIFIER, roleID));
                 role = new Role(cache, model);
                 cache.cache(uid, role);
             }

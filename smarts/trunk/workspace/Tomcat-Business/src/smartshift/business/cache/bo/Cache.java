@@ -1,5 +1,6 @@
 package smartshift.business.cache.bo;
 
+import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,7 +27,7 @@ public class Cache {
     
     private final BusinessDAOContext _daoContext;
     
-    private final Map<UID, WeakReference<CachedObject>> _cached;
+    private final Map<UID, Reference<CachedObject>> _cached;
     
     private static final class UIDFilter implements Filter<UID> {
         private final String _type;
@@ -43,12 +44,12 @@ public class Cache {
     
     public Cache(int rootBusID) {
         _rootBusID = rootBusID;
-        _cached = new HashMap<UID, WeakReference<CachedObject>>();
+        _cached = new HashMap<UID, Reference<CachedObject>>();
         _daoContext = BusinessDAOContext.business(_rootBusID);
     }
     
-    public ROMap<UID, WeakReference<CachedObject>> getROCacheMap() {
-        return new ROMap<UID, WeakReference<CachedObject>>(_cached);
+    public ROMap<UID, Reference<CachedObject>> getROCacheMap() {
+        return new ROMap<UID, Reference<CachedObject>>(_cached);
     }
     
     @SuppressWarnings("unchecked")
@@ -138,7 +139,7 @@ public class Cache {
     }
 
     public void save() {
-        for(WeakReference<CachedObject> co : _cached.values()) {
+        for(Reference<CachedObject> co : _cached.values()) {
             co.get().save();
         }
         clean();

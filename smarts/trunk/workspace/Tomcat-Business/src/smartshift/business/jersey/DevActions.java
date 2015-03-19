@@ -1,6 +1,6 @@
 package smartshift.business.jersey;
 
-import java.lang.ref.WeakReference;
+import java.lang.ref.Reference;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -50,7 +50,7 @@ public class DevActions extends BaseBusinessActions {
         json.roles = new HashMap<Integer, RoleJSON>();
         json.groupRoleEmployeeIDs = new HashMap<Integer, Map<Integer, Set<Integer>>>();
         
-        ROMap<UID, WeakReference<CachedObject>> cache = getCache().getROCacheMap();
+        ROMap<UID, Reference<CachedObject>> cache = getCache().getROCacheMap();
         
         for(UID uid:cache.keySet()) {
             logger.debug("Loading UID" + uid.toString());
