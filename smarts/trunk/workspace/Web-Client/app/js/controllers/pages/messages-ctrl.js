@@ -31,12 +31,12 @@ var threads = [
     }
 ];
 
-angular.module('smartsApp').controller('MessagesController', [ '$scope',
-    function($scope){
+angular.module('smartsApp').controller('MessagesController', [ '$scope', '$rootScope',
+    function($scope, $rootScope){
         this.threads = threads;
         $scope.threadSearch = '';
 
-        updateNavigation([
+        $rootScope.updateNavigationTree([
             { "type":"text", "text":"Messaging" }
         ]);
 

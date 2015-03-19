@@ -3,6 +3,7 @@
 angular.module('smartsServices').factory('httpService', ['$http',
     function($http) {
         var API_URL = 'http://lando.smartshift.info:6380';
+        API_URL = 'http://localhost:8080';
         return {
             get: function(path){
                 var req = {

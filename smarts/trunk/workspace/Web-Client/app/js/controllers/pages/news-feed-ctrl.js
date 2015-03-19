@@ -1,8 +1,8 @@
-angular.module('smartsApp').controller('NewsfeedController', ['businessService', '$scope',
-    function(businessService, $scope) {
+angular.module('smartsApp').controller('NewsfeedController', ['businessService', '$scope', '$rootScope',
+    function(businessService, $scope, $rootScope) {
         //businessService.getFull($scope.$parent.business.employeeID)
 
-        updateNavigation([
+        $rootScope.updateNavigationTree([
             { "type":"text", "text":"Home" }
         ]);
     }

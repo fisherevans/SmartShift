@@ -18,18 +18,22 @@
 @-moz-keyframes    fadeInOut { 0% { opacity: 0; } 15% { opacity: 1; } 100% { opacity: 0; } }
 @-webkit-keyframes fadeInOut { 0% { opacity: 0; } 15% { opacity: 1; } 100% { opacity: 0; } }
 
+@keyframes         flashInOut { 0% { opacity: 0; } 15% { opacity: 1; } 99% { width: auto; } 100% { opacity: 0; width: 0px; } }
+@-moz-keyframes    flashInOut { 0% { opacity: 0; } 15% { opacity: 1; } 99% { width: auto; } 100% { opacity: 0; width: 0px; } }
+@-webkit-keyframes flashInOut { 0% { opacity: 0; } 15% { opacity: 1; } 99% { width: auto; } 100% { opacity: 0; width: 0px; } }
+
 .ngAnimateFade.ng-enter {
     -webkit-animation: fadeInAnim 0.25s both ease-in;
     -moz-animation: fadeInAnim 0.25s both ease-in;
     animation: fadeInAnim 0.25s both ease-in;
-    z-index: 9999;
+    z-index: 99;
 }
 
 .ngAnimateFade.ng-leave {
     -webkit-animation: fadeOutAnim 0.25s both ease-in;
     -moz-animation: fadeOutAnim 0.25s both ease-in;
     animation: fadeOutAnim 0.25s both ease-in;
-    z-index: 8888;
+    z-index: 88;
 }
 
 .ngAnimateAccord.ng-enter {

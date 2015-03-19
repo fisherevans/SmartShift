@@ -96,6 +96,17 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
             businessService.addEmployee(employeeModel)
                 .success(function(response) {
                     cache.employees[response.data.id] = response.data;
+                    var gre = cache.groupRoleEmployeeIDs;
+                    $.each(employeeModel.groupRoleIDs, function(groupID, roleIDs) {
+                        if(gre[groupID] === undefined)
+                            gre[groupID] = {};
+                        $.each(roleIDs, function(roleID) {
+                            if(gre[groupID][roleID] === undefined)
+                                gre[groupID][roleID] = [];
+                            if(gre[groupID][roleID].indexOf(response.data.id) < 0)
+                                gre[groupID][roleID].push(response.data.id);
+                        });
+                    });
                     defer.resolve(angular.copy(response.data));
                 })
                 .error(function(response) {
@@ -115,6 +126,23 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
                 });
             return defer.promise;
         };
+        cacheService.getEmployeesByGroupRole = function(groupID, roleID) {
+            var employees = {};
+            if(cache.groupRoleEmployeeIDs[groupID] !== undefined
+                    && cache.groupRoleEmployeeIDs[groupID][roleID] !== undefined) {
+                $.each(cache.groupRoleEmployeeIDs[groupID][roleID], function(arrID, employeeID) {
+                    employees[employeeID] = cacheService.getEmployee(employeeID);
+                });
+            }
+            return employees;
+        };
+        cacheService.getRoleEmployeesByGroup = function(groupID) {
+            var roleEmployees = {};
+            $.each(cacheService.getRolesByGroup(groupID), function(roleID, role) {
+                roleEmployees[roleID] = cacheService.getEmployeesByGroupRole(groupID, roleID);
+            });
+            return roleEmployees;
+        }
         return cacheService;
     }
 ]);

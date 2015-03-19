@@ -15,6 +15,11 @@
 .employeeListButton {
     position: relative;
     margin: 7px 4px;
+    padding: 8px 13px;
+}
+
+.employeeListButton .icon-plus {
+    font-size: 12px;
 }
 
 .employeeListSearchWrapper {
@@ -66,14 +71,27 @@
     cursor: move;
     background-color: #f0f0f0;
     position: relative;
-    height: 60px;
+    border-bottom: 1px solid #ddd;
 }
 
-.employeeWrapper:hover {
+.employeeListItem {
+    display: block;
+    height: 60px;
+    border: 1px solid #f0f0f0;
+}
+
+.hover .employeeListItem {
+    border: 1px solid #0080ff;
+    box-shadow: inset 0px 0px 3px #000;
     background-color: #e0e0e0;
 }
 
-.employeeWrapper * {
+.employeeListItem:hover {
+    background-color: #e0e0e0;
+    box-shadow: inset 0px 0px 0px #000;
+}
+
+.employeeListItem * {
     display: inline-block;
 }
 
@@ -106,17 +124,16 @@
 
 .employeeMenuButton {
     position: absolute;
-    top: 0px;
-    right: 0px;
+    top: 18px;
+    right: 15px;
     font-size: 14px;
     padding: 5px 8px;
     background-color: #cacaca;
-    border-bottom-left-radius: 3px;
+    border-radius: 3px;
     opacity: 0;
     cursor: pointer;
     color: #666;
-    border-left: solid 1px #aaa;
-    border-bottom: solid 1px #aaa;
+    border: solid 1px #aaa;
 }
 
 .employeeWrapper:hover .employeeMenuButton {
@@ -138,13 +155,189 @@
     right: 0px;
     bottom: 0px;
     left: 315px;
-    padding-top: 7px;
-    padding-bottom: 8px;
+    overflow-y: scroll;
+    padding-bottom: 15px;
+}
+
+.addRoleWrapper {
+    margin-top: 15px;
+    margin-left: 15px;
+    vertical-align: middle;
+}
+
+.groupManagingTitle {
+    display: inline-block;
+    font-size: 32px;
+    font-weight: 700;
+    margin-right: 15px;
+}
+
+.addRoleInputWrapper {
+    display: inline-block;
+    width: 300px;
+    vertical-align: middle;
+}
+
+.addRoleInputWrapper input {
+    padding: 8px;
+}
+
+.addRoleButton {
+    display: inline-block;
+    margin: 0px;
+    margin-left: 15px;
+    margin-right: 15px;
+    vertical-align: middle;
+}
+
+.addRoleButton .icon-plus {
+    font-size: 12px;
+}
+
+ .addRoleInfo {
+     display: inline-block;
+     color: #0080ff;
+     font-weight: 700;
+     vertical-align: middle;
+     -webkit-animation: flashInOut 2.5s both ease-in;
+     -moz-animation: flashInOut 2.5s both ease-in;
+     animation: flashInOut 2.5s both ease-in;
+ }
+
+.addRoleError {
+    display: inline-block;
+    color: #f00;
+    font-weight: 700;
+    vertical-align: middle;
+    opacity: 0;
+}
+
+.addRoleError.visible {
+    opacity: 1;
 }
 
 .roleBox {
-    margin-top: 8px;
-    margin-bottom: 7px;
+    margin-top: 15px;
+    margin-bottom: 0px;
     margin-left: 15px;
     margin-right: 15px;
+    position: relative;
+}
+
+.groupRoleToolbar {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    vertical-align: middle;
+}
+
+.groupRoleTool {
+    display: inline-block;
+    padding: 4px 8px;
+    margin: 0px 2px;
+    font-size: 12px;
+    color: #666;
+    border-radius: 3px;
+    vertical-align: middle;
+    cursor: pointer;
+    background-color: #e0e0e0;
+}
+
+.groupRoleTool.red:hover {
+    background-color: #ff0000;
+    color: #fff;
+}
+
+.groupRoleTool.blue:hover {
+    background-color: #0080ff;
+    color: #fff;
+}
+
+.groupRoleToolIcon {
+    font-size: 12px;
+    padding-left: 4px;
+    vertical-align: middle;
+}
+
+.groupRoleName {
+    font-size: 24px;
+    font-weight: 700;
+    padding: 15px;
+}
+
+.noGroupRoleEmployee {
+    margin-left: 15px;
+    margin-bottom: 15px;
+}
+
+.groupRoleEmployee {
+    position: relative;
+    display: inline-block;
+    height: 40px;
+    width: 200px;
+    margin-left: 15px;
+    margin-bottom: 15px;
+    cursor: move;
+}
+
+.groupRoleEmployee.hover {
+    border: 1px solid #0080ff;
+    box-shadow: 0px 0px 3px #000;
+    background-color: #e0e0e0;
+}
+
+.groupRoleEmployeeImage {
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    pointer-events: none;
+}
+
+.groupRoleEmployeeName {
+    width: 110px;
+    height: 40px;
+    position: absolute;
+    left: 50px;
+    top: 0px;
+    line-height: 40px;
+    overflow: hidden;
+}
+
+.groupRoleEmployeeDelete, .groupRoleEmployeeEdit {
+    width: 36px;
+    height: 15px;
+    position: absolute;
+    left: 160px;
+    top: 0px;
+    font-size: 10px;
+    line-height: 14px;
+    text-align: center;
+    color: #888;
+    border-radius: 3px;
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+
+.hover .groupRoleEmployeeDelete, .hover .groupRoleEmployeeEdit {
+    background-color: #c8c8c8;
+}
+
+.groupRoleEmployeeDelete {
+    top: 3px;
+}
+
+.groupRoleEmployeeDelete:hover {
+    background-color: #ff0000;
+    color: #fff;
+}
+
+.groupRoleEmployeeEdit {
+    top: 22px;
+}
+.groupRoleEmployeeEdit:hover {
+    background-color: #0080ff;
+    color: #fff;
 }

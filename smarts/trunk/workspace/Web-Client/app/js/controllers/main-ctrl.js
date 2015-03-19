@@ -4,7 +4,20 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
         $scope.init = function(){
             if($cookieStore.get('sessionID'))
                 $rootScope.sessionID = $cookieStore.get('sessionID');
+            if($cookieStore.get('username'))
+                $rootScope.username = $cookieStore.get('username');
+            if($cookieStore.get('server'))
+                $rootScope.server = $cookieStore.get('server');
         }();
+
+        mainController.navigationElements = {};
+        $rootScope.updateNavigationTree = function(elements) {
+            mainController.navigationElements = elements;
+        };
+
+        mainController.linkClick = function(path) {
+            $location.path(path);
+        };
 
         // Prevent page load if there is no session
         $rootScope.$on("$locationChangeStart", function(event, next, current){
@@ -29,6 +42,10 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
             return $rootScope.sessionID;
         };
 
+        $scope.logout = function(){
+            $rootScope.forceLogout();
+        };
+
         $scope.$watch('$rootScope.sessionID', function(){
             if(!$rootScope.sessionID){
                 var result = modalService.loginModal()
@@ -39,11 +56,13 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                             $scope.business = business;
                             accountsService.getSession(business.id, business.employeeID)
                                 .success(function (result) {
+                                    result.data.server = "localhost:8080";
                                     $rootScope.sessionID = result.data.sessionKey;
                                     $rootScope.server = result.data.server;
                                     var expireDate = new Date(new Date().getTime() + result.data.timeout + 999999999); // TODO update cookie on http calls to reflect new expiration
+                                    $cookieStore.put('username', $rootScope.username, {expires: expireDate});
                                     $cookieStore.put('sessionID', $rootScope.sessionID, {expires: expireDate});
-                                    $cookieStore.put('server', result.data.server, {expires: expireDate});
+                                    $cookieStore.put('server', $rootScope.server, {expires: expireDate});
                                     httpService.setRootPath(result.data.server);
                                     $route.reload();
                                 })

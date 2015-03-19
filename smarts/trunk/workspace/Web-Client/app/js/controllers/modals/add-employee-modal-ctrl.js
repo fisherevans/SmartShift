@@ -80,6 +80,11 @@ angular.module('smartsApp').controller('AddEmployeeModalController', ['$scope', 
                 $scope.rolesGroup = groupID;
             }
             return $scope.roles;
+            var roles = $scope.groupRoles[groupID];
+            if(roles === undefined) {
+                $scope.groupRoles[groupID] = roles;
+            }
+            return roles;
         }
     }
 ]);
