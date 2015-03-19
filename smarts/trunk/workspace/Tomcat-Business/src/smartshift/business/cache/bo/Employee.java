@@ -191,15 +191,19 @@ public class Employee extends CachedObject {
     
     public static Employee load(Cache cache, int empID) {
     	UID uid = new UID(TYPE_IDENTIFIER, empID);
-        if(cache.contains(uid))
+        if(cache.contains(uid)) {
+            logger.debug("Cache contains employee id: " + empID);
             return cache.getEmployee(empID); 
-        else {
+        } else {
+            logger.debug("Cache does not contain employee id: " + empID);
             EmployeeModel model = cache.getDAOContext().dao(EmployeeDAO.class).uniqueByID(empID).execute();
+            logger.debug("Got model: " + model);
             Employee employee = null;
             if(model != null) {
                 cache.cache(uid, null);
                 employee = new Employee(cache, model);
                 cache.cache(uid, employee);
+                logger.debug("Cached employee: " + employee);
             }
             return employee;
         }
