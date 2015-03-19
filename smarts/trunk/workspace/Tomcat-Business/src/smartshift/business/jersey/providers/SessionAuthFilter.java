@@ -37,9 +37,11 @@ public class SessionAuthFilter extends AbstractAuthFilter {
         
         userSession.updateLastActivity();
         
+        logger.debug("Session info - B:" + userSession.businessID + " E:" + userSession.employeeID);
         BusinessDAOContext daoContext = BusinessDAOContext.business(userSession.businessID);
         Cache cache = Cache.getCache(userSession.businessID);
         Employee employee = Employee.load(cache, userSession.employeeID);
+        logger.debug("Employe = " + employee);
         
         containerRequest.setProperty("userSession", userSession);
         containerRequest.setProperty("daoContext", daoContext);
