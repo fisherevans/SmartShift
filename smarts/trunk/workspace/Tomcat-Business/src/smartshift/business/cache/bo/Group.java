@@ -170,7 +170,8 @@ public class Group extends CachedObject {
             logger.debug("Got model: " + model);
             Group group = null;
             if(model != null) {
-                cache.cache(uid, new PlaceHolderObject(cache, TYPE_IDENTIFIER, grpID));
+                //cache.cache(uid, new PlaceHolderObject(cache, TYPE_IDENTIFIER, grpID));
+                cache.cache(uid, null);
             	group = new Group(cache, model);
                 cache.cache(uid, group);
                 logger.debug("cached group: " + group);

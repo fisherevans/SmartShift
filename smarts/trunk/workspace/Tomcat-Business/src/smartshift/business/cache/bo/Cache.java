@@ -64,7 +64,7 @@ public class Cache {
     }
     
     public boolean contains(UID cachedUID) {
-        return _cached.containsKey(cachedUID) && _cached.get(cachedUID).get() != null;
+        return _cached.containsKey(cachedUID);
     }
     
     public void cache(UID uid, CachedObject toCache) {

@@ -103,7 +103,8 @@ public class Role extends CachedObject {
             RoleModel model = cache.getDAOContext().dao(RoleDAO.class).uniqueByID(roleID).execute();
             Role role = null;
             if(model != null) {
-                cache.cache(uid, new PlaceHolderObject(cache, TYPE_IDENTIFIER, roleID));
+                //cache.cache(uid, new PlaceHolderObject(cache, TYPE_IDENTIFIER, roleID));
+                cache.cache(uid, null);
                 role = new Role(cache, model);
                 cache.cache(uid, role);
             }
