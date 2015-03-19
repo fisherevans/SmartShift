@@ -161,15 +161,19 @@ public class Group extends CachedObject {
     
     public static Group load(Cache cache, int grpID) {
     	UID uid = new UID(TYPE_IDENTIFIER, grpID);
-        if(cache.contains(uid))
+        if(cache.contains(uid)) {
+            logger.debug("Cache has group: " + grpID);
             return cache.getGroup(grpID); 
-        else {
+        } else {
+            logger.debug("Cache does not have group: " + grpID);
             GroupModel model = cache.getDAOContext().dao(GroupDAO.class).uniqueByID(grpID).execute();
+            logger.debug("Got model: " + model);
             Group group = null;
             if(model != null) {
                 cache.cache(uid, null);
             	group = new Group(cache, model);
                 cache.cache(uid, group);
+                logger.debug("cached group: " + group);
             }
             return group;
         }
