@@ -5,11 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import org.hibernate.Session;
-
 import smartshift.business.hibernate.dao.BusinessDAOContext;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
@@ -18,8 +14,6 @@ import smartshift.business.hibernate.model.GroupModel;
 import smartshift.common.util.UID;
 import smartshift.common.util.collections.Filter;
 import smartshift.common.util.collections.ROCollection;
-import smartshift.common.util.collections.ROFilteredCollection;
-import smartshift.common.util.collections.ROFilteredMap;
 import smartshift.common.util.collections.ROMap;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -186,4 +180,35 @@ public class Cache {
 		throw new RuntimeException("To implement!");
 		// TODO Drew this needs to set the flag, save to the DB and remove any relations.
 	}
+
+    public void deleteGroup(Group group) {
+        logger.error("Hit a non-implemeneted block! deleteGroup()");
+        throw new RuntimeException("To implement!");
+        // TODO drew - flag this group as inactive - as long as it's not root
+    }
+
+    public Role renameGroupRole(Group group, Role role, String roleName) {
+        logger.error("Hit a non-implemeneted block! deleteGroup()");
+        throw new RuntimeException("To implement!");
+        // TODO drew - renames a role. check to see if any other groups use it, 
+        // if they do need to make a new role and refactor the relationships, if not just rename
+    }
+
+    public void removeGroupRole(Group group, Role role) {
+        logger.error("Hit a non-implemeneted block! deleteGroup()");
+        throw new RuntimeException("To implement!");
+        // TODO drew - removes role from group. need to remove employees from group if it was their only role in it
+    }
+
+    public void removeGroupEmployee(Group group, Employee employee) {
+        logger.error("Hit a non-implemeneted block! deleteGroup()");
+        throw new RuntimeException("To implement!");
+        // TODO drew - remove employee from group and all roles inside group
+    }
+
+    public void removeGroupRoleEmployee(Group group, Role role, Employee employee) {
+        logger.error("Hit a non-implemeneted block! deleteGroup()");
+        throw new RuntimeException("To implement!");
+        // TODO drew - remove employee from a role in a group. from the whole group if its their last role
+    }
 }

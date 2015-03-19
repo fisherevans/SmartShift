@@ -48,6 +48,14 @@ public class Group extends CachedObject {
         loadAllChildren();
     }
     
+    public void setName(String name) {
+        _name = name;
+    }
+
+    public void setParent(Group parent) {
+        _parent = parent;
+    }
+
     public String getName() {
         return _name;
     }
@@ -180,5 +188,11 @@ public class Group extends CachedObject {
         grp.save();
         cache.cache(new UID(grp), grp);
         return grp;
+    }
+
+    public boolean isValidParentOf(Group group) {
+        logger.error("Hit a non-implemeneted block! isValidParentOf()");
+        throw new RuntimeException("To implement!");
+        // TODO drew - prevent infinite loops and what so
     }
 }

@@ -88,8 +88,18 @@ public class GroupActions extends BaseBusinessActions {
      */
     @POST
     public Response editGroup(EditRequest request) {
-    	// TODO
-        return getMessageResponse(Status.NOT_IMPLEMENTED, "Please try again later.");
+        Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.id, true);
+        if(request.name != null && ValidationUtil.validateName(request.name) == null)
+            return getMessageResponse(Status.BAD_REQUEST, "Groups must have a valid name.");
+        Group newParentGroup = null;
+        if(request.parentGroupID != null) {
+            newParentGroup = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.parentGroupID, true);
+            if(!newParentGroup.isValidParentOf(group))
+                return getMessageResponse(Status.BAD_REQUEST, request.parentGroupID + " is an invalid parent group.");
+        }
+        if(request.name != null) group.setName(request.name);
+        if(newParentGroup != null) group.setParent(newParentGroup);
+        return getObjectResponse(Status.OK, new GroupJSON(group));
     }
     
     /**
@@ -99,8 +109,9 @@ public class GroupActions extends BaseBusinessActions {
     @DELETE
     @Path("/{id}")
     public Response deleteGroup(@PathParam("id") SimpleIntegerParam groupID) {
-    	// TODO
-        return getMessageResponse(Status.NOT_IMPLEMENTED, "Please try again later.");
+        Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), groupID.getInteger(), true);
+        getCache().deleteGroup(group);
+        return getMessageResponse(Status.OK, "Group was deleted.");
     }
     
     @SuppressWarnings("javadoc")
