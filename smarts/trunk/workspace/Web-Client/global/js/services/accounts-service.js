@@ -1,27 +1,22 @@
 angular.module('smartsServices').factory('accountsService', ['$rootScope', 'httpService',
     function($rootScope, httpService) {
-        httpService.setAuth($rootScope.username, $rootScope.password);
-        return {
-            getSelf: function(){
-                return httpService.get('/accounts/user/self');
-            },
-            getFull: function(user, pass){
-                httpService.setAuth(user, pass);
-                return httpService.get('/accounts/user/full');
-            },
-            getSession: function(businessId, employeeId){
-                var data = {
-                    businessID: businessId,
-                    employeeID: employeeId
-                };
-                return httpService.put('/accounts/user/session', data);
+        var accountsService = {};
 
-            },
-            util: {
-                login: function() {
+        accountsService.getSelf = function() {
+            return httpService.accounts.get('/accounts/user/self');
+        };
 
-                }
-            }
-        }
+        accountsService.getFull = function() {
+            return httpService.accounts.get('/accounts/user/full');
+        };
+
+        accountsService.getSession = function(businessID, employeeID) {
+            return httpService.accounts.put('/accounts/user/session', {
+                businessID: businessID,
+                employeeID: employeeID
+            });
+        };
+
+        return accountsService;
     }
 ]);
