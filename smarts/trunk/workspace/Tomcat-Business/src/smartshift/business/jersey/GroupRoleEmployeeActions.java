@@ -48,8 +48,13 @@ public class GroupRoleEmployeeActions extends BaseBusinessActions {
     @PUT
     public Response unlinkGroupRoleEmployee(UnlinkRequest request) {
         logger.debug("unlinkGroupRoleEmployee() Enter");
-    	// TODO
-        return getMessageResponse(Status.NOT_IMPLEMENTED, "Please try again later.");
+        Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.groupID, true);
+        Role role = GroupRoleEmployeeUtil.getRole(getCache(), request.groupID);
+        if(!group.hasRole(role))
+            return getMessageResponse(Status.BAD_REQUEST, "The group must have this role to remove employees from it.");
+        Employee employee = GroupRoleEmployeeUtil.getEmployee(getCache(), getEmployee(), request.employeeID, true);
+        getCache().removeGroupRoleEmployee(group, role, employee);
+        return getMessageResponse(Status.OK, "Employee removed from group.");
     }
 
     @SuppressWarnings("javadoc")

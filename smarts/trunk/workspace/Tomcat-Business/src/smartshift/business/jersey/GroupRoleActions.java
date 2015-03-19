@@ -10,6 +10,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
+import smartshift.business.cache.bo.Group;
+import smartshift.business.cache.bo.Role;
+import smartshift.business.jersey.objects.RoleJSON;
+import smartshift.business.util.GroupRoleEmployeeUtil;
 import smartshift.common.util.log4j.SmartLogger;
 import com.google.gson.annotations.Expose;
 
@@ -30,10 +34,12 @@ public class GroupRoleActions extends BaseBusinessActions {
     @PUT
     public Response addGroupRole(AddRequest request) {
         logger.debug("addGroupRole() Enter");
-        //Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.groupID, true);
-        //Role role = Role.create(getCache().getBusinessID(), request.roleName, group);
-        // TODO
-        return getMessageResponse(Status.NOT_IMPLEMENTED, "Please try again later.");
+        Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.groupID, true);
+        Role role = Role.create(getCache().getBusinessID(), request.roleName, group);
+        if(group.hasRole(role))
+            return getMessageResponse(Status.OK, "Group already has role");
+        group.addRole(role);
+        return getMessageResponse(Status.OK, "Role added to group.");
     }
 
     /**
@@ -43,8 +49,12 @@ public class GroupRoleActions extends BaseBusinessActions {
     @POST
     public Response updateGroupRole(EditRequest request) {
         logger.debug("updateGroupRole() Enter");
-    	// TODO
-        return getMessageResponse(Status.NOT_IMPLEMENTED, "Please try again later.");
+        Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.groupID, true);
+        Role role = GroupRoleEmployeeUtil.getRole(getCache(), request.roleID);
+        if(!group.hasRole(role))
+            return getMessageResponse(Status.BAD_REQUEST, "Group does not have this role.");
+        Role newRole = getCache().renameGroupRole(group, role, request.roleName);
+        return getObjectResponse(Status.OK, new RoleJSON(newRole));
     }
 
     /**
@@ -54,8 +64,12 @@ public class GroupRoleActions extends BaseBusinessActions {
     @DELETE
     public Response deleteGroupRole(DeleteRequest request) {
         logger.debug("deleteGroupRole() Enter");
-    	// TODO
-        return getMessageResponse(Status.NOT_IMPLEMENTED, "Please try again later.");
+        Group group = GroupRoleEmployeeUtil.getGroup(getCache(), getEmployee(), request.groupID, true);
+        Role role = GroupRoleEmployeeUtil.getRole(getCache(), request.roleID);
+        if(!group.hasRole(role))
+            return getMessageResponse(Status.OK, "Role does not exist for this group");
+        getCache().removeGroupRole(group, role);
+        return getMessageResponse(Status.OK, "Role removed from group.");
     }
 
     @SuppressWarnings("javadoc")
