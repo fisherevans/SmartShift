@@ -1,5 +1,5 @@
-angular.module('smartsApp').controller('LoginModalController', ['$scope', '$modalInstance', 'accountsService',
-    function($scope, $modalInstance, accountsService){
+angular.module('smartsApp').controller('LoginModalController', ['$scope', '$rootScope', '$modalInstance', 'accountsService',
+    function($scope, $rootScope, $modalInstance, accountsService){
         $scope.account = {
             username: '',
             password: ''
@@ -10,7 +10,9 @@ angular.module('smartsApp').controller('LoginModalController', ['$scope', '$moda
         $scope.submit = function() {
             $("#loginModalSubmit").prop("disabled",true);
             $scope.error = '';
-            accountsService.getFull($scope.account.username, $scope.account.password)
+            $rootScope.api.username = $scope.account.username;
+            $rootScope.api.password = $scope.account.password;
+            accountsService.getFull()
                 .success(function(data){
                     $scope.account.full = data.data;
                     $("#loginModalSubmit").prop("disabled",false);

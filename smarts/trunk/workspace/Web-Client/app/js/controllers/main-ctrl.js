@@ -1,13 +1,19 @@
 angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope', 'modalService', '$location', '$route', '$cookieStore', '$cookies', 'httpService', 'accountsService', 'utilService', 'cacheService',
     function($scope, $rootScope, modalService, $location, $route, $cookieStore, $cookies, httpService, accountsService, utilService, cacheService){
         var mainController = this;
+
+        $rootScope.api = {
+            username: undefined,
+            password: undefined,
+            sessionID: undefined,
+            accountsServer: 'http://lando.smartshift.info:6380',
+            businessServer: undefined
+        };
+
         $scope.init = function(){
-            if($cookieStore.get('sessionID'))
-                $rootScope.sessionID = $cookieStore.get('sessionID');
-            if($cookieStore.get('username'))
-                $rootScope.username = $cookieStore.get('username');
-            if($cookieStore.get('server'))
-                $rootScope.server = $cookieStore.get('server');
+            $rootScope.api.username = $cookieStore.get('username');
+            $rootScope.api.sessionID = $cookieStore.get('sessionID');
+            $rootScope.api.businessServer = $cookieStore.get('businessServer');
         }();
 
         mainController.navigationElements = {};
@@ -21,25 +27,18 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
 
         // Prevent page load if there is no session
         $rootScope.$on("$locationChangeStart", function(event, next, current){
-            var split = next.split("#");
-            if(split.length > 1
-                    && $rootScope.sessionID === undefined
-                    && split[1] != "/") {
+            if($rootScope.api.sessionID === undefined)
                 event.preventDefault();
-                return;
-            }
         });
 
         $rootScope.$on("$routeChangeError", function (event, current, previous, rejection) {
-            if(rejection.status >= 400 && rejection.status < 500) {
-                $cookieStore.remove('sessionID');
+            if(rejection.status == 401)
                 $rootScope.forceLogout();
-            }
         });
 
 
         $scope.hasSession = function(){
-            return $rootScope.sessionID;
+            return $rootScope.api.sessionID;
         };
 
         $scope.logout = function(){
@@ -50,20 +49,17 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
             if(!$rootScope.sessionID){
                 var result = modalService.loginModal()
                     .then(function (result) {
-                        $rootScope.username = result.username;
-                        $rootScope.password = result.password;
+                        console.log(result);
                         var executeLogin = function(business, employeeID) {
                             $scope.business = business;
                             accountsService.getSession(business.id, business.employeeID)
                                 .success(function (result) {
-                                    result.data.server = "localhost:8080";
-                                    $rootScope.sessionID = result.data.sessionKey;
-                                    $rootScope.server = result.data.server;
+                                    $rootScope.api.sessionID = result.data.sessionKey;
+                                    $rootScope.api.businessServer = 'http://lando.smartshift.info:6380'; //result.data.server;
                                     var expireDate = new Date(new Date().getTime() + result.data.timeout + 999999999); // TODO update cookie on http calls to reflect new expiration
-                                    $cookieStore.put('username', $rootScope.username, {expires: expireDate});
-                                    $cookieStore.put('sessionID', $rootScope.sessionID, {expires: expireDate});
-                                    $cookieStore.put('server', $rootScope.server, {expires: expireDate});
-                                    httpService.setRootPath(result.data.server);
+                                    $cookieStore.put('username', $rootScope.api.username, {expires: expireDate});
+                                    $cookieStore.put('sessionID', $rootScope.api.sessionID, {expires: expireDate});
+                                    $cookieStore.put('businessServer', $rootScope.api.businessServer, {expires: expireDate});
                                     $route.reload();
                                 })
                                 .error(function (result) {
@@ -71,7 +67,7 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                                 });
                         };
                         if(utilService.getSize(result.full.businesses) > 1)
-                            modalService.businessModal( result.full.businesses).then(executeLogin)
+                            modalService.businessModal(result.full.businesses).then(executeLogin)
                         else
                             executeLogin(result.full.businesses[0]);
                     } // end then function
@@ -80,7 +76,9 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
         });
 
         $rootScope.forceLogout = function() {
+            $cookieStore.remove('username');
             $cookieStore.remove('sessionID');
+            $cookieStore.remove('businessServer');
             window.location.href = "./";
         }
     }
