@@ -6,7 +6,9 @@ import java.util.Map;
 import java.util.Set;
 import org.hibernate.HibernateException;
 import org.hibernate.criterion.Restrictions;
+import smartshift.business.hibernate.dao.GroupDAO;
 import smartshift.business.hibernate.dao.RoleDAO;
+import smartshift.business.hibernate.model.GroupModel;
 import smartshift.business.hibernate.model.RoleModel;
 import smartshift.common.util.UID;
 import smartshift.common.util.log4j.SmartLogger;
@@ -69,6 +71,13 @@ public class Role extends CachedObject {
         parent.addRole(basicRole);
         return basicRole;
     }
+    
+    private void fork(Role role) {
+        Role old = new Role(getCache(), getName());
+        old.save();
+        getCache().cache(new UID(old), old);
+        save();
+    }
 
     @Override
     public void save() {
@@ -88,11 +97,11 @@ public class Role extends CachedObject {
     @Override
     public void loadAllChildren() {
         try {
-           // for(GroupModel gm : getDAO(GroupDAO.class).listByRole(getID()).execute()){
-             //   int grpID = gm.getId();
-             //   Group grp = Group.load(getCache(), grpID);
-             //   _capabilities.put(grp, new HashSet<Capability>());
-           // }
+            for(GroupModel gm : getDAO(GroupDAO.class).listByRole(getID()).execute()){
+               int grpID = gm.getId();
+                Group grp = Group.load(getCache(), grpID);
+                _capabilities.put(grp, new HashSet<Capability>());
+            }
        } catch(Exception e) {
            logger.error("Failed to load children", e);
        }  
