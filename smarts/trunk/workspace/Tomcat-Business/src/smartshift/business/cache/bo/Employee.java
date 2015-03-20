@@ -137,8 +137,8 @@ public class Employee extends CachedObject {
     
     public boolean belongsTo(Group group) {
         // TODO Drew, true if this employee belongs in the given group - check this work?
-        for(Group employeeGroups:getGroups())
-            if(employeeGroups.getID() == group.getID())
+        for(Group employeeGroup:getGroups())
+            if(employeeGroup.getID() == group.getID())
                 return true;
         return false;
     }
