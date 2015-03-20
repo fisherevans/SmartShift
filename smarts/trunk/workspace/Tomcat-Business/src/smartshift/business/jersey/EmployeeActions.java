@@ -141,7 +141,7 @@ public class EmployeeActions extends BaseBusinessActions {
         if(employee == null)
             return getMessageResponse(Status.BAD_REQUEST, "Invalid employee id:" + employeeID);
     	logger.debug("deleteEmployee() got employee");
-        getCache().deleteEmployee(employee);
+        employee.delete();
     	logger.debug("deleteEmployee() employee deleted");
         return getMessageResponse(Status.OK, "The employee was deleted");
     }

@@ -57,7 +57,7 @@ public class GroupRoleActions extends BaseBusinessActions {
         if(!group.hasRole(role))
             return getMessageResponse(Status.BAD_REQUEST, "Group does not have this role.");
         logger.debug("updateGroupRole() valid role");
-        Role newRole = getCache().renameGroupRole(group, role, request.roleName);
+        Role newRole = role.renameForGroup(group, request.roleName);
         logger.debug("updateGroupRole() updated");
         return getObjectResponse(Status.OK, new RoleJSON(newRole));
     }
