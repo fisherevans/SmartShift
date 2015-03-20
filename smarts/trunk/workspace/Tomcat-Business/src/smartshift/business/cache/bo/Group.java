@@ -19,6 +19,8 @@ import smartshift.common.util.log4j.SmartLogger;
 public class Group extends CachedObject {
     public static final String TYPE_IDENTIFIER = "G";
     
+    public static final Integer MANAGERIAL_CAPABILITY = 0;
+    
     private static final SmartLogger logger = new SmartLogger(Group.class);
     
     private String _name;
@@ -26,6 +28,7 @@ public class Group extends CachedObject {
     private Boolean _active;
     private final Set<Group> _children;
     private final Map<Role, Set<Employee>> _employees;
+    private final Set<Role> _managerialRoles;
     
     private GroupModel _model;
 
@@ -35,6 +38,7 @@ public class Group extends CachedObject {
         _active = true;
         _children = new HashSet<Group>();
         _employees = new HashMap<Role, Set<Employee>>();
+        _managerialRoles = new HashSet<>();
         _employees.put(Role.getBasicRole(cache, this), new HashSet<Employee>());
     }
     
@@ -42,6 +46,7 @@ public class Group extends CachedObject {
         super(cache, id);
         _children = new HashSet<Group>();
         _employees = new HashMap<Role, Set<Employee>>();
+        _managerialRoles = new HashSet<>();
         _employees.put(Role.getBasicRole(cache, this), new HashSet<Employee>());
     }
     
@@ -108,6 +113,24 @@ public class Group extends CachedObject {
         
     }
     
+    // --- Managerial Roles
+
+    public void addManagerialRole(Role role) {
+        _managerialRoles.add(role);
+    }
+    
+    public ROCollection<Role> getManagerialRoles() {
+        return ROCollection.wrap(_managerialRoles);
+    }
+    
+    public boolean hasManagerialRole(Role role) {
+        return _managerialRoles.contains(role);
+    }
+    
+    public void removeManagerialRole(Role role) {
+        _managerialRoles.remove(role);
+    }
+    
     // --- Role Employees
     
     public void addRoleEmployee(Role role, Employee employee) {
@@ -167,15 +190,22 @@ public class Group extends CachedObject {
                  Group grp = Group.load(getCache(), grpID);
                  _children.add(grp);
              }
-            
-            for(RoleModel rm : getDAO(RoleDAO.class).listByGroup(getID()).execute()){
-                int roleID = rm.getId();
-                Role role = Role.load(getCache(), roleID);
-                _employees.put(role, new HashSet<Employee>());
-                for(EmployeeModel em : getDAO(EmployeeDAO.class).listByGroupRole(getID(), roleID).execute()){
-                    _employees.get(role).add(Employee.load(getCache(), em.getId()));
-                }
-            }
+             
+             for(RoleModel rm : getDAO(RoleDAO.class).listByGroup(getID()).execute()){
+                 int roleID = rm.getId();
+                 Role role = Role.load(getCache(), roleID);
+                 _employees.put(role, new HashSet<Employee>());
+                 for(EmployeeModel em : getDAO(EmployeeDAO.class).listByGroupRole(getID(), roleID).execute()){
+                     _employees.get(role).add(Employee.load(getCache(), em.getId()));
+                 }
+             }
+             
+             for(RoleModel rm : getDAO(RoleDAO.class).listByGroupCapability(getID(), MANAGERIAL_CAPABILITY).execute()){
+                 int roleID = rm.getId();
+                 Role role = Role.load(getCache(), roleID);
+                 if(role != null)
+                     addManagerialRole(role);
+             }
         } catch(Exception e) {
             logger.error("Failed to load children", e);
         }     

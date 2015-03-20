@@ -122,19 +122,21 @@ public class Employee extends CachedObject {
     // --- MISC
     
     public boolean manages(Employee other) {
-        // TODO Drew, need to find out if this employee manages the other, or is the same
-        logger.error("Hit a non-implemeneted block! deleteEmployee()");
-        throw new RuntimeException("To implement!");
+        for(Group group:_roles.keySet()) {
+            if(manages(group) && other.belongsTo(group))
+                return true;
+        }
+        return false;
     }
 
     public boolean manages(Group group) {
-        // TODO Drew, need to find out if this employee manages this group
-        logger.error("Hit a non-implemeneted block! deleteEmployee()");
-        throw new RuntimeException("To implement!");
+        for(Role role:_roles.get(group))
+            if(group.hasManagerialRole(role))
+                return true;
+        return false;
     }
     
     public boolean belongsTo(Group group) {
-        // TODO Drew, true if this employee belongs in the given group - check this work?
         for(Group employeeGroup:getGroups())
             if(employeeGroup.getID() == group.getID())
                 return true;
