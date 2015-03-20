@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -21,6 +20,14 @@ import org.hibernate.annotations.NamedQuery;
                   + "where r.id in (select gr.roleID "
                   +                "from GroupRoleModel gr "
                   +                "where gr.groupID = :" + RoleModel.GET_GROUP_ROLES_GRP_ID
+                  + ")"
+    ),
+    @NamedQuery(name = RoleModel.GET_GROUP_CAP_ROLES,
+            query = "select r from RoleModel r "
+                  + "where r.id in (select gr.roleID "
+                  +                "from GroupRoleModel gr "
+                  +                "where gr.groupID = :" + RoleModel.GET_GROUP_CAP_ROLES_GRP_ID + " "
+                  +                "and gr.capabilityID = :" + RoleModel.GET_GROUP_CAP_ROLES_CAP_ID
                   + ")"
     ),
     @NamedQuery(name = RoleModel.GET_EMPLOYEE_GROUP_ROLES,
@@ -47,6 +54,20 @@ public class RoleModel {
      * group id param for GET_GROUP_ROLES
      */
     public static final String GET_GROUP_ROLES_GRP_ID = "groupIDParam";
+    /**
+     * named query - gets all roles in a group
+     */
+    public static final String GET_GROUP_CAP_ROLES = "getGroupCapabilityRoles";
+
+    /**
+     * group id param for GET_GROUP_CAP_ROLES
+     */
+    public static final String GET_GROUP_CAP_ROLES_GRP_ID = "groupIDParam";
+
+    /**
+     * capability id param for GET_GROUP_CAP_ROLES
+     */
+    public static final String GET_GROUP_CAP_ROLES_CAP_ID = "capIDParam";
     
     /**
      * get all roles given and employee and group
