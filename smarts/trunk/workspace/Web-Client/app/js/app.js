@@ -14,6 +14,7 @@ Array.prototype.findBy = function(key, value) {
 var app = angular.module('smartsApp', [
     'ngRoute',
     'ngAnimate',
+    'ui.calendar',
     'ui.tree',
     'ui.bootstrap',
     'smartsServices',
