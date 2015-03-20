@@ -2,6 +2,7 @@ package smartshift.business.jersey.initializers;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import smartshift.business.cache.bo.Cache;
 
 /**
  * A servlet to clean up resource before the system is brought down
@@ -22,6 +23,7 @@ public class TopBusinessListener implements ServletContextListener {
      */
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        Cache.saveAllCaches();
     }
 
 }
