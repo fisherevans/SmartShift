@@ -2,12 +2,12 @@
 
 angular.module('smartsServices').factory('httpService', ['$http', '$rootScope',
     function($http, $rootScope) {
-        var API_URL = 'http://lando.smartshift.info:6380';
         var httpService = {};
 
         httpService.createRequest = function(server, password, method, path, data) {
             var request = {
                 method: method,
+                //url: 'http://localhost:8080' + path,
                 url: server + path,
                 headers: {
                     'Authorization' : 'Basic ' + window.btoa($rootScope.api.username + ':' + password),
@@ -56,16 +56,6 @@ angular.module('smartsServices').factory('httpService', ['$http', '$rootScope',
                 return $http(httpService.createAccountsRequest('DELETE', path, data));
             }
         };
-
-        var oldService = {
-            setAuth: function(user, pass){
-                var base64 = window.btoa(user + ':' + pass);
-                $http.defaults.headers.common.Authorization = 'Basic ' + base64;
-            },
-            setRootPath: function(server){
-                API_URL = 'http://' + server;
-            }
-        }
 
         return httpService;
     }

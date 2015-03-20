@@ -45,8 +45,8 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
             $rootScope.forceLogout();
         };
 
-        $scope.$watch('$rootScope.sessionID', function(){
-            if(!$rootScope.sessionID){
+        $scope.$watch('$rootScope.api.sessionID', function(){
+            if(!$rootScope.api.sessionID){
                 var result = modalService.loginModal()
                     .then(function (result) {
                         console.log(result);
