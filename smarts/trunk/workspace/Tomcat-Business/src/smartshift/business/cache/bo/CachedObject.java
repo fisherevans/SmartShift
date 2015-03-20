@@ -7,11 +7,17 @@ import smartshift.common.util.hibernate.Stored;
 
 public abstract class CachedObject implements Identifiable, Stored{
     private Cache _cache;
+    private int _id;
     
     public CachedObject(Cache cache) {
-        _cache = cache;
+        this(cache, -1);
     }
     
+    public CachedObject(Cache cache, int id) {
+        _cache = cache;
+        _id = id;
+    }
+
     public Cache getCache() {
         return _cache;
     }
@@ -19,6 +25,14 @@ public abstract class CachedObject implements Identifiable, Stored{
     @Override
     public UID getUID() {
         return new UID(this);
+    }
+    
+    public int getID() {
+        return _id;
+    }
+    
+    protected void setID(int id) {
+        _id = id;
     }
     
     public <T extends BaseBusinessDAO> T getDAO(Class<T> clazz) {

@@ -18,18 +18,17 @@ public class AvailabilityTemplate extends CachedObject {
     
     private AvailabilityTemplateModel _model;
     
-    public AvailabilityTemplate(Cache cache, String name, Employee owner) {
+    private AvailabilityTemplate(Cache cache, String name, Employee owner) {
         super(cache);
         _owner = owner;
         _name = name;
     }
     
-    private AvailabilityTemplate(Cache cache, AvailabilityTemplateModel model) {
-        this(cache, model.getName(), Employee.load(cache, model.getEmployeeID()));
-        _model = model;
+    private AvailabilityTemplate(Cache cache, int id) {
+        super(cache, id);
     }
-    
-    public void add(Availability availability) {
+
+    void add(Availability availability) {
         _components.add(availability);
     }
 
@@ -54,6 +53,7 @@ public class AvailabilityTemplate extends CachedObject {
                 getDAO(AvailabilityTemplateDAO.class).update(_model);
             } else {
                 _model = getDAO(AvailabilityTemplateDAO.class).add(_name, _owner.getID()).execute();
+                _model.setId(_model.getId());
                 for(Availability a : _components) {
                     a.save();
                 }
@@ -73,15 +73,19 @@ public class AvailabilityTemplate extends CachedObject {
         if(cache.contains(uid))
             return cache.getCached(uid, AvailabilityTemplate.class); 
         else {
-            AvailabilityTemplateModel model = cache.getDAOContext().dao(AvailabilityTemplateDAO.class).uniqueByID(tempID).execute();
-            AvailabilityTemplate template = null;
-            if(model != null) {
-                cache.cache(uid, null);
-                template = new AvailabilityTemplate(cache, model);
-                cache.cache(uid, template);
-            }
+            AvailabilityTemplate template = new AvailabilityTemplate(cache, tempID);
+            cache.cache(uid, template);
+            template.loadAllChildren();
+            template.init();
             return template;
         }
+    }
+    
+    public void init() {
+        AvailabilityTemplateModel model = getCache().getDAOContext().dao(AvailabilityTemplateDAO.class).uniqueByID(getID()).execute();
+        _owner = Employee.load(getCache(), model.getEmployeeID());
+        _name = model.getName();
+        _model = model;
     }
     
     public static AvailabilityTemplate create(int businessID, String name, Employee owner) {
