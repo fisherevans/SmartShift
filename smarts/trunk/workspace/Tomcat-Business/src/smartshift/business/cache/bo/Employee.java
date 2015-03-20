@@ -39,7 +39,7 @@ public class Employee extends CachedObject {
         _lastName = last;
         _homeGroup = home;
         _active = active;
-        _homeGroup.addEmployee(this);
+        _homeGroup.addRoleEmployee(Role.getBasicRole(cache, _homeGroup), this);
         _roles = new HashMap<Group, Set<Role>>();
         _availabilities = new ArrayList<Availability>();
     }
@@ -50,54 +50,81 @@ public class Employee extends CachedObject {
         loadAllChildren();
     }
     
-    public String getDisplayName() {
-        return _firstName + " " + _lastName;
+    public void setFirstName(String firstName) {
+        _firstName = firstName;
     }
     
     public String getFirstName() {
         return _firstName;
     }
     
+    public void setLastName(String lastName) {
+        _lastName = lastName;
+    }
+    
     public String getLastName() {
         return _lastName;
     }
     
-    public Group getHomeGroup() {
-        return _homeGroup;
-    }
-    
-    public void setFirstName(String firstName) {
-        _firstName = firstName;
-    }
-    
-    public void setLastName(String lastName) {
-        _lastName = lastName;
+    public String getDisplayName() {
+        return _firstName + " " + _lastName;
     }
     
     public void setHomeGroup(Group homeGroup) {
         _homeGroup = homeGroup;
     }
     
-    public void addGroup(Group group) {
+    public Group getHomeGroup() {
+        return _homeGroup;
+    }
+
+    public void setActive(Boolean active) {
+        _active = active;
+    }
+
+    public Boolean getActive() {
+        return _active;
+    }
+    
+    // --- GROUPS
+    
+    protected void groupAdded(Group group) {
         if(!_roles.containsKey(group))
             _roles.put(group, new HashSet<Role>());
     }
     
-    public void addGroupRole(Role role, Group group) {
-        addGroup(group);
+    public ROCollection<Group> getGroups() {
+        return ROCollection.wrap(_roles.keySet());
+    }
+    
+    protected void groupRemoved(Group group) {
+        _roles.remove(group);
+    }
+    
+    protected void groupRoleAdded(Group group, Role role) {
+        groupAdded(group);
         _roles.get(group).add(role);
     }
+    
+    // --- GROUP ROLES
     
     public ROCollection<Role> getRoles(Group group) {
         return ROCollection.wrap(_roles.get(group));
     }
     
-    public ROCollection<Group> getGroups() {
-    	return ROCollection.wrap(_roles.keySet());
+    protected void groupRoleRemoved(Group group, Role role) {
+        Set<Role> groupRoles = _roles.get(group);
+        if(groupRoles != null) {
+            groupRoles.remove(role);
+            if(groupRoles.size() == 0)
+                groupRemoved(group);
+        }
     }
     
+    // --- MISC
+    
     public boolean manages(Employee other) {
-    	// TODO Drew, need to find out if this employee manages the other, or is the same
+        // TODO Drew, need to find out if this employee manages the other, or is the same
         logger.error("Hit a non-implemeneted block! deleteEmployee()");
         throw new RuntimeException("To implement!");
     }
@@ -115,14 +142,6 @@ public class Employee extends CachedObject {
                 return true;
         return false;
     }
-
-    public Boolean getActive() {
-		return _active;
-	}
-
-	public void setActive(Boolean active) {
-		_active = active;
-	}
 
 	public static Employee getEmployee(Cache cache, EmployeeModel model) {     
         Employee employee = cache.getEmployee(model.getId());

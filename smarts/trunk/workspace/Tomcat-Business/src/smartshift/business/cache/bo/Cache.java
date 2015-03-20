@@ -195,38 +195,4 @@ public class Cache {
         logger.error("Hit a non-implemeneted block! deleteGroup()");
         throw new RuntimeException("To implement!");
     }
-
-    public void removeGroupRole(Group group, Role role) {
-        // TODO drew - removes role from group. need to remove employees from group if it was their only role in it
-        logger.error("Hit a non-implemeneted block! deleteGroup()");
-        throw new RuntimeException("To implement!");
-    }
-
-    public void removeGroupEmployee(Group group, Employee employee) {
-        // TODO drew - remove employee from group and all roles inside group
-        logger.error("Hit a non-implemeneted block! deleteGroup()");
-        throw new RuntimeException("To implement!");
-    }
-
-    public void removeGroupRoleEmployee(Group group, Role role, Employee employee) {
-        // TODO drew - remove employee from a role in a group. from the whole group if its their last role
-        logger.error("Hit a non-implemeneted block! deleteGroup()");
-        throw new RuntimeException("To implement!");
-    }
-    
-    public void linkGroupRoleEmployee(Group group, Role role, Employee employee) {
-        // TODO drew - could you check this logic? I think I did this one right
-        logger.debug("linkGroupRoleEmployee() Linking employee:" + employee.getID() + " to group:" + group.getID() + " role:" + role.getID());
-        group.addRole(role);
-        group.addEmployee(employee);
-        employee.addGroup(group);
-        group.addEmployeeRole(employee, role);
-        employee.addGroupRole(role, group);
-    }
-    
-    public void unlinkGroupRoleEmployee(Group group, Role role, Employee employee) {
-        // TODO drew - remove employee from group role - and remove from group if it was the last role
-        logger.error("Hit a non-implemeneted block! deleteGroup()");
-        throw new RuntimeException("To implement!");
-    }
 }

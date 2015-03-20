@@ -34,7 +34,7 @@ public class GroupEmployeeActions extends BaseBusinessActions {
         logger.debug("removeGroupEmployee() valid group");
         Employee employee = getEmployee(request.employeeID, true);
         logger.debug("removeGroupEmployee() valid employee");
-        getCache().removeGroupEmployee(group, employee);
+        group.removeEmployee(employee);
         logger.debug("removeGroupEmployee() removed");
         return getMessageResponse(Status.OK, "Employee removed from group.");
     }
