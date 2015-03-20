@@ -47,6 +47,15 @@ public class GroupDAO extends BaseBusinessDAO<GroupModel> {
                 new NamedParameter(GroupModel.GET_EMPLOYEE_GROUPS_EMP_ID, employeeID));
     }
     
+    /** get a task that gets a list of groups that has a role
+     * @param roleID the role in question
+     * @return the task
+     */
+    public ListNamedQueryTask<GroupModel> listByRole(Integer roleID) {
+        return listNamedQuery(GroupModel.GET_ROLE_GROUPS, 
+                new NamedParameter(GroupModel.GET_ROLE_GROUPS_ROLE_ID, roleID));
+    }
+    
     /**
      * get a task that gets a list of groups that have a specific parent
      * @param parentID the id of the parent to check

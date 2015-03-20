@@ -5,7 +5,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -16,13 +15,20 @@ import org.hibernate.annotations.NamedQuery;
 @Entity
 @Table(name = "`Group`")
 @NamedQueries({
-        @NamedQuery(name = GroupModel.GET_EMPLOYEE_GROUPS,
-                    query = "select g from GroupModel g "
-                          + "where g.id in (select ge.groupID "
-                          +                "from GroupEmployeeModel ge "
-                          +                "where ge.employeeID = :" + GroupModel.GET_EMPLOYEE_GROUPS_EMP_ID
-                          + ")"
-        )
+    @NamedQuery(name = GroupModel.GET_EMPLOYEE_GROUPS,
+            query = "select g from GroupModel g "
+                  + "where g.id in (select ge.groupID "
+                  +                "from GroupEmployeeModel ge "
+                  +                "where ge.employeeID = :" + GroupModel.GET_EMPLOYEE_GROUPS_EMP_ID
+                  + ")"
+    ),
+    @NamedQuery(name = GroupModel.GET_ROLE_GROUPS,
+            query = "select g from GroupModel g "
+                  + "where g.id in (select gr.groupID "
+                  +                "from GroupRoleModel gr "
+                  +                "where gr.roleID = :" + GroupModel.GET_ROLE_GROUPS_ROLE_ID
+                  + ")"
+    )
 })
 public class GroupModel {
     /**
@@ -34,6 +40,16 @@ public class GroupModel {
      * named query parameter for GET_EMPLOYEE_GROUPS - the employee id
      */
     public static final String GET_EMPLOYEE_GROUPS_EMP_ID = "empoyeeIDParam";
+
+    /**
+     * named query identifier to get the groups that has a role
+     */
+    public static final String GET_ROLE_GROUPS = "getRoleGroups";
+    
+    /**
+     * named query parameter for GET_ROLE_GROUPS - the role id
+     */
+    public static final String GET_ROLE_GROUPS_ROLE_ID = "roleIDParam";
     
     @Id
     @GeneratedValue
