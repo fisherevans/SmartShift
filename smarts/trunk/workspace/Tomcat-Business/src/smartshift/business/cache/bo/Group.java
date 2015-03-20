@@ -29,23 +29,20 @@ public class Group extends CachedObject {
     
     private GroupModel _model;
 
-    public Group(Cache cache, String name, Boolean active) {
+    private Group(Cache cache, String name) {
         super(cache);
         _name = name;
-        _active = active;
+        _active = true;
         _children = new HashSet<Group>();
         _employees = new HashMap<Role, Set<Employee>>();
         _employees.put(Role.getBasicRole(cache, this), new HashSet<Employee>());
     }
     
-    private Group(Cache cache, GroupModel model) {
-        this(cache, model.getName(), model.getActive());
-        _model = model;
-        if(model.getParentID() == null)
-        	_parent = null;
-        else
-        	_parent = Group.load(cache, model.getParentID());
-        loadAllChildren();
+    private Group(Cache cache, int id) {
+        super(cache, id);
+        _children = new HashSet<Group>();
+        _employees = new HashMap<Role, Set<Employee>>();
+        _employees.put(Role.getBasicRole(cache, this), new HashSet<Employee>());
     }
     
     public void setName(String name) {
@@ -154,6 +151,7 @@ public class Group extends CachedObject {
                 getDAO(GroupDAO.class).update(_model);
             } else {
                 _model = getDAO(GroupDAO.class).add(_name, null).execute();
+                setID(_model.getId());
             }
         } catch (HibernateException e) {
             logger.debug(e.getStackTrace());
@@ -187,13 +185,6 @@ public class Group extends CachedObject {
     public String typeCode() {
         return TYPE_IDENTIFIER;
     }
-
-    @Override
-    public int getID() {
-        if(_model == null)
-            return -1;
-        return _model.getId();
-    }
     
     public static Group load(Cache cache, int grpID) {
     	UID uid = new UID(TYPE_IDENTIFIER, grpID);
@@ -202,18 +193,22 @@ public class Group extends CachedObject {
             return cache.getGroup(grpID); 
         } else {
             logger.debug("Cache does not have group: " + grpID);
-            GroupModel model = cache.getDAOContext().dao(GroupDAO.class).uniqueByID(grpID).execute();
-            logger.debug("Got model: " + model);
-            Group group = null;
-            if(model != null) {
-                //cache.cache(uid, new PlaceHolderObject(cache, TYPE_IDENTIFIER, grpID));
-                cache.cache(uid, null);
-            	group = new Group(cache, model);
-                cache.cache(uid, group);
-                logger.debug("cached group: " + group);
-            }
+            Group group = new Group(cache, grpID);
+            cache.cache(uid, group);
+            group.loadAllChildren();
+            group.init();
             return group;
         }
+    }
+    
+    public void init() {
+        GroupModel model = getCache().getDAOContext().dao(GroupDAO.class).uniqueByID(getID()).execute();
+        _name = model.getName();
+        if(model.getParentID() == null)
+            _parent = null;
+        else
+            _parent = Group.load(getCache(), model.getParentID());
+        _model = model;
     }
      
     /**
@@ -225,7 +220,7 @@ public class Group extends CachedObject {
      */
     public static Group create(int businessID, String name, Group parent) {
         Cache cache = Cache.getCache(businessID);
-        Group grp = new Group(cache, name, true);
+        Group grp = new Group(cache, name);
         grp.save();
         cache.cache(new UID(grp), grp);
         return grp;

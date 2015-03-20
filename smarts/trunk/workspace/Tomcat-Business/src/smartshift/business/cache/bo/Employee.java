@@ -1,6 +1,5 @@
 package smartshift.business.cache.bo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -29,27 +28,26 @@ public class Employee extends CachedObject {
     private Group _homeGroup;
     private Boolean _active;
     private final Map<Group, Set<Role>> _roles;
-    private final List<Availability> _availabilities;
+    private List<AvailabilityInstance> _availabilities;
+    private List<AvailabilityTemplate> _availabilityTemplates;
     
     private EmployeeModel _model;
     
-    public Employee(Cache cache, String first, String last, Group home, Boolean active) {
+    private Employee(Cache cache, String first, String last, Group home) {
         super(cache);
         _firstName = first;
         _lastName = last;
         _homeGroup = home;
-        _active = active;
+        _active = true;
         _homeGroup.addRoleEmployee(Role.getBasicRole(cache, _homeGroup), this);
         _roles = new HashMap<Group, Set<Role>>();
-        _availabilities = new ArrayList<Availability>();
     }
     
-    private Employee(Cache cache, EmployeeModel model) {
-        this(cache, model.getFirstName(), model.getLastName(), Group.load(cache, model.getDefaultGroupID()), model.getActive());
-        _model = model;
-        loadAllChildren();
+    private Employee(Cache cache, int id) {
+        super(cache, id);
+        _roles = new HashMap<Group, Set<Role>>();
     }
-    
+
     public void setFirstName(String firstName) {
         _firstName = firstName;
     }
@@ -143,13 +141,6 @@ public class Employee extends CachedObject {
         return false;
     }
 
-	public static Employee getEmployee(Cache cache, EmployeeModel model) {     
-        Employee employee = cache.getEmployee(model.getId());
-        if(employee == null)
-            employee = new Employee(cache, model);
-        return employee;
-    }
-
     @Override
     public void save() {
         try {
@@ -173,6 +164,7 @@ public class Employee extends CachedObject {
                     throw new Exception("Not currently connected to the Accounts Service!", e);
                 }
                 _model = getDAO(EmployeeDAO.class).add(id, _firstName, _lastName, _homeGroup.getID()).execute();
+                setID(id);
             }
         } catch (Exception e) {
             logger.warn("Failed to save the employee!", e);
@@ -200,13 +192,6 @@ public class Employee extends CachedObject {
     public String typeCode() {
         return TYPE_IDENTIFIER;
     }
-
-    @Override
-    public int getID() {
-        if(_model == null)
-            return -1;
-        return _model.getId();
-    }
     
     public static Employee load(Cache cache, int empID) {
     	UID uid = new UID(TYPE_IDENTIFIER, empID);
@@ -215,23 +200,25 @@ public class Employee extends CachedObject {
             return cache.getEmployee(empID); 
         } else {
             logger.debug("Cache does not contain employee id: " + empID);
-            EmployeeModel model = cache.getDAOContext().dao(EmployeeDAO.class).uniqueByID(empID).execute();
-            logger.debug("Got model: " + model);
-            Employee employee = null;
-            if(model != null) {
-                //cache.cache(uid, new PlaceHolderObject(cache, TYPE_IDENTIFIER, empID));
-                cache.cache(uid, null);
-                employee = new Employee(cache, model);
-                cache.cache(uid, employee);
-                logger.debug("Cached employee: " + employee);
-            }
+            Employee employee = new Employee(cache, empID);
+            cache.cache(uid, employee);
+            employee.loadAllChildren();
+            employee.init();
             return employee;
         }
     }
     
+    public void init() {
+        EmployeeModel model = getCache().getDAOContext().dao(EmployeeDAO.class).uniqueByID(getID()).execute();
+        _firstName = model.getFirstName();
+        _lastName = model.getLastName();
+        _homeGroup = Group.load(getCache(), model.getDefaultGroupID());
+        _model = model;
+    }
+    
     public static Employee create(int businessID, String first, String last, int homeGroupID) {
         Cache cache = Cache.getCache(businessID);
-        Employee emp = new Employee(cache, first, last, Group.load(cache, homeGroupID), true);
+        Employee emp = new Employee(cache, first, last, Group.load(cache, homeGroupID));
         emp.save();
         cache.cache(new UID(emp), emp);
         return emp;

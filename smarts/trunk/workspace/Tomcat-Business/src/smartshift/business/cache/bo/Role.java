@@ -16,6 +16,11 @@ public class Role extends CachedObject {
     
     private static final SmartLogger logger = new SmartLogger(Role.class);
     
+    private String _name;
+    private Map<Group, Set<Capability>> _capabilities;
+    
+    private RoleModel _model;
+    
     private static String BASIC_ROLE_NAME = "basic";
     private static int BASIC_ROLE_ID = 0;
     
@@ -30,18 +35,13 @@ public class Role extends CachedObject {
         }
     }
     
-    private String _name;
-    private final Map<Group, Set<Capability>> _capabilities;
-    
-    private RoleModel _model;
-    
     private Role(Cache cache, String name) {
         super(cache);
         _name = name;
         _capabilities = new HashMap<Group, Set<Capability>>();
     }
     
-    public Role(Cache cache, String name, Group parent) {
+    private Role(Cache cache, String name, Group parent) {
         this(cache, name);
         _capabilities.put(parent, new HashSet<Capability>());
         parent.addRole(this);
@@ -49,10 +49,13 @@ public class Role extends CachedObject {
     
     private Role(Cache cache, RoleModel model) {
         this(cache, model.getName());
-        _model = model;
-        loadAllChildren();
     }
     
+    private Role(Cache cache, int id) {
+        super(cache, id);
+        _capabilities = new HashMap<Group, Set<Capability>>();
+    }
+
     public void setName(String name) {
         _name = name;
     }
@@ -75,6 +78,7 @@ public class Role extends CachedObject {
                 getDAO(RoleDAO.class).update(_model);
             } else {
                 _model = getDAO(RoleDAO.class).add(_name).execute();
+                setID(_model.getId());
             }
         } catch (HibernateException e) {
             logger.debug(e.getStackTrace());
@@ -83,45 +87,42 @@ public class Role extends CachedObject {
 
     @Override
     public void loadAllChildren() {
-        // do nothing
+        try {
+           // for(GroupModel gm : getDAO(GroupDAO.class).listByRole(getID()).execute()){
+             //   int grpID = gm.getId();
+             //   Group grp = Group.load(getCache(), grpID);
+             //   _capabilities.put(grp, new HashSet<Capability>());
+           // }
+       } catch(Exception e) {
+           logger.error("Failed to load children", e);
+       }  
     }
 
     @Override
     public String typeCode() {
         return TYPE_IDENTIFIER;
     }
-
-    @Override
-    public int getID() {
-        if(_model == null)
-            return -1;
-        return _model.getId();
-    }
     
     public static Role load(Cache cache, int roleID) {
         UID uid = new UID(TYPE_IDENTIFIER, roleID);
         if(cache.contains(uid))
             return cache.getRole(roleID); 
-        else {
-            RoleModel model = cache.getDAOContext().dao(RoleDAO.class).uniqueByID(roleID).execute();
-            Role role = null;
-            if(model != null) {
-                //cache.cache(uid, new PlaceHolderObject(cache, TYPE_IDENTIFIER, roleID));
-                cache.cache(uid, null);
-                role = new Role(cache, model);
-                cache.cache(uid, role);
-            }
+        else {           
+            Role role = new Role(cache, roleID);
+            cache.cache(uid, role);
+            role.loadAllChildren();
+            role.init();
             return role;
         }
     }
     
+    // never call in the initial load. plz plz plz.
     public static Role loadByName(Cache cache, String roleName) {
         Role role = cache.getRole(roleName);
         if(role == null) {
             RoleModel model = cache.getDAOContext().dao(RoleDAO.class).uniqueByCriteria(Restrictions.eq("name", roleName)).execute();
             if(model != null) {
                 UID uid = new UID(TYPE_IDENTIFIER, model.getId());
-                cache.cache(uid, null);
                 role = new Role(cache, model);
                 cache.cache(uid, role);
             }
@@ -131,6 +132,12 @@ public class Role extends CachedObject {
     
     public static Role create(int businessID, String name) {
         return create(businessID, name, null);
+    }
+    
+    public void init() {
+        RoleModel model = getCache().getDAOContext().dao(RoleDAO.class).uniqueByID(getID()).execute();
+        _name = model.getName();
+        _model = model;
     }
     
     public static Role create(int businessID, String name, Group parent) {

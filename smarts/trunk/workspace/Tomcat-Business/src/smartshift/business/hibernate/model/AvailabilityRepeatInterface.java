@@ -5,5 +5,9 @@ package smartshift.business.hibernate.model;
  * A simple polymorphism to handle the different repeat types genericly.
  */
 public interface AvailabilityRepeatInterface {
-
+    
+    /**
+     * @return the availavility id for the repeat
+     */
+    public Integer getAvailabilityID();
 }

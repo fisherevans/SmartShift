@@ -17,16 +17,14 @@ public class AvailabilityInstance extends CachedObject {
     
     private AvailabilityInstanceModel _model;
     
-    public AvailabilityInstance(Cache cache, LocalDate start, LocalDate end) {
+    private AvailabilityInstance(Cache cache, LocalDate start, LocalDate end) {
         super(cache);
         _startDate = start;
         _endDate = end;
     }
     
-    private AvailabilityInstance(Cache cache, AvailabilityInstanceModel model) {
-        this(cache, new LocalDate(model.getStartDate()), new LocalDate(model.getEndDate()));
-        _model = model;
-        loadAllChildren();       
+    private AvailabilityInstance(Cache cache, int id) {
+        super(cache, id);
     }
 
     private void setTemplate(AvailabilityTemplate template) {
@@ -36,13 +34,6 @@ public class AvailabilityInstance extends CachedObject {
     @Override
     public String typeCode() {
         return TYPE_IDENTIFIER;
-    }
-
-    @Override
-    public int getID() {
-        if(_model != null)
-            return _model.getId();
-        return -1;
     }
 
     @Override
@@ -56,6 +47,7 @@ public class AvailabilityInstance extends CachedObject {
             } else {
                 _template.save();
                 _model = getDAO(AvailabilityInstanceDAO.class).add(_template.getID(), _startDate.toDate(), _endDate.toDate()).execute();
+                setID(_model.getId());
             }
         } catch (Exception e) {
             logger.warn("Failed to save the availability instance!", e);
@@ -67,18 +59,22 @@ public class AvailabilityInstance extends CachedObject {
         setTemplate(AvailabilityTemplate.load(getCache(), _model.getTemplateID())); 
     }
     
+    public void init() {
+        AvailabilityInstanceModel model = getCache().getDAOContext().dao(AvailabilityInstanceDAO.class).uniqueByID(getID()).execute();
+        _model = model;
+        _startDate = new LocalDate(model.getStartDate());
+        _endDate = new LocalDate(model.getEndDate());
+    }
+    
     public static AvailabilityInstance load(Cache cache, int instID) {
         UID uid = new UID(TYPE_IDENTIFIER, instID);
         if(cache.contains(uid))
             return cache.getCached(uid, AvailabilityInstance.class); 
         else {
-            AvailabilityInstanceModel model = cache.getDAOContext().dao(AvailabilityInstanceDAO.class).uniqueByID(instID).execute();
-            AvailabilityInstance instance = null;
-            if(model != null) {
-                cache.cache(uid, null);
-                instance = new AvailabilityInstance(cache, model);
-                cache.cache(uid, instance);
-            }
+            AvailabilityInstance instance = new AvailabilityInstance(cache, instID);
+            cache.cache(uid, instance);
+            instance.loadAllChildren();
+            instance.init();
             return instance;
         }
     }
