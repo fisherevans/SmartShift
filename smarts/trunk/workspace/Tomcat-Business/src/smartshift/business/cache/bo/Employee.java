@@ -130,6 +130,8 @@ public class Employee extends CachedObject {
     }
 
     public boolean manages(Group group) {
+        if(_roles.get(group) == null)
+            return false;
         for(Role role:_roles.get(group))
             if(group.hasManagerialRole(role))
                 return true;
