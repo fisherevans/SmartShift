@@ -59,8 +59,12 @@ public class EmployeeActions extends BaseBusinessActions {
             if(group.getID() == proposedHomeGroup.getID())
                 validHomeGroup = true;
             List<Role> roles = new ArrayList<Role>();
-            for(Integer roleID:request.groupRoleIDs.get(groupID))
-                roles.add(getRole(roleID));
+            for(Integer roleID:request.groupRoleIDs.get(groupID)) {
+                Role role = getRole(roleID);
+                if(!group.hasRole(role))
+                    return getMessageResponse(Status.BAD_REQUEST, "Role " + roleID + " does not belong to group " + groupID);
+                roles.add(role);
+            }
             if(roles.size() == 0)
                 return getMessageResponse(Status.BAD_REQUEST, "An employee cannot be in a group, but not in a role. " + groupID);
             groupRoles.put(group, roles);
@@ -75,7 +79,7 @@ public class EmployeeActions extends BaseBusinessActions {
         for(Group group:groupRoles.keySet()) {
             List<Integer> roles = new ArrayList<>();
             for(Role role:groupRoles.get(group)) {
-                getCache().linkGroupRoleEmployee(group, role, newEmployee);
+                group.addRoleEmployee(role, newEmployee);
                 roles.add(role.getID());
             }
             json.groupRoleIDs.put(group.getID(), roles);

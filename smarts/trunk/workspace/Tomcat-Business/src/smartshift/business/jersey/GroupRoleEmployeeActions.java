@@ -40,7 +40,7 @@ public class GroupRoleEmployeeActions extends BaseBusinessActions {
         logger.debug("linkGroupRoleEmployee() valid role");
         Employee employee = getEmployee(request.employeeID, true);
         logger.debug("linkGroupRoleEmployee() valid employee");
-        getCache().linkGroupRoleEmployee(group, role, employee);
+        group.addRoleEmployee(role, employee);
         logger.debug("linkGroupRoleEmployee() linked");
         return getMessageResponse(Status.OK, "The employee was added to the group role.");
     }
@@ -60,7 +60,7 @@ public class GroupRoleEmployeeActions extends BaseBusinessActions {
         logger.debug("unlinkGroupRoleEmployee() valid role");
         Employee employee = getEmployee(request.employeeID, true);
         logger.debug("unlinkGroupRoleEmployee() valid employee");
-        getCache().removeGroupRoleEmployee(group, role, employee);
+        group.removeRoleEmployee(role, employee);
         logger.debug("unlinkGroupRoleEmployee() unlinked");
         return getMessageResponse(Status.OK, "Employee removed from group.");
     }

@@ -52,41 +52,71 @@ public class Group extends CachedObject {
         _name = name;
     }
 
-    public void setParent(Group parent) {
-        _parent = parent;
-    }
-
     public String getName() {
         return _name;
+    }
+
+    public void setParent(Group parent) {
+        _parent = parent;
     }
     
     public Group getParent() {
     	return _parent;
     }
+
+    public void setActive(Boolean active) {
+        _active = active;
+    }
     
     public Boolean getActive() {
 		return _active;
 	}
+    
+	// --- Child Groups
+	
+    protected boolean childAdded(Group grp) {
+        return _children.add(grp);
+    }
 
-	public void setActive(Boolean active) {
-		_active = active;
-	}
-
-	public ROCollection<Group> getChildGroups() {
+    public ROCollection<Group> getChildGroups() {
         return ROCollection.wrap(_children);
     }
     
-    public boolean addChild(Group grp) {
-        return _children.add(grp);
+    protected boolean childRemoved(Group grp) {
+        return _children.remove(grp);
+    }
+    
+    // --- Roles
+
+    public void addRole(Role role) {
+        if(!hasRole(role))
+            _employees.put(role, new HashSet<Employee>());
+    }
+    
+    public ROCollection<Role> getRoles() {
+        return ROCollection.wrap(_employees.keySet());
     }
     
     public boolean hasRole(Role role) {
         return _employees.containsKey(role);
     }
-
-    public void addRole(Role role) {
-        if(!hasRole(role))
-            _employees.put(role, new HashSet<Employee>());
+    
+    public void removeRole(Role role) {
+        Set<Employee> roleEmployees = _employees.get(role);
+        if(roleEmployees != null) {
+            for(Employee employee:roleEmployees)
+                removeRoleEmployee(role, employee);
+            _employees.remove(role);
+        }
+        
+    }
+    
+    // --- Role Employees
+    
+    public void addRoleEmployee(Role role, Employee employee) {
+        addRole(role);
+        _employees.get(role).add(employee);
+        employee.groupRoleAdded(this, role);
     }
     
     public ROCollection<Employee> getRoleEmployees(Role role) {
@@ -94,19 +124,25 @@ public class Group extends CachedObject {
         return ROCollection.wrap(roleEmployees == null ? new ArrayList() : roleEmployees);
     }
     
-    public void addEmployeeRole(Employee employee, Role role) {
-        addRole(role);
-        if(!_employees.get(role).contains(employee))
-            _employees.get(role).add(employee);
+    public void removeRoleEmployee(Role role, Employee employee) {
+        Set<Employee> roleEmployees = _employees.get(role);
+        if(roleEmployees != null) {
+            roleEmployees.remove(employee);
+            employee.groupRoleRemoved(this, role);
+        }
     }
     
-    public void addEmployee(Employee employee) {
-        addEmployeeRole(employee, Role.getBasicRole(getCache(), this));
+    // --- Employees
+    
+    public void removeEmployee(Employee employee) {
+        for(Role role:_employees.keySet()) {
+            removeRoleEmployee(role, employee);
+            if(_employees.get(role).size() == 0)
+                removeRole(role);
+        }
     }
     
-    public ROCollection<Role> getRoles() {
-    	return ROCollection.wrap(_employees.keySet());
-    }
+    // --- Misc
 
     @Override
     public void save() {

@@ -75,7 +75,7 @@ public class GroupRoleActions extends BaseBusinessActions {
         if(!group.hasRole(role))
             return getMessageResponse(Status.OK, "Role does not exist for this group");
         logger.debug("deleteGroupRole() valid role");
-        getCache().removeGroupRole(group, role);
+        group.removeRole(role);
         logger.debug("deleteGroupRole() removed");
         return getMessageResponse(Status.OK, "Role removed from group.");
     }

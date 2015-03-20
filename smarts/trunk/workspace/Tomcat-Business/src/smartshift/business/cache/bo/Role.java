@@ -30,7 +30,7 @@ public class Role extends CachedObject {
         }
     }
     
-    private final String _name;
+    private String _name;
     private final Map<Group, Set<Capability>> _capabilities;
     
     private RoleModel _model;
@@ -53,14 +53,17 @@ public class Role extends CachedObject {
         loadAllChildren();
     }
     
+    public void setName(String name) {
+        _name = name;
+    }
+    
     public String getName() {
         return _name;
     }
     
     public static Role getBasicRole(Cache cache, Group parent) {
         Role basicRole = new BasicRole(cache, parent);
-        if(!parent.hasRole(basicRole))
-            parent.addRole(basicRole);
+        parent.addRole(basicRole);
         return basicRole;
     }
 
