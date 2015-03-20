@@ -176,23 +176,4 @@ public class Cache {
             cache.save();
         }
     }
-
-	public void deleteEmployee(Employee employee) {
-        // TODO Drew this needs to set the flag, save to the DB and remove any relations.
-		logger.error("Hit a non-implemeneted block! deleteEmployee()");
-		throw new RuntimeException("To implement!");
-	}
-
-    public void deleteGroup(Group group) {
-        // TODO drew - flag this group as inactive - as long as it's not root
-        logger.error("Hit a non-implemeneted block! deleteGroup()");
-        throw new RuntimeException("To implement!");
-    }
-
-    public Role renameGroupRole(Group group, Role role, String roleName) {
-        // TODO drew - renames a role. check to see if any other groups use it, 
-        // if they do need to make a new role and refactor the relationships, if not just rename
-        logger.error("Hit a non-implemeneted block! deleteGroup()");
-        throw new RuntimeException("To implement!");
-    }
 }

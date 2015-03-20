@@ -162,4 +162,11 @@ public class Role extends CachedObject {
         }
         return role;
     }
+    
+    public Role renameForGroup(Group group, String newName) {
+        // TODO drew - renames a role. check to see if any other groups use it, 
+        // if they do need to make a new role and refactor the relationships, if not just rename
+        logger.error("Hit a non-implemeneted block! renameForGroup()");
+        throw new RuntimeException("To implement!");
+    }
 }

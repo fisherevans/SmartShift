@@ -38,13 +38,6 @@ public class AvailabilityTemplate extends CachedObject {
     }
 
     @Override
-    public int getID() {
-        if(_model == null)
-            return -1;
-        return _model.getId();
-    }
-
-    @Override
     public void save() {
         try {
             if(_model != null) {

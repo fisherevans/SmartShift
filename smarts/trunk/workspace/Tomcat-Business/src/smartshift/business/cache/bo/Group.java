@@ -225,6 +225,12 @@ public class Group extends CachedObject {
         cache.cache(new UID(grp), grp);
         return grp;
     }
+    
+    public void delete() {
+        // TODO drew - flag this group as inactive - as long as it's not root
+        logger.error("Hit a non-implemeneted block! delete()");
+        throw new RuntimeException("To implement!");
+    }
 
     public boolean isValidParentOf(Group group) {
         logger.error("Hit a non-implemeneted block! isValidParentOf()");
