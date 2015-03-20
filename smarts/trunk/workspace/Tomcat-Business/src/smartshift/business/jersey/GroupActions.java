@@ -120,7 +120,7 @@ public class GroupActions extends BaseBusinessActions {
     public Response deleteGroup(@PathParam("id") SimpleIntegerParam groupID) {
         logger.debug("deleteGroup() enter");
         Group group = getGroup(groupID.getInteger(), true);
-        getCache().deleteGroup(group);
+        group.delete();
         logger.debug("deleteGroup() deleted");
         return getMessageResponse(Status.OK, "Group was deleted.");
     }
