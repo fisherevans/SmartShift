@@ -158,7 +158,7 @@ public class EmployeeActions extends BaseBusinessActions {
         public Integer homeGroupID;
         @Override
         public String toString() {
-        	return String.format("[ID:%d, FN:%s, LS:%s, HG:%d]", firstName, lastName, homeGroupID);
+        	return String.format("[ID:%d, FN:%s, LS:%s, HG:%d]", id, firstName, lastName, homeGroupID);
         }
     }
     
@@ -174,7 +174,7 @@ public class EmployeeActions extends BaseBusinessActions {
         public Map<Integer, List<Integer>> groupRoleIDs;
         @Override
         public String toString() {
-        	return String.format("[FN:%s, LS:%s, HG:%d, GR:%d]", firstName, lastName, homeGroupID, groupRoleIDs == null ? null : groupRoleIDs.size());
+        	return String.format("[FN:%s, LS:%s, HG:%d, GRs:%d]", firstName, lastName, homeGroupID, groupRoleIDs == null ? null : groupRoleIDs.size());
         }
     }
 }
