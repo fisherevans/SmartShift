@@ -10,8 +10,12 @@ public abstract class AvailabilityRepeat extends CachedObject {
     
     private AvailabilityRepeatInterface _model;
     
-    public AvailabilityRepeat(Cache cache) {
+    private AvailabilityRepeat(Cache cache) {
         super(cache);
+    }
+    
+    private AvailabilityRepeat(Cache cache, int id) {
+        super(cache, id);
     }
     
     private AvailabilityRepeat(Cache cache, AvailabilityRepeatInterface model) {
@@ -22,13 +26,6 @@ public abstract class AvailabilityRepeat extends CachedObject {
     @Override
     public String typeCode() {
         return TYPE_IDENTIFIER;
-    }
-
-    @Override
-    public int getID() {
-        if(_model != null)
-            return _model.getAvailabilityID();
-        return -1;
     }
 
     @Override
@@ -44,6 +41,10 @@ public abstract class AvailabilityRepeat extends CachedObject {
     
     public static AvailabilityRepeat load(Cache cache, int availID) {
         // TODO Auto-generated method stub
+        return null;
+    }
+    
+    public static AvailabilityRepeat create(int businessID) {
         return null;
     }
 }

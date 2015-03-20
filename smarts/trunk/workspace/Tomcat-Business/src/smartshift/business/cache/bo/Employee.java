@@ -223,4 +223,10 @@ public class Employee extends CachedObject {
         cache.cache(new UID(emp), emp);
         return emp;
     }
+    
+    public void delete() {
+        // TODO Drew this needs to set the flag, save to the DB and remove any relations.
+        logger.error("Hit a non-implemeneted block! delete()");
+        throw new RuntimeException("To implement!");
+    }
 }
