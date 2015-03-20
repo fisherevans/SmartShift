@@ -22,6 +22,7 @@
         <link href="../app/css/pages/messaging.css" rel="stylesheet" type="text/css" />
         <link href="../app/css/pages/manage-group.css" rel="stylesheet" type="text/css" />
         <link href="../app/css/pages/group-list.css" rel="stylesheet" type="text/css" />
+        <link href="../global/css/lib/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" />
     </head>
     <body ng-controller="MainController as mainCtrl" >
         <div class="navPane" ng-controller="TabController as tabCtrl">
@@ -59,6 +60,8 @@
             <div ng-view class="appContent angular-animate ngAnimateFade" ng-if="hasSession()"></div>
         </div>
 
+
+
         <script src="../global/js/lib/jquery/jquery-2.1.1.min.js"></script>
         <script src="../global/js/lib/angular/angular.js"></script>
         <script src="../global/js/lib/bootstrap/ui-bootstrap-tpls-0.12.0.min.js"></script>
@@ -67,6 +70,10 @@
         <script src="../global/js/lib/bootstrap/bootstrap.js"></script>
         <script src="//code.angularjs.org/1.2.10/angular-cookies.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.13/angular-animate.js"></script>
+
+        <script src="../global/js/lib/moment/moment.js"></script>
+        <script src="../global/js/lib/fullcalendar/dist/fullcalendar.js"></script>
+        <script src="../global/js/lib/angular-ui-calendar/src/calendar.js"></script>
 
         <script src="../global/js/directives.js"></script>
 
@@ -80,9 +87,12 @@
         <script src="../global/js/services/business-service.js"></script>
         <script src="../global/js/services/cache-service.js"></script>
         <script src="../global/js/services/group-service.js"></script>
+        <script src="../global/js/jquery-listeners.js"></script>
+
 
         <script src="../app/js/controllers/main-ctrl.js"></script>
         <script src="../app/js/controllers/tab-ctrl.js"></script>
+        <script src="../app/js/controllers/pages/calendar-ctrl.js"></script>
 
         <script src="../app/js/controllers/modals/login-modal-ctrl.js"></script>
         <script src="../app/js/controllers/modals/business-modal-ctrl.js"></script>
@@ -98,8 +108,10 @@
         <script src="../app/js/controllers/pages/schedule-ctrl.js"></script>
         <script src="../app/js/controllers/pages/settings-ctrl.js"></script>
 
+
         <script src="../app/js/app-config.js"></script>
 
-        <script src="../global/js/jquery-listeners.js"></script>
+
+
     </body>
 </html>
