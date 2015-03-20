@@ -33,6 +33,7 @@ CREATE TABLE `GroupRole` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`grpID` INT NOT NULL,
 	`roleID` INT NOT NULL,
+	`capabilityID` INT NULL,
 	PRIMARY KEY (`id`)
 );
 

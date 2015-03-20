@@ -46,6 +46,9 @@ public class GroupRoleModel {
     
     @Column(name = "roleID", nullable = false)
     private Integer roleID;
+    
+    @Column(name = "capabilityID", nullable = false)
+    private Integer capabilityID;
 
     /**
      * Initializes the object.
@@ -93,5 +96,19 @@ public class GroupRoleModel {
      */
     public void setRoleID(Integer roleID) {
         this.roleID = roleID;
+    }
+
+    /**
+     * @return the capabilityID
+     */
+    public Integer getCapabilityID() {
+        return capabilityID;
+    }
+
+    /**
+     * @param capabilityID the new capabilityID
+     */
+    public void setCapabilityID(Integer capabilityID) {
+        this.capabilityID = capabilityID;
     }
 }
