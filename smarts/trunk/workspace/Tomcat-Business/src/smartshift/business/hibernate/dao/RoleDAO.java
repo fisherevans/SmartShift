@@ -35,18 +35,6 @@ public class RoleDAO extends BaseBusinessDAO<RoleModel> {
                 new NamedParameter(RoleModel.GET_EMPLOYEE_GROUP_ROLES_GRP_ID, groupID));
     }
 
-    /**
-     * Get a task that get all roles for an group with a capability 
-     * @param groupID  the group
-     * @param capabilityID the capability
-     * @return the task object
-     */
-    public ListNamedQueryTask<RoleModel> listByGroupCapability(Integer groupID, Integer capabilityID) {
-        return listNamedQuery(RoleModel.GET_GROUP_CAP_ROLES,
-                new NamedParameter(RoleModel.GET_GROUP_CAP_ROLES_GRP_ID, groupID),
-                new NamedParameter(RoleModel.GET_GROUP_CAP_ROLES_CAP_ID, capabilityID));
-    }
-    
     /** get a task that gets a list of roles belonging to a group
      * @param groupID the group
      * @return the task object
