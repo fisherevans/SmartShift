@@ -29,11 +29,16 @@ CREATE TABLE `Employee` (
 	PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `Capability` (
+	`id` INT NOT NULL,
+	`name` VARCHAR(45),
+	PRIMARY KEY (`id`)
+);
+
 CREATE TABLE `GroupRole` (
 	`id` INT NOT NULL AUTO_INCREMENT,
 	`grpID` INT NOT NULL,
 	`roleID` INT NOT NULL,
-	`capabilityID` INT NULL,
 	PRIMARY KEY (`id`)
 );
 
@@ -47,6 +52,12 @@ CREATE TABLE `GroupRoleEmployee` (
 	`grpRoleID` INT NOT NULL,
 	`empID` INT NOT NULL,
 	PRIMARY KEY (`grpRoleID`, `empID`)
+);
+
+CREATE TABLE `GroupRoleCapability` (
+	`grpRoleID` INT NOT NULL,
+	`capID` INT NOT NULL,
+	PRIMARY KEY (`grpRoleID`, `capID`)
 );
 
 CREATE TABLE `AvailInstance` (
@@ -250,6 +261,19 @@ ADD CONSTRAINT `grouprole_grp`
 ADD CONSTRAINT `grouprole_role`
 	FOREIGN KEY (`roleID`)
 	REFERENCES `Role`(`id`)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION
+;
+
+ALTER TABLE `GroupRoleCapability`
+ADD CONSTRAINT `grouprolecapability_grprole`
+	FOREIGN KEY (`grpRoleID`)
+	REFERENCES `GroupRole`(`id`)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION,
+ADD CONSTRAINT `grouprolecapability_capability`
+	FOREIGN KEY (`capID`)
+	REFERENCES `Capability`(`id`)
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION
 ;

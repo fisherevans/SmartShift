@@ -4,7 +4,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import org.hibernate.annotations.NamedQueries;
 import org.hibernate.annotations.NamedQuery;
 
@@ -96,7 +95,7 @@ public class EmployeeModel {
     private String lastName;
 
     @Column(name = "active", nullable = false)
-    private Boolean active;
+    private Boolean active = true;
     
     /**
      * Initializes the object.

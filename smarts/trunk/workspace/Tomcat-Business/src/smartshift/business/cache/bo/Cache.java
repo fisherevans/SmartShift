@@ -160,6 +160,10 @@ public class Cache {
         
     }
     
+    public static ROCollection<Integer> getCacheIDs() {
+        return ROCollection.wrap(caches.keySet());
+    }
+    
     public static Cache getCache(Integer busID) {
         if(caches == null)
             caches = new HashMap<Integer, Cache>();

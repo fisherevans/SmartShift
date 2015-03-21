@@ -118,7 +118,7 @@ public class EmployeeActions extends BaseBusinessActions {
         Group newHomeGroup = null;
         if(request.homeGroupID != null) {
         	newHomeGroup = getGroup(request.homeGroupID, true);
-        	if(!employee.belongsTo(newHomeGroup))
+        	if(!employee.belongsTo(newHomeGroup, false))
                 return getMessageResponse(Status.BAD_REQUEST, "The employee must be a member of the home group");
         }
     	logger.debug("editEmployee() Valid data");
