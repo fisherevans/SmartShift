@@ -1,3 +1,15 @@
+INSERT INTO `Capability` (`id`, `name`) VALUES ('0', 'Add Employees');
+INSERT INTO `Capability` (`id`, `name`) VALUES ('2', 'Edit Employees');
+INSERT INTO `Capability` (`id`, `name`) VALUES ('4', 'Delete Employees');
+INSERT INTO `Capability` (`id`, `name`) VALUES ('10', 'Add Roles');
+INSERT INTO `Capability` (`id`, `name`) VALUES ('12', 'Edit Roles');
+INSERT INTO `Capability` (`id`, `name`) VALUES ('14', 'Delete Roles');
+INSERT INTO `Capability` (`id`, `name`) VALUES ('20', 'Add Child Groups');
+INSERT INTO `Capability` (`id`, `name`) VALUES ('22', 'Edit Child Groups');
+INSERT INTO `Capability` (`id`, `name`) VALUES ('24', 'Delete Child Groups');
+INSERT INTO `Capability` (`id`, `name`) VALUES ('26', 'Manage Child Groups');
+INSERT INTO `Capability` (`id`, `name`) VALUES ('999', 'Master Wizard');
+
 INSERT INTO `Group` (`name`) VALUES ('Root Group');                   -- 1
 INSERT INTO `Group` (`parentID`, `name`) VALUES ('1', 'Kitchen');     -- 2
 INSERT INTO `Group` (`parentID`, `name`) VALUES ('1', 'Dining Room'); -- 3
@@ -20,6 +32,8 @@ INSERT INTO `GroupRole` (`grpID`, `roleID`) VALUES ('3', '5'); -- 5
 INSERT INTO `GroupRole` (`grpID`, `roleID`) VALUES ('3', '6'); -- 6 
 INSERT INTO `GroupRole` (`grpID`, `roleID`) VALUES ('3', '7'); -- 7 
 INSERT INTO `GroupRole` (`grpID`, `roleID`) VALUES ('4', '8'); -- 8 
+
+INSERT INTO `GroupRoleCapability` (`grpRoleID`, `capID`) VALUES ('1', '999');
 
 INSERT INTO `Employee` (`id`, `defaultGrpID`, `fName`, `lName`) VALUES ('1', '1', 'Chris', 'Billups');   -- 1
 INSERT INTO `Employee` (`id`, `defaultGrpID`, `fName`, `lName`) VALUES ('2', '2', 'Fisher', 'Evans');    -- 2

@@ -6,6 +6,7 @@ import smartshift.business.hibernate.model.GroupRoleModel;
 import smartshift.common.hibernate.dao.tasks.AddTask;
 import smartshift.common.hibernate.dao.tasks.DeleteByCriteriaTask;
 import smartshift.common.hibernate.dao.tasks.ListNamedQueryTask;
+import smartshift.common.hibernate.dao.tasks.ListTask;
 import smartshift.common.hibernate.dao.tasks.UniqueByCriteriaTask;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -55,6 +56,14 @@ public class GroupRoleDAO extends BaseBusinessDAO<GroupRoleModel> {
      */
     public UniqueByCriteriaTask<GroupRoleModel> uniqueByGroupRole(Integer groupID, Integer roleID) {
         return uniqueByCriteria(getGroupRoleCriterion(groupID, roleID));
+    }
+    
+    /** gets a task that gets a list of GRs with a group id
+     * @param groupID the group id
+     * @return the task
+     */
+    public ListTask<GroupRoleModel> listByGroup(Integer groupID) {
+        return list(Restrictions.eq("groupID", groupID));
     }
     
     /** get a task that gets the group roles that belong to a user

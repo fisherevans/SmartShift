@@ -39,8 +39,9 @@ public class Employee extends CachedObject {
         _lastName = last;
         _homeGroup = home;
         _active = true;
-        _homeGroup.addRoleEmployee(Role.getBasicRole(cache, _homeGroup), this);
         _roles = new HashMap<Group, Set<Role>>();
+        
+        _homeGroup.addRoleEmployee(Role.getBasicRole(cache, _homeGroup), this);
     }
     
     private Employee(Cache cache, int id) {
@@ -99,12 +100,12 @@ public class Employee extends CachedObject {
         _roles.remove(group);
     }
     
+    // --- GROUP ROLES
+    
     protected void groupRoleAdded(Group group, Role role) {
         groupAdded(group);
         _roles.get(group).add(role);
     }
-    
-    // --- GROUP ROLES
     
     public ROCollection<Role> getRoles(Group group) {
         return ROCollection.wrap(_roles.get(group));
@@ -122,30 +123,44 @@ public class Employee extends CachedObject {
     // --- MISC
     
     public boolean manages(Employee other) {
+        // TODO only check for master manager
         for(Group group:_roles.keySet()) {
-            if(manages(group) && other.belongsTo(group))
+            if(manages(group, true) && other.belongsTo(group, true))
                 return true;
         }
         return false;
     }
 
-    public boolean manages(Group group) {
-        if(_roles.get(group) == null)
-            return false;
+    public boolean manages(Group group, boolean checkParent) {
+        // TODO only check for master manager
         do {
-            for(Role role:_roles.get(group))
-                if(group.hasManagerialRole(role))
-                    return true;
+            if(_roles.get(group) != null)
+                for(Role role:_roles.get(group))
+                    if(group.hasRoleCapability(role, Group.MANAGER_CAPABILITY))
+                        return true;
             group = group.getParent();
-        } while(group != null);
+        } while(checkParent && group != null);
         return false;
     }
     
-    public boolean belongsTo(Group group) {
-        for(Group employeeGroup:getGroups())
-            if(employeeGroup.getID() == group.getID())
-                return true;
+    public boolean belongsTo(Group group, boolean checkParent) {
+        for(Group employeeGroup:getGroups()) {
+            do {
+                if(employeeGroup.getID() == group.getID())
+                    return true;
+                employeeGroup = employeeGroup.getParent();
+            } while(checkParent && employeeGroup != null);
+        }
         return false;
+    }
+    
+    public void delete() {
+        setActive(false);
+        for(Group group:getGroups()) {
+            group.removeEmployee(this);
+        }
+        save();
+        getCache().decache(getUID());
     }
 
     @Override
@@ -183,10 +198,8 @@ public class Employee extends CachedObject {
         try {
             for(GroupModel gm : getDAO(GroupDAO.class).listByEmployee(getID()).execute()) {
                 Group group = Group.load(getCache(), gm.getId());
-                _roles.put(group, new HashSet<Role>());
                 for(RoleModel roleModel : getDAO(RoleDAO.class).listByGroupEmployee(gm.getId(), getID()).execute()) {
-                    Role role = Role.load(getCache(), roleModel.getId());
-                    _roles.get(group).add(role);
+                    group.addRoleEmployee(Role.load(getCache(), roleModel.getId()), this);
                 }
             }
         } catch(Exception e) {
@@ -229,11 +242,5 @@ public class Employee extends CachedObject {
         emp.save();
         cache.cache(new UID(emp), emp);
         return emp;
-    }
-    
-    public void delete() {
-        // TODO Drew this needs to set the flag, save to the DB and remove any relations.
-        logger.error("Hit a non-implemeneted block! delete()");
-        throw new RuntimeException("To implement!");
     }
 }

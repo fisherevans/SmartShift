@@ -2,7 +2,6 @@ package smartshift.business.jersey;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response.Status;
-
 import smartshift.business.cache.bo.Cache;
 import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
@@ -69,12 +68,13 @@ public abstract class BaseBusinessActions extends BaseActions {
      * @return the group. null if invalid id. null if requireManages is true and employee does not manage it
      */
     public Group getGroup(Integer groupID, boolean requireManages) {
+        // TODO only check for master manager
         logger.debug("getGroup() Enter");
         Group group = Group.load(getCache(), groupID);
-        if(group == null || (requireManages && !getRequestEmployee().manages(group))) {
-            String error = "The group does not exist or you do not manage this group: " + groupID;
-            throw new WebApplicationException(BaseActions.getMessageResponse(Status.BAD_REQUEST, error));
-        }
+        if(group == null) 
+            throw new WebApplicationException(BaseActions.getMessageResponse(Status.BAD_REQUEST, "The group does not exist: " + groupID));
+        else if(requireManages && !getRequestEmployee().manages(group, true))
+            throw new WebApplicationException(BaseActions.getMessageResponse(Status.BAD_REQUEST, "You do not manage this group: " + groupID));
         logger.debug("getGroup() Valid group found");
         return group;
     }
@@ -102,10 +102,10 @@ public abstract class BaseBusinessActions extends BaseActions {
     public Employee getEmployee(Integer employeeID, boolean requireManages) {
         logger.debug("getRole() Enter: " + employeeID);
         Employee employee = Employee.load(getCache(), employeeID);
-        if(employee == null || !getRequestEmployee().manages(employee)) {
-            String error = "The employee does not exist or you do not manage this employee: " + employeeID;
-            throw new WebApplicationException(BaseActions.getMessageResponse(Status.BAD_REQUEST, error));
-        }
+        if(employee == null) 
+            throw new WebApplicationException(BaseActions.getMessageResponse(Status.BAD_REQUEST, "The employee does not exist: " + employeeID));
+        else if(requireManages && !getRequestEmployee().manages(employee))
+            throw new WebApplicationException(BaseActions.getMessageResponse(Status.BAD_REQUEST, "You do not manage this employee: " + employeeID));
         logger.debug("getRole() Valid employee found");
         return employee;
     }

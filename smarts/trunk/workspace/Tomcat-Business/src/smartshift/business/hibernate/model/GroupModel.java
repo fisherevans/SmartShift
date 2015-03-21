@@ -63,7 +63,7 @@ public class GroupModel {
     private String name;
 
     @Column(name = "active", nullable = false)
-    private Boolean active;
+    private Boolean active = true;
 
     /**
      * Initializes the object.

@@ -49,5 +49,4 @@ public class GetActiveSessionsTask extends BaseHibernateTask<SessionModel, ROCol
         logger.debug("Exit.");
         return ROCollection.wrap(models);
     }
-
 }
