@@ -199,7 +199,11 @@ public class Employee extends CachedObject {
             for(GroupModel gm : getDAO(GroupDAO.class).listByEmployee(getID()).execute()) {
                 Group group = Group.load(getCache(), gm.getId());
                 for(RoleModel roleModel : getDAO(RoleDAO.class).listByGroupEmployee(gm.getId(), getID()).execute()) {
-                    group.addRoleEmployee(Role.load(getCache(), roleModel.getId()), this);
+                    // TODO this could be broken - need to add role capabilities?
+                    Role role = Role.load(getCache(), roleModel.getId());
+                    if(!group.hasRole(role))
+                        group.addRole(role);
+                    group.addRoleEmployee(role, this);
                 }
             }
         } catch(Exception e) {
