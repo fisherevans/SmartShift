@@ -7,10 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
-import smartshift.business.hibernate.dao.RoleDAO;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
-import smartshift.business.hibernate.model.RoleModel;
 import smartshift.common.rmi.RMIClient;
 import smartshift.common.rmi.interfaces.AccountsServiceInterface;
 import smartshift.common.util.UID;
@@ -70,6 +68,8 @@ public class Employee extends CachedObject {
     }
     
     public void setHomeGroup(Group homeGroup) {
+        if(!belongsTo(homeGroup, false))
+            throw new RuntimeException(String.format("Cannot set homegroup:%d on Employee:%d because the employee is not already a member.", homeGroup.getID(), getID()));
         _homeGroup = homeGroup;
     }
     
@@ -197,14 +197,8 @@ public class Employee extends CachedObject {
     public void loadAllChildren() {
         try {
             for(GroupModel gm : getDAO(GroupDAO.class).listByEmployee(getID()).execute()) {
-                Group group = Group.load(getCache(), gm.getId());
-                for(RoleModel roleModel : getDAO(RoleDAO.class).listByGroupEmployee(gm.getId(), getID()).execute()) {
-                    // TODO this could be broken - need to add role capabilities?
-                    Role role = Role.load(getCache(), roleModel.getId());
-                    if(!group.hasRole(role))
-                        group.addRole(role);
-                    group.addRoleEmployee(role, this);
-                }
+                // Group.loadChildren loads the employee's roles.
+                Group.load(getCache(), gm.getId());
             }
         } catch(Exception e) {
             logger.error("Failed to load children", e);
