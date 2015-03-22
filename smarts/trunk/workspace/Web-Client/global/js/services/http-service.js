@@ -31,7 +31,7 @@ angular.module('smartsServices').factory('httpService', ['$http', '$q', '$rootSc
                     console.log("HTTP Response (Error) " + callID);
                     console.log(response);
                     if(response.status == 401) {
-                        $rootScope.clearAPIData();
+                        $rootScope.forceLogout();
                     }
                     defer.reject(response);
                 }
