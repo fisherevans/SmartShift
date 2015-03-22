@@ -2,29 +2,32 @@
 
 angular.module('smartsServices').factory('cacheService', ['$q', 'businessService',
     function($q, businessService){
-        var cache = null;
-        var cacheService = {
+        var cache = {
+            "loaded" : false,
             "employees":{},
             "groups":{},
             "roles":{},
             "groupRoleEmployeeIDs":{}
         };
+        var cacheService = {};
         cacheService.loadCache = function() {
             var defer = $q.defer();
-            if(cache === null) {
-                businessService.getFull()
-                    .success(function(response, status, headers, config) {
+            if(cache.loaded == false) {
+                businessService.getFull().then(
+                    function(response) {
                         cache = response.data;
+                        cache.loaded = true;
+                        console.log("Current Cache:");
                         console.log(cache);
-                        defer.resolve(true);
-                    })
-                    .error(function(response, status, headers, config) {
-                        response.status = status;
-                        response.headers = headers;
-                        response.config = config;
+                        defer.resolve();
+                    },
+                    function(response, status, headers, config) {
                         defer.reject(response);
-                    });
+                    }
+                );
             } else {
+                console.log("Current Cache:");
+                console.log(cache);
                 defer.resolve(true);
             }
             return defer.promise;
@@ -93,8 +96,8 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
         };
         cacheService.addEmployee = function(employeeModel) {
             var defer = $q.defer();
-            businessService.addEmployee(employeeModel)
-                .success(function(response) {
+            businessService.addEmployee(employeeModel).then(
+                function(response) {
                     cache.employees[response.data.id] = response.data;
                     var gre = cache.groupRoleEmployeeIDs;
                     $.each(employeeModel.groupRoleIDs, function(groupID, roleIDs) {
@@ -108,8 +111,8 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
                         });
                     });
                     defer.resolve(angular.copy(response.data));
-                })
-                .error(function(response) {
+                },
+                function(response) {
                     defer.reject(response.message);
                 });
             return defer.promise;
@@ -142,6 +145,41 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
                 roleEmployees[roleID] = cacheService.getEmployeesByGroupRole(groupID, roleID);
             });
             return roleEmployees;
+        }
+        cacheService.addGroupRoleEmployee = function(groupID, roleID, employeeID) {
+            var defer = $q.defer();
+            businessService.addGroupRoleEmployee(groupID, roleID, employeeID).then(
+                function(response) {
+                    if(cache.groupRoleEmployeeIDs[groupID] === undefined)
+                        cache.groupRoleEmployeeIDs[groupID] = {};
+                    if(cache.groupRoleEmployeeIDs[groupID][roleID] === undefined)
+                        cache.groupRoleEmployeeIDs[groupID][roleID] = [];
+                    if(cache.groupRoleEmployeeIDs[groupID][roleID].indexOf(employeeID) < 0)
+                        cache.groupRoleEmployeeIDs[groupID][roleID].push(employeeID);
+                    defer.resolve();
+                },
+                function(response) {
+                    defer.reject(response.data);
+                });
+            return defer.promise;
+        }
+        cacheService.removeGroupRoleEmployee = function(groupID, roleID, employeeID) {
+            var defer = $q.defer();
+            businessService.removeGroupRoleEmployee(groupID, roleID, employeeID).then(
+                function(response) {
+                    if(cache.groupRoleEmployeeIDs[groupID] !== undefined) {
+                        if(cache.groupRoleEmployeeIDs[groupID][roleID] !== undefined) {
+                            var id = cache.groupRoleEmployeeIDs[groupID][roleID].indexOf(employeeID);
+                            if(id >= 0)
+                                cache.groupRoleEmployeeIDs[groupID][roleID].splice(id, 1);
+                        }
+                    }
+                    defer.resolve();
+                },
+                function(response) {
+                    defer.reject(response.data);
+                });
+            return defer.promise;
         }
         return cacheService;
     }

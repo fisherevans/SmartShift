@@ -1,59 +1,76 @@
 'use strict'
 
-angular.module('smartsServices').factory('httpService', ['$http', '$rootScope',
-    function($http, $rootScope) {
+angular.module('smartsServices').factory('httpService', ['$http', '$q', '$rootScope',
+    function($http, $q, $rootScope) {
         var httpService = {};
 
-        httpService.createRequest = function(server, password, method, path, data) {
+        httpService.httpCallID = 1;
+
+        httpService.httpRequest = function(server, password, method, path, data) {
             var request = {
                 method: method,
-                //url: 'http://localhost:8080' + path,
-                url: server + path,
+                url: 'http://localhost:8080' + path,
+                //url: server + path,
                 headers: {
                     'Authorization' : 'Basic ' + window.btoa($rootScope.api.username + ':' + password),
                     'Content-Type' : 'application/json'
                 },
                 data: data
             };
+            var callID = httpService.httpCallID++;
+            console.log("HTTP Call " + callID);
             console.log(request);
-            return request;
+            var defer = $q.defer();
+            $http(request).then(
+                function(response, status, headers, config) {
+                    console.log("HTTP Response (Success) " + callID);
+                    console.log(response);
+                    defer.resolve(response.data);
+                },
+                function(response, status, headers, config) {
+                    console.log("HTTP Response (Error) " + callID);
+                    console.log(response);
+                    defer.reject(response);
+                }
+            );
+            return defer.promise;
         };
 
-        httpService.createBusinessRequest = function(method, path, data) {
-            return httpService.createRequest($rootScope.api.businessServer, $rootScope.api.sessionID, method, path, data);
+        httpService.businessRequest = function(method, path, data) {
+            return httpService.httpRequest($rootScope.api.businessServer, $rootScope.api.sessionID, method, path, data);
         };
 
-        httpService.createAccountsRequest = function(method, path, data) {
-            return httpService.createRequest($rootScope.api.accountsServer, $rootScope.api.password, method, path, data);
+        httpService.accountsRequest = function(method, path, data) {
+            return httpService.httpRequest($rootScope.api.accountsServer, $rootScope.api.password, method, path, data);
         };
 
         httpService.business = {
             put: function(path, data) {
-                return $http(httpService.createBusinessRequest('PUT', path, data));
+                return httpService.businessRequest('PUT', path, data);
             },
             get: function(path, data) {
-                return $http(httpService.createBusinessRequest('GET', path, data));
+                return httpService.businessRequest('GET', path, data);
             },
             post: function(path, data) {
-                return $http(httpService.createBusinessRequest('POST', path, data));
+                return httpService.businessRequest('POST', path, data);
             },
             delete: function(path, data) {
-                return $http(httpService.createBusinessRequest('DELETE', path, data));
+                return httpService.businessRequest('DELETE', path, data);
             }
         };
 
         httpService.accounts = {
             put: function(path, data) {
-                return $http(httpService.createAccountsRequest('PUT', path, data));
+                return httpService.accountsRequest('PUT', path, data);
             },
             get: function(path, data) {
-                return $http(httpService.createAccountsRequest('GET', path, data));
+                return httpService.accountsRequest('GET', path, data);
             },
             post: function(path, data) {
-                return $http(httpService.createAccountsRequest('POST', path, data));
+                return httpService.accountsRequest('POST', path, data);
             },
             delete: function(path, data) {
-                return $http(httpService.createAccountsRequest('DELETE', path, data));
+                return httpService.accountsRequest('DELETE', path, data);
             }
         };
 

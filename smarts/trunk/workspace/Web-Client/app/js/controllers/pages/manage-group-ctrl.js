@@ -60,10 +60,13 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
             mngGrpCtrl.employees[employee.id] = employee;
             if(employee.groupRoleIDs !== undefined && employee.groupRoleIDs[$routeParams.groupID] !== undefined) {
                 $.each(employee.groupRoleIDs[$routeParams.groupID], function(arrID, roleID) {
+                    console.log("R" + roleID);
+                    console.log(mngGrpCtrl);
                     if(mngGrpCtrl.roles[roleID] === undefined)
                         mngGrpCtrl.roles[roleID] = {};
-                    if(mngGrpCtrl.roles[roleID].indexOf(employee) < 0)
-                        mngGrpCtrl.roles[roleID].push(employee)
+                    if(mngGrpCtrl.roles[roleID].employees === undefined)
+                        mngGrpCtrl.roles[roleID].employees = {};
+                    mngGrpCtrl.roles[roleID].employees[employee.id] = employee;
                 });
             }
         };
@@ -106,9 +109,42 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
             alert("Not implemented");
         };
 
+        mngGrpCtrl.removeRoleEmployee = function(role, employee) {
+            cacheService.removeGroupRoleEmployee(mngGrpCtrl.group.id, role.id, employee.id).then(
+                function(response) {
+                    if(mngGrpCtrl.roles[role.id] !== undefined)
+                        delete mngGrpCtrl.roles[role.id].employees[employee.id]
+                },
+                function(response) {
+                    alert(response.message);
+                }
+            );
+        }
+
         mngGrpCtrl.isEmpty = function(obj) {
             for (var i in obj) if (obj.hasOwnProperty(i)) return false;
             return true;
+        };
+
+        mngGrpCtrl.employeeDragStart = function(employee) {
+        };
+
+        mngGrpCtrl.employeeDragEnd = function(employee) {
+        };
+
+        mngGrpCtrl.roleIsValidDrop = function(role, employee) {
+            return role.employees[employee.id] === undefined;
+        };
+
+        mngGrpCtrl.roleOnDrop = function(role, employee) {
+            cacheService.addGroupRoleEmployee(mngGrpCtrl.group.id, role.id, employee.id).then(
+                function() {
+                    role.employees[employee.id] = employee;
+                },
+                function(response) {
+                    alert(response.message);
+                }
+            )
         };
 
         $rootScope.updateNavigationTree([
