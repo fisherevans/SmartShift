@@ -10,6 +10,7 @@ import smartshift.common.hibernate.dao.tasks.DeleteByIDTask;
 import smartshift.common.hibernate.dao.tasks.DeleteTask;
 import smartshift.common.hibernate.dao.tasks.ListNamedQueryTask;
 import smartshift.common.hibernate.dao.tasks.ListTask;
+import smartshift.common.hibernate.dao.tasks.RowCountTask;
 import smartshift.common.hibernate.dao.tasks.UniqueByCriteriaTask;
 import smartshift.common.hibernate.dao.tasks.UniqueByIDTask;
 import smartshift.common.hibernate.dao.tasks.UniqueNamedQueryTask;
@@ -38,6 +39,14 @@ public abstract class BaseDAO<T> {
      */
     public ListTask<T> list(Criterion ... criterions) {
         return new ListTask<T>(this, criterions);
+    }
+    
+    /** creates a list task that can be executed
+     * @param criterions any requirements
+     * @return the task object
+     */
+    public RowCountTask<T> rowCount(Criterion ... criterions) {
+        return new RowCountTask<T>(this, criterions);
     }
     
     /** Gets a task that fetches a unique model by id
