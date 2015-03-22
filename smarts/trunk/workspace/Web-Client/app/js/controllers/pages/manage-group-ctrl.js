@@ -52,12 +52,26 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
                     $("#roleListAddRoleButton").prop("disabled", false);
                 }
             );
-        }
+        };
 
-        mngGrpCtrl.setNewEmployee = function(employee) {
-            employee.justAdded = true;
+        mngGrpCtrl.copyEmployee = function(from, to) {
+            to.firstName = from.firstName;
+            to.lastName = from.lastName;
+            to.id = from.id;
+            to.homeGroupID = from.homeGroupID;
+            to.justAdded = from.justAdded;
+            to.justAddedRole = from.justAddedRole;
+            to.sortName = from.sortName;
+        };
+
+        mngGrpCtrl.setEmployee = function(employee) {
+            console.log("Adding new employee");
+            console.log(employee);
             employee.sortName = employee.firstName + " " + employee.lastName;
-            mngGrpCtrl.employees[employee.id] = employee;
+            if(mngGrpCtrl.employees[employee.id] == null)
+                mngGrpCtrl.employees[employee.id] = employee;
+            else
+                mngGrpCtrl.copyEmployee(employee, mngGrpCtrl.employees[employee.id]);
             if(employee.groupRoleIDs !== undefined && employee.groupRoleIDs[$routeParams.groupID] !== undefined) {
                 $.each(employee.groupRoleIDs[$routeParams.groupID], function(arrID, roleID) {
                     console.log("R" + roleID);
@@ -66,7 +80,10 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
                         mngGrpCtrl.roles[roleID] = {};
                     if(mngGrpCtrl.roles[roleID].employees === undefined)
                         mngGrpCtrl.roles[roleID].employees = {};
-                    mngGrpCtrl.roles[roleID].employees[employee.id] = employee;
+                    if(mngGrpCtrl.roles[roleID].employees[employee.id] == null)
+                        mngGrpCtrl.roles[roleID].employees[employee.id] = employee;
+                    else
+                        mngGrpCtrl.copyEmployee(employee, mngGrpCtrl.roles[roleID].employees[employee.id]);
                 });
             }
         };
@@ -83,25 +100,28 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
         mngGrpCtrl.openAddEmployeeModal = function() {
             modalService.addEmployeeModal({"homeGroupID":mngGrpCtrl.group.id}).then(function(newEmployee) {
                 if(newEmployee != null)
-                    mngGrpCtrl.setNewEmployee(newEmployee);
+                    newEmployee.justAdded = true;
+                    mngGrpCtrl.setEmployee(newEmployee);
             });
         };
 
         mngGrpCtrl.openEditEmployeeModal = function(employee) {
             modalService.editEmployeeModal(angular.copy(employee)).then(function(updatedEmployee) {
-                if(updatedEmployee == null) // cancel
+                if (updatedEmployee == null) // cancel
                     return;
-                else if(updatedEmployee.deleteMe) {
-                    modalService.deleteEmployeeModal(employee).then(function(deleted) { // delete
-                        if(deleted)
+                else if (updatedEmployee.deleteMe) {
+                    modalService.deleteEmployeeModal(employee).then(function (deleted) { // delete
+                        if (deleted)
                             delete mngGrpCtrl.employees[employee.id];
                         else {
                             delete updatedEmployee.deleteMe;
                             mngGrpCtrl.openEditEmployeeModal(updatedEmployee);
                         }
                     });
-                } else // updated
-                    mngGrpCtrl.setNewEmployee(updatedEmployee);
+                } else {
+                    newEmployee.justAdded = true;
+                    mngGrpCtrl.setEmployee(updatedEmployee);
+                }
             });
         };
 
@@ -112,6 +132,7 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
         mngGrpCtrl.removeRoleEmployee = function(role, employee) {
             cacheService.removeGroupRoleEmployee(mngGrpCtrl.group.id, role.id, employee.id).then(
                 function(response) {
+                    employee.hover = false;
                     if(mngGrpCtrl.roles[role.id] !== undefined)
                         delete mngGrpCtrl.roles[role.id].employees[employee.id]
                 },
@@ -119,7 +140,7 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
                     alert(response.message);
                 }
             );
-        }
+        };
 
         mngGrpCtrl.isEmpty = function(obj) {
             for (var i in obj) if (obj.hasOwnProperty(i)) return false;
@@ -132,19 +153,31 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
         mngGrpCtrl.employeeDragEnd = function(employee) {
         };
 
-        mngGrpCtrl.roleIsValidDrop = function(role, employee) {
+        mngGrpCtrl.roleIsValidDrop = function(role, dropData) {
+            var employee = dropData.employee;
             return role.employees[employee.id] === undefined;
         };
 
-        mngGrpCtrl.roleOnDrop = function(role, employee) {
-            cacheService.addGroupRoleEmployee(mngGrpCtrl.group.id, role.id, employee.id).then(
-                function() {
-                    role.employees[employee.id] = employee;
-                },
-                function(response) {
-                    alert(response.message);
-                }
-            )
+        mngGrpCtrl.roleOnDrop = function(role, dropData) {
+            console.log(dropData);
+            var employee = dropData.employee;
+            if(dropData.tasks.indexOf('add') >= 0) {
+                cacheService.addGroupRoleEmployee(mngGrpCtrl.group.id, role.id, employee.id).then(
+                    function() {
+                        employee.groupRoleIDs = {};
+                        employee.groupRoleIDs[mngGrpCtrl.group.id] = [role.id];
+                        employee.justAddedRole = true;
+                        mngGrpCtrl.setEmployee(employee);
+                        if(dropData.tasks.indexOf('removeOld') >= 0) {
+                            var oldRole = dropData.oldRole;
+                            mngGrpCtrl.removeRoleEmployee(oldRole, employee);
+                        }
+                    },
+                    function(response) {
+                        alert(response.message);
+                    }
+                );
+            }
         };
 
         $rootScope.updateNavigationTree([

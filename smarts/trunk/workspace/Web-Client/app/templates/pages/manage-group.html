@@ -21,7 +21,7 @@
         <div ng-repeat="(employeeID, employee) in manageGroupCtrl.employees | filter:employeeListNameFilter | orderObjectBy:'sortName'"
                 class="employeeWrapper fadeColors noTextSelect" ng-show="manageGroupCtrl.employeeListFilter(employee)"
                 ng-class="{hover:employee.hover}" ng-mouseenter="employee.hover = true" ng-mouseleave="employee.hover = false"
-                smart-draggable drag-class="dragging" drag-data="employee"
+                smart-draggable drag-class="dragging" drag-data="{'employee':employee, 'tasks':['add']}"
                 drag-begin="manageGroupCtrl.employeeDragStart(employee)" drag-end="manageGroupCtrl.employeeDragEnd(employee)">
             <div class="employeeListItem fadeColors">
                 <div ng-if="employee.justAdded" class="justAdded"></div>
@@ -66,9 +66,11 @@
         </div>
         <div class="groupRoleName">{{role.name}}</div>
         <div class="groupRoleEmployees">
-            <div class="groupRoleEmployee appBlock fadeColors" ng-repeat="(employeeID, employee) in role.employees | orderObjectBy:'firstName'"
-                 ng-class="{hover:employee.hover}" ng-mouseenter="employee.hover = true" ng-mouseleave="employee.hover = false">
-                <div ng-if="employee.justAdded" class="justAdded"></div>
+            <div class="groupRoleEmployee appBlock fadeColorOpacity angular-animate ngAnimateFade" ng-repeat="(employeeID, employee) in role.employees | orderObjectBy:'firstName'"
+                 ng-class="{hover:employee.hover}" ng-mouseenter="employee.hover = true" ng-mouseleave="employee.hover = false"
+                 smart-draggable drag-class="dragging" drag-data="{'employee':employee, 'oldRole':role, 'tasks':['add','removeOld']}"
+                 drag-begin="manageGroupCtrl.employeeDragStart(employee)" drag-end="manageGroupCtrl.employeeDragEnd(employee)">
+                <div ng-if="employee.justAddedRole" class="justAdded"></div>
                 <img src="../global/images/default.png" class="groupRoleEmployeeImage" />
                 <div class="groupRoleEmployeeName fadeColors">{{employee.firstName}} {{employee.lastName}}</div>
                 <div class="groupRoleEmployeeEdit icon-pencil fadeColors" ng-click="manageGroupCtrl.openEditEmployeeModal(employee)"></div>
