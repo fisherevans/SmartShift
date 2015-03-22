@@ -1,6 +1,7 @@
 package smartshift.business.hibernate.dao;
 
 import smartshift.business.hibernate.model.AvailabilityRepeatYearlyModel;
+import smartshift.common.hibernate.dao.tasks.AddTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -19,6 +20,19 @@ public class AvailabilityRepeatYearlyDAO extends AvailabilityRepeatDAO<Availabil
      */
     public AvailabilityRepeatYearlyDAO(BusinessDAOContext context) {
         super(context, AvailabilityRepeatYearlyModel.class);
+    }
+    
+    /**
+     * get a task that Adds an AvailabilityRepeatYearlyModel
+     * @param month the month to repeat on
+     * @param dayOfMonth the day of the month to repeat on
+     * @return the task object
+     */
+    public AddTask<AvailabilityRepeatYearlyModel> add(Integer month, Integer dayOfMonth) {
+        AvailabilityRepeatYearlyModel model = new AvailabilityRepeatYearlyModel();
+        model.setMonth(month);
+        model.setDayOfMonth(dayOfMonth);
+        return add(model);
     }
 
     @Override

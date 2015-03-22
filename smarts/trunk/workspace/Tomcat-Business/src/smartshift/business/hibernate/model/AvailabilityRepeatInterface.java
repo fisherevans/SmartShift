@@ -7,7 +7,12 @@ package smartshift.business.hibernate.model;
 public interface AvailabilityRepeatInterface {
     
     /**
-     * @return the availavility id for the repeat
+     * @return the availability id for the repeat
      */
     public Integer getAvailabilityID();
+
+    /**
+     * @return the unique id for the repeat
+     */
+    public Integer getId();
 }

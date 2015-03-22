@@ -19,7 +19,7 @@ public class Role extends CachedObject {
     private static final SmartLogger logger = new SmartLogger(Role.class);
     
     private String _name;
-    private Map<Group, Set<Capability>> _capabilities;
+    private Map<Group, Set<Integer>> _capabilities;
     
     private RoleModel _model;
     
@@ -40,12 +40,12 @@ public class Role extends CachedObject {
     private Role(Cache cache, String name) {
         super(cache);
         _name = name;
-        _capabilities = new HashMap<Group, Set<Capability>>();
+        _capabilities = new HashMap<Group, Set<Integer>>();
     }
     
     private Role(Cache cache, String name, Group parent) {
         this(cache, name);
-        _capabilities.put(parent, new HashSet<Capability>());
+        _capabilities.put(parent, new HashSet<Integer>());
         parent.addRole(this);
     }
     
@@ -55,7 +55,7 @@ public class Role extends CachedObject {
     
     private Role(Cache cache, int id) {
         super(cache, id);
-        _capabilities = new HashMap<Group, Set<Capability>>();
+        _capabilities = new HashMap<Group, Set<Integer>>();
     }
 
     public void setName(String name) {
@@ -64,6 +64,10 @@ public class Role extends CachedObject {
     
     public String getName() {
         return _name;
+    }
+    
+    public void capabilityAdded(Group group, Integer capabilityID) {
+        _capabilities.get(group).add(capabilityID);
     }
     
     public static Role getBasicRole(Cache cache, Group parent) {
@@ -100,7 +104,7 @@ public class Role extends CachedObject {
             for(GroupModel gm : getDAO(GroupDAO.class).listByRole(getID()).execute()){
                int grpID = gm.getId();
                 Group grp = Group.load(getCache(), grpID);
-                _capabilities.put(grp, new HashSet<Capability>());
+                _capabilities.put(grp, new HashSet<Integer>());
             }
        } catch(Exception e) {
            logger.error("Failed to load children", e);

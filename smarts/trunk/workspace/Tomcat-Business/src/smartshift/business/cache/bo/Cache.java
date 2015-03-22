@@ -157,7 +157,6 @@ public class Cache {
         ROCollection<GroupModel> groups = getDAOContext().dao(GroupDAO.class).list().execute();
         for(GroupModel group:groups)
             Group.load(this, group.getId());
-        
     }
     
     public static ROCollection<Integer> getCacheIDs() {
