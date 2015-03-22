@@ -259,6 +259,11 @@ public class Group extends CachedObject {
         return grp;
     }
     
+    @Override
+    public String toString() {
+        return String.format("[ID:%d Name:%s Roles:%d Parent:%s]", getID(), getName(), _employees.size(), _parent);
+    }
+
     private static class GroupRole {
         private Set<Employee> _employees;
         
