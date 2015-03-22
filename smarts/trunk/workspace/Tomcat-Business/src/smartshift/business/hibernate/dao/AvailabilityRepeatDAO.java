@@ -11,7 +11,7 @@ import smartshift.common.hibernate.dao.tasks.ListTask;
 /**
  * @author "D. Fisher Evans <contact@fisherevans.com>"
  * DAO for availability repeats
- * @param <T> the repeat model class
+ * @param <T> the model type 
  */
 public abstract class AvailabilityRepeatDAO<T extends AvailabilityRepeatInterface> extends BaseBusinessDAO<T> {
     

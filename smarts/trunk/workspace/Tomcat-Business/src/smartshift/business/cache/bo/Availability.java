@@ -1,9 +1,21 @@
 package smartshift.business.cache.bo;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.hibernate.HibernateException;
 import org.joda.time.LocalTime;
 import smartshift.business.hibernate.dao.AvailabilityDAO;
+import smartshift.business.hibernate.dao.AvailabilityRepeatDAO;
+import smartshift.business.hibernate.dao.AvailabilityRepeatMonthlyByDateDAO;
+import smartshift.business.hibernate.dao.AvailabilityRepeatMonthlyByDayDAO;
+import smartshift.business.hibernate.dao.AvailabilityRepeatWeeklyDAO;
+import smartshift.business.hibernate.dao.AvailabilityRepeatYearlyDAO;
 import smartshift.business.hibernate.model.AvailabilityModel;
+import smartshift.business.hibernate.model.AvailabilityRepeatInterface;
+import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDateModel;
+import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDayModel;
+import smartshift.business.hibernate.model.AvailabilityRepeatWeeklyModel;
+import smartshift.business.hibernate.model.AvailabilityRepeatYearlyModel;
 import smartshift.common.util.UID;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -13,7 +25,7 @@ public class Availability extends CachedObject {
     private static final SmartLogger logger = new SmartLogger(Availability.class);
     
     private AvailabilityTemplate _template;
-    private AvailabilityRepeat _repeat;
+    private List<AvailabilityRepeat> _repeats;
     private LocalTime _time;
     private int _duration;  //in minutes
     private int _repeatEvery;
@@ -90,7 +102,28 @@ public class Availability extends CachedObject {
 
     @Override
     public void loadAllChildren() {
-        _repeat = AvailabilityRepeat.load(getCache(), getID());
+        _repeats = new ArrayList<AvailabilityRepeat>(3);
+        for(AvailabilityRepeatMonthlyByDayModel model : getCache().getDAOContext().dao(AvailabilityRepeatMonthlyByDayDAO.class).listByAvailability(getID()).execute()) {
+           if(model != null) {
+               _repeats.add(AvailabilityRepeat.load(getCache(), model.getId()));
+           }
+        }
+        for(AvailabilityRepeatMonthlyByDateModel model : getCache().getDAOContext().dao(AvailabilityRepeatMonthlyByDateDAO.class).listByAvailability(getID()).execute()) {
+           if(model != null) {
+               _repeats.add(AvailabilityRepeat.load(getCache(), model.getId()));
+           }
+        }
+        for(AvailabilityRepeatWeeklyModel model : getCache().getDAOContext().dao(AvailabilityRepeatWeeklyDAO.class).listByAvailability(getID()).execute()) {
+            if(model != null) {
+                _repeats.add(AvailabilityRepeat.load(getCache(), model.getId()));
+            }
+        }
+        for(AvailabilityRepeatYearlyModel model : getCache().getDAOContext().dao(AvailabilityRepeatYearlyDAO.class).listByAvailability(getID()).execute()) {
+            if(model != null) {
+                _repeats.add(AvailabilityRepeat.load(getCache(), model.getId()));
+            }
+        }
+            
     }
 
     public static Availability load(Cache cache, int availID) {

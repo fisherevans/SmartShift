@@ -121,6 +121,7 @@ public class Group extends CachedObject {
         if(!hasRole(role))
             throw new RuntimeException(String.format("Group:%d does not have the Role:%d to set capability for.", getID(), role.getID()));
         _employees.get(role).addCapability(capabilityID);
+        role.capabilityAdded(this, capabilityID);
     }
     
     public boolean hasRoleCapability(Role role, Integer capabilityID) {
