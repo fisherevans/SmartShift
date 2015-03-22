@@ -7,6 +7,7 @@ import smartshift.common.hibernate.dao.tasks.AddTask;
 import smartshift.common.hibernate.dao.tasks.DeleteByCriteriaTask;
 import smartshift.common.hibernate.dao.tasks.ListNamedQueryTask;
 import smartshift.common.hibernate.dao.tasks.ListTask;
+import smartshift.common.hibernate.dao.tasks.RowCountTask;
 import smartshift.common.hibernate.dao.tasks.UniqueByCriteriaTask;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -26,6 +27,15 @@ public class GroupRoleDAO extends BaseBusinessDAO<GroupRoleModel> {
      */
     public GroupRoleDAO(BusinessDAOContext context) {
         super(context, GroupRoleModel.class);
+    }
+    
+    /** get a task that Links an employee to a group
+     * @param groupID the group id
+     * @param roleID the role id
+     * @return the task object
+     */
+    public RowCountTask<GroupRoleModel> linkCount(Integer groupID, Integer roleID) {
+        return rowCount(getGroupRoleCriterion(groupID, roleID));
     }
     
     /** get a task that Links an employee to a group
