@@ -40,9 +40,5 @@ angular.module('smartsApp').controller('MessagesController', [ '$scope', '$rootS
             { "type":"text", "text":"Messaging" }
         ]);
 
-
-        $scope.$on("$routeChangeSuccess", function (scope, next, current) {
-            $scope.transitionState = "active"
-        });
     }
 ]);
