@@ -32,7 +32,7 @@ public class AddTask<T> extends BaseHibernateTask<T, T> {
     @Override
     public T executeWithSession(Session session) throws HibernateException {
         logger.debug("Enter. Model: " + _model);
-        session.save(_model);
+        session.saveOrUpdate(_model);
         logger.debug("Exit. Got: " + _model);
         return _model;
     }
