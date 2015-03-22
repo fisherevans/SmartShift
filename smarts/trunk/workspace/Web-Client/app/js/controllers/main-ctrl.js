@@ -48,28 +48,32 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
         $scope.$watch('$rootScope.api.sessionID', function(){
             if(!$rootScope.api.sessionID){
                 var result = modalService.loginModal()
-                    .then(function (result) {
-                        console.log(result);
-                        var executeLogin = function(business, employeeID) {
+                    .then(function (businesses) {
+                        var executeLogin = function(business) {
                             $scope.business = business;
-                            accountsService.getSession(business.id, business.employeeID)
-                                .success(function (result) {
-                                    $rootScope.api.sessionID = result.data.sessionKey;
+                            accountsService.getSession(business.id, business.employeeID).then(
+                                function (response) {
+                                    console.log("S");
+                                    console.log(response);
+                                    $rootScope.api.sessionID = response.data.sessionKey;
                                     $rootScope.api.businessServer = 'http://lando.smartshift.info:6380'; //result.data.server;
-                                    var expireDate = new Date(new Date().getTime() + result.data.timeout + 999999999); // TODO update cookie on http calls to reflect new expiration
+                                    var expireDate = new Date(new Date().getTime() + response.data.timeout + 999999999); // TODO update cookie on http calls to reflect new expiration
                                     $cookieStore.put('username', $rootScope.api.username, {expires: expireDate});
                                     $cookieStore.put('sessionID', $rootScope.api.sessionID, {expires: expireDate});
                                     $cookieStore.put('businessServer', $rootScope.api.businessServer, {expires: expireDate});
                                     $route.reload();
-                                })
-                                .error(function (result) {
+                                },
+                                function (result) {
                                     alert("Something went terribly wrong");
-                                });
+                                }
+                            );
                         };
-                        if(utilService.getSize(result.full.businesses) > 1)
-                            modalService.businessModal(result.full.businesses).then(executeLogin)
-                        else
-                            executeLogin(result.full.businesses[0]);
+                        if(utilService.getSize(businesses) > 1)
+                            modalService.businessModal(businesses).then(executeLogin)
+                        else {
+                            console.log(businesses);
+                            executeLogin(businesses[0]);
+                        }
                     } // end then function
                 ); // end modalService.loginModal
             } // end if no session

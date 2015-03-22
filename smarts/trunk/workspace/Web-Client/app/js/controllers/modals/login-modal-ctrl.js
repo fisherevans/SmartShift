@@ -12,17 +12,17 @@ angular.module('smartsApp').controller('LoginModalController', ['$scope', '$root
             $scope.error = '';
             $rootScope.api.username = $scope.account.username;
             $rootScope.api.password = $scope.account.password;
-            accountsService.getFull()
-                .success(function(data){
-                    $scope.account.full = data.data;
+            accountsService.getFull().then (
+                function(reponse){
                     $("#loginModalSubmit").prop("disabled",false);
-                    $modalInstance.close($scope.account);
-                })
-                .error(function(data){
+                    $modalInstance.close(reponse.data.businesses);
+                },
+                function(data){
                     $scope.error = data.message;
                     $("#loginModalSubmit").prop("disabled",false);
                     $("#loginModalPassword").select();
-                });
+                }
+            );
         }
     }
 ]);

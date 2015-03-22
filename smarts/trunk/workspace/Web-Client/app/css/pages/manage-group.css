@@ -217,11 +217,58 @@
 }
 
 .roleBox {
+    position: relative;
+    display: block;
     margin-top: 15px;
     margin-bottom: 0px;
     margin-left: 15px;
     margin-right: 15px;
     position: relative;
+}
+
+.roleBoxOverlay {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    margin: auto;
+    opacity: 0;
+    pointer-events: none;
+    display: block;
+}
+
+.roleBoxOverlayText {
+    position: absolute;
+    top: 50%;
+    left: 0px;
+    width: 100%;
+    text-align: center;
+    height: 70px;
+    line-height: 70px;
+    margin-top: -35px;
+}
+
+.roleBoxOverlayText * {
+    display: inline-block;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 70px;
+    color: #fff;
+    padding: 0px 10px;
+    -webkit-text-stroke: 1px #aaa;
+}
+
+.roleBoxValidDrop {
+    background-color:rgba(0, 255, 0, 0.1);
+}
+
+.roleBoxInvalidDrop {
+    background-color:rgba(255, 0, 0, 0.1);
+}
+
+.roleBox.validDropZone .roleBoxValidDrop, .roleBox.invalidDropZone .roleBoxInvalidDrop  {
+    opacity: 1;
 }
 
 .groupRoleToolbar {

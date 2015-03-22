@@ -18,5 +18,6 @@ var app = angular.module('smartsApp', [
     'ui.tree',
     'ui.bootstrap',
     'smartsServices',
+    'smartsDirectives',
     'ngCookies'
 ]);
