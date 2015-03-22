@@ -101,6 +101,7 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
             modalService.addEmployeeModal({"homeGroupID":mngGrpCtrl.group.id}).then(function(newEmployee) {
                 if(newEmployee != null)
                     newEmployee.justAdded = true;
+                    newEmployee.justAddedRole = true;
                     mngGrpCtrl.setEmployee(newEmployee);
             });
         };
