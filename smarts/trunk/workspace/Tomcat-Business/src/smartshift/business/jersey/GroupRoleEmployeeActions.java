@@ -53,10 +53,10 @@ public class GroupRoleEmployeeActions extends BaseBusinessActions {
     public Response unlinkGroupRoleEmployee(UnlinkRequest request) {
         logger.debug("unlinkGroupRoleEmployee() Enter");
         if(request.employeeID == getRequestEmployee().getID())
-            return getMessageResponse(Status.BAD_REQUEST, "you cannot remove yourself from a role.");
+            return getMessageResponse(Status.BAD_REQUEST, "You cannot remove yourself from a role.");
         Group group = getGroup(request.groupID, true);
         logger.debug("unlinkGroupRoleEmployee() valid group");
-        Role role = getRole(request.groupID);
+        Role role = getRole(request.roleID);
         if(!group.hasRole(role))
             return getMessageResponse(Status.BAD_REQUEST, "The group must have this role to remove employees from it.");
         logger.debug("unlinkGroupRoleEmployee() valid role");
