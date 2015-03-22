@@ -124,6 +124,8 @@ public class Employee extends CachedObject {
     
     public boolean manages(Employee other) {
         // TODO only check for master manager
+        if(other.getGroups().size() == 0)
+            return true;
         for(Group group:_roles.keySet()) {
             if(manages(group, true) && other.belongsTo(group, true))
                 return true;
@@ -240,5 +242,10 @@ public class Employee extends CachedObject {
         emp.save();
         cache.cache(new UID(emp), emp);
         return emp;
+    }
+    
+    @Override
+    public String toString() {
+        return String.format("[ID:%d Name:%s Groups:%d Home:%s]", getID(), getDisplayName(), _roles.size(), _homeGroup);
     }
 }

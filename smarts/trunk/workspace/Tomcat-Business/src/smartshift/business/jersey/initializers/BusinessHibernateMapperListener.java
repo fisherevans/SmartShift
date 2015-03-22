@@ -9,11 +9,13 @@ import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDayModel;
 import smartshift.business.hibernate.model.AvailabilityRepeatWeeklyModel;
 import smartshift.business.hibernate.model.AvailabilityRepeatYearlyModel;
 import smartshift.business.hibernate.model.AvailabilityTemplateModel;
+import smartshift.business.hibernate.model.CapabilityModel;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.EmployeeScheduleModel;
 import smartshift.business.hibernate.model.EmployeeScheduleShiftModel;
 import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
+import smartshift.business.hibernate.model.GroupRoleCapabilityModel;
 import smartshift.business.hibernate.model.GroupRoleEmployeeModel;
 import smartshift.business.hibernate.model.GroupRoleModel;
 import smartshift.business.hibernate.model.RoleModel;
@@ -35,10 +37,13 @@ public class BusinessHibernateMapperListener implements ServletContextListener {
      */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
+        HibernateFactory.addAnnotatedClass(CapabilityModel.class);
+        
         HibernateFactory.addAnnotatedClass(EmployeeModel.class);
         HibernateFactory.addAnnotatedClass(GroupModel.class);
         HibernateFactory.addAnnotatedClass(GroupEmployeeModel.class);
         HibernateFactory.addAnnotatedClass(GroupRoleModel.class);
+        HibernateFactory.addAnnotatedClass(GroupRoleCapabilityModel.class);
         HibernateFactory.addAnnotatedClass(RoleModel.class);
         HibernateFactory.addAnnotatedClass(GroupRoleEmployeeModel.class);
         

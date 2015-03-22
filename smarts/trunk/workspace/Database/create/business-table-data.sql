@@ -1,3 +1,4 @@
+
 INSERT INTO `Capability` (`id`, `name`) VALUES ('0', 'Add Employees');
 INSERT INTO `Capability` (`id`, `name`) VALUES ('2', 'Edit Employees');
 INSERT INTO `Capability` (`id`, `name`) VALUES ('4', 'Delete Employees');
@@ -52,6 +53,7 @@ INSERT INTO `GroupEmployee` (`grpID`, `empID`) VALUES ('3', '6');
 INSERT INTO `GroupEmployee` (`grpID`, `empID`) VALUES ('4', '7');
 
 INSERT INTO `GroupRoleEmployee` (`grpRoleID`, `empID`) VALUES ('1', '1');
+INSERT INTO `GroupRoleEmployee` (`grpRoleID`, `empID`) VALUES ('1', '2');
 INSERT INTO `GroupRoleEmployee` (`grpRoleID`, `empID`) VALUES ('6', '2');
 INSERT INTO `GroupRoleEmployee` (`grpRoleID`, `empID`) VALUES ('3', '2');
 INSERT INTO `GroupRoleEmployee` (`grpRoleID`, `empID`) VALUES ('4', '2');

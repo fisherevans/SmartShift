@@ -169,4 +169,9 @@ public class Role extends CachedObject {
         logger.error("Hit a non-implemeneted block! renameForGroup()");
         throw new RuntimeException("To implement!");
     }
+    
+    @Override
+    public String toString() {
+        return String.format("[ID:%d Name:%s]", getID(), getName());
+    }
 }
