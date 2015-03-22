@@ -327,6 +327,10 @@
     cursor: move;
 }
 
+.groupRoleEmployee.dragging {
+    opacity: 0.25;
+}
+
 .groupRoleEmployee.hover {
     border: 1px solid #0080ff;
     box-shadow: 0px 0px 3px #000;

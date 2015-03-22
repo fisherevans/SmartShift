@@ -2,15 +2,18 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
     function($scope, $rootScope, modalService, $location, $route, $cookieStore, $cookies, httpService, accountsService, utilService, cacheService){
         var mainController = this;
 
-        $rootScope.api = {
-            username: undefined,
-            password: undefined,
-            sessionID: undefined,
-            accountsServer: 'http://lando.smartshift.info:6380',
-            businessServer: undefined
+        $rootScope.clearAPIData = function() {
+            $rootScope.api = {
+                username: undefined,
+                password: undefined,
+                sessionID: undefined,
+                accountsServer: 'http://lando.smartshift.info:6380',
+                businessServer: undefined
+            };
         };
 
         $scope.init = function(){
+            $rootScope.clearAPIData();
             $rootScope.api.username = $cookieStore.get('username');
             $rootScope.api.sessionID = $cookieStore.get('sessionID');
             $rootScope.api.businessServer = $cookieStore.get('businessServer');
@@ -32,8 +35,8 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
         });
 
         $rootScope.$on("$routeChangeError", function (event, current, previous, rejection) {
-            if(rejection.status == 401)
-                $rootScope.forceLogout();
+            //if(rejection.status == 401)
+            //    $rootScope.forceLogout();
         });
 
 

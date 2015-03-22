@@ -119,14 +119,15 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
         };
         cacheService.updateEmployee = function(employeeModel) {
             var defer = $q.defer();
-            businessService.updateEmployee(employeeModel)
-                .success(function(response) {
+            businessService.updateEmployee(employeeModel).then(
+                function(response) {
                     cache.employees[response.data.id] = response.data;
                     defer.resolve(angular.copy(response.data));
-                })
-                .error(function(response) {
-                    defer.reject(response.message);
-                });
+                },
+                function(response) {
+                    defer.reject(response.data);
+                }
+            );
             return defer.promise;
         };
         cacheService.getEmployeesByGroupRole = function(groupID, roleID) {
