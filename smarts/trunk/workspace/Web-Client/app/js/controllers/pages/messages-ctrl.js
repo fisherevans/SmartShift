@@ -1,13 +1,13 @@
 var threads = [
     {
         name: "Charlie Babcock",
-        text: "Fuck Eclipse",
+        text: "Drew is creating a hostile work environment",
         sender: "You",
         time: "Just now"
     },
     {
         name: "Drew Fead",
-        text: " This is a really fucking long message that really is a run on and has no meaning so I can just fuck with the css styling!",
+        text: " This is a really long message that really is a run on and has no meaning so I can just mess with the css styling!",
         sender: "You",
         time: "A few seconds ago"
     },
@@ -25,7 +25,7 @@ var threads = [
     },
     {
         name: "Charlie Babcock",
-        text: "No, really, fuck Eclipse",
+        text: "WebStorm rocks",
         sender: "You",
         time: "2 hrs ago"
     }
