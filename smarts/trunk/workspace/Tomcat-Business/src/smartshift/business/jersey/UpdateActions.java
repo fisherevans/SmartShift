@@ -1,5 +1,6 @@
 package smartshift.business.jersey;
 
+import java.util.Set;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -29,8 +30,10 @@ public class UpdateActions extends BaseBusinessActions {
     @GET
     public Response getUpdates() {
     	logger.debug("getUpdates() Enter");
+    	Set<BaseUpdate> updates = getUpdateManager().getSessionUpdates(getUserSession().sessionID, true);
+        logger.debug("getUpdates() Got " + updates.size());
     	UpdatesJSON json = new UpdatesJSON();
-    	for(BaseUpdate update:getUpdateManager().getSessionUpdates(getUserSession().sessionID, true))
+    	for(BaseUpdate update:updates)
     	    json.addUpdate(update);
         logger.debug("getUpdates() Returning updates");
         return getObjectResponse(Status.OK, json);
