@@ -11,7 +11,7 @@ public abstract class BaseUpdate {
     
     private final Object _id;
     
-    private final Employee _executer;
+    private Employee _executer;
     
     private final Date _timestamp;
     
@@ -41,6 +41,10 @@ public abstract class BaseUpdate {
     
     public Employee getExecuter() {
         return _executer;
+    }
+    
+    public void setExecuter(Employee executer) {
+        _executer = executer;
     }
     
     public Date getTimestamp() {

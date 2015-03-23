@@ -7,6 +7,7 @@ import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
 import smartshift.business.hibernate.dao.BusinessDAOContext;
+import smartshift.business.updates.BaseUpdate;
 import smartshift.business.updates.UpdateManager;
 import smartshift.common.jersey.BaseActions;
 import smartshift.common.security.session.UserSession;
@@ -113,5 +114,10 @@ public abstract class BaseBusinessActions extends BaseActions {
     
     public UpdateManager getUpdateManager() {
         return UpdateManager.getManager(getUserSession().businessID);
+    }
+    
+    public void addUpdate(BaseUpdate update) {
+        update.setExecuter(getRequestEmployee());
+        getUpdateManager().addUpdate(update, getUserSession().sessionID);
     }
 }

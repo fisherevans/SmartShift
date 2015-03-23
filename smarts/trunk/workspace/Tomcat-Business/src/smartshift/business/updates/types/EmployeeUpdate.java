@@ -8,8 +8,8 @@ import smartshift.business.updates.BaseUpdate;
 public class EmployeeUpdate extends BaseUpdate {
     public Employee employee;
     
-    public EmployeeUpdate(String subType, Employee employee, Employee executer) {
-        super("employee", subType, employee.getID(), executer);
+    public EmployeeUpdate(String subType, Employee employee) {
+        super("employee", subType, employee.getID(), null);
         this.employee = employee;
     }
 
