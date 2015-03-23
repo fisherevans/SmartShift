@@ -22,10 +22,12 @@ public class UpdateManager {
     }
     
     public void addUpdate(BaseUpdate update, String ignoreSession) {
+        logger.debug(String.format("%d > Adding update: %s", _businessID, update));
         List<UserSession> sessions = UserSessionManager.getBusinessSessions(_businessID);
         for(UserSession session:sessions) {
             if(ignoreSession != null && session.sessionID.equals(ignoreSession))
                 continue;
+            logger.debug(String.format("Registering update for %s = %s", session.username, update));
             getSessionUpdates(session.sessionID, false).add(update);
         }
     }
@@ -53,6 +55,7 @@ public class UpdateManager {
     public static UpdateManager getManager(Integer businessID) {
         UpdateManager manager = _updateManagers.get(businessID);
         if(manager == null) {
+            logger.debug("Creating update manager for " + businessID);
             manager = new UpdateManager(businessID);
             _updateManagers.put(businessID, manager);
         }
