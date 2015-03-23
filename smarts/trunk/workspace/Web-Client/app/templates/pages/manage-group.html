@@ -20,9 +20,8 @@
     <div class="employeeList">
         <div ng-repeat="(employeeID, employee) in manageGroupCtrl.employees | filter:employeeListNameFilter | orderObjectBy:'sortName'"
                 class="employeeWrapper fadeColors noTextSelect" ng-show="manageGroupCtrl.employeeListFilter(employee)"
-                ng-class="{hover:employee.hover}" ng-mouseenter="employee.hover = true" ng-mouseleave="employee.hover = false"
-                smart-draggable drag-class="dragging" drag-data="{'employee':employee, 'tasks':['add']}"
-                drag-begin="manageGroupCtrl.employeeDragStart(employee)" drag-end="manageGroupCtrl.employeeDragEnd(employee)">
+                ng-class="{hover:manageGroupCtrl.employeeHover[employee.id]}" ng-mouseenter="manageGroupCtrl.employeeHover[employee.id] = true" ng-mouseleave="manageGroupCtrl.employeeHover[employee.id] = false"
+                smart-draggable drag-class="dragging" drag-data="{'employee':employee, 'tasks':['add']}">
             <div class="employeeListItem fadeColors">
                 <div ng-if="employee.justAdded" class="justAdded"></div>
                 <img src="../global/images/default.png" class="employeeImage" />
@@ -56,7 +55,7 @@
             {{manageGroupCtrl.addRoleError}}
         </div>
     </div>
-    <div ng-repeat="(roleID, role) in manageGroupCtrl.roles | orderObjectBy:'name'" class="antiAppBlock roleBox"
+    <div ng-repeat="(roleID, role) in manageGroupCtrl.group.roles | orderObjectBy:'name'" class="antiAppBlock roleBox"
             smart-dropzone valid-class="validDropZone" invalid-class="invalidDropZone"
             is-valid="manageGroupCtrl.roleIsValidDrop(role, dropData)" on-drop="manageGroupCtrl.roleOnDrop(role, dropData)">
         <div class="groupRoleToolbar">
@@ -66,17 +65,16 @@
         </div>
         <div class="groupRoleName">{{role.name}}</div>
         <div class="groupRoleEmployees">
-            <div class="groupRoleEmployee appBlock fadeColorOpacity angular-animate ngAnimateFade" ng-repeat="(employeeID, employee) in role.employees | orderObjectBy:'firstName'"
-                 ng-class="{hover:employee.hover}" ng-mouseenter="employee.hover = true" ng-mouseleave="employee.hover = false"
-                 smart-draggable drag-class="dragging" drag-data="{'employee':employee, 'oldRole':role, 'tasks':['add','removeOld']}"
-                 drag-begin="manageGroupCtrl.employeeDragStart(employee)" drag-end="manageGroupCtrl.employeeDragEnd(employee)">
+            <div class="groupRoleEmployee appBlock fadeColorOpacity angular-animate ngAnimateFade" ng-repeat="(employeeID, employee) in manageGroupCtrl.group.roleEmployees[role.id] | orderObjectBy:'sortName'"
+                 ng-class="{hover:manageGroupCtrl.employeeHover[employee.id]}" ng-mouseenter="manageGroupCtrl.employeeHover[employee.id] = true" ng-mouseleave="manageGroupCtrl.employeeHover[employee.id] = false"
+                 smart-draggable drag-class="dragging" drag-data="{'employee':employee, 'oldRole':role, 'tasks':['add','removeOld']}">
                 <div ng-if="employee.justAddedRole" class="justAdded"></div>
                 <img src="../global/images/default.png" class="groupRoleEmployeeImage" />
                 <div class="groupRoleEmployeeName fadeColors">{{employee.firstName}} {{employee.lastName}}</div>
                 <div class="groupRoleEmployeeEdit icon-pencil fadeColors" ng-click="manageGroupCtrl.openEditEmployeeModal(employee)"></div>
                 <div class="groupRoleEmployeeDelete icon-x fadeColors" ng-click="manageGroupCtrl.removeRoleEmployee(role, employee)"></div>
             </div>
-            <div ng-show="manageGroupCtrl.isEmpty(role.employees)" class="noGroupRoleEmployee">
+            <div ng-show="manageGroupCtrl.isEmpty(manageGroupCtrl.group.roleEmployees[role.id])" class="noGroupRoleEmployee">
                 There are no employees in this role.
             </div>
         </div>
