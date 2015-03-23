@@ -20,6 +20,9 @@ import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
 import smartshift.business.jersey.objects.EmployeeJSON;
+import smartshift.business.updates.types.EmployeeAdded;
+import smartshift.business.updates.types.EmployeeDeleted;
+import smartshift.business.updates.types.EmployeeUpdated;
 import smartshift.common.util.ValidationUtil;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.params.SimpleIntegerParam;
@@ -84,6 +87,7 @@ public class EmployeeActions extends BaseBusinessActions {
             }
             json.groupRoleIDs.put(group.getID(), roles);
         }
+        getUpdateManager().addUpdate(new EmployeeAdded(newEmployee, getRequestEmployee()));
     	logger.debug("addEmployee() group roles added");
         return getObjectResponse(Status.ACCEPTED, json);
     }
@@ -125,6 +129,7 @@ public class EmployeeActions extends BaseBusinessActions {
         if(request.firstName != null) employee.setFirstName(request.firstName);
         if(request.lastName != null) employee.setLastName(request.lastName);
         if(newHomeGroup != null) employee.setHomeGroup(newHomeGroup);
+        getUpdateManager().addUpdate(new EmployeeUpdated(employee, getRequestEmployee()));
     	logger.debug("editEmployee() employee updated");
         return getObjectResponse(Status.ACCEPTED, new EmployeeJSON(employee));
     }
@@ -137,12 +142,15 @@ public class EmployeeActions extends BaseBusinessActions {
     @Path("/{id}")
     public Response deleteEmployee(@PathParam("id") SimpleIntegerParam employeeID) {
     	logger.debug("deleteEmployee() Enter " + employeeID.getInteger());
+    	if(employeeID.getInteger() == getRequestEmployee().getID())
+            return getMessageResponse(Status.BAD_REQUEST, "You cannot delete yourself.");
         Employee employee = Employee.load(getCache(), employeeID.getInteger());
         if(employee == null)
             return getMessageResponse(Status.BAD_REQUEST, "Invalid employee id:" + employeeID);
     	logger.debug("deleteEmployee() got employee");
         employee.delete();
     	logger.debug("deleteEmployee() employee deleted");
+        getUpdateManager().addUpdate(new EmployeeDeleted(employee, getRequestEmployee()));
         return getMessageResponse(Status.OK, "The employee was deleted");
     }
     

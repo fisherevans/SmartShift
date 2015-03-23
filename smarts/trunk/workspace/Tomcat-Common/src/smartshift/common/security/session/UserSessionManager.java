@@ -2,6 +2,8 @@ package smartshift.common.security.session;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import org.dom4j.IllegalAddException;
 import smartshift.common.util.collections.ROSet;
@@ -124,5 +126,19 @@ public class UserSessionManager {
     
     private static String getDebugStr(UserSession session) {
         return session.sessionID.substring(0, Math.min(session.sessionID.length(), 8));
+    }
+
+    /** get all sessions or a business
+     * @param businessID the business to lookp
+     * @return the list of sessions.
+     */
+    public static List<UserSession> getBusinessSessions(Integer businessID) {
+        List<UserSession> businessSessions = new LinkedList<>();
+        for(UserSession session:sessions.values()) {
+            if(session.stillActive() && session.businessID == businessID) {
+                businessSessions.add(session);
+            }
+        }
+        return businessSessions;
     }
 }
