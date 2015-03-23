@@ -12,6 +12,7 @@ import javax.ws.rs.ext.Provider;
 import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
+import smartshift.business.updates.types.GroupRoleEmployeeUpdate;
 import smartshift.common.util.log4j.SmartLogger;
 import com.google.gson.annotations.Expose;
 
@@ -41,6 +42,7 @@ public class GroupRoleEmployeeActions extends BaseBusinessActions {
         Employee employee = getEmployee(request.employeeID, true);
         logger.debug("linkGroupRoleEmployee() valid employee");
         group.addRoleEmployee(role, employee);
+        getUpdateManager().addUpdate(new GroupRoleEmployeeUpdate("add", group, role, employee, getRequestEmployee()));
         logger.debug("linkGroupRoleEmployee() linked");
         return getMessageResponse(Status.OK, "The employee was added to the group role.");
     }
@@ -63,6 +65,7 @@ public class GroupRoleEmployeeActions extends BaseBusinessActions {
         Employee employee = getEmployee(request.employeeID, true);
         logger.debug("unlinkGroupRoleEmployee() valid employee");
         group.removeRoleEmployee(role, employee);
+        getUpdateManager().addUpdate(new GroupRoleEmployeeUpdate("delete", group, role, employee, getRequestEmployee()));
         logger.debug("unlinkGroupRoleEmployee() unlinked");
         return getMessageResponse(Status.OK, "Employee removed from group.");
     }

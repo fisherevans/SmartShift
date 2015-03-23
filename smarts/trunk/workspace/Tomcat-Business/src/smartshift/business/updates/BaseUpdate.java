@@ -1,22 +1,38 @@
 package smartshift.business.updates;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import smartshift.business.cache.bo.Employee;
+import smartshift.business.jersey.objects.EmployeeJSON;
 
 public abstract class BaseUpdate {
-    private final String _type;
+    private final String _type, _subType;
     
     private final Object _id;
     
     private final Employee _executer;
     
-    public BaseUpdate(String type, Object id, Employee executer) {
+    private final Date _timestamp;
+    
+    public BaseUpdate(String type, String subType, Object id, Employee executer) {
         _type = type;
+        _subType = subType;
         _id = id;
         _executer = executer;
+        _timestamp = new Date();
+    }
+    
+    public BaseUpdate(String type, Object id, Employee executer) {
+        this(type, null, id, executer);
     }
     
     public String getType() {
         return _type;
+    }
+    
+    public String getSubType() {
+        return _subType;
     }
     
     public Object getID() {
@@ -27,7 +43,17 @@ public abstract class BaseUpdate {
         return _executer;
     }
     
-    public abstract Object getJSONObject();
+    public Date getTimestamp() {
+        return _timestamp;
+    }
+    
+    public Map<String, Object> getJSONMap() {
+        Map<String, Object> json = new HashMap<>();
+        if(_subType != null) json.put("subType", _subType);
+        if(_executer != null) json.put("executer", new EmployeeJSON(_executer));
+        if(_timestamp != null) json.put("timestamp", _timestamp);
+        return json;
+    }
 
     @Override
     public int hashCode() {

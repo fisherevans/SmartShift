@@ -20,6 +20,8 @@ public class AppConstants {
     
     public static final String NEXT_ID_NAME_EMPLOYEE = "employee";
     
+    public static final String QUARTZ_BUSINESS_GROUP = "businessJobs";
+    
     // NON-PROPERTY CONSTANTS
     
     /** The hostname that that application is running on */

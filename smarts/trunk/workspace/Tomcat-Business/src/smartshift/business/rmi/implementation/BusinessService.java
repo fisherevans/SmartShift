@@ -2,12 +2,12 @@ package smartshift.business.rmi.implementation;
 
 import java.rmi.RemoteException;
 import org.dom4j.IllegalAddException;
+import smartshift.business.security.session.UserSessionManager;
 import smartshift.common.hibernate.BusinessDatabaseManager;
 import smartshift.common.rmi.BaseRemote;
 import smartshift.common.rmi.RMIClient;
 import smartshift.common.rmi.interfaces.BusinessServiceInterface;
 import smartshift.common.security.session.UserSession;
-import smartshift.common.security.session.UserSessionManager;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
 

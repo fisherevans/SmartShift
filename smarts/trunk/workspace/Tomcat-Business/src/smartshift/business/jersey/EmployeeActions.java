@@ -20,9 +20,7 @@ import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
 import smartshift.business.jersey.objects.EmployeeJSON;
-import smartshift.business.updates.types.EmployeeAdded;
-import smartshift.business.updates.types.EmployeeDeleted;
-import smartshift.business.updates.types.EmployeeUpdated;
+import smartshift.business.updates.types.EmployeeUpdate;
 import smartshift.common.util.ValidationUtil;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.params.SimpleIntegerParam;
@@ -87,7 +85,7 @@ public class EmployeeActions extends BaseBusinessActions {
             }
             json.groupRoleIDs.put(group.getID(), roles);
         }
-        getUpdateManager().addUpdate(new EmployeeAdded(newEmployee, getRequestEmployee()));
+        getUpdateManager().addUpdate(new EmployeeUpdate("add", newEmployee, getRequestEmployee()));
     	logger.debug("addEmployee() group roles added");
         return getObjectResponse(Status.ACCEPTED, json);
     }
@@ -129,7 +127,7 @@ public class EmployeeActions extends BaseBusinessActions {
         if(request.firstName != null) employee.setFirstName(request.firstName);
         if(request.lastName != null) employee.setLastName(request.lastName);
         if(newHomeGroup != null) employee.setHomeGroup(newHomeGroup);
-        getUpdateManager().addUpdate(new EmployeeUpdated(employee, getRequestEmployee()));
+        getUpdateManager().addUpdate(new EmployeeUpdate("update", employee, getRequestEmployee()));
     	logger.debug("editEmployee() employee updated");
         return getObjectResponse(Status.ACCEPTED, new EmployeeJSON(employee));
     }
@@ -150,7 +148,7 @@ public class EmployeeActions extends BaseBusinessActions {
     	logger.debug("deleteEmployee() got employee");
         employee.delete();
     	logger.debug("deleteEmployee() employee deleted");
-        getUpdateManager().addUpdate(new EmployeeDeleted(employee, getRequestEmployee()));
+        getUpdateManager().addUpdate(new EmployeeUpdate("delete", employee, getRequestEmployee()));
         return getMessageResponse(Status.OK, "The employee was deleted");
     }
     

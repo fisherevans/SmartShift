@@ -4,22 +4,12 @@ package smartshift.business.jersey.initializers;
 import java.rmi.RemoteException;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
-import org.quartz.impl.StdSchedulerFactory;
-import smartshift.business.quartz.jobs.AccountsConnectionJob;
 import smartshift.business.rmi.implementation.BusinessService;
 import smartshift.common.rmi.RMIClient;
 import smartshift.common.rmi.RMIServer;
 import smartshift.common.rmi.interfaces.AccountsServiceInterface;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
-import smartshift.common.util.properties.AppProperties;
 
 /**
  * @author fevans
@@ -28,14 +18,6 @@ import smartshift.common.util.properties.AppProperties;
  */
 public class BusinessRMIListener implements ServletContextListener {  
     private static final SmartLogger logger = new SmartLogger(BusinessRMIListener.class);
-    
-    private JobDetail _jobDetail;
-    
-    private Trigger _trigger;
-    
-    private Scheduler _scheduler;
-    
-    private StdSchedulerFactory _schedFactory;
     
     /**
      * a context has been initialized, create the RMI service
@@ -48,25 +30,6 @@ public class BusinessRMIListener implements ServletContextListener {
         } catch(Exception e) {
             logger.error("Failed to create business RMI service", e);
         }
-        
-        try {
-            _jobDetail = JobBuilder.newJob(AccountsConnectionJob.class)
-                .withIdentity("accountsConnectionJob", "accountsConnectionGroup").build();
-            
-            _trigger = TriggerBuilder
-                    .newTrigger()
-                    .withIdentity("accountsConnectionTrigger", "accountsConnectionGroup")
-                    .withSchedule(SimpleScheduleBuilder.simpleSchedule()
-                    .withIntervalInSeconds(AppProperties.getIntegerProperty("rmi.connection.polling", 60)).repeatForever())
-                    .build();
-            
-            _schedFactory = new StdSchedulerFactory(); 
-            _scheduler = _schedFactory.getScheduler();
-            _scheduler.scheduleJob(_jobDetail, _trigger);
-            _scheduler.start();
-        } catch(Exception e) {
-            logger.error("Failed to start to accounts application connect job", e);
-        }
     }  
 
     /**
@@ -74,16 +37,6 @@ public class BusinessRMIListener implements ServletContextListener {
      */
     @Override
     public void contextDestroyed(ServletContextEvent event) {
-        try {
-            for(Scheduler sched:_schedFactory.getAllSchedulers()) {
-                logger.info("Shutting down Quartz scheduler... " + sched);
-                sched.shutdown(true);
-                logger.debug("The Quartz scheduler has been shut down.");
-            }
-        } catch(SchedulerException e) {
-            logger.error("Failed to cancel Job!", e);
-        }
-        
         try {
             if(RMIClient.isClinetStarted(AppConstants.RMI_ACCOUNTS_HOSTNAME, AppConstants.RMI_ACCOUNTS_PORT)) {
                 AccountsServiceInterface acctsService = (AccountsServiceInterface)

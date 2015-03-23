@@ -1,0 +1,28 @@
+package smartshift.business.updates.types;
+
+import java.util.Map;
+import smartshift.business.cache.bo.Employee;
+import smartshift.business.cache.bo.Group;
+import smartshift.business.jersey.objects.EmployeeJSON;
+import smartshift.business.jersey.objects.GroupJSON;
+import smartshift.business.updates.BaseUpdate;
+
+public class GroupEmployeeUpdate extends BaseUpdate {
+    public Group group;
+    
+    public Employee employee;
+    
+    public GroupEmployeeUpdate(String subType, Group group, Employee employee, Employee executer) {
+        super("group-employee", subType, group.getID(), executer);
+        this.group = group;
+        this.employee = employee;
+    }
+
+    @Override
+    public Map<String, Object> getJSONMap() {
+        Map<String, Object> json = super.getJSONMap();
+        json.put("group", new GroupJSON(group));
+        json.put("employee", new EmployeeJSON(employee));
+        return json;
+    }
+}
