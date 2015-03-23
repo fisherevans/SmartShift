@@ -104,7 +104,10 @@ public class UserSessionManager {
         }
         for(String sessionID:toRemove)
             removeSession(sessionID);
-        logger.info("Removed " + toRemove.size() + " sessions with clean()");
+        if(toRemove.size() > 0)
+            logger.info("Removed " + toRemove.size() + " sessions with clean()");
+        else
+            logger.debug("Removed " + toRemove.size() + " sessions with clean()");
         return toRemove.size();
     }
     
