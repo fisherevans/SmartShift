@@ -13,6 +13,7 @@ import javax.ws.rs.ext.Provider;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
 import smartshift.business.jersey.objects.RoleJSON;
+import smartshift.business.updates.types.GroupRoleUpdate;
 import smartshift.common.util.log4j.SmartLogger;
 import com.google.gson.annotations.Expose;
 
@@ -40,6 +41,7 @@ public class GroupRoleActions extends BaseBusinessActions {
             return getMessageResponse(Status.OK, "Group already has role");
         logger.debug("addGroupRole() valid role");
         group.addRole(role);
+        getUpdateManager().addUpdate(new GroupRoleUpdate("add", group, role, getRequestEmployee()));
         logger.debug("addGroupRole() added");
         return getMessageResponse(Status.OK, "Role added to group.");
     }
@@ -58,6 +60,12 @@ public class GroupRoleActions extends BaseBusinessActions {
             return getMessageResponse(Status.BAD_REQUEST, "Group does not have this role.");
         logger.debug("updateGroupRole() valid role");
         Role newRole = role.renameForGroup(group, request.roleName);
+        if(request.roleID == newRole.getID()) {
+            getUpdateManager().addUpdate(new GroupRoleUpdate("update", group, newRole, getRequestEmployee()));
+        } else {
+            getUpdateManager().addUpdate(new GroupRoleUpdate("delete", group, role, getRequestEmployee()));
+            getUpdateManager().addUpdate(new GroupRoleUpdate("add", group, newRole, getRequestEmployee()));
+        }
         logger.debug("updateGroupRole() updated");
         return getObjectResponse(Status.OK, new RoleJSON(newRole));
     }
@@ -76,6 +84,7 @@ public class GroupRoleActions extends BaseBusinessActions {
             return getMessageResponse(Status.OK, "Role does not exist for this group");
         logger.debug("deleteGroupRole() valid role");
         group.removeRole(role);
+        getUpdateManager().addUpdate(new GroupRoleUpdate("delete", group, role, getRequestEmployee()));
         logger.debug("deleteGroupRole() removed");
         return getMessageResponse(Status.OK, "Role removed from group.");
     }

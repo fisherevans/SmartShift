@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import smartshift.business.security.session.UserSessionManager;
 import smartshift.common.security.session.UserSession;
-import smartshift.common.security.session.UserSessionManager;
 import smartshift.common.util.log4j.SmartLogger;
 
 public class UpdateManager {
@@ -13,7 +13,7 @@ public class UpdateManager {
     
     private static Map<Integer, UpdateManager> _updateManagers = new HashMap<>();
     
-    private Integer _businessID;
+    private final Integer _businessID;
     
     private final Map<String, HashSet<BaseUpdate>> _updates = new HashMap<>();
     
@@ -26,6 +26,11 @@ public class UpdateManager {
         for(UserSession session:sessions) {
             getSessionUpdates(session.sessionID, false).add(update);
         }
+    }
+    
+    public void deleteSessionUpdates(String sessionID) {
+        if(_updateManagers.containsKey(sessionID))
+            _updateManagers.remove(sessionID);
     }
     
     public HashSet<BaseUpdate> getSessionUpdates(String sessionID) {

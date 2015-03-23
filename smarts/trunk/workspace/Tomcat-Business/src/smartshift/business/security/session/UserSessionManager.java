@@ -1,4 +1,5 @@
-package smartshift.common.security.session;
+package smartshift.business.security.session;
+
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -6,6 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import org.dom4j.IllegalAddException;
+import smartshift.business.updates.UpdateManager;
+import smartshift.common.security.session.UserSession;
 import smartshift.common.util.collections.ROSet;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -54,7 +57,10 @@ public class UserSessionManager {
      */
     public static synchronized UserSession removeSession(String sessionID) {
         logger.info("Removing session: " + sessionID);
-        return sessions.remove(sessionID);
+        UserSession session = sessions.remove(sessionID);
+        if(session != null)
+            UpdateManager.getManager(session.businessID).deleteSessionUpdates(sessionID);
+        return session;
     }
 
     /**
@@ -90,18 +96,16 @@ public class UserSessionManager {
      * @return the number of sessions removed
      */
     public static synchronized int clean() {
-        int sessionsRemoved = 0;
-        String sessionList = "";
+        List<String> toRemove = new LinkedList<>();
         for(Iterator<Map.Entry<String, UserSession>> it = sessions.entrySet().iterator(); it.hasNext(); ) {
           Map.Entry<String, UserSession> entry = it.next();
-          if(entry.getValue() == null || !entry.getValue().stillActive()) {
-              sessionList += entry.getValue() != null ? entry.getValue().sessionID + ", " : "null, ";
-              sessionsRemoved++;
-              it.remove();
-          }
+          if(entry.getValue() == null || !entry.getValue().stillActive())
+              toRemove.add(entry.getValue().sessionID);
         }
-        logger.info("Removed " + sessionsRemoved + " sessions with clean(): " + sessionList);
-        return sessionsRemoved;
+        for(String sessionID:toRemove)
+            removeSession(sessionID);
+        logger.info("Removed " + toRemove.size() + " sessions with clean()");
+        return toRemove.size();
     }
     
     /**

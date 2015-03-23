@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
+import smartshift.business.updates.types.GroupEmployeeUpdate;
 import smartshift.common.util.log4j.SmartLogger;
 import com.google.gson.annotations.Expose;
 
@@ -35,6 +36,7 @@ public class GroupEmployeeActions extends BaseBusinessActions {
         Employee employee = getEmployee(request.employeeID, true);
         logger.debug("removeGroupEmployee() valid employee");
         group.removeEmployee(employee);
+        getUpdateManager().addUpdate(new GroupEmployeeUpdate("delete", group, employee, getRequestEmployee()));
         logger.debug("removeGroupEmployee() removed");
         return getMessageResponse(Status.OK, "Employee removed from group.");
     }
