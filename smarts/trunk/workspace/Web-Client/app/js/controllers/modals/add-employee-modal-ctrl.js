@@ -2,63 +2,68 @@ angular.module('smartsApp').controller('AddEmployeeModalController', ['$scope', 
     function($scope, $modalInstance, utilService, cacheService, defaultModel){
         console.log("In add employee modal");
 
-        $scope.employee = defaultModel;
-        $scope.selectedGroup = null;
+        $scope.formData = defaultModel;
         $scope.error = null;
-        $scope.selectedRoles = [];
+
+        $scope.groups = cacheService.getGroups();
+
+        $scope.selectedGroupRoles = {};
 
         var groupOptionsWorkingCopy = [];
-        var generateGroupOptions = function(groups, prefix) {
-            for(var groupID in groups) {
-                var group = groups[groupID];
-                var option = {
-                    "id":groupID,
-                    "name":prefix + " " + group.name
-                };
-                if(groupID == defaultModel.homeGroupID)
-                    $scope.selectedGroup = option;
-                groupOptionsWorkingCopy.push(option);
-                generateGroupOptions(group.childGroups, prefix + "---");
-            }
-        };
-        generateGroupOptions(cacheService.getChildGroups(null, true), "");
+        var generateGroupOptions = function(group, prefix) {
+            groupOptionsWorkingCopy.push({
+                "id":group.id,
+                "name":prefix + " " + group.name
+            });
+            angular.forEach(group.childGroups, function(childGroup, childGroupID) {
+                generateGroupOptions(childGroup, prefix + "---");
+            });
+        }
+        angular.forEach($scope.groups, function(group, groupID) {
+            $scope.selectedGroupRoles[group.id] = {};
+            if(group.parentGroupID == null) generateGroupOptions(group, "");
+        });
         $scope.groupOptions = groupOptionsWorkingCopy;
 
-        $scope.closeAddEmployeeModal = function() {
-            console.log("closing employee modal");
-            $modalInstance.close(null);
+        $scope.closeAddEmployeeModal = function() { $modalInstance.close(null); };
+
+        $scope.debugMe = function() {
+            console.log("----------------");
+            console.log($scope.formData);
+            console.log($scope.groups);
+            console.log($scope.groupOptions);
+            console.log($scope.selectedGroupRoles);
         };
 
         $scope.submit = function() {
             $(".addEmployeeModalButton").prop("disabled",true);
             $scope.error = null;
-            if($scope.selectedGroup == null || $scope.selectedGroup === undefined) {
+            if($scope.formData.homeGroupID == null) {
                 $scope.error = {"message":"Please, select a valid home group.", group:true };
                 $(".addEmployeeModalButton").prop("disabled",false);
                 return;
             }
-            if(!utilService.validName($scope.employee.firstName) || !utilService.validName($scope.employee.lastName)) {
+            if(!utilService.validName($scope.formData.firstName) || !utilService.validName($scope.formData.lastName)) {
                 $scope.error = {"message":"Names must be between 1 and 40 characters long.", name:true };
                 $(".addEmployeeModalButton").prop("disabled",false);
                 return;
             }
             var roleArray = [];
-            var roles = $scope.getGroupRoles($scope.selectedGroup.id);
-            for(var roleID in roles) {
-                if(roles[roleID].checked)
-                    roleArray.push(roleID);
-            }
+            angular.forEach($scope.selectedGroupRoles[$scope.formData.homeGroupID], function(isSelected, roleID) {
+                if(isSelected)
+                roleArray.push(roleID);
+            });
             if(roleArray.length == 0) {
                 $scope.error = {"message":"Employees must have at least one Role.", role:true };
                 $(".addEmployeeModalButton").prop("disabled",false);
                 return;
             }
             var groupRoleIDs = {};
-            groupRoleIDs[$scope.selectedGroup.id] = roleArray;
+            groupRoleIDs[$scope.formData.homeGroupID] = roleArray;
             var employeeModel = {
-                "firstName":$scope.employee.firstName,
-                "lastName":$scope.employee.lastName,
-                "homeGroupID":$scope.selectedGroup.id,
+                "firstName":$scope.formData.firstName,
+                "lastName":$scope.formData.lastName,
+                "homeGroupID":$scope.formData.homeGroupID,
                 "groupRoleIDs":groupRoleIDs
             };
             cacheService.addEmployee(employeeModel).then(
@@ -71,20 +76,5 @@ angular.module('smartsApp').controller('AddEmployeeModalController', ['$scope', 
                 }
             );
         };
-
-        $scope.rolesGroup = -1;
-        $scope.roles = {};
-        $scope.getGroupRoles = function(groupID) {
-            if($scope.rolesGroup != groupID) {
-                $scope.roles = cacheService.getRolesByGroup(groupID);
-                $scope.rolesGroup = groupID;
-            }
-            return $scope.roles;
-            var roles = $scope.groupRoles[groupID];
-            if(roles === undefined) {
-                $scope.groupRoles[groupID] = roles;
-            }
-            return roles;
-        }
     }
 ]);

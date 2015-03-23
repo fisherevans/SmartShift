@@ -26,6 +26,7 @@ angular.module('smartsApp').config(function($routeProvider){
             controllerAs: 'newsfeedCtrl',
             resolve: {
                 loadCache: function(cacheService) {
+                    console.log(cacheService);
                     return cacheService.loadCache();
                 }
             }

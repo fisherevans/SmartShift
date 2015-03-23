@@ -4,12 +4,20 @@ angular.module('smartsApp').controller('EditEmployeeModalController', ['$scope',
 
         $scope.originalEmployee = employee;
         $scope.formData = angular.copy(employee);
-        $scope.groupRoles = cacheService.getGroupRolesByEmployee(employee.id);
+        $scope.employeeGroups = {};
+        $scope.employeeGroupRoles = {};
+        angular.forEach(employee.groupRoleIDs, function(roleIDs, groupID) {
+            $scope.employeeGroups[groupID] = cacheService.getGroup(groupID);
+            $scope.employeeGroupRoles[groupID] = {};
+            angular.forEach(roleIDs, function(roleID, arrID) {
+                $scope.employeeGroupRoles[groupID][roleID] = cacheService.getRole(roleID);
+            });
+        });
 
         $scope.manageGroup = function(groupID) {
             $(".editEmployeeModalButton").prop("disabled",true);
             $location.path("groups/" + groupID);
-            $modalInstance.close(null);
+            $modalInstance.close('close');
         }
 
         $scope.closeAddEmployeeModal = function() {
@@ -17,9 +25,8 @@ angular.module('smartsApp').controller('EditEmployeeModalController', ['$scope',
         };
 
         $scope.deleteMe = function() {
-            $scope.originalEmployee.deleteMe = true;
             $interval(function() {
-                $modalInstance.close($scope.originalEmployee);
+                $modalInstance.close('delete');
             }, 250, 1);
         };
 
@@ -34,13 +41,11 @@ angular.module('smartsApp').controller('EditEmployeeModalController', ['$scope',
             var employeeModel = {
                 "id": $scope.originalEmployee.id,
                 "firstName": $scope.formData.firstName,
-                "lastName": $scope.formData.lastName,
-                "homeGroupID": $scope.originalEmployee.homeGroupID,
-                "groupRoleIDs": {}
+                "lastName": $scope.formData.lastName
             };
             cacheService.updateEmployee(employeeModel).then(
                 function(employee) { // Success
-                    $modalInstance.close(employee);
+                    $modalInstance.close('updated');
                 },
                 function(message) { // Error
                     alert(message);

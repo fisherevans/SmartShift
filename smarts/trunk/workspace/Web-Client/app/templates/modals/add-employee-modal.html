@@ -6,14 +6,14 @@
         <div class="smartInputLine">
             <div class="smartInputLabel">First Name</div>
             <div class="smartInputWrapper">
-                <input ng-model="employee.firstName" type="text" ng-class="{inputError:error.name}"
+                <input ng-model="formData.firstName" type="text" ng-class="{inputError:error.name}"
                        alt="First Name" class="smartInputText fadeColors" placeholder="Required">
             </div>
         </div>
         <div class="smartInputLine">
             <div class="smartInputLabel">Last Name</div>
             <div class="smartInputWrapper">
-                <input ng-model="employee.lastName" type="text" ng-class="{inputError:error.name}"
+                <input ng-model="formData.lastName" type="text" ng-class="{inputError:error.name}"
                        alt="Last Name" class="smartInputText fadeColors" placeholder="Required">
             </div>
         </div>
@@ -27,17 +27,20 @@
         <div class="smartInputLine">
             <div class="smartInputLabel">Home Group</div>
             <div class="smartInputWrapper">
-                <select alt="Home Group" class="smartInputSelect fadeColors" ng-class="{inputError:error.group}"
-                        ng-model="selectedGroup"
+                <!-- <select alt="Home Group" class="smartInputSelect fadeColors" ng-class="{inputError:error.group}"
+                        ng-model="formData.homeGroupID"
                         ng-options="group.name for group in groupOptions track by group.id">
+                </select> -->
+                <select alt="Home Group" class="smartInputSelect fadeColors" ng-class="{inputError:error.group}" ng-model="formData.homeGroupID">
+                    <option ng-repeat="groupOption in groupOptions" value="{{groupOption.id}}" ng-selected="groupOption.id == formData.homeGroupID"> {{groupOption.name}} </option>
                 </select>
             </div>
         </div>
         <div class="smartInputLine">
-            <div class="smartInputLabel">Roles<div class="sub"><span class="fakeLink">Add Role</span></div></div>
+            <div class="smartInputLabel">Roles<div class="sub"><span class="fakeLink" ng-click="debugMe()">Add Role</span></div></div>
             <div class="smartInputWrapper">
-                <label class="smartCheckboxLabel noTextSelect fadeColors" ng-repeat="(roleID, role) in getGroupRoles(selectedGroup.id)" ng-class="{inputError:error.role}">
-                    <input type="checkbox" class="smartCheckbox" value="{{role.id}}" name="role" ng-model="role.checked">
+                <label class="smartCheckboxLabel noTextSelect fadeColors" ng-repeat="(roleID, role) in groups[formData.homeGroupID].roles" ng-class="{inputError:error.role}">
+                    <input type="checkbox" class="smartCheckbox" value="{{role.id}}" name="role" ng-model="selectedGroupRoles[formData.homeGroupID][role.id]">
                     <div class="smartCheckboxCheck icon-not-checked"></div>
                     {{role.name}}
                 </label>

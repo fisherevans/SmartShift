@@ -21,7 +21,7 @@
         <div class="smartInputLine">
             <div class="smartInputLabel">Groups</div>
             <div class="smartInputWrapper">
-                <div class="editEmployeeGroupBox appBlock" ng-repeat="group in groupRoles">
+                <div class="editEmployeeGroupBox appBlock" ng-repeat="group in employeeGroups">
                     <div class="editEmployeeGroupManage fakeLink fadeColors" ng-click="manageGroup(group.id)">
                         Manage
                         &nbsp;
@@ -32,7 +32,7 @@
                         <span class="icon-home" ng-if="group.id == formData.homeGroupID"></span>
                     </div>
                     <div class="editEmployeeGroupRoles">
-                        <span class="editEmployeeGroupRomeName" ng-repeat="role in group.roles">
+                        <span class="editEmployeeGroupRomeName" ng-repeat="role in employeeGroupRoles[group.id]">
                             {{role.name}}{{$last ? '' : ', '}}
                         </span>
                     </div>
