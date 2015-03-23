@@ -1,7 +1,6 @@
 package smartshift.business.updates.types;
 
 import java.util.Map;
-import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.jersey.objects.GroupJSON;
 import smartshift.business.updates.BaseUpdate;
@@ -9,8 +8,8 @@ import smartshift.business.updates.BaseUpdate;
 public class GroupUpdate extends BaseUpdate {
     public Group group;
     
-    public GroupUpdate(String subType, Group group, Employee executer) {
-        super("group", subType, group.getID(), executer);
+    public GroupUpdate(String subType, Group group) {
+        super("group", subType, group.getID(), null);
         this.group = group;
     }
 

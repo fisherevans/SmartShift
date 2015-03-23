@@ -21,9 +21,11 @@ public class UpdateManager {
         _businessID = businessID;
     }
     
-    public void addUpdate(BaseUpdate update) {
+    public void addUpdate(BaseUpdate update, String ignoreSession) {
         List<UserSession> sessions = UserSessionManager.getBusinessSessions(_businessID);
         for(UserSession session:sessions) {
+            if(ignoreSession != null && session.sessionID.equals(ignoreSession))
+                continue;
             getSessionUpdates(session.sessionID, false).add(update);
         }
     }

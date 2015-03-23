@@ -48,7 +48,7 @@ public class GroupActions extends BaseBusinessActions {
         Group parent = getGroup(request.parentGroupID, true);
         logger.debug("addGroup() valid parent");
         Group group = Group.create(getCache().getBusinessID(), name, parent);
-        getUpdateManager().addUpdate(new GroupUpdate("add", group, getRequestEmployee()));
+        addUpdate(new GroupUpdate("add", group));
         logger.debug("addGroup() created");
         return getObjectResponse(Status.OK, new GroupJSON(group));
     }
@@ -109,7 +109,7 @@ public class GroupActions extends BaseBusinessActions {
         }
         if(request.name != null) group.setName(request.name);
         if(newParentGroup != null) group.setParent(newParentGroup);
-        getUpdateManager().addUpdate(new GroupUpdate("update", group, getRequestEmployee()));
+        addUpdate(new GroupUpdate("update", group));
         logger.debug("editGroup() updated");
         return getObjectResponse(Status.OK, new GroupJSON(group));
     }
@@ -124,7 +124,7 @@ public class GroupActions extends BaseBusinessActions {
         logger.debug("deleteGroup() enter");
         Group group = getGroup(groupID.getInteger(), true);
         group.delete();
-        getUpdateManager().addUpdate(new GroupUpdate("delete", group, getRequestEmployee()));
+        addUpdate(new GroupUpdate("delete", group));
         logger.debug("deleteGroup() deleted");
         return getMessageResponse(Status.OK, "Group was deleted.");
     }

@@ -36,7 +36,7 @@ public class GroupEmployeeActions extends BaseBusinessActions {
         Employee employee = getEmployee(request.employeeID, true);
         logger.debug("removeGroupEmployee() valid employee");
         group.removeEmployee(employee);
-        getUpdateManager().addUpdate(new GroupEmployeeUpdate("delete", group, employee, getRequestEmployee()));
+        addUpdate(new GroupEmployeeUpdate("delete", group, employee));
         logger.debug("removeGroupEmployee() removed");
         return getMessageResponse(Status.OK, "Employee removed from group.");
     }

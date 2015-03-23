@@ -85,7 +85,7 @@ public class EmployeeActions extends BaseBusinessActions {
             }
             json.groupRoleIDs.put(group.getID(), roles);
         }
-        getUpdateManager().addUpdate(new EmployeeUpdate("add", newEmployee, getRequestEmployee()));
+        addUpdate(new EmployeeUpdate("add", newEmployee));
     	logger.debug("addEmployee() group roles added");
         return getObjectResponse(Status.ACCEPTED, json);
     }
@@ -127,7 +127,7 @@ public class EmployeeActions extends BaseBusinessActions {
         if(request.firstName != null) employee.setFirstName(request.firstName);
         if(request.lastName != null) employee.setLastName(request.lastName);
         if(newHomeGroup != null) employee.setHomeGroup(newHomeGroup);
-        getUpdateManager().addUpdate(new EmployeeUpdate("update", employee, getRequestEmployee()));
+        addUpdate(new EmployeeUpdate("update", employee));
     	logger.debug("editEmployee() employee updated");
         return getObjectResponse(Status.ACCEPTED, new EmployeeJSON(employee));
     }
@@ -148,7 +148,7 @@ public class EmployeeActions extends BaseBusinessActions {
     	logger.debug("deleteEmployee() got employee");
         employee.delete();
     	logger.debug("deleteEmployee() employee deleted");
-        getUpdateManager().addUpdate(new EmployeeUpdate("delete", employee, getRequestEmployee()));
+        addUpdate(new EmployeeUpdate("delete", employee));
         return getMessageResponse(Status.OK, "The employee was deleted");
     }
     

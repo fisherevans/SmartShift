@@ -12,8 +12,8 @@ public class GroupEmployeeUpdate extends BaseUpdate {
     
     public Employee employee;
     
-    public GroupEmployeeUpdate(String subType, Group group, Employee employee, Employee executer) {
-        super("group-employee", subType, group.getID(), executer);
+    public GroupEmployeeUpdate(String subType, Group group, Employee employee) {
+        super("group-employee", subType, group.getID(), null);
         this.group = group;
         this.employee = employee;
     }
