@@ -7,6 +7,7 @@ import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
 import smartshift.business.hibernate.dao.BusinessDAOContext;
+import smartshift.business.updates.UpdateManager;
 import smartshift.common.jersey.BaseActions;
 import smartshift.common.security.session.UserSession;
 import smartshift.common.util.log4j.SmartLogger;
@@ -108,5 +109,9 @@ public abstract class BaseBusinessActions extends BaseActions {
             throw new WebApplicationException(BaseActions.getMessageResponse(Status.BAD_REQUEST, "You do not manage this employee: " + employeeID));
         logger.debug("getRole() Valid employee found");
         return employee;
+    }
+    
+    public UpdateManager getUpdateManager() {
+        return UpdateManager.getManager(getUserSession().businessID);
     }
 }
