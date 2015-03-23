@@ -226,64 +226,75 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
 
         var publicCacheService = {};
 
+        // CACHE UPDATES
+        publicCacheService.parseUpdates = function(updates) {
+            angular.forEach(updates, function(typeUpdates, type) {
+                console.log("Update Type: " + type);
+                angular.forEach(typeUpdates, function(update, arrID) {
+                    console.log("  Update: ");
+                    console.log(update);
+                });
+            });
+        };
+
         // PUBLIC HTTP METHODS
         publicCacheService.loadCache = function() {
-                var defer = $q.defer();
-                if(loaded == false) {
-                    businessService.getFull().then(
-                        function(response) {
-                            loadFromAPIResponse(response);
-                            defer.resolve();
-                        }, defer.reject);
-                } else {
-                    defer.resolve();
-                }
-                return defer.promise;
-            };
+            var defer = $q.defer();
+            if(loaded == false) {
+                businessService.getFull().then(
+                    function(response) {
+                        loadFromAPIResponse(response);
+                        defer.resolve();
+                    }, defer.reject);
+            } else {
+                defer.resolve();
+            }
+            return defer.promise;
+        };
         publicCacheService.addEmployee = function(employeeModel) {
-                var defer = $q.defer();
-                businessService.addEmployee(employeeModel).then(
-                    function(response) {
-                        employeeSet(response.data);
-                        var employee = employees[response.data.id];
-                        angular.forEach(response.data.groupRoleIDs, function(roleIDs, groupID) {
-                            var group = groups[groupID];
-                            angular.forEach(roleIDs, function(roleID, arrID) {
-                                var role = roles[roleID];
-                                groupRoleEmployeeAdded(group, role, employee);
-                            });
+            var defer = $q.defer();
+            businessService.addEmployee(employeeModel).then(
+                function(response) {
+                    employeeSet(response.data);
+                    var employee = employees[response.data.id];
+                    angular.forEach(response.data.groupRoleIDs, function(roleIDs, groupID) {
+                        var group = groups[groupID];
+                        angular.forEach(roleIDs, function(roleID, arrID) {
+                            var role = roles[roleID];
+                            groupRoleEmployeeAdded(group, role, employee);
                         });
-                        defer.resolve(employee);
-                    }, defer.reject);
-                return defer.promise;
-            };
+                    });
+                    defer.resolve(employee);
+                }, defer.reject);
+            return defer.promise;
+        };
         publicCacheService.updateEmployee = function(employeeModel) {
-                var defer = $q.defer();
-                businessService.updateEmployee(employeeModel).then(
-                    function(response) {
-                        employeeSet(response.data);
-                        defer.resolve();
-                    }, defer.reject);
-                return defer.promise;
-            };
+            var defer = $q.defer();
+            businessService.updateEmployee(employeeModel).then(
+                function(response) {
+                    employeeSet(response.data);
+                    defer.resolve();
+                }, defer.reject);
+            return defer.promise;
+        };
         publicCacheService.addGroupRoleEmployee = function(groupID, roleID, employeeID) {
-                var defer = $q.defer();
-                businessService.addGroupRoleEmployee(groupID, roleID, employeeID).then(
-                    function(response) {
-                        groupRoleEmployeeAdded(groups[groupID], roles[roleID], employees[employeeID]);
-                        defer.resolve();
-                    }, defer.reject);
-                return defer.promise;
-            };
+            var defer = $q.defer();
+            businessService.addGroupRoleEmployee(groupID, roleID, employeeID).then(
+                function(response) {
+                    groupRoleEmployeeAdded(groups[groupID], roles[roleID], employees[employeeID]);
+                    defer.resolve();
+                }, defer.reject);
+            return defer.promise;
+        };
         publicCacheService.removeGroupRoleEmployee = function(groupID, roleID, employeeID) {
-                var defer = $q.defer();
-                businessService.removeGroupRoleEmployee(groupID, roleID, employeeID).then(
-                    function(response) {
-                        groupRoleEmployeeRemoved(groups[groupID], roles[roleID], employees[employeeID]);
-                        defer.resolve();
-                    }, defer.reject);
-                return defer.promise;
-            };
+            var defer = $q.defer();
+            businessService.removeGroupRoleEmployee(groupID, roleID, employeeID).then(
+                function(response) {
+                    groupRoleEmployeeRemoved(groups[groupID], roles[roleID], employees[employeeID]);
+                    defer.resolve();
+                }, defer.reject);
+            return defer.promise;
+        };
 
         // PUBLIC ACCESSORS
         publicCacheService.getGroups = function() { return groups; };
