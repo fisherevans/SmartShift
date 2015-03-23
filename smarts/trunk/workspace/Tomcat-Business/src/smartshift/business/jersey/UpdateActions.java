@@ -11,6 +11,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.ext.Provider;
 import smartshift.business.jersey.objects.UpdatesJSON;
 import smartshift.business.updates.BaseUpdate;
+import smartshift.business.updates.UpdateManager;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -30,6 +31,7 @@ public class UpdateActions extends BaseBusinessActions {
     @GET
     public Response getUpdates() {
     	logger.debug("getUpdates() Enter");
+    	UpdateManager.debugPrintAll();
     	Set<BaseUpdate> updates = getUpdateManager().getSessionUpdates(getUserSession().sessionID, true);
         logger.debug("getUpdates() Got " + updates.size());
     	UpdatesJSON json = new UpdatesJSON();
