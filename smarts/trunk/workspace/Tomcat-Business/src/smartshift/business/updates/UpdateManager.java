@@ -25,10 +25,10 @@ public class UpdateManager {
         logger.debug(String.format("%d > Adding update: %s", _businessID, update));
         List<UserSession> sessions = UserSessionManager.getBusinessSessions(_businessID);
         for(UserSession session:sessions) {
-            if(ignoreSession != null && session.sessionID.equals(ignoreSession))
+            if(session.sessionID.equals(ignoreSession))
                 continue;
             logger.debug(String.format("Registering update for %s = %s", session.username, update));
-            getSessionUpdates(session.sessionID, false).add(update);
+            getSessionUpdates(session.sessionID).add(update);
         }
     }
     
@@ -46,9 +46,9 @@ public class UpdateManager {
         if(sessionUpdates == null) {
             sessionUpdates = new HashSet<BaseUpdate>();
             _updates.put(sessionID, sessionUpdates);
-        } else if(clear) {
-            _updates.put(sessionID, new HashSet<BaseUpdate>());
         }
+        if(clear)
+            _updates.put(sessionID, new HashSet<BaseUpdate>());
         return sessionUpdates;
     }
     
@@ -65,10 +65,14 @@ public class UpdateManager {
     public void debugPrint() {
         logger.debug("Business: " + _businessID);
         for(String session:_updates.keySet()) {
-            UserSession userSession = UserSessionManager.getSession(session, false);
-            logger.debug("  Session: " + session + " - " + userSession.username);
-            for(BaseUpdate update:_updates.get(session)) {
-                logger.debug("    Update: " + update);
+            UserSession userSession = UserSessionManager.getSession(session, true);
+            if(userSession == null) {
+                UserSessionManager.removeSession(session);
+            } else {
+                logger.debug("  Session: " + session + " - " + userSession.username);
+                for(BaseUpdate update:_updates.get(session)) {
+                    logger.debug("    Update: " + update);
+                }
             }
         }
     }
