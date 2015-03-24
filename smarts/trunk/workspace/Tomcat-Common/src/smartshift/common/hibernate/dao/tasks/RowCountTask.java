@@ -15,7 +15,7 @@ import smartshift.common.util.log4j.SmartLogger;
  * 
  * task to get row count based on criterion
  */
-public class RowCountTask<T> extends BaseHibernateTask<T, Long>{
+public class RowCountTask<T> extends BaseHibernateTask<T, Integer>{
     private static final SmartLogger logger = new SmartLogger(RowCountTask.class);
     
     private final Criterion[] _criterions;
@@ -34,7 +34,7 @@ public class RowCountTask<T> extends BaseHibernateTask<T, Long>{
      * @see smartshift.common.hibernate.dao.tasks.BaseHibernateTask#executeWithSession(org.hibernate.Session)
      */
     @Override
-    public Long executeWithSession(Session session) throws HibernateException {
+    public Integer executeWithSession(Session session) throws HibernateException {
         logger.debug("Enter. Criterions: " + _criterions.length);
         Criteria criteria = session.createCriteria(getDAO().getModelClass());
         for(Criterion criterion : _criterions) {
@@ -43,6 +43,6 @@ public class RowCountTask<T> extends BaseHibernateTask<T, Long>{
         }
         Long rowCount = (Long) criteria.setProjection(Projections.rowCount()).uniqueResult();
         logger.debug("Exit. Got: " + rowCount);
-        return rowCount;
+        return rowCount.intValue();
     }
 }

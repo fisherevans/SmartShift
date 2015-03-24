@@ -13,7 +13,6 @@ import smartshift.business.hibernate.dao.GroupEmployeeDAO;
 import smartshift.business.hibernate.model.AvailabilityInstanceModel;
 import smartshift.business.hibernate.model.AvailabilityTemplateModel;
 import smartshift.business.hibernate.model.EmployeeModel;
-import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.common.rmi.RMIClient;
 import smartshift.common.rmi.interfaces.AccountsServiceInterface;
