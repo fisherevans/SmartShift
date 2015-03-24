@@ -21,6 +21,7 @@ import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
 import smartshift.business.jersey.objects.EmployeeJSON;
 import smartshift.business.updates.types.EmployeeUpdate;
+import smartshift.business.updates.types.GroupRoleEmployeeUpdate;
 import smartshift.common.util.ValidationUtil;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.params.SimpleIntegerParam;
@@ -74,6 +75,7 @@ public class EmployeeActions extends BaseBusinessActions {
             return getMessageResponse(Status.BAD_REQUEST, "The default group:" + request.homeGroupID + " must be a group the employee is initially added to.");
     	logger.debug("addEmployee() valid group roles and home group");
         Employee newEmployee = Employee.create(getCache().getBusinessID(), request.firstName, request.lastName, proposedHomeGroup.getID());
+        addUpdate(new EmployeeUpdate("add", newEmployee));
     	logger.debug("addEmployee() employee created");
         EmployeeJSON json = new EmployeeJSON(newEmployee);
         json.groupRoleIDs = new HashMap<>();
@@ -82,10 +84,10 @@ public class EmployeeActions extends BaseBusinessActions {
             for(Role role:groupRoles.get(group)) {
                 group.addRoleEmployee(role, newEmployee);
                 roles.add(role.getID());
+                addUpdate(new GroupRoleEmployeeUpdate("add", group, role, newEmployee));
             }
             json.groupRoleIDs.put(group.getID(), roles);
         }
-        addUpdate(new EmployeeUpdate("add", newEmployee));
     	logger.debug("addEmployee() group roles added");
         return getObjectResponse(Status.ACCEPTED, json);
     }

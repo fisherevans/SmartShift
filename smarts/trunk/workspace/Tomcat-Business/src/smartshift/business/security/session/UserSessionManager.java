@@ -141,11 +141,18 @@ public class UserSessionManager {
      */
     public static List<UserSession> getBusinessSessions(Integer businessID) {
         List<UserSession> businessSessions = new LinkedList<>();
+        int inActives = 0;
         for(UserSession session:sessions.values()) {
-            if(session.stillActive() && session.businessID == businessID) {
-                businessSessions.add(session);
+            if(session.stillActive()) {
+                if(businessID.equals(session.businessID)) {
+                    businessSessions.add(session);
+                }
+            } else {
+                inActives++;
             }
         }
+        if(inActives > 0)
+            clean();
         return businessSessions;
     }
 }

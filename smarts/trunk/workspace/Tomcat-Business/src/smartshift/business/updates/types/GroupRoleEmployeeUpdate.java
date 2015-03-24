@@ -8,6 +8,7 @@ import smartshift.business.jersey.objects.EmployeeJSON;
 import smartshift.business.jersey.objects.GroupJSON;
 import smartshift.business.jersey.objects.RoleJSON;
 import smartshift.business.updates.BaseUpdate;
+import smartshift.business.updates.MultiID;
 
 public class GroupRoleEmployeeUpdate extends BaseUpdate {
     public Group group;
@@ -17,7 +18,7 @@ public class GroupRoleEmployeeUpdate extends BaseUpdate {
     public Employee employee;
     
     public GroupRoleEmployeeUpdate(String subType, Group group, Role role, Employee employee) {
-        super("group-role-employee", subType, group.getID(), null);
+        super("group-role-employee", subType, new MultiID(group.getID(), role.getID(), employee.getID()), null);
         this.group = group;
         this.role = role;
         this.employee = employee;

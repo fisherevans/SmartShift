@@ -70,7 +70,8 @@ public class DevActions extends BaseBusinessActions {
                 case Role.TYPE_IDENTIFIER: {
                     Role role = (Role) cache.get(uid).get();
                     logger.debug("  Role: " + (role == null ? role : "ID:" + role.getID()));
-                    json.roles.put(role.getID(), new RoleJSON(role));
+                    if(role.getID() > 0)
+                        json.roles.put(role.getID(), new RoleJSON(role));
                     break;
                 }
             }
@@ -81,6 +82,8 @@ public class DevActions extends BaseBusinessActions {
             logger.debug("Getting GRE for Group: " + groupID + ":" + group);
             Map<Integer, Set<Integer>> roleEmployeeIDs = new HashMap<>();
             for(Role role:group.getRoles()) {
+                if(role.getID() < 1)
+                    continue;
                 logger.debug("  Role: " +  role.getID());
                 Set<Integer> employeeIDs = new HashSet<>();
                 for(Employee employee:group.getRoleEmployees(role)) {
