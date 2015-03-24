@@ -6,6 +6,7 @@ import smartshift.business.cache.bo.Group;
 import smartshift.business.jersey.objects.EmployeeJSON;
 import smartshift.business.jersey.objects.GroupJSON;
 import smartshift.business.updates.BaseUpdate;
+import smartshift.business.updates.MultiID;
 
 public class GroupEmployeeUpdate extends BaseUpdate {
     public Group group;
@@ -13,7 +14,7 @@ public class GroupEmployeeUpdate extends BaseUpdate {
     public Employee employee;
     
     public GroupEmployeeUpdate(String subType, Group group, Employee employee) {
-        super("group-employee", subType, group.getID(), null);
+        super("group-employee", subType, new MultiID(group.getID(), employee.getID()), null);
         this.group = group;
         this.employee = employee;
     }

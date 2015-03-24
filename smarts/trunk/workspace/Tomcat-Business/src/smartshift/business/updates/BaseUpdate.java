@@ -53,6 +53,7 @@ public abstract class BaseUpdate {
     
     public Map<String, Object> getJSONMap() {
         Map<String, Object> json = new HashMap<>();
+        if(_type != null) json.put("type", _type);
         if(_subType != null) json.put("subType", _subType);
         if(_executer != null) json.put("executer", new EmployeeJSON(_executer));
         if(_timestamp != null) json.put("timestamp", _timestamp);
