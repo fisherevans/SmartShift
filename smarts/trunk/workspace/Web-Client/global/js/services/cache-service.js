@@ -36,8 +36,8 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
         }
 
         function loadFromAPIResponse(response) {
-            console.log("Loading from API");
-            console.log(response);
+            //console.log("Loading from API");
+            //console.log(response);
             angular.forEach(response.data.groups, function(group, id) { groupSet(group); });
             angular.forEach(response.data.roles, function(role, id) { roleSet(role); });
             angular.forEach(response.data.employees, function(employee, id) { employeeSet(employee); });
@@ -228,14 +228,65 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
 
         // CACHE UPDATES
         publicCacheService.parseUpdates = function(updates) {
-            angular.forEach(updates, function(typeUpdates, type) {
-                console.log("Update Type: " + type);
-                angular.forEach(typeUpdates, function(update, arrID) {
-                    console.log("  Update: ");
-                    console.log(update);
-                });
+                angular.forEach(updates, function(update, arrID) {
+                switch(update.type) {
+                    case "group-role-employee": {
+                        var group = groups[update.group.id];
+                        var role = roles[update.role.id];
+                        var employee = employees[update.employee.id];
+                        switch(update.subType) {
+                            case "add": { groupRoleEmployeeAdded(group, role, employee); break; }
+                            case "delete": { groupRoleEmployeeRemoved(group, role, employee); break; }
+                        }
+                        break;
+                    }
+                    case "group-role": {
+                        var group = groups[update.group.id];
+                        var role = roles[update.role.id];
+                        switch(update.subType) {
+                            case "add": { groupRoleAdded(group, role); break; }
+                            case "delete": { groupRoleRemoved(group, role); break; }
+                        }
+                        break;
+                    }
+                    case "group-employee": {
+                        var group = groups[update.group.id];
+                        var employee = employees[update.employee.id];
+                        switch(update.subType) {
+                            case "delete": { groupEmployeeRemoved(group, employee); break; }
+                        }
+                        break;
+                    }
+                    case "group": {
+                        switch(update.subType) {
+                            case "add": { groupSet(update.group); break; }
+                            case "update": { groupSet(update.group); break; }
+                            case "delete": { groupRemoved(update.group.id); break; }
+                        }
+                        break;
+                    }
+                    case "employee": {
+                        switch(update.subType) {
+                            case "add": { employeeSet(update.employee); break; }
+                            case "update": { employeeSet(update.employee); break; }
+                            case "delete": { employeeRemoved(update.employee.id); break; }
+                        }
+                        break;
+                    }
+                    case "role": {
+                        switch(update.subType) {
+                            case "add": { roleSet(update.role); break; }
+                            case "update": { roleSet(update.role); break; }
+                            case "delete": { roleRemoved(update.role.id); break; }
+                        }
+                        break;
+                    }
+                }
             });
         };
+        publicCacheService.isLoaded = function () {
+            return loaded;
+        }
 
         // PUBLIC HTTP METHODS
         publicCacheService.loadCache = function() {

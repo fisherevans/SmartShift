@@ -3,14 +3,23 @@ angular.module('smartsApp').controller('DeleteEmployeeModalController', ['$scope
         console.log("In add employee modal");
 
         $scope.employee = employee;
+        $scope.noInput = false;
 
         $scope.close = function() {
             $modalInstance.close(false);
         };
 
         $scope.submit = function() {
-            //$(".deleteEmployeeModalButton").prop("disabled",true);
-            alert("Ha! Tricked you! You can't delete employees yet.");
+            cacheService.deleteEmployee($scope.employee.id).then(
+                function(response) {
+                    $scope.noInput = true;
+                    $modalInstance.close(true);
+                },
+                function (response) {
+                    $scope.noInput = false;
+                    alert(response.message);
+                }
+            );
         };
     }
 ]);
