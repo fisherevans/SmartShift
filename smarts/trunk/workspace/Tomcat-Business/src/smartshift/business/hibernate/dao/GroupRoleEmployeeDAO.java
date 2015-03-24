@@ -5,6 +5,7 @@ import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.model.GroupRoleEmployeeModel;
 import smartshift.common.hibernate.dao.tasks.AddTask;
 import smartshift.common.hibernate.dao.tasks.DeleteByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.RowCountTask;
 import smartshift.common.hibernate.dao.tasks.UniqueByCriteriaTask;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -37,7 +38,7 @@ public class GroupRoleEmployeeDAO extends BaseBusinessDAO<GroupRoleEmployeeModel
         model.setEmployeeID(employeeID);
         return add(model);
     }
-
+    
     /** get a task that Unlinks an employee from a group role
      * @param groupRoleID the group role id
      * @param employeeID the employee id
@@ -47,7 +48,17 @@ public class GroupRoleEmployeeDAO extends BaseBusinessDAO<GroupRoleEmployeeModel
         return deleteByCriteria(getGroupRoleEmployeeCriterion(groupRoleID, employeeID));
     }
     
-    /** get a task that gets the model of a group role linked to a group
+    /**
+     * get a task that counts links between a group role and an employee
+     * @param groupRoleID the group role id
+     * @param employeeID the employee id
+     * @return the task object
+     */
+    public RowCountTask<GroupRoleEmployeeModel> linkCount(Integer groupRoleID, Integer employeeID) {
+        return rowCount(getGroupRoleEmployeeCriterion(groupRoleID, employeeID));
+    }
+    
+    /** get a task that gets the model of a group role linked to an employee
      * @param groupRoleID the group role id
      * @param employeeID the employee id
      * @return the task object

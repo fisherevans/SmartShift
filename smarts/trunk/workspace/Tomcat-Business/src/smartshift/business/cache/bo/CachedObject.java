@@ -39,6 +39,10 @@ public abstract class CachedObject implements Identifiable, Stored{
         return getCache().getDAOContext().dao(clazz);
     }
     
+    public void save() {
+        saveRelationships();
+    }
+    
     protected void finalize() throws Throwable {
         _cache.decache(getUID());
         super.finalize();

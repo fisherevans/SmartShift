@@ -1,9 +1,12 @@
 package smartshift.business.hibernate.dao;
 
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.business.hibernate.model.GroupEmployeeModelId;
 import smartshift.common.hibernate.dao.tasks.AddTask;
 import smartshift.common.hibernate.dao.tasks.DeleteByIDTask;
+import smartshift.common.hibernate.dao.tasks.RowCountTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -35,6 +38,15 @@ public class GroupEmployeeDAO extends BaseBusinessDAO<GroupEmployeeModel> {
         model.setEmployeeID(employeeID);
         return add(model);
     }
+    
+    /** get a task that counts links between an employee and a group
+     * @param groupID the group id
+     * @param employeeID the employee id
+     * @return the task object
+     */
+    public RowCountTask<GroupEmployeeModel> linkCount(Integer groupID, Integer employeeID) {
+        return rowCount(getGroupEmployeeCriterion(groupID, employeeID));
+    }
 
     /** get a task that Unlinks an employee from a group
      * @param groupID the group id
@@ -48,5 +60,9 @@ public class GroupEmployeeDAO extends BaseBusinessDAO<GroupEmployeeModel> {
     @Override
     protected SmartLogger getLogger() {
         return logger;
+    }
+    
+    private Criterion[] getGroupEmployeeCriterion(Integer groupID, Integer employeeID) {
+        return new Criterion[] { Restrictions.eq("groupID", groupID), Restrictions.eq("employeeID", employeeID) };
     }
 }

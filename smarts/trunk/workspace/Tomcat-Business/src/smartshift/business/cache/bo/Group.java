@@ -9,6 +9,7 @@ import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
 import smartshift.business.hibernate.dao.GroupRoleCapabilityDAO;
 import smartshift.business.hibernate.dao.GroupRoleDAO;
+import smartshift.business.hibernate.dao.GroupRoleEmployeeDAO;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.business.hibernate.model.GroupRoleCapabilityModel;
@@ -186,12 +187,32 @@ public class Group extends CachedObject {
                 _model.setActive(_active);
                 _model.setParentID(_parent == null ? null : _parent.getID());
                 getDAO(GroupDAO.class).update(_model);
+                super.save();
             } else {
                 _model = getDAO(GroupDAO.class).add(_name, null).execute();
                 setID(_model.getId());
+                super.save();
             }
         } catch (HibernateException e) {
             logger.debug(e.getStackTrace());
+        }
+    }
+    
+    @Override
+    public void saveRelationships() {
+        // save group roles
+        for(Role r : _employees.keySet()) {
+            if(getDAO(GroupRoleDAO.class).linkCount(getID(), r.getID()).execute() < 1)
+                getDAO(GroupRoleDAO.class).link(getID(), r.getID()).execute();
+            int groupRole = getDAO(GroupRoleDAO.class).uniqueByGroupRole(getID(), r.getID()).execute().getId();
+            for(Employee e : _employees.get(r).getEmployees()) {
+                if(getDAO(GroupRoleEmployeeDAO.class).linkCount(groupRole, e.getID()).execute() < 1)
+                    getDAO(GroupRoleEmployeeDAO.class).link(groupRole, e.getID());
+            }
+            for(Integer c : _employees.get(r).getCapabilities()) {
+                if(getDAO(GroupRoleCapabilityDAO.class).linkCount(groupRole, c).execute() < 1)
+                    getDAO(GroupRoleCapabilityDAO.class).link(groupRole, c);
+            }
         }
     }
 

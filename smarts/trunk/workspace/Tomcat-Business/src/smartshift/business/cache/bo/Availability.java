@@ -59,29 +59,6 @@ public class Availability extends CachedObject {
     public String typeCode() {
         return TYPE_IDENTIFIER;
     }
-
-    @Override
-    public void save() {
-        try {
-            if(_model != null) {
-                _model.setStart(_time.getHourOfDay());
-                _model.setDuration(_duration);
-                _model.setRepeatEvery(_repeatEvery);
-                _model.setRepeatCount(_repeatCount);
-                _model.setRepeateOffset(_repeatOffset);
-                _model.setUnavailable(_unavailable);
-                getDAO(AvailabilityDAO.class).update(_model);
-            } else {
-                Integer templateID = null;
-                if(_template != null)
-                    templateID = _template.getID();
-                    _model = getDAO(AvailabilityDAO.class).add(templateID, _time.getHourOfDay(), _duration, _repeatEvery, _repeatCount, _repeatOffset, _unavailable).execute();
-                    setID(_model.getId());
-            }
-        } catch (HibernateException e) {
-            logger.debug(e.getStackTrace());
-        } 
-    }
     
     public void addToTemplate(AvailabilityTemplate template) {
         if(_template != null) {
@@ -98,6 +75,35 @@ public class Availability extends CachedObject {
         getCache().cache(new UID(old), old);
         _template = template;
         save();
+    }
+
+    @Override
+    public void save() {
+        try {
+            if(_model != null) {
+                _model.setStart(_time.getHourOfDay());
+                _model.setDuration(_duration);
+                _model.setRepeatEvery(_repeatEvery);
+                _model.setRepeatCount(_repeatCount);
+                _model.setRepeateOffset(_repeatOffset);
+                _model.setUnavailable(_unavailable);
+                getDAO(AvailabilityDAO.class).update(_model);
+                super.save();
+            } else {
+                Integer templateID = null;
+                if(_template != null)
+                    templateID = _template.getID();
+                _model = getDAO(AvailabilityDAO.class).add(templateID, _time.getHourOfDay(), _duration, _repeatEvery, _repeatCount, _repeatOffset, _unavailable).execute();
+                setID(_model.getId());
+                super.save();
+            }
+        } catch (HibernateException e) {
+            logger.debug(e.getStackTrace());
+        } 
+    }
+    
+    public void saveRelationships() {
+        // do nothing
     }
 
     @Override

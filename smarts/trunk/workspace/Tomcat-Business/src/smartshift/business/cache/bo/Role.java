@@ -89,13 +89,20 @@ public class Role extends CachedObject {
             if(_model != null) {
                 _model.setName(_name);
                 getDAO(RoleDAO.class).update(_model);
+                super.save();
             } else {
                 _model = getDAO(RoleDAO.class).add(_name).execute();
                 setID(_model.getId());
+                super.save();
             }
         } catch (HibernateException e) {
             logger.debug(e.getStackTrace());
         }
+    }
+    
+    @Override
+    public void saveRelationships() {
+        // do nothing
     }
 
     @Override

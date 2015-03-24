@@ -29,7 +29,7 @@ public class GroupRoleDAO extends BaseBusinessDAO<GroupRoleModel> {
         super(context, GroupRoleModel.class);
     }
     
-    /** get a task that Links an employee to a group
+    /** get a task that counts links between a role and a group
      * @param groupID the group id
      * @param roleID the role id
      * @return the task object
@@ -38,7 +38,7 @@ public class GroupRoleDAO extends BaseBusinessDAO<GroupRoleModel> {
         return rowCount(getGroupRoleCriterion(groupID, roleID));
     }
     
-    /** get a task that Links an employee to a group
+    /** get a task that Links a role to a group
      * @param groupID the group id
      * @param roleID the role id
      * @return the task object
@@ -50,7 +50,7 @@ public class GroupRoleDAO extends BaseBusinessDAO<GroupRoleModel> {
         return add(model);
     }
 
-    /** get a task that Unlinks an employee from a group
+    /** get a task that Unlinks a role from a group
      * @param groupID the group id
      * @param roleID the role id
      * @return the task object

@@ -44,16 +44,23 @@ public class AvailabilityTemplate extends CachedObject {
                 _model.setName(_name);
                 _model.setEmployeeID(_owner.getID());
                 getDAO(AvailabilityTemplateDAO.class).update(_model);
+                super.save();
             } else {
                 _model = getDAO(AvailabilityTemplateDAO.class).add(_name, _owner.getID()).execute();
                 _model.setId(_model.getId());
                 for(Availability a : _components) {
                     a.save();
                 }
+                super.save();
             }
         } catch (HibernateException e) {
             logger.debug(e.getStackTrace());
         }
+    }
+    
+    @Override
+    public void saveRelationships() {
+        // do nothing
     }
 
     @Override
