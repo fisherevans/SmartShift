@@ -65,7 +65,7 @@
         </div>
         <div class="groupRoleName">{{role.name}}</div>
         <div class="groupRoleEmployees">
-            <div class="groupRoleEmployee appBlock fadeColorOpacity angular-animate ngAnimateFade" ng-repeat="(employeeID, employee) in manageGroupCtrl.group.roleEmployees[role.id] | orderObjectBy:'sortName'"
+            <div class="groupRoleEmployee appBlock fadeColorWidthOpacity" ng-repeat="(employeeID, employee) in manageGroupCtrl.group.roleEmployees[role.id] | orderObjectBy:'sortName'"
                  ng-class="{hover:manageGroupCtrl.employeeHover[employee.id]}" ng-mouseenter="manageGroupCtrl.employeeHover[employee.id] = true" ng-mouseleave="manageGroupCtrl.employeeHover[employee.id] = false"
                  smart-draggable drag-class="dragging" drag-data="{'employee':employee, 'oldRole':role, 'tasks':['add','removeOld']}">
                 <div ng-if="employee.justAddedRole" class="justAdded"></div>
