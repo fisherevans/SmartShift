@@ -14,6 +14,14 @@
 @-moz-keyframes    vertAccordOut { 0% { -moz-transform: scaleY(1); } 100% { -moz-transform: scaleY(0); } }
 @-webkit-keyframes vertAccordOut { 0% { -webkit-transform: scaleY(1); } 100% { -webkit-transform: scaleY(0); } }
 
+@keyframes         groupRoleEmployeeIn { 0% { margin-right: 0px; width:0px; } 100% { margin-right: 15px; width: 200px; } }
+@-moz-keyframes    groupRoleEmployeeIn { 0% { margin-right: 0px; width:0px; } 100% { margin-right: 15px; width: 200px; } }
+@-webkit-keyframes groupRoleEmployeeIn { 0% { margin-right: 0px; width:0px; } 100% { margin-right: 15px; width: 200px; } }
+
+@keyframes         groupRoleEmployeeOut { 0% { margin-right: 15px; width:200px; } 90% { margin-right: 0px; width: 0px; } }
+@-moz-keyframes    groupRoleEmployeeOut { 0% { margin-right: 15px; width:200px; } 90% { margin-right: 0px; width: 0px; } }
+@-webkit-keyframes groupRoleEmployeeOut { 0% { margin-right: 15px; width:200px; } 90% { margin-right: 0px; width: 0px; } }
+
 @keyframes         fadeInOut { 0% { opacity: 0; } 15% { opacity: 1; } 100% { opacity: 0; } }
 @-moz-keyframes    fadeInOut { 0% { opacity: 0; } 15% { opacity: 1; } 100% { opacity: 0; } }
 @-webkit-keyframes fadeInOut { 0% { opacity: 0; } 15% { opacity: 1; } 100% { opacity: 0; } }
@@ -46,6 +54,36 @@
     -webkit-animation: vertAccordOut 0.25s both ease-in;
     -moz-animation: vertAccordOut 0.25s both ease-in;
     animation: vertAccordOut 0.25s both ease-in;
+}
+
+.ngAnimateAccord.ng-enter {
+    -webkit-animation: vertAccordIn 0.25s both ease-in;
+    -moz-animation: vertAccordIn 0.25s both ease-in;
+    animation: vertAccordIn 0.25s both ease-in;
+}
+
+.groupRoleEmployee.ng-enter {
+    width: 0px;
+    opacity: 0;
+    margin-right: 0px;
+}
+
+.groupRoleEmployee.ng-enter.ng-enter-active {
+    width: 200px;
+    opacity: 1;
+    margin-right: 15px;
+}
+
+.groupRoleEmployee.ng-leave {
+    width: 200px;
+    opacity: 1;
+    margin-right: 15px;
+}
+
+.groupRoleEmployee.ng-leave.ng-leave-active {
+    width: 0px;
+    opacity: 0;
+    margin-right: 0px;
 }
 
 .justAdded {

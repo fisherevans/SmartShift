@@ -312,6 +312,10 @@
     padding: 15px;
 }
 
+.groupRoleEmployees {
+    padding-left: 15px;
+}
+
 .noGroupRoleEmployee {
     margin-left: 15px;
     margin-bottom: 15px;
@@ -322,7 +326,7 @@
     display: inline-block;
     height: 40px;
     width: 200px;
-    margin-left: 15px;
+    margin-right: 15px;
     margin-bottom: 15px;
     cursor: move;
 }

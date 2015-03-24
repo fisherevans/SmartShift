@@ -236,8 +236,8 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
                         var role = roles[update.role.id];
                         var employee = employees[update.employee.id];
                         switch(update.subType) {
-                            case "add": { groupRoleEmployeeAdded(group, role, employee); break; }
-                            case "delete": { groupRoleEmployeeRemoved(group, role, employee); break; }
+                            case "add": { console.log("Adding GRE"); groupRoleEmployeeAdded(group, role, employee); break; }
+                            case "delete": { console.log("Removing GRE"); groupRoleEmployeeRemoved(group, role, employee); break; }
                         }
                         break;
                     }
@@ -245,8 +245,8 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
                         var group = groups[update.group.id];
                         var role = roles[update.role.id];
                         switch(update.subType) {
-                            case "add": { groupRoleAdded(group, role); break; }
-                            case "delete": { groupRoleRemoved(group, role); break; }
+                            case "add": { console.log("Adding GR"); groupRoleAdded(group, role); break; }
+                            case "delete": { console.log("Removing GR"); groupRoleRemoved(group, role); break; }
                         }
                         break;
                     }
@@ -254,31 +254,31 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
                         var group = groups[update.group.id];
                         var employee = employees[update.employee.id];
                         switch(update.subType) {
-                            case "delete": { groupEmployeeRemoved(group, employee); break; }
+                            case "delete": { console.log("Removing GE"); groupEmployeeRemoved(group, employee); break; }
                         }
                         break;
                     }
                     case "group": {
                         switch(update.subType) {
-                            case "add": { groupSet(update.group); break; }
-                            case "update": { groupSet(update.group); break; }
-                            case "delete": { groupRemoved(update.group.id); break; }
+                            case "add": { console.log("Adding Group"); groupSet(update.group); break; }
+                            case "update": { console.log("Updating Group"); groupSet(update.group); break; }
+                            case "delete": { console.log("Removing Group"); groupRemoved(update.group.id); break; }
                         }
                         break;
                     }
                     case "employee": {
                         switch(update.subType) {
-                            case "add": { employeeSet(update.employee); break; }
-                            case "update": { employeeSet(update.employee); break; }
-                            case "delete": { employeeRemoved(update.employee.id); break; }
+                            case "add": { console.log("Adding Employee"); employeeSet(update.employee); break; }
+                            case "update": { console.log("Updating Employee"); employeeSet(update.employee); break; }
+                            case "delete": { console.log("Delete Employee"); employeeRemoved(update.employee.id); break; }
                         }
                         break;
                     }
                     case "role": {
                         switch(update.subType) {
-                            case "add": { roleSet(update.role); break; }
-                            case "update": { roleSet(update.role); break; }
-                            case "delete": { roleRemoved(update.role.id); break; }
+                            case "add": { console.log("Adding Role"); roleSet(update.role); break; }
+                            case "update": { console.log("Updating Role"); roleSet(update.role); break; }
+                            case "delete": { rconsole.log("Delete Role"); oleRemoved(update.role.id); break; }
                         }
                         break;
                     }

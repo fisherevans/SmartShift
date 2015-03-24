@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('smartsApp').config(function($animateProvider) {
-    $animateProvider.classNameFilter(/angular-animate/);
+    //$animateProvider.classNameFilter(/angular-animate/);
 });
 
 angular.module('smartsApp').filter('orderObjectBy', function() {

@@ -67,6 +67,14 @@
     transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
 }
 
+.fadeColorWidthOpacity {
+    -webkit-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, width 0.25s ease;
+    -moz-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, width 0.25s ease;
+    -ms-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, width 0.25s ease;
+    -o-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, width 0.25s ease;
+    transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, width 0.25s ease;
+}
+
 .fadeOpacity {
     -webkit-transition: opacity 0.25s ease;
        -moz-transition: opacity 0.25s ease;
@@ -85,10 +93,10 @@
 
 .fadeNav {
     -webkit-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
-       -moz-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
-        -ms-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
-         -o-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
-            transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
+    -moz-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
+    -ms-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
+    -o-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
+    transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
 }
 
 /** ------------------------------------------------------------------------ */
