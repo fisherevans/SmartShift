@@ -1,5 +1,6 @@
 package smartshift.business.hibernate.dao;
 
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.model.GroupRoleCapabilityID;
 import smartshift.business.hibernate.model.GroupRoleCapabilityModel;
@@ -7,6 +8,7 @@ import smartshift.common.hibernate.dao.tasks.AddTask;
 import smartshift.common.hibernate.dao.tasks.DeleteByCriteriaTask;
 import smartshift.common.hibernate.dao.tasks.DeleteByIDTask;
 import smartshift.common.hibernate.dao.tasks.ListTask;
+import smartshift.common.hibernate.dao.tasks.RowCountTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -36,15 +38,19 @@ public class GroupRoleCapabilityDAO extends BaseBusinessDAO<GroupRoleCapabilityM
     }
 
     /** get a task that Unlinks an employee from a group
-     * @param groupID the group id
-     * @param employeeID the employee id
+     * @param groupRoleID the group role id
+     * @param capability the capability id
      * @return the task object
      */
-    public AddTask<GroupRoleCapabilityModel> add(Integer groupRoleID, Integer capability) {
+    public AddTask<GroupRoleCapabilityModel> link(Integer groupRoleID, Integer capability) {
         GroupRoleCapabilityModel model = new GroupRoleCapabilityModel();
         model.setGroupRoleID(groupRoleID);
         model.setCapabilityID(capability);
         return add(model);
+    }
+    
+    public RowCountTask<GroupRoleCapabilityModel> linkCount(Integer groupRoleID, Integer capability) {
+        return rowCount(getGroupRoleCapabilityCriterion(groupRoleID, capability));
     }
     
     public DeleteByIDTask<GroupRoleCapabilityModel> remove(Integer groupRoleID, Integer capability) {
@@ -58,5 +64,9 @@ public class GroupRoleCapabilityDAO extends BaseBusinessDAO<GroupRoleCapabilityM
     @Override
     protected SmartLogger getLogger() {
         return logger;
+    }
+    
+    private Criterion[] getGroupRoleCapabilityCriterion(Integer groupRoleID, Integer capabilityID) {
+        return new Criterion[] { Restrictions.eq("groupRoleID", groupRoleID), Restrictions.eq("capabilityID", capabilityID) };
     }
 }

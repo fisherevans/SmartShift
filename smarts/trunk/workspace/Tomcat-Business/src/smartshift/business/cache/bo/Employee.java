@@ -5,9 +5,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import smartshift.business.hibernate.dao.AvailabilityInstanceDAO;
+import smartshift.business.hibernate.dao.AvailabilityTemplateDAO;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
+import smartshift.business.hibernate.dao.GroupEmployeeDAO;
+import smartshift.business.hibernate.model.AvailabilityInstanceModel;
+import smartshift.business.hibernate.model.AvailabilityTemplateModel;
 import smartshift.business.hibernate.model.EmployeeModel;
+import smartshift.business.hibernate.model.GroupEmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.common.rmi.RMIClient;
 import smartshift.common.rmi.interfaces.AccountsServiceInterface;
@@ -120,6 +126,30 @@ public class Employee extends CachedObject {
         }
     }
     
+    // --- AVAILABILITY
+    
+    private void initAvailabilities() {
+        try {
+            for(AvailabilityInstanceModel aim : getDAO(AvailabilityInstanceDAO.class).listByEmployee(getID()).execute()) {
+                _availabilities.add(AvailabilityInstance.load(getCache(), aim.getId()));
+            }
+        } catch(Exception e) {
+            logger.error("Failed to load availabilities", e);
+            throw e;
+        }
+    }
+    
+    private void initAvailabilityTemplates() {
+        try {
+            for(AvailabilityTemplateModel atm : getDAO(AvailabilityTemplateDAO.class).listByEmployee(getID()).execute()) {
+                _availabilityTemplates.add(AvailabilityTemplate.load(getCache(), atm.getId()));
+            }
+        } catch(Exception e) {
+            logger.error("Failed to load availability templates", e);
+            throw e;
+        }
+    }
+    
     // --- MISC
     
     public boolean manages(Employee other) {
@@ -174,6 +204,7 @@ public class Employee extends CachedObject {
                 _model.setDefaultGroupID(_homeGroup.getID());
                 _model.setActive(_active);
                 getDAO(EmployeeDAO.class).update(_model);
+                super.save();
             } else {
                 _homeGroup.save();
                 Integer id;
@@ -189,9 +220,19 @@ public class Employee extends CachedObject {
                 }
                 _model = getDAO(EmployeeDAO.class).add(id, _firstName, _lastName, _homeGroup.getID()).execute();
                 setID(id);
+                super.save();
             }
         } catch (Exception e) {
             logger.warn("Failed to save the employee!", e);
+        }
+    }
+    
+    @Override
+    public void saveRelationships() {
+        // save group employee
+        for(Group grp : _roles.keySet()) {
+            if(getDAO(GroupEmployeeDAO.class).linkCount(grp.getID(), getID()).execute() < 1)
+                getDAO(GroupEmployeeDAO.class).link(grp.getID(), getID()).execute();
         }
     }
 

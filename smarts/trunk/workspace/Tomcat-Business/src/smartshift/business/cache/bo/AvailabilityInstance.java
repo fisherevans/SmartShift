@@ -44,14 +44,21 @@ public class AvailabilityInstance extends CachedObject {
                 _model.setEndDate(_endDate.toDate());
                 _model.setTemplateID(_template.getID());
                 getDAO(AvailabilityInstanceDAO.class).update(_model);
+                super.save();
             } else {
                 _template.save();
                 _model = getDAO(AvailabilityInstanceDAO.class).add(_template.getID(), _startDate.toDate(), _endDate.toDate()).execute();
                 setID(_model.getId());
+                super.save();
             }
         } catch (Exception e) {
             logger.warn("Failed to save the availability instance!", e);
         }
+    }
+    
+    @Override
+    public void saveRelationships() {
+        // do nothing
     }
 
     @Override

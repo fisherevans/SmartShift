@@ -22,13 +22,20 @@ public class AvailabilityRepeatYearly extends AvailabilityRepeat{
                 _model.setMonth(_month);
                 _model.setDayOfMonth(_dayOfMonth);
                 getDAO(AvailabilityRepeatYearlyDAO.class).update(_model);
+                super.save();
             } else {
                 _model = getDAO(AvailabilityRepeatYearlyDAO.class).add(_month, _dayOfMonth).execute();
                 setID(_model.getId());
+                super.save();
             }
         } catch (HibernateException e) {
             getLogger().debug(e.getStackTrace());
         }
+    }
+    
+    @Override
+    public void saveRelationships() {
+        // do nothing
     }
     
     public void init(AvailabilityRepeatYearlyModel model) {

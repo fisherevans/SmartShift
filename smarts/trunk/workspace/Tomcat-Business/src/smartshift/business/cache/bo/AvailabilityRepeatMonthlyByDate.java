@@ -20,9 +20,11 @@ public class AvailabilityRepeatMonthlyByDate extends AvailabilityRepeat {
             if(_model != null) {
                 _model.setDayOfMonth(_dayOfMonth);
                 getDAO(AvailabilityRepeatMonthlyByDateDAO.class).update(_model);
+                super.save();
             } else {
                 _model = getDAO(AvailabilityRepeatMonthlyByDateDAO.class).add(_dayOfMonth).execute();
                 setID(_model.getId());
+                super.save();
             }
         } catch (HibernateException e) {
             getLogger().debug(e.getStackTrace());

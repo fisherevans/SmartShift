@@ -15,6 +15,11 @@ public abstract class AvailabilityRepeat extends CachedObject {
     public String typeCode() {
         return TYPE_IDENTIFIER;
     }
+    
+    @Override
+    public void saveRelationships() {
+        // do nothing
+    }
 
     @Override
     public void loadAllChildren() {
