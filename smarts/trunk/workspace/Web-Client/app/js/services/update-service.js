@@ -7,7 +7,7 @@ angular.module('smartsServices').factory('updateService', ['$q', '$timeout', '$r
             //    $timeout(pollForUpdates, $rootScope.api.updatePolling  * 1000);
             //}
             if(running) {
-                $timeout(pollForUpdates, 5  * 1000);
+                $timeout(pollForUpdates, 2  * 1000);
             }
         }
 
