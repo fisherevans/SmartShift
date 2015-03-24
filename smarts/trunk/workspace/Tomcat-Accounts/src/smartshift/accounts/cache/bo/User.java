@@ -126,4 +126,9 @@ public class User implements Stored {
         user.save();
         return user;
     }
+
+    @Override
+    public void saveRelationships() {
+        // do nothing
+    }
 }
