@@ -17,15 +17,17 @@ angular.module('smartsServices').factory('httpService', ['$http', '$q', '$rootSc
                 },
                 data: data
             };
+            $rootScope.api.waitingCalls++;
             var callID = httpService.httpCallID++;
-            //console.log("HTTP Call " + callID);
-            //console.log(request);
+            console.log("HTTP Call " + callID + " (" + $rootScope.api.waitingCalls + ")");
+            console.log(request);
             var defer = $q.defer();
             $http(request).then(
                 function(response, status, headers, config) {
-                    //console.log("HTTP Response (Success) " + callID);
-                    //console.log(response);
+                    console.log("HTTP Response (Success) " + callID);
+                    console.log(response);
                     defer.resolve(response.data);
+                    $rootScope.api.waitingCalls--;
                 },
                 function(response, status, headers, config) {
                     console.log("HTTP Response (Error) " + callID);
@@ -34,6 +36,7 @@ angular.module('smartsServices').factory('httpService', ['$http', '$q', '$rootSc
                         $rootScope.forceLogout();
                     }
                     defer.reject(response);
+                    $rootScope.api.waitingCalls--;
                 }
             );
             return defer.promise;

@@ -59,6 +59,8 @@
             </div>
             <div ng-view class="appContent angular-animate ngAnimateFade" ng-if="hasSession()"></div>
         </div>
+        <img class="loadingBox fadeOpacity" src="../global/images/loading.gif" ng-class="{active:mainCtrl.api.waitingCalls > 0}" />
+        <div class="preventInput" ng-show="mainCtrl.api.waitingCalls > 0"></div>
 
 
 

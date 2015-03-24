@@ -8,8 +8,10 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                 password: undefined,
                 sessionID: undefined,
                 accountsServer: 'http://lando.smartshift.info:6380',
-                businessServer: undefined
+                businessServer: undefined,
+                waitingCalls: 0
             };
+            mainController.api = $rootScope.api;
         };
 
         $scope.init = function(){
