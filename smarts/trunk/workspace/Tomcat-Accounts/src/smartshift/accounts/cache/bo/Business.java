@@ -71,4 +71,11 @@ public class Business implements Stored {
         }
         return businesses.get(busID);
     }
+
+    @Override
+    public void saveRelationships() {
+        // do nothing
+    }
+    
+    
 }
