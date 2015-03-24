@@ -9,7 +9,8 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                 sessionID: undefined,
                 accountsServer: 'http://lando.smartshift.info:6380',
                 businessServer: undefined,
-                waitingCalls: 0
+                waitingCalls: 0,
+                updatePolling: 5
             };
             mainController.api = $rootScope.api;
         };
@@ -66,6 +67,7 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                                     $cookieStore.put('username', $rootScope.api.username, {expires: expireDate});
                                     $cookieStore.put('sessionID', $rootScope.api.sessionID, {expires: expireDate});
                                     $cookieStore.put('businessServer', $rootScope.api.businessServer, {expires: expireDate});
+                                    $rootScope.api.updatePolling = 5;
                                     $route.reload();
                                 },
                                 function (result) {

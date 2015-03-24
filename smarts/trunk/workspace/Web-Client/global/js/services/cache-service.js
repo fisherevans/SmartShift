@@ -228,7 +228,8 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
 
         // CACHE UPDATES
         publicCacheService.parseUpdates = function(updates) {
-                angular.forEach(updates, function(update, arrID) {
+            angular.forEach(updates, function(update, arrID) {
+                console.log(update);
                 switch(update.type) {
                     case "group-role-employee": {
                         var group = groups[update.group.id];
