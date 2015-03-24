@@ -65,9 +65,10 @@ public class UpdateManager {
     public void debugPrint() {
         logger.debug("Business: " + _businessID);
         for(String session:_updates.keySet()) {
-            logger.debug("  Session: " + session);
+            UserSession userSession = UserSessionManager.getSession(session, false);
+            logger.debug("  Session: " + session + " - " + userSession.username);
             for(BaseUpdate update:_updates.get(session)) {
-                logger.debug("  Update: " + update);
+                logger.debug("    Update: " + update);
             }
         }
     }
