@@ -11,8 +11,6 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
         mngGrpCtrl.employees = cacheService.getEmployees();
         mngGrpCtrl.employeeHover = {};
 
-        console.log(mngGrpCtrl.group);
-
         mngGrpCtrl.addRoleSubmit = function() {
             $("#roleListAddRoleButton").prop("disabled", true);
             mngGrpCtrl.addRoleError = null;
