@@ -9,8 +9,8 @@ angular.module('smartsServices').factory('httpService', ['$http', '$q', '$rootSc
         httpService.httpRequest = function(server, password, method, path, data) {
             var request = {
                 method: method,
-                //url: 'http://localhost:8080' + path,
-                url: server + path,
+                url: 'http://localhost:8080' + path,
+                //url: server + path,
                 headers: {
                     'Authorization' : 'Basic ' + window.btoa($rootScope.api.username + ':' + password),
                     'Content-Type' : 'application/json'
@@ -18,13 +18,13 @@ angular.module('smartsServices').factory('httpService', ['$http', '$q', '$rootSc
                 data: data
             };
             var callID = httpService.httpCallID++;
-            console.log("HTTP Call " + callID);
-            console.log(request);
+            //console.log("HTTP Call " + callID);
+            //console.log(request);
             var defer = $q.defer();
             $http(request).then(
                 function(response, status, headers, config) {
-                    console.log("HTTP Response (Success) " + callID);
-                    console.log(response);
+                    //console.log("HTTP Response (Success) " + callID);
+                    //console.log(response);
                     defer.resolve(response.data);
                 },
                 function(response, status, headers, config) {

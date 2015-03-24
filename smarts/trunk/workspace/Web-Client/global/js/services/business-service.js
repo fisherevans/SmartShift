@@ -86,6 +86,9 @@ angular.module('smartsServices').factory('businessService', ['httpService', '$ro
                 employeeID: employeeID
             });
         };
+        businessService.deleteEmployee = function(employeeID) {
+            return httpService.business.delete('/business/employee/' + employeeID);
+        };
 
         return businessService;
     }

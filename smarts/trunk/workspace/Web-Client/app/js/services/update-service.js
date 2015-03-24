@@ -1,17 +1,20 @@
-angular.module('smartsServices').factory('updateService', ['$q', 'businessService', 'cacheService',
-    function($q, httpService, cacheService){
-        $interval(function() {
-            httpService.businessRequest('GET', '/updates').then(
-                function(response) {
-                    var updates = response.data;
-                    console.log("Got Updates:");
-                    console.log(updates);
-                    cacheService.parseUpdates(updates);
-                },
-                function(response) {
-                    console.log("Failed to poll updates! " + response.data.message);
+angular.module('smartsServices').factory('updateService', ['$q', '$interval', '$rootScope', 'httpService', 'cacheService',
+    function($q, $interval, $rootScope, httpService, cacheService) {
+        var running = false;
+        if (!running) {
+            running = true;
+            $interval(function () {
+                if($rootScope.api && $rootScope.api.sessionID && cacheService.isLoaded()) {
+                    httpService.businessRequest('GET', '/business/updates', {}).then(
+                        function (response) {
+                            cacheService.parseUpdates(response.data);
+                        },
+                        function (response) {
+                            console.log("Failed to poll updates! " + response.data.message);
+                        }
+                    );
                 }
-            );
-        }, 1000*10); // every 1 seconds
+            }, 1000 * 2); // every 10 seconds
+        }
     }
 ]);
