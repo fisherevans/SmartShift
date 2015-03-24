@@ -202,16 +202,18 @@ public class Group extends CachedObject {
     public void saveRelationships() {
         // save group roles
         for(Role r : _employees.keySet()) {
+            if(r.getID() <= 0)
+                continue;
             if(getDAO(GroupRoleDAO.class).linkCount(getID(), r.getID()).execute() < 1)
                 getDAO(GroupRoleDAO.class).link(getID(), r.getID()).execute();
             int groupRole = getDAO(GroupRoleDAO.class).uniqueByGroupRole(getID(), r.getID()).execute().getId();
             for(Employee e : _employees.get(r).getEmployees()) {
                 if(getDAO(GroupRoleEmployeeDAO.class).linkCount(groupRole, e.getID()).execute() < 1)
-                    getDAO(GroupRoleEmployeeDAO.class).link(groupRole, e.getID());
+                    getDAO(GroupRoleEmployeeDAO.class).link(groupRole, e.getID()).execute();
             }
             for(Integer c : _employees.get(r).getCapabilities()) {
                 if(getDAO(GroupRoleCapabilityDAO.class).linkCount(groupRole, c).execute() < 1)
-                    getDAO(GroupRoleCapabilityDAO.class).link(groupRole, c);
+                    getDAO(GroupRoleCapabilityDAO.class).link(groupRole, c).execute();
             }
         }
     }

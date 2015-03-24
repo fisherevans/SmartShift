@@ -139,9 +139,15 @@ public class Cache {
     }
 
     public void save() {
+        logger.info("Saving all cached objects (" + _cached.size() + ") for business " + _rootBusID);
+        double size = _cached.size();
+        int id = 0, incr = (int)(size/5);
         for(Reference<CachedObject> co : _cached.values()) {
+            if(id++ % incr == 0)
+                logger.info(String.format("  Business %d - %.2f%% done", _rootBusID, id/size));
             co.get().save();
         }
+        logger.info("Saving complete for business " + _rootBusID);
         clean();
     }
     
