@@ -144,7 +144,7 @@ public class Cache {
         int id = 0, incr = (int)(size/5);
         for(Reference<CachedObject> co : _cached.values()) {
             if(id++ % incr == 0)
-                logger.info(String.format("  Business %d - %.2f%% done", _rootBusID, id/size));
+                logger.info(String.format("  Business %d - %.2f%% done", _rootBusID, id/size*100.0));
             co.get().save();
         }
         logger.info("Saving complete for business " + _rootBusID);
