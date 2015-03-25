@@ -7,6 +7,7 @@ import java.util.Set;
 import org.hibernate.HibernateException;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
+import smartshift.business.hibernate.dao.GroupEmployeeDAO;
 import smartshift.business.hibernate.dao.GroupRoleCapabilityDAO;
 import smartshift.business.hibernate.dao.GroupRoleDAO;
 import smartshift.business.hibernate.dao.GroupRoleEmployeeDAO;
@@ -50,7 +51,10 @@ public class Group extends CachedObject {
     }
     
     public void setName(String name) {
-        _name = name;
+        synchronized(getCache().getDAOContext()) {
+            _name = name;
+            getDAO(GroupDAO.class).update(_model).enqueue();
+        }
     }
 
     public String getName() {
@@ -60,9 +64,12 @@ public class Group extends CachedObject {
     public void setParent(Group parent) {
         if(_parent != null)
             _parent.childRemoved(this);
-        _parent = parent;
-        if(_parent != null)
-            _parent.childAdded(this);
+        synchronized(getCache().getDAOContext()) {
+            _parent = parent;
+            if(_parent != null)
+                _parent.childAdded(this);
+            getDAO(GroupDAO.class).update(_model).enqueue();
+        }
     }
     
     public Group getParent() {
@@ -70,7 +77,10 @@ public class Group extends CachedObject {
     }
 
     public void setActive(Boolean active) {
-        _active = active;
+        synchronized(getCache().getDAOContext()) {
+            _active = active;
+            getDAO(GroupDAO.class).update(_model).enqueue();
+        }
     }
     
     public Boolean getActive() {
@@ -94,8 +104,12 @@ public class Group extends CachedObject {
     // --- Roles
 
     public void addRole(Role role) {
-        if(!hasRole(role))
-            _employees.put(role, new GroupRole());
+        if(!hasRole(role)) {
+            synchronized(getCache().getDAOContext()) {
+                Integer grID = getDAO(GroupRoleDAO.class).link(getID(), role.getID()).execute().getId();
+                _employees.put(role, new GroupRole(grID));
+            }
+        }
     }
     
     public ROCollection<Role> getRoles() {
@@ -107,11 +121,14 @@ public class Group extends CachedObject {
     }
     
     public void removeRole(Role role) {
-        ROCollection<Employee> roleEmployees = _employees.get(role).getEmployees();
-        if(roleEmployees != null) {
-            for(Employee employee:roleEmployees)
+        GroupRole groupRole = _employees.get(role);
+        if(groupRole != null) {
+            for(Employee employee:groupRole.getEmployees())
                 removeRoleEmployee(role, employee);
-            _employees.remove(role);
+            synchronized(getCache().getDAOContext()) {
+                _employees.remove(role);
+                getDAO(GroupRoleDAO.class).deleteByID(groupRole.getID());
+            }
         }
         
     }
@@ -121,8 +138,12 @@ public class Group extends CachedObject {
     public void addRoleCapability(Role role, Integer capabilityID) {
         if(!hasRole(role))
             throw new RuntimeException(String.format("Group:%d does not have the Role:%d to set capability for.", getID(), role.getID()));
-        _employees.get(role).addCapability(capabilityID);
-        role.capabilityAdded(this, capabilityID);
+        synchronized(getCache().getDAOContext()) {
+            GroupRole groupRole = _employees.get(role);
+            groupRole.addCapability(capabilityID);
+            role.capabilityAdded(this, capabilityID);
+            getDAO(GroupRoleCapabilityDAO.class).link(groupRole.getID(), capabilityID).enqueue();
+        }
     }
     
     public boolean hasRoleCapability(Role role, Integer capabilityID) {
@@ -136,8 +157,12 @@ public class Group extends CachedObject {
     public void addRoleEmployee(Role role, Employee employee) {
         if(!hasRole(role))
             throw new RuntimeException(String.format("Group:%d does not have the Role:%d to add employee too.", getID(), role.getID()));
-        _employees.get(role).addEmployee(employee);
-        employee.groupRoleAdded(this, role);
+        synchronized(getCache().getDAOContext()) {
+            GroupRole groupRole = _employees.get(role);
+            groupRole.addEmployee(employee);
+            employee.groupRoleAdded(this, role);
+            getDAO(GroupRoleEmployeeDAO.class).link(groupRole.getID(), employee.getID());
+        }
     }
     
     public ROCollection<Employee> getRoleEmployees(Role role) {
@@ -147,8 +172,11 @@ public class Group extends CachedObject {
     public void removeRoleEmployee(Role role, Employee employee) {
         GroupRole groupRole = _employees.get(role);
         if(groupRole != null) {
-            groupRole.removeEmployee(employee);
-            employee.groupRoleRemoved(this, role);
+            synchronized(getCache().getDAOContext()) {
+                groupRole.removeEmployee(employee);
+                employee.groupRoleRemoved(this, role);
+                getDAO(GroupRoleEmployeeDAO.class).unlink(groupRole.getID(), employee.getID()).enqueue();
+            }
         }
     }
     
@@ -158,10 +186,12 @@ public class Group extends CachedObject {
         if(equals(employee.getHomeGroup()))
             throw new RuntimeException(String.format("Employee:%d has a parent group of %d, so cannot remove from %d",
                     employee.getID(), employee.getHomeGroup().getID(), this.getID()));
-        for(Role role:_employees.keySet()) {
+        for(Role role:_employees.keySet())
             removeRoleEmployee(role, employee);
+        synchronized(getCache().getDAOContext()) {
+            employee.groupRemoved(this);
+            getDAO(GroupEmployeeDAO.class).unlink(getID(), employee.getID()).enqueue();
         }
-        employee.groupRemoved(this);
     }
     
     // --- Misc
@@ -289,13 +319,20 @@ public class Group extends CachedObject {
     }
 
     private static class GroupRole {
+        private final Integer _id;
+        
         private Set<Employee> _employees;
         
         private Set<Integer> _capabilities;
         
-        public GroupRole() {
+        public GroupRole(Integer id) {
+            _id = id;
             _employees = new HashSet<>();
             _capabilities = new HashSet<>();
+        }
+        
+        public Integer getID() {
+            return _id;
         }
         
         public void addEmployee(Employee employee) {
