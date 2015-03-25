@@ -1,6 +1,6 @@
 package smartshift.business.hibernate.dao;
 
-import org.hibernate.Session;
+import smartshift.business.hibernate.BusinessDAOContext;
 import smartshift.common.hibernate.dao.BaseDAO;
 
 /** the base object for all business DAOs.
@@ -9,29 +9,11 @@ import smartshift.common.hibernate.dao.BaseDAO;
  * @param <T> the model type of this dao
  */
 public abstract class BaseBusinessDAO<T> extends BaseDAO<T> {
-    private BusinessDAOContext context;
-
     /** creates the dao
      * @param context the business dao context
      * @param modelClass the model class of this dao
      */
     public BaseBusinessDAO(BusinessDAOContext context, Class<T> modelClass) {
-        super(modelClass);
-        this.context = context;
-    }
-
-    /**
-     * @see smartshift.common.hibernate.dao.BaseDAO#getSession()
-     */
-    @Override
-    public Session getSession() {
-        return context.getBusinessSession();
-    }
-    
-    /** get this daos context
-     * @return the business dao context
-     */
-    public BusinessDAOContext getContext() {
-        return context;
+        super(context, modelClass);
     }
 }

@@ -1,6 +1,7 @@
 package smartshift.business.hibernate.dao;
 
 import org.hibernate.criterion.Restrictions;
+import smartshift.business.hibernate.BusinessDAOContext;
 import smartshift.business.hibernate.model.AvailabilityRepeatInterface;
 import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDateModel;
 import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDayModel;

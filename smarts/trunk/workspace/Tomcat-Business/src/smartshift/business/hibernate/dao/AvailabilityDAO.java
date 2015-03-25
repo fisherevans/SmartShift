@@ -1,6 +1,7 @@
 package smartshift.business.hibernate.dao;
 
 import org.hibernate.criterion.Restrictions;
+import smartshift.business.hibernate.BusinessDAOContext;
 import smartshift.business.hibernate.model.AvailabilityModel;
 import smartshift.common.hibernate.dao.tasks.AddTask;
 import smartshift.common.hibernate.dao.tasks.ListTask;

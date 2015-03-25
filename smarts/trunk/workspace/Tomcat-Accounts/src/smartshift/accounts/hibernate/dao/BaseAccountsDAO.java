@@ -1,6 +1,7 @@
 package smartshift.accounts.hibernate.dao;
 
 import org.hibernate.Session;
+import smartshift.accounts.hibernate.AccountsDAOContext;
 import smartshift.common.hibernate.HibernateFactory;
 import smartshift.common.hibernate.dao.BaseDAO;
 import smartshift.common.util.properties.AppConstants;
@@ -12,13 +13,12 @@ import smartshift.common.util.properties.AppConstants;
  *
  */
 public abstract class BaseAccountsDAO<T> extends BaseDAO<T> {
-    
     /**
      * Initializes the object.
      * @param modelClass
      */
     public BaseAccountsDAO(Class<T> modelClass) {
-        super(modelClass);
+        super(AccountsDAOContext.getInstance(), modelClass);
     }
 
     /**

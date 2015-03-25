@@ -4,6 +4,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import smartshift.common.hibernate.DBAction;
 import smartshift.common.hibernate.dao.BaseDAO;
+import smartshift.common.hibernate.dao.HibernateTaskQueue;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -15,7 +16,7 @@ import smartshift.common.util.log4j.SmartLogger;
 public abstract class BaseHibernateTask<T1, T2> {
     private static final SmartLogger logger = new SmartLogger(BaseHibernateTask.class);
     
-    private BaseDAO<T1> _dao;
+    private final BaseDAO<T1> _dao;
     
     /**
      * Initializes the object.
@@ -52,6 +53,18 @@ public abstract class BaseHibernateTask<T1, T2> {
             action.rolback();
             throw e;
         }
+    }
+    
+    public void enqueue() {
+        HibernateTaskQueue.getQueue(_dao.getDAOContext()).enqueueTask(this);
+    }
+    
+    /** compares this task to another task and detirmines if they cancle themselves out
+     * @param otherTask the other task to compare.
+     * @return true if this task and the other cancel each other out
+     */
+    public boolean cancelsOut(BaseHibernateTask otherTask) {
+        return false;
     }
     
     protected BaseDAO<T1> getDAO() {

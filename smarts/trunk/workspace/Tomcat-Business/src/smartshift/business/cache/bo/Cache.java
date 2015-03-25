@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.hibernate.Session;
-import smartshift.business.hibernate.dao.BusinessDAOContext;
+import smartshift.business.hibernate.BusinessDAOContext;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
 import smartshift.business.hibernate.model.EmployeeModel;
@@ -135,7 +135,7 @@ public class Cache {
     }
     
     public Session getBusinessSession() {
-        return getDAOContext().getBusinessSession();
+        return getDAOContext().getSession();
     }
 
     public void save() {

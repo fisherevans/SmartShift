@@ -2,6 +2,7 @@ package smartshift.business.hibernate.dao;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import smartshift.business.hibernate.BusinessDAOContext;
 import smartshift.business.hibernate.model.GroupRoleCapabilityID;
 import smartshift.business.hibernate.model.GroupRoleCapabilityModel;
 import smartshift.common.hibernate.dao.tasks.AddTask;

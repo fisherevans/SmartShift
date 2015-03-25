@@ -4,6 +4,7 @@ import java.io.Serializable;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
+import smartshift.common.hibernate.DAOContext;
 import smartshift.common.hibernate.dao.tasks.AddTask;
 import smartshift.common.hibernate.dao.tasks.DeleteByCriteriaTask;
 import smartshift.common.hibernate.dao.tasks.DeleteByIDTask;
@@ -23,13 +24,16 @@ import smartshift.common.util.log4j.SmartLogger;
  *
  */
 public abstract class BaseDAO<T> {
+    private DAOContext _daoContext;
+    
     private final Class<T> _modelClass;
     
     /**
      * Initializes the object.
      * @param modelClass
      */
-    public BaseDAO(Class<T> modelClass) {
+    public BaseDAO(DAOContext daoContext, Class<T> modelClass) {
+        _daoContext = daoContext;
         _modelClass = modelClass;
     }
     
@@ -146,9 +150,16 @@ public abstract class BaseDAO<T> {
     /**
      * @return creates and returns a new session based on this dao's context
      */
-    public abstract Session getSession();
+    public Session getSession() {
+        return _daoContext.getSession();
+    }
     
-    protected abstract SmartLogger getLogger();
+    /**
+     * @return this DAO's context
+     */
+    public DAOContext getDAOContext() {
+        return _daoContext;
+    }
     
     /**
      * @return the model class this dao fetches
@@ -156,6 +167,8 @@ public abstract class BaseDAO<T> {
     public Class<T> getModelClass() {
         return _modelClass;
     }
+    
+    protected abstract SmartLogger getLogger();
     
     /**
      * @author "D. Fisher Evans <contact@fisherevans.com>"

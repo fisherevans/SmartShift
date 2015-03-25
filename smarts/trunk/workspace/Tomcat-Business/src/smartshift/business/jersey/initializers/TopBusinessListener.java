@@ -2,9 +2,11 @@ package smartshift.business.jersey.initializers;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import org.quartz.JobDataMap;
 import smartshift.business.cache.bo.Cache;
 import smartshift.business.quartz.jobs.AccountsConnectionJob;
 import smartshift.business.quartz.jobs.SessionCleanupJob;
+import smartshift.common.hibernate.dao.HibernateTaskQueue;
 import smartshift.common.quartz.QuartzHelper;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
@@ -22,8 +24,12 @@ public class TopBusinessListener implements ServletContextListener {
      */
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        QuartzHelper.createRepeatingJob(AccountsConnectionJob.class, "accountsConnection", AppConstants.QUARTZ_BUSINESS_GROUP, "rmi.connection.polling", 60);
-        QuartzHelper.createRepeatingJob(SessionCleanupJob.class, "sessionCleanup", AppConstants.QUARTZ_BUSINESS_GROUP, "sessions.polling", 60);
+        QuartzHelper.createRepeatingJob(AccountsConnectionJob.class,
+                "accountsConnection", AppConstants.QUARTZ_BUSINESS_GROUP,
+                "rmi.connection.polling", 60, new JobDataMap());
+        QuartzHelper.createRepeatingJob(SessionCleanupJob.class,
+                "sessionCleanup", AppConstants.QUARTZ_BUSINESS_GROUP,
+                "sessions.polling", 60, new JobDataMap());
     }
 
     /**
@@ -31,6 +37,7 @@ public class TopBusinessListener implements ServletContextListener {
      */
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        HibernateTaskQueue.closeAllQueues();
         QuartzHelper.stopAllJobs();
         Cache.saveAllCaches();
     }

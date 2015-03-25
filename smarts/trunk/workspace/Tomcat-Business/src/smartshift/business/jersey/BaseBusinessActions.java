@@ -6,7 +6,7 @@ import smartshift.business.cache.bo.Cache;
 import smartshift.business.cache.bo.Employee;
 import smartshift.business.cache.bo.Group;
 import smartshift.business.cache.bo.Role;
-import smartshift.business.hibernate.dao.BusinessDAOContext;
+import smartshift.business.hibernate.BusinessDAOContext;
 import smartshift.business.updates.BaseUpdate;
 import smartshift.business.updates.UpdateManager;
 import smartshift.common.jersey.BaseActions;
