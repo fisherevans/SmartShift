@@ -18,6 +18,10 @@ import smartshift.common.quartz.QuartzHelper;
 import smartshift.common.quartz.jobs.SaveHibernateTaskQueueJob;
 import smartshift.common.util.log4j.SmartLogger;
 
+/**
+ * @author fevans
+ * used to queue db tasks
+ */
 public class HibernateTaskQueue {
     private static final SmartLogger logger = new SmartLogger(HibernateTaskQueue.class);
     
@@ -35,12 +39,19 @@ public class HibernateTaskQueue {
     
     private final DAOContext _daoContext;
     
+    /** creates the queue
+     * @param daoContext the dao context to run the tasks on
+     */
     public HibernateTaskQueue(DAOContext daoContext) {
         _daoContext = daoContext;
         _incomingTasks = new LinkedList<>();
         _scheduledTasks = new ArrayList<>();
     }
     
+    /** enqueues a task
+     * @param baseTask the task to add
+     */
+    @SuppressWarnings("rawtypes")
     public void enqueueTask(BaseHibernateTask baseTask) {
         synchronized(ADD_LOCK) {
             if(!active)
@@ -50,12 +61,20 @@ public class HibernateTaskQueue {
         }
     }
     
+    /**
+     * processes all adds
+     * runs all scheduled tasks
+     */
     public void processAllTasks() {
         processAddedTasks();
         processScheduledTasks();
         logger.info("DB task queue has been flushed to the DB for: " + _daoContext.getContextID());
     }
     
+    /**
+     * runs through the add queue, and checks for any that may cancel out an existing task. if it does, removed both
+     * adds remaining to schedule queue (to be run)
+     */
     public void processAddedTasks() {
         logger.info("Processing added tasks for: " + _daoContext.getContextID());
         List<EnqueuedTaskWrapper> incommingTasks = null;
@@ -64,6 +83,7 @@ public class HibernateTaskQueue {
             _incomingTasks = new LinkedList<>();
         }
         synchronized(SCHEDULE_LOCK) {
+            @SuppressWarnings("rawtypes")
             BaseHibernateTask incommingTask, baseTaskSched;
             for(EnqueuedTaskWrapper incommingWrapper:incommingTasks) {
                 incommingTask = incommingWrapper.getTask();
@@ -84,6 +104,9 @@ public class HibernateTaskQueue {
         }
     }
     
+    /**
+     * actually runs all tasks that are scheduled to run
+     */
     public void processScheduledTasks() {
         logger.info("Running scheduled tasks for: " + _daoContext.getContextID());
         synchronized(SCHEDULE_LOCK) {
@@ -117,6 +140,11 @@ public class HibernateTaskQueue {
         }
     }
     
+    /**
+     * sets the queue to inactive - preventing any additional tasks from being added
+     * processes any remaining add
+     * runs and scheduled tasks
+     */
     public void closeQueue() {
         synchronized(ADD_LOCK) {
             synchronized(SCHEDULE_LOCK) {
@@ -128,18 +156,31 @@ public class HibernateTaskQueue {
         processScheduledTasks();
     }
     
+    /**
+     * @return the dao context
+     */
     public DAOContext getDaoContext() {
         return _daoContext;
     }
 
+    /**
+     * @return the job key corresponding to the job that runs this queue
+     */
     public JobKey getJobKey() {
         return _jobKey;
     }
 
+    /**
+     * @param jobKey set the job key
+     */
     public void setJobKey(JobKey jobKey) {
         _jobKey = jobKey;
     }
 
+    /**
+     * @param context the dao context for the queue you're after
+     * @return the queue object
+     */
     public static final HibernateTaskQueue getQueue(DAOContext context) {
         if(queues == null)
             queues = new HashMap<>();
@@ -157,6 +198,9 @@ public class HibernateTaskQueue {
         return queue;
     }
     
+    /**
+     * runs closeQueue() on all queues
+     */
     public static final void closeAllQueues() {
         if(queues == null)
             return;
@@ -165,7 +209,8 @@ public class HibernateTaskQueue {
             queue.closeQueue();
         }
     }
-    
+
+    @SuppressWarnings("rawtypes")
     private static class EnqueuedTaskWrapper implements Comparable<EnqueuedTaskWrapper> {
         private final BaseHibernateTask _task;
         

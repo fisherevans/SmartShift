@@ -1,5 +1,6 @@
 package smartshift.common.quartz;
 
+import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
@@ -13,11 +14,20 @@ import org.quartz.impl.StdSchedulerFactory;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppProperties;
 
+/**
+ * @author fevans
+ * helps with creating and deleting jobs
+ *
+ */
 public class QuartzHelper {
     private static final SmartLogger logger = new SmartLogger(QuartzHelper.class);
     
     private static StdSchedulerFactory _schedFactory = null;
     
+    /**
+     * deletes a job with a given key
+     * @param key the job key to delete
+     */
     public static void unscheduleJob(JobKey key) {
         try {
             for(Scheduler scheduler:_schedFactory.getAllSchedulers()) {
@@ -28,12 +38,29 @@ public class QuartzHelper {
         }
     }
     
-    public static JobKey createRepeatingJob(Class jobClass, String jobName, String jobGroup, String timeoutProperty, Integer defaultTimeout, JobDataMap jobData) {
+    /** creates a job
+     * @param jobClass the class of the job
+     * @param jobName the job name
+     * @param jobGroup the group the job belongs to
+     * @param timeoutProperty the AppProperty key to check for the timeout value
+     * @param defaultTimeout the default period to repeat on
+     * @param jobData the data to pass the job detail
+     * @return the job key used to reference the created job
+     */
+    public static JobKey createRepeatingJob(Class<? extends Job> jobClass, String jobName, String jobGroup, String timeoutProperty, Integer defaultTimeout, JobDataMap jobData) {
         Integer timeout = AppProperties.getIntegerProperty(timeoutProperty, defaultTimeout);
         return QuartzHelper.createRepeatingJob(jobClass, jobName, jobGroup, timeout, jobData);
     }
-    
-    public static JobKey createRepeatingJob(Class jobClass, String jobName, String jobGroup, Integer timeout, JobDataMap jobData) {
+
+    /** creates a job
+     * @param jobClass the class of the job
+     * @param jobName the job name
+     * @param jobGroup the group the job belongs to
+     * @param timeout the period to repeat on
+     * @param jobData the data to pass the job detail
+     * @return the job key used to reference the created job
+     */
+    public static JobKey createRepeatingJob(Class<? extends Job> jobClass, String jobName, String jobGroup, Integer timeout, JobDataMap jobData) {
         try {
             logger.info(String.format("Creating repeating job: %s - %s.%s - %d", jobClass, jobName, jobGroup, timeout));
             JobKey key = getJobKey(jobName + "Job", jobGroup);
@@ -56,18 +83,29 @@ public class QuartzHelper {
         }
     }
     
+    /** schedules a new job
+     * @param job the details of the job
+     * @param trigger the trigger
+     * @throws SchedulerException if there's an error
+     */
     public static void scheduleJob(JobDetail job, Trigger trigger) throws SchedulerException {
         Scheduler scheduler = getScheduler();
         scheduler.scheduleJob(job, trigger);
         scheduler.start();
     }
     
+    /**
+     * @return the scheduler factory
+     */
     public static StdSchedulerFactory getFactory() {
         if(_schedFactory == null)
             _schedFactory = new StdSchedulerFactory();
         return _schedFactory;
     }
     
+    /**
+     * @return a newly created scheduler
+     */
     public static Scheduler getScheduler() {
         try {
             Scheduler scheduler = getFactory().getScheduler();
@@ -78,6 +116,9 @@ public class QuartzHelper {
         }
     }
     
+    /**
+     * stop all jobs accross all schedulers
+     */
     public static void stopAllJobs() {
         if(_schedFactory == null) {
             logger.warn("Scheduler was null - no way to stop jobs.");
