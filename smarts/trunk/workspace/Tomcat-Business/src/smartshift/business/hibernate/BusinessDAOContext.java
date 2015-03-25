@@ -1,8 +1,10 @@
-package smartshift.business.hibernate.dao;
+package smartshift.business.hibernate;
 
 import java.util.HashMap;
 import java.util.Map;
 import org.hibernate.Session;
+import smartshift.business.hibernate.dao.BaseBusinessDAO;
+import smartshift.common.hibernate.DAOContext;
 import smartshift.common.hibernate.HibernateFactory;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
@@ -10,15 +12,15 @@ import smartshift.common.util.properties.AppConstants;
 /** context for DAOs per business
  * @author D. Fisher Evans <contact@fisherevans.com>
  */
-public class BusinessDAOContext {
+public class BusinessDAOContext implements DAOContext {
     private static final SmartLogger logger = new SmartLogger(BusinessDAOContext.class);
     
     private static Map<Integer, BusinessDAOContext> contexts = new HashMap<>();
     
-    private Integer businessID;
+    private final Integer businessID;
     
     @SuppressWarnings("rawtypes")
-    private Map<Class, BaseBusinessDAO> daos = new HashMap<>();
+    private final Map<Class, BaseBusinessDAO> daos = new HashMap<>();
     
     /** creates a context with a businessID
      * @param businessID
@@ -37,7 +39,8 @@ public class BusinessDAOContext {
     /**
      * @return the hibernate session for this business's schema
      */
-    public Session getBusinessSession() {
+    @Override
+    public Session getSession() {
         return HibernateFactory.getSession(AppConstants.DB_SCHEMA_BUSINESS_BASE + getBusinessID());
     }
 
@@ -83,5 +86,10 @@ public class BusinessDAOContext {
     @SuppressWarnings("rawtypes")
     public static <T extends BaseBusinessDAO> T businesDAO(Integer businessID, Class<T> clazz) {
         return business(businessID).dao(clazz);
+    }
+    
+    @Override
+    public Object getContextID() {
+        return businessID;
     }
 }

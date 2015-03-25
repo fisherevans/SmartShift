@@ -1,5 +1,6 @@
 package smartshift.business.hibernate.dao;
 
+import smartshift.business.hibernate.BusinessDAOContext;
 import smartshift.business.hibernate.model.EmployeeScheduleModel;
 import smartshift.common.util.log4j.SmartLogger;
 

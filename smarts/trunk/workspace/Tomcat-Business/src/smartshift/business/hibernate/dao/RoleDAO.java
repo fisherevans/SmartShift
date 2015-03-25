@@ -1,5 +1,6 @@
 package smartshift.business.hibernate.dao;
 
+import smartshift.business.hibernate.BusinessDAOContext;
 import smartshift.business.hibernate.model.RoleModel;
 import smartshift.common.hibernate.dao.tasks.AddTask;
 import smartshift.common.hibernate.dao.tasks.ListNamedQueryTask;

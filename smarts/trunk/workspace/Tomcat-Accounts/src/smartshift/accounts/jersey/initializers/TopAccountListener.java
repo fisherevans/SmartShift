@@ -4,6 +4,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import smartshift.accounts.hibernate.dao.AccountsDAOContext;
 import smartshift.accounts.hibernate.dao.NextIDDAO;
+import smartshift.common.hibernate.dao.HibernateTaskQueue;
 
 /**
  * A servlet to clean up resource before the system is brought down
@@ -24,6 +25,7 @@ public class TopAccountListener implements ServletContextListener {
      */
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
+        HibernateTaskQueue.closeAllQueues();
         AccountsDAOContext.dao(NextIDDAO.class).saveNextIDs();
     }
 

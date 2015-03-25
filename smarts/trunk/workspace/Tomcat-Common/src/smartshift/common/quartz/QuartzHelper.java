@@ -1,7 +1,9 @@
 package smartshift.common.quartz;
 
 import org.quartz.JobBuilder;
+import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
+import org.quartz.JobKey;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleScheduleBuilder;
@@ -16,16 +18,30 @@ public class QuartzHelper {
     
     private static StdSchedulerFactory _schedFactory = null;
     
-    public static void createRepeatingJob(Class jobClass, String jobName, String jobGroup, String timeoutProperty, Integer defaultTimeout) {
-        Integer timeout = AppProperties.getIntegerProperty(timeoutProperty, defaultTimeout);
-        QuartzHelper.createRepeatingJob(jobClass, jobName, jobGroup, timeout);
+    public static void unscheduleJob(JobKey key) {
+        try {
+            for(Scheduler scheduler:_schedFactory.getAllSchedulers()) {
+                    scheduler.deleteJob(key);
+            }
+        } catch(SchedulerException e) {
+            logger.fatal("Failed to stop job: " + key, e);
+        }
     }
     
-    public static void createRepeatingJob(Class jobClass, String jobName, String jobGroup, Integer timeout) {
+    public static JobKey createRepeatingJob(Class jobClass, String jobName, String jobGroup, String timeoutProperty, Integer defaultTimeout, JobDataMap jobData) {
+        Integer timeout = AppProperties.getIntegerProperty(timeoutProperty, defaultTimeout);
+        return QuartzHelper.createRepeatingJob(jobClass, jobName, jobGroup, timeout, jobData);
+    }
+    
+    public static JobKey createRepeatingJob(Class jobClass, String jobName, String jobGroup, Integer timeout, JobDataMap jobData) {
         try {
             logger.info(String.format("Creating repeating job: %s - %s.%s - %d", jobClass, jobName, jobGroup, timeout));
-            JobDetail jobDetail = JobBuilder.newJob(jobClass)
-                .withIdentity(jobName + "Job", jobGroup).build();
+            JobKey key = getJobKey(jobName + "Job", jobGroup);
+            JobDetail jobDetail = JobBuilder
+                    .newJob(jobClass)
+                    .withIdentity(key)
+                    .setJobData(jobData)
+                    .build();
             Trigger trigger = TriggerBuilder
                     .newTrigger()
                     .withIdentity(jobName + "Trigger", jobGroup)
@@ -33,11 +49,12 @@ public class QuartzHelper {
                     .withIntervalInSeconds(timeout).repeatForever())
                     .build();
             scheduleJob(jobDetail, trigger);
+            return key;
         } catch(Exception e) {
             logger.error("Failed to start repeating job: " + jobName, e);
+            return null;
         }
     }
-    
     
     public static void scheduleJob(JobDetail job, Trigger trigger) throws SchedulerException {
         Scheduler scheduler = getScheduler();
@@ -75,5 +92,9 @@ public class QuartzHelper {
         } catch(SchedulerException e) {
             logger.error("Failed to cancel Job!", e);
         }
+    }
+    
+    private static JobKey getJobKey(String name, String group) {
+        return new JobKey(name + "Job", group);
     }
 }

@@ -6,7 +6,7 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.ext.Provider;
 import smartshift.business.cache.bo.Cache;
 import smartshift.business.cache.bo.Employee;
-import smartshift.business.hibernate.dao.BusinessDAOContext;
+import smartshift.business.hibernate.BusinessDAOContext;
 import smartshift.business.security.session.UserSessionManager;
 import smartshift.common.jersey.providers.AbstractAuthFilter;
 import smartshift.common.security.session.UserSession;
