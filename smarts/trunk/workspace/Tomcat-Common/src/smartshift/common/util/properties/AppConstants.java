@@ -18,8 +18,14 @@ public class AppConstants {
     
     // TRUE CONSTANTS
     
+    /**
+     * the next id name for employees
+     */
     public static final String NEXT_ID_NAME_EMPLOYEE = "employee";
     
+    /**
+     * the group used for business jobs
+     */
     public static final String QUARTZ_BUSINESS_GROUP = "businessJobs";
     
     // NON-PROPERTY CONSTANTS

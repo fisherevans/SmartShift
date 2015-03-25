@@ -88,6 +88,9 @@ public class BusinessDAOContext implements DAOContext {
         return business(businessID).dao(clazz);
     }
     
+    /**
+     * see DAOContext.getContextID()
+     */
     @Override
     public Object getContextID() {
         return businessID;

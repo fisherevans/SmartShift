@@ -30,6 +30,7 @@ public abstract class BaseDAO<T> {
     
     /**
      * Initializes the object.
+     * @param daoContext 
      * @param modelClass
      */
     public BaseDAO(DAOContext daoContext, Class<T> modelClass) {

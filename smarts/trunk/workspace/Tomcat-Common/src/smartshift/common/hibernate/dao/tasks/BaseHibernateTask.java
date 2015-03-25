@@ -55,6 +55,9 @@ public abstract class BaseHibernateTask<T1, T2> {
         }
     }
     
+    /**
+     * enqueues this task in the hibernate task queue corresponding to this task's DAO context
+     */
     public void enqueue() {
         HibernateTaskQueue.getQueue(_dao.getDAOContext()).enqueueTask(this);
     }
@@ -63,6 +66,7 @@ public abstract class BaseHibernateTask<T1, T2> {
      * @param otherTask the other task to compare.
      * @return true if this task and the other cancel each other out
      */
+    @SuppressWarnings("rawtypes")
     public boolean cancelsOut(BaseHibernateTask otherTask) {
         return false;
     }
