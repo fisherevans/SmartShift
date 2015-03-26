@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -84,18 +84,33 @@ public class HibernateTaskQueue {
         }
         synchronized(SCHEDULE_LOCK) {
             @SuppressWarnings("rawtypes")
-            BaseHibernateTask incommingTask, baseTaskSched;
+            BaseHibernateTask incommingTask, scheduledTask, compoundTask;
             for(EnqueuedTaskWrapper incommingWrapper:incommingTasks) {
                 incommingTask = incommingWrapper.getTask();
-                boolean addTask = true;
-                Iterator<EnqueuedTaskWrapper> scheduledIttr = _scheduledTasks.iterator();
-                while(scheduledIttr.hasNext()) {
-                    EnqueuedTaskWrapper scheduledWrapper = scheduledIttr.next();
-                    baseTaskSched = scheduledWrapper.getTask();
-                    if(incommingTask.cancelsOut(baseTaskSched)) {
+                boolean addTask = true, checkCompounds = true;
+                ListIterator<EnqueuedTaskWrapper> scheduledIttr = _scheduledTasks.listIterator(_scheduledTasks.size()); // get ittr starting at last position
+                while(scheduledIttr.hasPrevious()) { // go backwards
+                    EnqueuedTaskWrapper scheduledWrapper = scheduledIttr.previous();
+                    scheduledTask = scheduledWrapper.getTask();
+                    if(incommingTask.equalizes(scheduledTask)) {
                         scheduledIttr.remove();
                         addTask = false;
                         break;
+                    }
+                    if(incommingTask.overrides(scheduledTask)) {
+                        scheduledIttr.remove();
+                        continue;
+                    }
+                    if(checkCompounds) {
+                        // can only check sequential tasks as they're added starting with the most recent scheduled one due to critical race issues
+                        compoundTask = incommingTask.compounds(scheduledTask);
+                        if(compoundTask != null) {
+                            scheduledWrapper.setTask(compoundTask);
+                            addTask = false;
+                            break;
+                        } else {
+                            checkCompounds = false;
+                        }
                     }
                 }
                 if(addTask)
@@ -212,7 +227,7 @@ public class HibernateTaskQueue {
 
     @SuppressWarnings("rawtypes")
     private static class EnqueuedTaskWrapper implements Comparable<EnqueuedTaskWrapper> {
-        private final BaseHibernateTask _task;
+        private BaseHibernateTask _task;
         
         private final Date _timestamp;
         
@@ -223,6 +238,10 @@ public class HibernateTaskQueue {
 
         public BaseHibernateTask getTask() {
             return _task;
+        }
+
+        public void setTask(BaseHibernateTask task) {
+            _task = task;
         }
 
         public Date getTimestamp() {

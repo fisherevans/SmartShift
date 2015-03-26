@@ -64,11 +64,31 @@ public abstract class BaseHibernateTask<T1, T2> {
     
     /** compares this task to another task and detirmines if they cancle themselves out
      * @param otherTask the other task to compare.
-     * @return true if this task and the other cancel each other out
+     * @return true if this task and the other cancel each other out and both should be ignored
      */
     @SuppressWarnings("rawtypes")
-    public boolean cancelsOut(BaseHibernateTask otherTask) {
+    public boolean equalizes(BaseHibernateTask otherTask) {
         return false;
+    }
+
+    /**
+     * tests if this task overrides another task (meaning the other task should be ignored)
+     * @param otherTask the other task to compare to
+     * @return returns true if the other task should be ignored.
+     */
+    @SuppressWarnings("rawtypes")
+    public boolean overrides(BaseHibernateTask otherTask) {
+        return false;
+    }
+
+    /**
+     * tests whether this task and another can be compounded into one task
+     * @param otherTask the other task to check
+     * @return null if they cannot be compounded, the new compound task if they can that replaces both
+     */
+    @SuppressWarnings("rawtypes")
+    public BaseHibernateTask compounds(BaseHibernateTask otherTask) {
+        return null;
     }
     
     protected BaseDAO<T1> getDAO() {
