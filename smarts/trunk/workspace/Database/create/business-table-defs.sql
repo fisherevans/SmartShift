@@ -7,7 +7,7 @@ COMMIT;
 USE Business_1;
 
 CREATE TABLE `Group` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`parentID` INT NULL,
 	`name` VARCHAR(45),
 	`active` TINYINT(1) NOT NULL DEFAULT 1,
@@ -15,7 +15,7 @@ CREATE TABLE `Group` (
 );
 
 CREATE TABLE `Role` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`name` VARCHAR(45),
 	PRIMARY KEY (`id`)
 );
@@ -36,7 +36,7 @@ CREATE TABLE `Capability` (
 );
 
 CREATE TABLE `GroupRole` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`grpID` INT NOT NULL,
 	`roleID` INT NOT NULL,
 	PRIMARY KEY (`id`)
@@ -61,7 +61,7 @@ CREATE TABLE `GroupRoleCapability` (
 );
 
 CREATE TABLE `AvailInstance` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`templateID` INT NOT NULL,
 	`startDate` DATE NOT NULL,
 	`endDate` DATE NOT NULL,
@@ -69,14 +69,14 @@ CREATE TABLE `AvailInstance` (
 );
 
 CREATE TABLE `AvailTemplate` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`name` VARCHAR(45),
 	`empID` INT NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `Availability` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`templateID` INT NOT NULL,
 	`start` INT NOT NULL,
 	`duration` INT NOT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE `Availability` (
 );
 
 CREATE TABLE `AvailRepeatWeekly` (
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `id` INT NOT NULL,
 	`availID` INT NOT NULL,
 	`dayOfWeek` INT NOT NULL,
 	PRIMARY KEY (`id`),
@@ -96,7 +96,7 @@ CREATE TABLE `AvailRepeatWeekly` (
 );
 
 CREATE TABLE `AvailRepeatMonthlyByDate` (
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `id` INT NOT NULL,
 	`availID` INT NOT NULL,
 	-- make day of month negative if should start from end
 	`dayOfMonth` INT NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE `AvailRepeatMonthlyByDate` (
 );
 
 CREATE TABLE `AvailRepeatMonthlyByDay` (
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `id` INT NOT NULL,
 	`availID` INT NOT NULL,
 	`offset` INT NOT NULL DEFAULT 0,
 	-- make day of month negative if should start from end
@@ -115,7 +115,7 @@ CREATE TABLE `AvailRepeatMonthlyByDay` (
 );
 
 CREATE TABLE `AvailRepeatYearly` (
-    `id` INT NOT NULL AUTO_INCREMENT,
+    `id` INT NOT NULL,
 	`availID` INT NOT NULL,
 	`month` INT NOT NULL,
 	`dayOfMonth` INT NULL,
@@ -124,7 +124,7 @@ CREATE TABLE `AvailRepeatYearly` (
 );
 
 CREATE TABLE `Shift` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`dayOfWeek` INT NOT NULL,
 	`startTime` TIME NOT NULL,
 	`duration` INT NOT NULL,
@@ -132,7 +132,7 @@ CREATE TABLE `Shift` (
 );
 
 CREATE TABLE `SchedTemplateVersion` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`schedTempID` INT NOT NULL,
 	`name` VARCHAR(60) NULL,
 	`createTS` TIMESTAMP NOT NULL,
@@ -141,14 +141,14 @@ CREATE TABLE `SchedTemplateVersion` (
 );
 
 CREATE TABLE `Schedule` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`schedTempVersionID` INT NOT NULL,
 	`startDate` DATE NULL,
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `RoleSchedule` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`schedID` INT NOT NULL,
 	`grpRoleID` INT NOT NULL,
 	PRIMARY KEY (`id`)
@@ -161,7 +161,7 @@ CREATE TABLE `RoleSchedShift` (
 );
 
 CREATE TABLE `EmpSchedule` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`schedID` INT NOT NULL,
 	`empID` INT NOT NULL,
 	`locked` TINYINT(1) NOT NULL DEFAULT 0,
@@ -176,7 +176,7 @@ CREATE TABLE `EmpScheduleShift` (
 );
 
 CREATE TABLE `Content` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	PRIMARY KEY (`id`)
 );
 
@@ -200,7 +200,7 @@ CREATE TABLE `StyledContent` (
 );
 
 CREATE TABLE `Style` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`attribute` VARCHAR(30),
 	`rule` VARCHAR(128),
 	PRIMARY KEY (`id`)
@@ -213,13 +213,13 @@ CREATE TABLE `TaggedContent` (
 );
 
 CREATE TABLE `Tag` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`name` VARCHAR(128),
 	PRIMARY KEY (`id`)
 );
 
 CREATE TABLE `Message` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`parentID` INT NOT NULL,
 	`contentID` INT NOT NULL,
 	`authorID` INT NOT NULL,
@@ -228,7 +228,7 @@ CREATE TABLE `Message` (
 );
 
 CREATE TABLE `MessageDelivery` (
-	`id` INT NOT NULL AUTO_INCREMENT,
+	`id` INT NOT NULL,
 	`messageID` INT NOT NULL,
 	`recipientID` INT NOT NULL,
 	`seenTS` DATETIME NULL,
