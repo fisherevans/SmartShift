@@ -2,7 +2,6 @@ package smartshift.business.hibernate.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.hibernate.annotations.NamedQueries;
@@ -52,7 +51,6 @@ public class GroupModel {
     public static final String GET_ROLE_GROUPS_ROLE_ID = "roleIDParam";
     
     @Id
-    @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
     

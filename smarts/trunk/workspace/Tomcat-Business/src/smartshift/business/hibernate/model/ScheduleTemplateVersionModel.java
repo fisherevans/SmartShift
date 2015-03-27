@@ -3,7 +3,6 @@ package smartshift.business.hibernate.model;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import org.hibernate.annotations.NamedQueries;
@@ -28,7 +27,6 @@ public class ScheduleTemplateVersionModel{
     public static final String GET_MAX_TEMPLATE_ID = "getMaxScheduleTemplateId";
     
     @Id
-    @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
 

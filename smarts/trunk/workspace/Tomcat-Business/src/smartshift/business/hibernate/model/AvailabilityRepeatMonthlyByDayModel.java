@@ -2,7 +2,6 @@ package smartshift.business.hibernate.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -14,7 +13,6 @@ import javax.persistence.Table;
 @Table(name = "AvailRepeatMonthlyByDay")
 public class AvailabilityRepeatMonthlyByDayModel implements AvailabilityRepeatInterface {
     @Id
-    @GeneratedValue
     @Column(name = "id", nullable = false)
     private Integer id;
     
@@ -34,6 +32,7 @@ public class AvailabilityRepeatMonthlyByDayModel implements AvailabilityRepeatIn
     /**
      * @return the id
      */
+    @Override
     public Integer getId() {
         return id;
     }
@@ -48,6 +47,7 @@ public class AvailabilityRepeatMonthlyByDayModel implements AvailabilityRepeatIn
     /**
      * @return the availabilityID
      */
+    @Override
     public Integer getAvailabilityID() {
         return availabilityID;
     }
