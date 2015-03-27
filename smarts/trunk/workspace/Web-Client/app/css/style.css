@@ -1,5 +1,6 @@
 body {
     background-color: #fff;
+    max-width: 1528px;
 }
 
 .appPane {
@@ -146,8 +147,8 @@ body {
 
 .loadingBox {
     position: absolute;
-    top: 25px;
-    right: 125px;
+    top: 8px;
+    right: 105px;
     pointer-events: none;
     opacity: 0;
     transition-delay: 0.15s;

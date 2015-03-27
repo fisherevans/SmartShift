@@ -28,6 +28,11 @@ angular.module('smartsDirectives', [])
             }
         }
     })
+    .directive("no-animate", function ($animate) {
+        return function (scope, element) {
+            $animate.enabled(false, element);
+        };
+    })
     // reference http://blog.parkji.co.uk/2013/08/11/native-drag-and-drop-in-angularjs.html
     .directive('smartDraggable', function () {
         return {
