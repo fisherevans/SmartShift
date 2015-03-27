@@ -34,6 +34,7 @@ public class GroupDAO extends BaseBusinessDAO<GroupModel> {
      */
     public AddTask<GroupModel> add(String name, Integer parentID) {
         GroupModel model = new GroupModel();
+        model.setId(getNextID());
         model.setName(name);
         model.setParentID(parentID);
         return add(model);

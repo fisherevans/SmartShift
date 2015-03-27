@@ -209,7 +209,7 @@ public class Employee extends CachedObject {
                 Integer id;
                 try {
                     AccountsServiceInterface accts = RMIClient.getAccountsService();
-                    id = accts.getNextID(AppConstants.NEXT_ID_NAME_EMPLOYEE);
+                    id = accts.getNextGlobalID(AppConstants.NEXT_ID_NAME_EMPLOYEE);
                     if(id == null)
                         throw new Exception("An error occurred on the accounts side! ID was null");
                     logger.info("Adding employee, got next ID from accounts: " + id);

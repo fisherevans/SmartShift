@@ -40,10 +40,10 @@ public class AccountsService extends BaseRemote implements AccountsServiceInterf
     }
 
     /**
-     * @see smartshift.common.rmi.interfaces.AccountsServiceInterface#getNextID(java.lang.String)
+     * @see smartshift.common.rmi.interfaces.AccountsServiceInterface#getNextGlobalID(java.lang.String)
      */
     @Override
-    public Integer getNextID(String name) throws RemoteException {
+    public Integer getNextGlobalID(String name) throws RemoteException {
         try {
             Integer id = AccountsDAOContext.dao(NextIDDAO.class).getNextID(name);
             return id;
