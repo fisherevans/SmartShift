@@ -57,13 +57,11 @@
                         {{element.text}}
                     </div>
                 </div>
+                <img class="loadingBox fadeOpacity" src="../global/images/loading.gif" ng-class="{active:mainCtrl.api.waitingCalls > 0}" />
             </div>
             <div ng-view class="appContent angular-animate ngAnimateFade" ng-if="hasSession()"></div>
         </div>
-        <img class="loadingBox fadeOpacity" src="../global/images/loading.gif" ng-class="{active:mainCtrl.api.waitingCalls > 0}" />
         <div class="preventInput" ng-show="mainCtrl.api.waitingCalls > 0"></div>
-
-
 
         <script src="../global/js/lib/jquery/jquery-2.1.1.min.js"></script>
         <script src="../global/js/lib/angular/angular.js"></script>
@@ -93,7 +91,6 @@
         <script src="../global/js/services/group-service.js"></script>
         <script src="../global/js/jquery-listeners.js"></script>
 
-
         <script src="../app/js/controllers/main-ctrl.js"></script>
         <script src="../app/js/controllers/tab-ctrl.js"></script>
         <script src="../app/js/controllers/pages/calendar-ctrl.js"></script>
@@ -112,10 +109,6 @@
         <script src="../app/js/controllers/pages/schedule-ctrl.js"></script>
         <script src="../app/js/controllers/pages/settings-ctrl.js"></script>
 
-
         <script src="../app/js/app-config.js"></script>
-
-
-
     </body>
 </html>

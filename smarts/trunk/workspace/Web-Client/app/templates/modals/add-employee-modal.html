@@ -39,7 +39,7 @@
         <div class="smartInputLine">
             <div class="smartInputLabel">Roles<div class="sub"><span class="fakeLink" ng-click="debugMe()">Add Role</span></div></div>
             <div class="smartInputWrapper">
-                <label class="smartCheckboxLabel noTextSelect fadeColors" ng-repeat="(roleID, role) in groups[formData.homeGroupID].roles" ng-class="{inputError:error.role}">
+                <label class="smartCheckboxLabel noTextSelect fadeColors" ng-repeat="(roleID, role) in groups[formData.homeGroupID].roles" ng-class="{inputError:error.role}" no-animate>
                     <input type="checkbox" class="smartCheckbox" value="{{role.id}}" name="role" ng-model="selectedGroupRoles[formData.homeGroupID][role.id]">
                     <div class="smartCheckboxCheck icon-not-checked"></div>
                     {{role.name}}
