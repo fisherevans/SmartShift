@@ -73,8 +73,6 @@ public class Cache {
     
     public void decache(UID uid) {
         if(contains(uid)) {
-            if(_cached.get(uid).get() != null)
-                _cached.get(uid).get().save();
             _cached.remove(uid);    
         }
     }
@@ -137,19 +135,6 @@ public class Cache {
     public Session getBusinessSession() {
         return getDAOContext().getSession();
     }
-
-    public void save() {
-        logger.info("Saving all cached objects (" + _cached.size() + ") for business " + _rootBusID);
-        double size = _cached.size();
-        int id = 0, incr = (int)(size/5);
-        for(Reference<CachedObject> co : _cached.values()) {
-            if(id++ % incr == 0)
-                logger.info(String.format("  Business %d - %.2f%% done", _rootBusID, id/size*100.0));
-            co.get().save();
-        }
-        logger.info("Saving complete for business " + _rootBusID);
-        clean();
-    }
     
     public void clean() {
         _cached.clear();
@@ -178,11 +163,5 @@ public class Cache {
             newCache.loadAllData();
         }
         return caches.get(busID);
-    }
-    
-    public static void saveAllCaches() {
-        for(Cache cache : caches.values()) {
-            cache.save();
-        }
     }
 }

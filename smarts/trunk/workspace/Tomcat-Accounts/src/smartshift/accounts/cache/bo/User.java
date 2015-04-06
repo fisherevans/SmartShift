@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.hibernate.HibernateException;
 import smartshift.accounts.hibernate.dao.AccountsDAOContext;
 import smartshift.accounts.hibernate.dao.UserBusinessEmployeeDAO;
 import smartshift.accounts.hibernate.dao.UserDAO;
@@ -20,25 +19,28 @@ public class User implements Stored {
     
     private static Map<String, User> users;
     
+    private int _id;
     private String _uname;
     private String _email;
     private String _passHash;
     private Map<Business, Integer> _employeeIDs;
     
-    private UserModel _model;
     private List<UserBusinessEmployeeModel> _busEmpModels;
     
-    public User(String username, String email, String password) {
+    private User(String username, String email, String password) {
         _uname = username;
         _email = email;
         _passHash = password;
         _employeeIDs = new HashMap<Business, Integer>();
     }
     
-    private User(UserModel model) {
-        this(model.getUsername(), model.getEmail(), model.getPassHash());
-        _model = model;
-        loadAllChildren();
+    private User(int id) {       
+        _id = id;
+        UserModel model = AccountsDAOContext.dao(UserDAO.class).uniqueByID(_id).execute();
+        _uname = model.getUsername();
+        _email = model.getEmail();
+        _passHash = model.getPassHash();
+        _employeeIDs = new HashMap<Business, Integer>();
     }
     
     public String getEmail() {
@@ -59,11 +61,12 @@ public class User implements Stored {
         return _employeeIDs.get(bus);
     }
     
+    private void setID(int id) {
+        _id = id;
+    }
+    
     public int getID() {
-        if(_model != null) {
-            return _model.getId();
-        } 
-        return -1;
+        return _id;
     }
     
     public ROSet<Business> getBusinesses() {
@@ -82,26 +85,19 @@ public class User implements Stored {
         _busEmpModels = null;
     }
     
-    @Override
-    public void save() {
-        try {
-            if(_model != null) {
-                _model.setUsername(_uname);
-                _model.setEmail(_email);
-                _model.setPassHash(_passHash);
-                AccountsDAOContext.dao(UserDAO.class).update(_model);      
-            } else {
-                _model = AccountsDAOContext.dao(UserDAO.class).add(_uname, _email, _passHash).execute(); 
-            }
-        } catch(HibernateException e) {
-            logger.debug(e.getStackTrace());
-        }
+    public UserModel getModel() {
+        UserModel model = new UserModel();
+        model.setId(_id);
+        model.setUsername(_uname);
+        model.setEmail(_email);
+        model.setPassHash(_passHash);
+        return model;
     }
 
     @Override
     public void loadAllChildren() {
         try {
-            for(UserBusinessEmployeeModel ube : AccountsDAOContext.dao(UserBusinessEmployeeDAO.class).listByUser(_model.getId()).execute())
+            for(UserBusinessEmployeeModel ube : AccountsDAOContext.dao(UserBusinessEmployeeDAO.class).listByUser(_id).execute())
                 _employeeIDs.put(Business.load(ube.getBusinessID()), ube.getEmployeeID());
         } catch(Exception e) {
             logger.error("Failed to load children", e);
@@ -115,20 +111,17 @@ public class User implements Stored {
             UserModel model = AccountsDAOContext.dao(UserDAO.class).uniqueByUsername(username).execute();
             if(model == null)
                 return null;
-            users.put(username, new User(model));
+            users.put(username, new User(model.getId()));
         }
         return users.get(username);
     }
     
-    public static User createNewUser(String username, String email, String password) {
+    public static User create(String username, String email, String password) {
         User user = new User(username, email, password);
+        UserDAO dao = AccountsDAOContext.dao(UserDAO.class);
+        user.setID(dao.getNextID());
+        dao.add(user.getModel()).enqueue();
         users.put(username, user);
-        user.save();
         return user;
-    }
-
-    @Override
-    public void saveRelationships() {
-        // do nothing
     }
 }

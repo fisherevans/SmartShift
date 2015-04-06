@@ -31,6 +31,7 @@ public class AvailabilityRepeatYearlyDAO extends AvailabilityRepeatDAO<Availabil
      */
     public AddTask<AvailabilityRepeatYearlyModel> add(Integer month, Integer dayOfMonth) {
         AvailabilityRepeatYearlyModel model = new AvailabilityRepeatYearlyModel();
+        model.setId(getNextID());
         model.setMonth(month);
         model.setDayOfMonth(dayOfMonth);
         return add(model);

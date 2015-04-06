@@ -30,6 +30,7 @@ public class AvailabilityRepeatWeeklyDAO extends AvailabilityRepeatDAO<Availabil
      */
     public AddTask<AvailabilityRepeatWeeklyModel> add(Integer dayOfWeek) {
         AvailabilityRepeatWeeklyModel model = new AvailabilityRepeatWeeklyModel();
+        model.setId(getNextID());
         model.setDayOfWeek(dayOfWeek);
         return add(model);
     }

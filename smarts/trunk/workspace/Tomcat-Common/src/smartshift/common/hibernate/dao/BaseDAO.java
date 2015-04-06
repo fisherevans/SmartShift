@@ -5,6 +5,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import smartshift.common.hibernate.DAOContext;
+import smartshift.common.hibernate.DynamicNextID;
 import smartshift.common.hibernate.dao.tasks.AddTask;
 import smartshift.common.hibernate.dao.tasks.DeleteByCriteriaTask;
 import smartshift.common.hibernate.dao.tasks.DeleteByIDTask;
@@ -167,6 +168,17 @@ public abstract class BaseDAO<T> {
      */
     public Class<T> getModelClass() {
         return _modelClass;
+    }
+      
+    /**
+     * @return the next id for the DAO
+     */
+    public Integer getNextID() {
+        return DynamicNextID.getInstance(getDAOContext()).getNextID(getModelClass());
+    }
+    
+    protected Integer getNextID(String column) {
+        return DynamicNextID.getInstance(getDAOContext()).getNextID(getModelClass(), column);
     }
     
     protected abstract SmartLogger getLogger();

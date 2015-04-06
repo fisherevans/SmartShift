@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import org.hibernate.HibernateException;
+import smartshift.business.hibernate.dao.AvailabilityTemplateDAO;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
 import smartshift.business.hibernate.dao.GroupEmployeeDAO;
@@ -31,8 +32,6 @@ public class Group extends CachedObject {
     private Boolean _active;
     private final Set<Group> _children;
     private final Map<Role, GroupRole> _employees;
-    
-    private GroupModel _model;
 
     private Group(Cache cache, String name) {
         super(cache);
@@ -50,37 +49,31 @@ public class Group extends CachedObject {
         addRole(Role.getBasicRole(cache, this));
     }
     
-    public void setName(String name) {
-        synchronized(getCache().getDAOContext()) {
-            _name = name;
-            getDAO(GroupDAO.class).update(_model).enqueue();
-        }
+    public synchronized void setName(String name) {
+        _name = name;
+        getDAO(GroupDAO.class).update(getModel()).enqueue();
     }
 
     public String getName() {
         return _name;
     }
 
-    public void setParent(Group parent) {
+    public synchronized void setParent(Group parent) {
         if(_parent != null)
             _parent.childRemoved(this);
-        synchronized(getCache().getDAOContext()) {
-            _parent = parent;
-            if(_parent != null)
-                _parent.childAdded(this);
-            getDAO(GroupDAO.class).update(_model).enqueue();
-        }
+        _parent = parent;
+        if(_parent != null)
+            _parent.childAdded(this);
+        getDAO(GroupDAO.class).update(getModel()).enqueue();
     }
     
     public Group getParent() {
     	return _parent;
     }
 
-    public void setActive(Boolean active) {
-        synchronized(getCache().getDAOContext()) {
-            _active = active;
-            getDAO(GroupDAO.class).update(_model).enqueue();
-        }
+    public synchronized void setActive(Boolean active) {
+        _active = active;
+        getDAO(GroupDAO.class).update(getModel()).enqueue();
     }
     
     public Boolean getActive() {
@@ -103,12 +96,10 @@ public class Group extends CachedObject {
     
     // --- Roles
 
-    public void addRole(Role role) {
+    public synchronized void addRole(Role role) {
         if(!hasRole(role)) {
-            synchronized(getCache().getDAOContext()) {
-                Integer grID = getDAO(GroupRoleDAO.class).link(getID(), role.getID()).execute().getId();
-                _employees.put(role, new GroupRole(grID));
-            }
+            Integer grID = getDAO(GroupRoleDAO.class).link(getID(), role.getID()).execute().getId();
+            _employees.put(role, new GroupRole(grID));
         }
     }
     
@@ -125,7 +116,7 @@ public class Group extends CachedObject {
         if(groupRole != null) {
             for(Employee employee:groupRole.getEmployees())
                 removeRoleEmployee(role, employee);
-            synchronized(getCache().getDAOContext()) {
+            synchronized(this) {
                 _employees.remove(role);
                 getDAO(GroupRoleDAO.class).deleteByID(groupRole.getID());
             }
@@ -138,12 +129,16 @@ public class Group extends CachedObject {
     public void addRoleCapability(Role role, Integer capabilityID) {
         if(!hasRole(role))
             throw new RuntimeException(String.format("Group:%d does not have the Role:%d to set capability for.", getID(), role.getID()));
-        synchronized(getCache().getDAOContext()) {
+        synchronized(this) {
             GroupRole groupRole = _employees.get(role);
             groupRole.addCapability(capabilityID);
             role.capabilityAdded(this, capabilityID);
             getDAO(GroupRoleCapabilityDAO.class).link(groupRole.getID(), capabilityID).enqueue();
         }
+    }
+    
+    public ROCollection<Integer> getRoleCapabilities(Role role) {
+        return _employees.get(role).getCapabilities();
     }
     
     public boolean hasRoleCapability(Role role, Integer capabilityID) {
@@ -157,7 +152,7 @@ public class Group extends CachedObject {
     public void addRoleEmployee(Role role, Employee employee) {
         if(!hasRole(role))
             throw new RuntimeException(String.format("Group:%d does not have the Role:%d to add employee too.", getID(), role.getID()));
-        synchronized(getCache().getDAOContext()) {
+        synchronized(this) {
             GroupRole groupRole = _employees.get(role);
             groupRole.addEmployee(employee);
             employee.groupRoleAdded(this, role);
@@ -172,7 +167,7 @@ public class Group extends CachedObject {
     public void removeRoleEmployee(Role role, Employee employee) {
         GroupRole groupRole = _employees.get(role);
         if(groupRole != null) {
-            synchronized(getCache().getDAOContext()) {
+            synchronized(this) {
                 groupRole.removeEmployee(employee);
                 employee.groupRoleRemoved(this, role);
                 getDAO(GroupRoleEmployeeDAO.class).unlink(groupRole.getID(), employee.getID()).enqueue();
@@ -188,7 +183,7 @@ public class Group extends CachedObject {
                     employee.getID(), employee.getHomeGroup().getID(), this.getID()));
         for(Role role:_employees.keySet())
             removeRoleEmployee(role, employee);
-        synchronized(getCache().getDAOContext()) {
+        synchronized(this) {
             employee.groupRemoved(this);
             getDAO(GroupEmployeeDAO.class).unlink(getID(), employee.getID()).enqueue();
         }
@@ -197,55 +192,36 @@ public class Group extends CachedObject {
     // --- Misc
     
     public void delete() {
-        // TODO drew - flag this group as inactive - as long as it's not root
-        // Need to worry about employees with this as home group
-        logger.error("Hit a non-implemeneted block! delete()");
-        throw new RuntimeException("To implement!");
+        if(_parent == null)
+            throw new RuntimeException(String.format("Group:%d is the root group, and can't be deleted", getID()));
+        setActive(false);
+        for(Role r : getRoles()) {
+            for(Employee e : getRoleEmployees(r)) {
+                if(e.getHomeGroup().equals(this))
+                    e.setHomeGroup(_parent);
+                e.groupRoleRemoved(this, r);
+            }
+        }
+        getCache().decache(getUID());
     }
 
     public boolean isValidParentOf(Group group) {
-        logger.error("Hit a non-implemeneted block! isValidParentOf()");
-        throw new RuntimeException("To implement!");
-        // TODO drew - true if the passed group is a valid child of this group. Looking to avoid prevent infinite loops and what so
-    }
-
-    @Override
-    public void save() {
-        try {
-            if(_model != null) {
-                _model.setName(_name);
-                _model.setActive(_active);
-                _model.setParentID(_parent == null ? null : _parent.getID());
-                getDAO(GroupDAO.class).update(_model);
-                super.save();
-            } else {
-                _model = getDAO(GroupDAO.class).add(_name, null).execute();
-                setID(_model.getId());
-                super.save();
-            }
-        } catch (HibernateException e) {
-            logger.debug(e.getStackTrace());
+        Group parent = getParent();
+        while(parent != null) {
+            if(parent == group)
+                return false;
+            parent = parent.getParent();
         }
+        return true;
     }
     
-    @Override
-    public void saveRelationships() {
-        // save group roles
-        for(Role r : _employees.keySet()) {
-            if(r.getID() <= 0)
-                continue;
-            if(getDAO(GroupRoleDAO.class).linkCount(getID(), r.getID()).execute() < 1)
-                getDAO(GroupRoleDAO.class).link(getID(), r.getID()).execute();
-            int groupRole = getDAO(GroupRoleDAO.class).uniqueByGroupRole(getID(), r.getID()).execute().getId();
-            for(Employee e : _employees.get(r).getEmployees()) {
-                if(getDAO(GroupRoleEmployeeDAO.class).linkCount(groupRole, e.getID()).execute() < 1)
-                    getDAO(GroupRoleEmployeeDAO.class).link(groupRole, e.getID()).execute();
-            }
-            for(Integer c : _employees.get(r).getCapabilities()) {
-                if(getDAO(GroupRoleCapabilityDAO.class).linkCount(groupRole, c).execute() < 1)
-                    getDAO(GroupRoleCapabilityDAO.class).link(groupRole, c).execute();
-            }
-        }
+    public GroupModel getModel() {
+        GroupModel model = new GroupModel();
+        model.setId(getID());
+        model.setName(_name);
+        model.setActive(_active);
+        model.setParentID(_parent == null ? null : _parent.getID());
+        return model;
     }
 
     @Override
@@ -295,7 +271,6 @@ public class Group extends CachedObject {
             _parent = null;
         else
             _parent = Group.load(getCache(), model.getParentID());
-        _model = model;
     }
      
     /**
@@ -308,7 +283,9 @@ public class Group extends CachedObject {
     public static Group create(int businessID, String name, Group parent) {
         Cache cache = Cache.getCache(businessID);
         Group grp = new Group(cache, name);
-        grp.save();
+        GroupDAO dao = grp.getDAO(GroupDAO.class);
+        grp.setID(dao.getNextID());
+        dao.add(grp.getModel()).enqueue();
         cache.cache(new UID(grp), grp);
         return grp;
     }

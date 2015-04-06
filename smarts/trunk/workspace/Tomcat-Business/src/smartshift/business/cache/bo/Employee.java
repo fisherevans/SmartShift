@@ -34,8 +34,6 @@ public class Employee extends CachedObject {
     private List<AvailabilityInstance> _availabilities;
     private List<AvailabilityTemplate> _availabilityTemplates;
     
-    private EmployeeModel _model;
-    
     private Employee(Cache cache, String first, String last, Group home) {
         super(cache);
         _firstName = first;
@@ -52,16 +50,18 @@ public class Employee extends CachedObject {
         _roles = new HashMap<Group, Set<Role>>();
     }
 
-    public void setFirstName(String firstName) {
+    public synchronized void setFirstName(String firstName) {
         _firstName = firstName;
+        getDAO(EmployeeDAO.class).update(getModel()).enqueue();
     }
     
     public String getFirstName() {
         return _firstName;
     }
     
-    public void setLastName(String lastName) {
+    public synchronized void setLastName(String lastName) {
         _lastName = lastName;
+        getDAO(EmployeeDAO.class).update(getModel()).enqueue();
     }
     
     public String getLastName() {
@@ -75,15 +75,19 @@ public class Employee extends CachedObject {
     public void setHomeGroup(Group homeGroup) {
         if(!belongsTo(homeGroup, false))
             throw new RuntimeException(String.format("Cannot set homegroup:%d on Employee:%d because the employee is not already a member.", homeGroup.getID(), getID()));
-        _homeGroup = homeGroup;
+        synchronized(this) {
+            _homeGroup = homeGroup;
+            getDAO(EmployeeDAO.class).update(getModel()).enqueue();
+        }
     }
     
     public Group getHomeGroup() {
         return _homeGroup;
     }
 
-    public void setActive(Boolean active) {
+    public synchronized void setActive(Boolean active) {
         _active = active;
+        getDAO(EmployeeDAO.class).update(getModel()).enqueue();
     }
 
     public Boolean getActive() {
@@ -92,22 +96,26 @@ public class Employee extends CachedObject {
     
     // --- GROUPS
     
-    protected void groupAdded(Group group) {
+    protected synchronized void groupAdded(Group group) {
         if(!_roles.containsKey(group))
             _roles.put(group, new HashSet<Role>());
+        if(getDAO(GroupEmployeeDAO.class).linkCount(group.getID(), getID()).execute() < 1)
+            getDAO(GroupEmployeeDAO.class).link(group.getID(), getID()).enqueue();
     }
     
     public ROCollection<Group> getGroups() {
         return ROCollection.wrap(_roles.keySet());
     }
     
-    protected void groupRemoved(Group group) {
+    protected synchronized void groupRemoved(Group group) {
         _roles.remove(group);
+        if(getDAO(GroupEmployeeDAO.class).linkCount(group.getID(), getID()).execute() == 1)
+            getDAO(GroupEmployeeDAO.class).unlink(group.getID(), getID()).enqueue();
     }
     
     // --- GROUP ROLES
     
-    protected void groupRoleAdded(Group group, Role role) {
+    protected synchronized void groupRoleAdded(Group group, Role role) {
         groupAdded(group);
         _roles.get(group).add(role);
     }
@@ -119,9 +127,11 @@ public class Employee extends CachedObject {
     protected void groupRoleRemoved(Group group, Role role) {
         Set<Role> groupRoles = _roles.get(group);
         if(groupRoles != null) {
-            groupRoles.remove(role);
-            if(groupRoles.size() == 0)
-                groupRemoved(group);
+            synchronized(this) {
+                groupRoles.remove(role);
+                if(groupRoles.isEmpty())
+                    groupRemoved(group);
+            }
         }
     }
     
@@ -164,23 +174,21 @@ public class Employee extends CachedObject {
 
     public boolean manages(Group group, boolean checkParent) {
         // TODO only check for master manager
-        do {
-            if(_roles.get(group) != null)
-                for(Role role:_roles.get(group))
-                    if(group.hasRoleCapability(role, Group.MANAGER_CAPABILITY))
-                        return true;
-            group = group.getParent();
-        } while(checkParent && group != null);
-        return false;
+        if(_roles.get(group) != null)
+            for(Role role:_roles.get(group))
+                if(group.hasRoleCapability(role, Group.MANAGER_CAPABILITY))
+                    return true;
+        return checkParent && group.getParent() != null && 
+                manages(group.getParent(), checkParent);
     }
     
     public boolean belongsTo(Group group, boolean checkParent) {
         for(Group employeeGroup:getGroups()) {
-            do {
-                if(employeeGroup.getID() == group.getID())
-                    return true;
-                employeeGroup = employeeGroup.getParent();
-            } while(checkParent && employeeGroup != null);
+            if(employeeGroup.getID() == group.getID())
+                return true;
+            if(checkParent && employeeGroup.getParent() != null && 
+                    belongsTo(employeeGroup, checkParent))
+                return true;
         }
         return false;
     }
@@ -190,49 +198,17 @@ public class Employee extends CachedObject {
         for(Group group:getGroups()) {
             group.removeEmployee(this);
         }
-        save();
         getCache().decache(getUID());
     }
-
-    @Override
-    public void save() {
-        try {
-            if(_model != null) {
-                _model.setFirstName(_firstName);
-                _model.setLastName(_lastName);
-                _model.setDefaultGroupID(_homeGroup.getID());
-                _model.setActive(_active);
-                getDAO(EmployeeDAO.class).update(_model);
-                super.save();
-            } else {
-                _homeGroup.save();
-                Integer id;
-                try {
-                    AccountsServiceInterface accts = RMIClient.getAccountsService();
-                    id = accts.getNextGlobalID(AppConstants.NEXT_ID_NAME_EMPLOYEE);
-                    if(id == null)
-                        throw new Exception("An error occurred on the accounts side! ID was null");
-                    logger.info("Adding employee, got next ID from accounts: " + id);
-                } catch(Exception e) {
-                    logger.error("Failed to get next employee id from accounts servive!");
-                    throw new Exception("Not currently connected to the Accounts Service!", e);
-                }
-                _model = getDAO(EmployeeDAO.class).add(id, _firstName, _lastName, _homeGroup.getID()).execute();
-                setID(id);
-                super.save();
-            }
-        } catch (Exception e) {
-            logger.warn("Failed to save the employee!", e);
-        }
-    }
     
-    @Override
-    public void saveRelationships() {
-        // save group employee
-        for(Group grp : _roles.keySet()) {
-            if(getDAO(GroupEmployeeDAO.class).linkCount(grp.getID(), getID()).execute() < 1)
-                getDAO(GroupEmployeeDAO.class).link(grp.getID(), getID()).execute();
-        }
+    public EmployeeModel getModel() {
+        EmployeeModel model = new EmployeeModel();
+        model.setId(getID());
+        model.setFirstName(_firstName);
+        model.setLastName(_lastName);
+        model.setDefaultGroupID(_homeGroup.getID());
+        model.setActive(_active);
+        return model;
     }
 
     @Override
@@ -273,13 +249,24 @@ public class Employee extends CachedObject {
         _firstName = model.getFirstName();
         _lastName = model.getLastName();
         _homeGroup = Group.load(getCache(), model.getDefaultGroupID());
-        _model = model;
     }
     
     public static Employee create(int businessID, String first, String last, int homeGroupID) {
         Cache cache = Cache.getCache(businessID);
         Employee emp = new Employee(cache, first, last, Group.load(cache, homeGroupID));
-        emp.save();
+        Integer id;
+        try {
+            AccountsServiceInterface accts = RMIClient.getAccountsService();
+            id = accts.getNextGlobalID(AppConstants.NEXT_ID_NAME_EMPLOYEE);
+            if(id == null)
+                throw new Exception("An error occurred on the accounts side! ID was null");
+            logger.info("Adding employee, got next ID from accounts: " + id);
+        } catch(Exception e) {
+            logger.error("Failed to get next employee id from accounts service!");
+            throw new RuntimeException("Not currently connected to the Accounts Service!", e);
+        }
+        emp.setID(id);
+        emp.getDAO(EmployeeDAO.class).add(emp.getModel()).enqueue();
         cache.cache(new UID(emp), emp);
         return emp;
     }

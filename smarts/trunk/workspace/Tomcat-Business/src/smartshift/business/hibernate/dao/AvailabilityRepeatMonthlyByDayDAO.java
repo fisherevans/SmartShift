@@ -30,6 +30,7 @@ public class AvailabilityRepeatMonthlyByDayDAO extends AvailabilityRepeatDAO<Ava
      */
     public AddTask<AvailabilityRepeatMonthlyByDayModel> add(Integer dayOfWeek) {
         AvailabilityRepeatMonthlyByDayModel model = new AvailabilityRepeatMonthlyByDayModel();
+        model.setId(getNextID());
         model.setDayOfWeek(dayOfWeek);
         return add(model);
     }

@@ -1,6 +1,7 @@
 package smartshift.business.cache.bo;
 
 import org.hibernate.HibernateException;
+import smartshift.business.hibernate.dao.AvailabilityRepeatMonthlyByDayDAO;
 import smartshift.business.hibernate.dao.AvailabilityRepeatYearlyDAO;
 import smartshift.business.hibernate.model.AvailabilityRepeatYearlyModel;
 import smartshift.common.util.UID;
@@ -9,39 +10,28 @@ public class AvailabilityRepeatYearly extends AvailabilityRepeat{
     private int _month;
     private int _dayOfMonth;
     
-    private AvailabilityRepeatYearlyModel _model;
-    
     private AvailabilityRepeatYearly(Cache cache, int id) {
         super(cache, id);
     }
-
-    @Override
-    public void save() {
-        try {
-            if(_model != null) {
-                _model.setMonth(_month);
-                _model.setDayOfMonth(_dayOfMonth);
-                getDAO(AvailabilityRepeatYearlyDAO.class).update(_model);
-                super.save();
-            } else {
-                _model = getDAO(AvailabilityRepeatYearlyDAO.class).add(_month, _dayOfMonth).execute();
-                setID(_model.getId());
-                super.save();
-            }
-        } catch (HibernateException e) {
-            getLogger().debug(e.getStackTrace());
-        }
+    
+    private AvailabilityRepeatYearly(Cache cache, Availability avail, int month, int dayOfMonth) {
+        super(cache, avail);
+        _month = month;
+        _dayOfMonth = dayOfMonth;
     }
     
-    @Override
-    public void saveRelationships() {
-        // do nothing
+    public AvailabilityRepeatYearlyModel getModel() {
+        AvailabilityRepeatYearlyModel model = new AvailabilityRepeatYearlyModel();
+        model.setId(getID());
+        model.setAvailabilityID(getAvailability().getID());
+        model.setMonth(_month);
+        model.setDayOfMonth(_dayOfMonth);
+        return model;
     }
     
     public void init(AvailabilityRepeatYearlyModel model) {
         _month = model.getMonth();
         _dayOfMonth = model.getDayOfMonth();
-        _model = model;
     }
     
     protected static AvailabilityRepeatYearly loadFromDB (Cache cache, int repeatID) {
@@ -57,5 +47,15 @@ public class AvailabilityRepeatYearly extends AvailabilityRepeat{
             repeat.init(model);
             return repeat;
         }
+    }
+    
+    public static AvailabilityRepeatYearly create (int businessID, Availability avail, int month, int dayOfMonth) {
+        Cache cache = Cache.getCache(businessID);
+        AvailabilityRepeatYearly repeat = new AvailabilityRepeatYearly(cache, avail, month, dayOfMonth);
+        AvailabilityRepeatYearlyDAO dao = repeat.getDAO(AvailabilityRepeatYearlyDAO.class);
+        repeat.setID(dao.getNextID());
+        dao.add(repeat.getModel()).enqueue();
+        cache.cache(new UID(repeat), repeat);
+        return repeat;
     }
 }

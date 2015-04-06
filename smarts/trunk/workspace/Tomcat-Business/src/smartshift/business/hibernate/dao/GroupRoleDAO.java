@@ -46,6 +46,7 @@ public class GroupRoleDAO extends BaseBusinessDAO<GroupRoleModel> {
      */
     public AddTask<GroupRoleModel> link(Integer groupID, Integer roleID) {
         GroupRoleModel model = new GroupRoleModel();
+        model.setId(getNextID());
         model.setGroupID(groupID);
         model.setRoleID(roleID);
         return add(model);

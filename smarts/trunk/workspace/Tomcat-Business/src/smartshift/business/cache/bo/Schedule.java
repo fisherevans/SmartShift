@@ -2,6 +2,7 @@ package smartshift.business.cache.bo;
 
 import java.util.Map;
 import java.util.Set;
+import smartshift.business.hibernate.model.ScheduleModel;
 
 public class Schedule extends CachedObject {
     // maps from the day of the week to a set of shifts
@@ -17,16 +18,9 @@ public class Schedule extends CachedObject {
         return null;
     }
 
-    @Override
-    public void save() {
-        // TODO Auto-generated method stub
-        
-    }
-    
-    @Override
-    public void saveRelationships() {
-        // TODO Auto-generated method stub
-        
+    public ScheduleModel getModel() {
+        // TODO implement
+        return null;
     }
 
     @Override
