@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import org.hibernate.HibernateException;
-import smartshift.business.hibernate.dao.AvailabilityTemplateDAO;
 import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.dao.GroupDAO;
 import smartshift.business.hibernate.dao.GroupEmployeeDAO;
@@ -20,9 +18,14 @@ import smartshift.common.util.UID;
 import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.log4j.SmartLogger;
 
+/**
+ * an organizational group representing a node in the organizational structure
+ * @author drew
+ */
 public class Group extends CachedObject {
+    /** type identifier for a group */
     public static final String TYPE_IDENTIFIER = "G";
-    
+    /** capability id for management of a group */
     public static final Integer MANAGER_CAPABILITY = 999;
     
     private static final SmartLogger logger = new SmartLogger(Group.class);
@@ -33,6 +36,11 @@ public class Group extends CachedObject {
     private final Set<Group> _children;
     private final Map<Role, GroupRole> _employees;
 
+    /**
+     * constructor for a newly created group
+     * @param cache
+     * @param name
+     */
     private Group(Cache cache, String name) {
         super(cache);
         _name = name;
@@ -42,6 +50,11 @@ public class Group extends CachedObject {
         addRole(Role.getBasicRole(cache, this));
     }
     
+    /**
+     * constructor for a newly loaded group
+     * @param cache
+     * @param id
+     */
     private Group(Cache cache, int id) {
         super(cache, id);
         _children = new HashSet<Group>();
@@ -49,15 +62,26 @@ public class Group extends CachedObject {
         addRole(Role.getBasicRole(cache, this));
     }
     
+    /**
+     * set the group name
+     * @param name the name to set
+     */
     public synchronized void setName(String name) {
         _name = name;
         getDAO(GroupDAO.class).update(getModel()).enqueue();
     }
 
+    /**
+     * @return the group name
+     */
     public String getName() {
         return _name;
     }
 
+    /**
+     * set the group's parent
+     * @param parent the parent to set
+     */
     public synchronized void setParent(Group parent) {
         if(_parent != null)
             _parent.childRemoved(this);
@@ -67,35 +91,62 @@ public class Group extends CachedObject {
         getDAO(GroupDAO.class).update(getModel()).enqueue();
     }
     
+    /**
+     * @return the group's parent
+     */
     public Group getParent() {
     	return _parent;
     }
 
+    /**
+     * set the group's active flag
+     * @param active the flag to set
+     */
     public synchronized void setActive(Boolean active) {
         _active = active;
         getDAO(GroupDAO.class).update(getModel()).enqueue();
     }
     
+    /**
+     * @return the group's active flag
+     */
     public Boolean getActive() {
 		return _active;
 	}
     
 	// --- Child Groups
 	
+    /**
+     * a child group was added
+     * @param grp the child
+     * @return true if the child was added successfully
+     */
     protected boolean childAdded(Group grp) {
         return _children.add(grp);
     }
 
+    /**
+     * @return the top-level child groups
+     */
     public ROCollection<Group> getChildGroups() {
         return ROCollection.wrap(_children);
     }
     
+    /**
+     * a child group was removed
+     * @param grp the child
+     * @return true if the child was removed successfully
+     */
     protected boolean childRemoved(Group grp) {
         return _children.remove(grp);
     }
     
     // --- Roles
 
+    /**
+     * add a role to the group
+     * @param role the role to add
+     */
     public synchronized void addRole(Role role) {
         if(!hasRole(role)) {
             Integer grID = getDAO(GroupRoleDAO.class).link(getID(), role.getID()).execute().getId();
@@ -103,14 +154,26 @@ public class Group extends CachedObject {
         }
     }
     
+    /**
+     * @return the roles on the group
+     */
     public ROCollection<Role> getRoles() {
         return ROCollection.wrap(_employees.keySet());
     }
     
+    /**
+     * check if the group has a role
+     * @param role the role to check
+     * @return true if the group has the role
+     */
     public boolean hasRole(Role role) {
         return _employees.containsKey(role);
     }
     
+    /**
+     * remove a role from the group
+     * @param role the role to remove
+     */
     public void removeRole(Role role) {
         GroupRole groupRole = _employees.get(role);
         if(groupRole != null) {
@@ -126,6 +189,11 @@ public class Group extends CachedObject {
     
     // --- Role Capabilities
     
+    /**
+     * add a capability for a role within this group
+     * @param role
+     * @param capabilityID
+     */
     public void addRoleCapability(Role role, Integer capabilityID) {
         if(!hasRole(role))
             throw new RuntimeException(String.format("Group:%d does not have the Role:%d to set capability for.", getID(), role.getID()));
@@ -137,10 +205,21 @@ public class Group extends CachedObject {
         }
     }
     
+    /**
+     * get the capabilities for a role within this group
+     * @param role
+     * @return the capabilities
+     */
     public ROCollection<Integer> getRoleCapabilities(Role role) {
         return _employees.get(role).getCapabilities();
     }
     
+    /**
+     * does a role have the given capability within this group
+     * @param role
+     * @param capabilityID
+     * @return true if the role has the capability
+     */
     public boolean hasRoleCapability(Role role, Integer capabilityID) {
         if(!hasRole(role))
             throw new RuntimeException(String.format("Group:%d does not have the Role:%d to get capability from.", getID(), role.getID()));
@@ -149,6 +228,11 @@ public class Group extends CachedObject {
     
     // --- Role Employees
     
+    /**
+     * add an employee to a role within this group
+     * @param role
+     * @param employee
+     */
     public void addRoleEmployee(Role role, Employee employee) {
         if(!hasRole(role))
             throw new RuntimeException(String.format("Group:%d does not have the Role:%d to add employee too.", getID(), role.getID()));
@@ -160,10 +244,20 @@ public class Group extends CachedObject {
         }
     }
     
+    /**
+     * get all employees on a role within this group
+     * @param role
+     * @return the employees
+     */
     public ROCollection<Employee> getRoleEmployees(Role role) {
         return _employees.get(role).getEmployees();
     }
     
+    /**
+     * remove an employee from a role within this group
+     * @param role
+     * @param employee
+     */
     public void removeRoleEmployee(Role role, Employee employee) {
         GroupRole groupRole = _employees.get(role);
         if(groupRole != null) {
@@ -177,6 +271,10 @@ public class Group extends CachedObject {
     
     // --- Employees
     
+    /**
+     * remove an employee from this group
+     * @param employee
+     */
     public void removeEmployee(Employee employee) {
         if(equals(employee.getHomeGroup()))
             throw new RuntimeException(String.format("Employee:%d has a parent group of %d, so cannot remove from %d",
@@ -191,10 +289,20 @@ public class Group extends CachedObject {
     
     // --- Misc
     
+    /**
+     * delete this group
+     * NOTE: root groups cannot be deleted
+     */
     public void delete() {
         if(_parent == null)
             throw new RuntimeException(String.format("Group:%d is the root group, and can't be deleted", getID()));
+        // deactivate the group
         setActive(false);
+        // migrate the child groups up the hierarchy
+        for(Group g : getChildGroups()) {
+            g.setParent(_parent);
+        }
+        // migrate the employees with this as their homegroup up the hierarchy
         for(Role r : getRoles()) {
             for(Employee e : getRoleEmployees(r)) {
                 if(e.getHomeGroup().equals(this))
@@ -205,6 +313,11 @@ public class Group extends CachedObject {
         getCache().decache(getUID());
     }
 
+    /**
+     * return true if this group is a valid parent of another
+     * @param group the group to check
+     * @return true if this is a valid parent of group
+     */
     public boolean isValidParentOf(Group group) {
         Group parent = getParent();
         while(parent != null) {
@@ -215,6 +328,9 @@ public class Group extends CachedObject {
         return true;
     }
     
+    /**
+     * @see smartshift.common.util.hibernate.Stored#getModel()
+     */
     public GroupModel getModel() {
         GroupModel model = new GroupModel();
         model.setId(getID());
@@ -224,6 +340,9 @@ public class Group extends CachedObject {
         return model;
     }
 
+    /**
+     * @see smartshift.common.util.hibernate.Stored#loadAllChildren()
+     */
     @Override
     public void loadAllChildren() {
         try {
@@ -244,11 +363,20 @@ public class Group extends CachedObject {
         }     
     }
 
+    /**
+     * @see smartshift.common.util.Identifiable#typeCode()
+     */
     @Override
     public String typeCode() {
         return TYPE_IDENTIFIER;
     }
     
+    /**
+     * load a group into memory (pulls from the cache if it already exists in memory)
+     * @param cache the cache to load into
+     * @param grpID the id of the group to load
+     * @return the group requested
+     */
     public static Group load(Cache cache, int grpID) {
     	UID uid = new UID(TYPE_IDENTIFIER, grpID);
         if(cache.contains(uid)) {
@@ -264,6 +392,9 @@ public class Group extends CachedObject {
         }
     }
     
+    /**
+     * initialize the fields of this skeleton group
+     */
     public void init() {
         GroupModel model = getCache().getDAOContext().dao(GroupDAO.class).uniqueByID(getID()).execute();
         _name = model.getName();
@@ -290,56 +421,97 @@ public class Group extends CachedObject {
         return grp;
     }
     
+    /**
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
         return String.format("[ID:%d Name:%s Roles:%d Parent:%s]", getID(), getName(), _employees.size(), _parent);
     }
 
+    /** a mapping from a group to a role, which has a set of employees and capabilities */
     private static class GroupRole {
-        private final Integer _id;
-        
-        private Set<Employee> _employees;
-        
+        private final int _id;
+        private Set<Employee> _employees;      
         private Set<Integer> _capabilities;
         
-        public GroupRole(Integer id) {
+        /**
+         * constructor for a new group role mapping
+         * @param id
+         */
+        public GroupRole(int id) {
             _id = id;
             _employees = new HashSet<>();
             _capabilities = new HashSet<>();
         }
         
+        /**
+         * @return the group role id
+         */
         public Integer getID() {
             return _id;
         }
         
+        /**
+         * add an employee to the group role
+         * @param employee
+         */
         public void addEmployee(Employee employee) {
             _employees.add(employee);
         }
         
+        /**
+         * does this group role have the given employee?
+         * @param employee
+         * @return true if the group role has the employee
+         */
         public boolean hasEmployee(Employee employee) {
             return _employees.contains(employee);
         }
         
+        /**
+         * remove an employee from the group role
+         * @param employee
+         */
         public void removeEmployee(Employee employee) {
             _employees.remove(employee);
         }
         
+        /**
+         * @return the employees on the group role
+         */
         public ROCollection<Employee> getEmployees() {
             return ROCollection.wrap(_employees);
         }
         
+        /**
+         * add a capability to the group role
+         * @param capability
+         */
         public void addCapability(Integer capability) {
             _capabilities.add(capability);
         }
         
+        /**
+         * does the group role have the given capability?
+         * @param capability the id of the capability to look for
+         * @return true if the group role has the capability
+         */
         public boolean hasCapability(Integer capability) {
             return _capabilities.contains(capability);
         }
         
+        /**
+         * remove a capability from the group role
+         * @param capability
+         */
         public void removeCapability(Integer capability) {
             _capabilities.remove(capability);
         }
         
+        /**
+         * @return the capabilities of the group role
+         */
         public ROCollection<Integer> getCapabilities() {
             return ROCollection.wrap(_capabilities);
         }
