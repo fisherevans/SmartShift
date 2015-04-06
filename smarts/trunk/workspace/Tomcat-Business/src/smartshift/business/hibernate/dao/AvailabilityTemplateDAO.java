@@ -38,6 +38,7 @@ public class AvailabilityTemplateDAO extends BaseBusinessDAO<AvailabilityTemplat
      */
     public AddTask<AvailabilityTemplateModel> add(String name, Integer employeeID) {
         AvailabilityTemplateModel template = new AvailabilityTemplateModel();
+        template.setId(getNextID());
         template.setName(name);
         template.setEmployeeID(employeeID);
         return add(template);

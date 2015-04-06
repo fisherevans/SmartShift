@@ -42,6 +42,7 @@ public class AvailabilityDAO extends BaseBusinessDAO<AvailabilityModel>{
      */
     public AddTask<AvailabilityModel> add(Integer templateID, Integer start, Integer duration, Integer repeatEvery, Integer repeatCount, Integer repeateOffset, Boolean unavailable) {
         AvailabilityModel avail = new AvailabilityModel();
+        avail.setId(getNextID());
         avail.setTemplateID(templateID);
         avail.setStart(start);
         avail.setDuration(duration);

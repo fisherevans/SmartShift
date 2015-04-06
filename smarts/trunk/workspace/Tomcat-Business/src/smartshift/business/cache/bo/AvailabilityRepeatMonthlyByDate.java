@@ -1,39 +1,32 @@
 package smartshift.business.cache.bo;
 
-import org.hibernate.HibernateException;
 import smartshift.business.hibernate.dao.AvailabilityRepeatMonthlyByDateDAO;
+import smartshift.business.hibernate.model.AvailabilityRepeatInterface;
 import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDateModel;
 import smartshift.common.util.UID;
 
 public class AvailabilityRepeatMonthlyByDate extends AvailabilityRepeat {
     private int _dayOfMonth;
     
-    private AvailabilityRepeatMonthlyByDateModel _model;
-    
     private AvailabilityRepeatMonthlyByDate(Cache cache, int id) {
         super(cache, id);
     }
-
-    @Override
-    public void save() {
-        try {
-            if(_model != null) {
-                _model.setDayOfMonth(_dayOfMonth);
-                getDAO(AvailabilityRepeatMonthlyByDateDAO.class).update(_model);
-                super.save();
-            } else {
-                _model = getDAO(AvailabilityRepeatMonthlyByDateDAO.class).add(_dayOfMonth).execute();
-                setID(_model.getId());
-                super.save();
-            }
-        } catch (HibernateException e) {
-            getLogger().debug(e.getStackTrace());
-        }
+    
+    private AvailabilityRepeatMonthlyByDate(Cache cache, Availability avail, int dayOfMonth) {
+        super(cache, avail);
+        _dayOfMonth = dayOfMonth;
+    }
+    
+    public AvailabilityRepeatMonthlyByDateModel getModel() {
+        AvailabilityRepeatMonthlyByDateModel model = new AvailabilityRepeatMonthlyByDateModel();
+        model.setId(getID());
+        model.setAvailabilityID(getAvailability().getID());
+        model.setDayOfMonth(_dayOfMonth);
+        return model;
     }
     
     public void init(AvailabilityRepeatMonthlyByDateModel model) {
         _dayOfMonth = model.getDayOfMonth();
-        _model = model;
     }
     
     protected static AvailabilityRepeatMonthlyByDate loadFromDB (Cache cache, int repeatID) {
@@ -49,5 +42,15 @@ public class AvailabilityRepeatMonthlyByDate extends AvailabilityRepeat {
             repeat.init(model);
             return repeat;
         }
+    }
+    
+    public static AvailabilityRepeatMonthlyByDate create (int businessID, int dayOfMonth, Availability avail) {
+        Cache cache = Cache.getCache(businessID);
+        AvailabilityRepeatMonthlyByDate repeat = new AvailabilityRepeatMonthlyByDate(cache, avail, dayOfMonth);
+        AvailabilityRepeatMonthlyByDateDAO dao = repeat.getDAO(AvailabilityRepeatMonthlyByDateDAO.class);
+        repeat.setID(dao.getNextID());
+        dao.add(repeat.getModel()).enqueue();
+        cache.cache(new UID(repeat), repeat);
+        return repeat;
     }
 }

@@ -1,6 +1,7 @@
 package smartshift.business.cache.bo;
 
 import org.joda.time.LocalDate;
+import smartshift.business.hibernate.dao.AvailabilityDAO;
 import smartshift.business.hibernate.dao.AvailabilityInstanceDAO;
 import smartshift.business.hibernate.model.AvailabilityInstanceModel;
 import smartshift.common.util.UID;
@@ -14,8 +15,6 @@ public class AvailabilityInstance extends CachedObject {
     private AvailabilityTemplate _template;
     private LocalDate _startDate;
     private LocalDate _endDate;
-    
-    private AvailabilityInstanceModel _model;
     
     private AvailabilityInstance(Cache cache, LocalDate start, LocalDate end) {
         super(cache);
@@ -35,40 +34,24 @@ public class AvailabilityInstance extends CachedObject {
     public String typeCode() {
         return TYPE_IDENTIFIER;
     }
-
-    @Override
-    public void save() {
-        try {
-            if(_model != null) {
-                _model.setStartDate(_startDate.toDate());
-                _model.setEndDate(_endDate.toDate());
-                _model.setTemplateID(_template.getID());
-                getDAO(AvailabilityInstanceDAO.class).update(_model);
-                super.save();
-            } else {
-                _template.save();
-                _model = getDAO(AvailabilityInstanceDAO.class).add(_template.getID(), _startDate.toDate(), _endDate.toDate()).execute();
-                setID(_model.getId());
-                super.save();
-            }
-        } catch (Exception e) {
-            logger.warn("Failed to save the availability instance!", e);
-        }
-    }
     
-    @Override
-    public void saveRelationships() {
-        // do nothing
+    public AvailabilityInstanceModel getModel() {
+        AvailabilityInstanceModel model = new AvailabilityInstanceModel();
+        model.setId(getID());
+        model.setStartDate(_startDate.toDate());
+        model.setEndDate(_endDate.toDate());
+        model.setTemplateID(_template.getID());
+        return model;
     }
 
     @Override
     public void loadAllChildren() {
-        setTemplate(AvailabilityTemplate.load(getCache(), _model.getTemplateID())); 
+        AvailabilityInstanceModel model = getCache().getDAOContext().dao(AvailabilityInstanceDAO.class).uniqueByID(getID()).execute();
+        setTemplate(AvailabilityTemplate.load(getCache(), model.getTemplateID())); 
     }
     
     public void init() {
         AvailabilityInstanceModel model = getCache().getDAOContext().dao(AvailabilityInstanceDAO.class).uniqueByID(getID()).execute();
-        _model = model;
         _startDate = new LocalDate(model.getStartDate());
         _endDate = new LocalDate(model.getEndDate());
     }
@@ -89,8 +72,10 @@ public class AvailabilityInstance extends CachedObject {
     public static AvailabilityInstance create(int businessID, AvailabilityTemplate template, LocalDate start, LocalDate end) {
         Cache cache = Cache.getCache(businessID);
         AvailabilityInstance inst = new AvailabilityInstance(cache, start, end);
+        AvailabilityInstanceDAO dao = inst.getDAO(AvailabilityInstanceDAO.class);
+        inst.setID(dao.getNextID());
         inst.setTemplate(template);
-        inst.save();
+        dao.add(inst.getModel()).enqueue();
         cache.cache(new UID(inst), inst);
         return inst;
     }

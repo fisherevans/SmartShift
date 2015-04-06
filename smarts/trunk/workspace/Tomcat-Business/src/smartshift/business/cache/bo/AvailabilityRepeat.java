@@ -6,19 +6,24 @@ public abstract class AvailabilityRepeat extends CachedObject {
     public static final String TYPE_IDENTIFIER = "AR";
     
     private static final SmartLogger logger = new SmartLogger(AvailabilityRepeat.class);
-   
+    private Availability _availability;
+    
     protected AvailabilityRepeat(Cache cache, int id) {
         super(cache, id);
+    }
+
+    protected AvailabilityRepeat(Cache cache, Availability avail) {
+        super(cache);
+        _availability = avail;
+    }
+    
+    public Availability getAvailability() {
+        return _availability;
     }
 
     @Override
     public String typeCode() {
         return TYPE_IDENTIFIER;
-    }
-    
-    @Override
-    public void saveRelationships() {
-        // do nothing
     }
 
     @Override

@@ -2,6 +2,7 @@ package smartshift.business.cache.bo;
 
 import java.util.List;
 import org.hibernate.HibernateException;
+import smartshift.business.hibernate.dao.AvailabilityInstanceDAO;
 import smartshift.business.hibernate.dao.AvailabilityTemplateDAO;
 import smartshift.business.hibernate.model.AvailabilityTemplateModel;
 import smartshift.common.util.UID;
@@ -16,8 +17,6 @@ public class AvailabilityTemplate extends CachedObject {
     private String _name;
     private Employee _owner;
     
-    private AvailabilityTemplateModel _model;
-    
     private AvailabilityTemplate(Cache cache, String name, Employee owner) {
         super(cache);
         _owner = owner;
@@ -28,7 +27,7 @@ public class AvailabilityTemplate extends CachedObject {
         super(cache, id);
     }
 
-    void add(Availability availability) {
+    synchronized void addedComponent(Availability availability) {
         _components.add(availability);
     }
 
@@ -36,31 +35,13 @@ public class AvailabilityTemplate extends CachedObject {
     public String typeCode() {
         return TYPE_IDENTIFIER;
     }
-
-    @Override
-    public void save() {
-        try {
-            if(_model != null) {
-                _model.setName(_name);
-                _model.setEmployeeID(_owner.getID());
-                getDAO(AvailabilityTemplateDAO.class).update(_model);
-                super.save();
-            } else {
-                _model = getDAO(AvailabilityTemplateDAO.class).add(_name, _owner.getID()).execute();
-                _model.setId(_model.getId());
-                for(Availability a : _components) {
-                    a.save();
-                }
-                super.save();
-            }
-        } catch (HibernateException e) {
-            logger.debug(e.getStackTrace());
-        }
-    }
     
-    @Override
-    public void saveRelationships() {
-        // do nothing
+    public AvailabilityTemplateModel getModel() {
+        AvailabilityTemplateModel model = new AvailabilityTemplateModel();
+        model.setId(getID());
+        model.setName(_name);
+        model.setEmployeeID(_owner.getID());
+        return model;
     }
 
     @Override
@@ -85,13 +66,14 @@ public class AvailabilityTemplate extends CachedObject {
         AvailabilityTemplateModel model = getCache().getDAOContext().dao(AvailabilityTemplateDAO.class).uniqueByID(getID()).execute();
         _owner = Employee.load(getCache(), model.getEmployeeID());
         _name = model.getName();
-        _model = model;
     }
     
     public static AvailabilityTemplate create(int businessID, String name, Employee owner) {
         Cache cache = Cache.getCache(businessID);
         AvailabilityTemplate temp = new AvailabilityTemplate(cache, name, owner);
-        temp.save();
+        AvailabilityTemplateDAO dao = temp.getDAO(AvailabilityTemplateDAO.class);
+        temp.setID(dao.getNextID());
+        dao.add(temp.getModel()).enqueue();
         cache.cache(new UID(temp), temp);
         return temp;
     }

@@ -30,6 +30,7 @@ public class AvailabilityRepeatMonthlyByDateDAO extends AvailabilityRepeatDAO<Av
      */
     public AddTask<AvailabilityRepeatMonthlyByDateModel> add(Integer dayOfMonth) {
         AvailabilityRepeatMonthlyByDateModel model = new AvailabilityRepeatMonthlyByDateModel();
+        model.setId(getNextID());
         model.setDayOfMonth(dayOfMonth);
         return add(model);
     }

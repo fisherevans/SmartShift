@@ -39,7 +39,6 @@ public class TopBusinessListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent sce) {
         HibernateTaskQueue.closeAllQueues();
         QuartzHelper.stopAllJobs();
-        Cache.saveAllCaches();
     }
 
 }

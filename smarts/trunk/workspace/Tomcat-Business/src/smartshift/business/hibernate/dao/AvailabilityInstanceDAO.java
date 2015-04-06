@@ -56,6 +56,7 @@ public class AvailabilityInstanceDAO extends BaseBusinessDAO<AvailabilityInstanc
      */
     public AddTask<AvailabilityInstanceModel> add(Integer templateID, Date startDate, Date endDate) {
         AvailabilityInstanceModel instance = new AvailabilityInstanceModel();
+        instance.setId(getNextID());
         instance.setTemplateID(templateID);
         instance.setStartDate(startDate);
         instance.setEndDate(endDate);

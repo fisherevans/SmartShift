@@ -1,42 +1,31 @@
 package smartshift.business.cache.bo;
 
-import org.hibernate.HibernateException;
 import smartshift.business.hibernate.dao.AvailabilityRepeatWeeklyDAO;
-import smartshift.business.hibernate.dao.EmployeeDAO;
 import smartshift.business.hibernate.model.AvailabilityRepeatWeeklyModel;
-import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.common.util.UID;
 
 public class AvailabilityRepeatWeekly extends AvailabilityRepeat {
     
     private int _dayOfWeek;
     
-    private AvailabilityRepeatWeeklyModel _model;
-    
     private AvailabilityRepeatWeekly(Cache cache, int id) {
         super(cache, id);
     }
-
-    @Override
-    public void save() {
-        try {
-            if(_model != null) {
-                _model.setDayOfWeek(_dayOfWeek);
-                getDAO(AvailabilityRepeatWeeklyDAO.class).update(_model);
-                super.save();
-            } else {
-                _model = getDAO(AvailabilityRepeatWeeklyDAO.class).add(_dayOfWeek).execute();
-                setID(_model.getId());
-                super.save();
-            }
-        } catch (HibernateException e) {
-            getLogger().debug(e.getStackTrace());
-        }
+    
+    private AvailabilityRepeatWeekly(Cache cache, Availability avail, int dayOfWeek) {
+        super(cache, avail);
+        _dayOfWeek = dayOfWeek;
+    }
+    
+    public AvailabilityRepeatWeeklyModel getModel() {
+        AvailabilityRepeatWeeklyModel model = new AvailabilityRepeatWeeklyModel();
+        model.setAvailabilityID(getAvailability().getID());
+        model.setDayOfWeek(_dayOfWeek);
+        return model;
     }
     
     public void init(AvailabilityRepeatWeeklyModel model) {
         _dayOfWeek = model.getDayOfWeek();
-        _model = model;
     }
     
     protected static AvailabilityRepeatWeekly loadFromDB (Cache cache, int repeatID) {
@@ -52,5 +41,15 @@ public class AvailabilityRepeatWeekly extends AvailabilityRepeat {
             repeat.init(model);
             return repeat;
         }
+    }
+    
+    public static AvailabilityRepeatWeekly create (int businessID, Availability avail, int dayOfWeek) {
+        Cache cache = Cache.getCache(businessID);
+        AvailabilityRepeatWeekly repeat = new AvailabilityRepeatWeekly(cache, avail, dayOfWeek);
+        AvailabilityRepeatWeeklyDAO dao = repeat.getDAO(AvailabilityRepeatWeeklyDAO.class);
+        repeat.setID(dao.getNextID());
+        dao.add(repeat.getModel()).enqueue();
+        cache.cache(new UID(repeat), repeat);
+        return repeat;
     }
 }

@@ -52,6 +52,7 @@ public class RoleDAO extends BaseBusinessDAO<RoleModel> {
      */
     public AddTask<RoleModel> add(String name) {
         RoleModel model = new RoleModel();
+        model.setId(getNextID());
         model.setName(name);
         return add(model);
     }

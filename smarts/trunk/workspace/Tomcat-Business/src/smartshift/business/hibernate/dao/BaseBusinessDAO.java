@@ -17,12 +17,4 @@ public abstract class BaseBusinessDAO<T> extends BaseDAO<T> {
     public BaseBusinessDAO(BusinessDAOContext context, Class<T> modelClass) {
         super(context, modelClass);
     }
-    
-    protected Integer getNextID() {
-        return DynamicNextID.getInstance(getDAOContext()).getNextID(getModelClass());
-    }
-    
-    protected Integer getNextID(String column) {
-        return DynamicNextID.getInstance(getDAOContext()).getNextID(getModelClass(), column);
-    }
 }

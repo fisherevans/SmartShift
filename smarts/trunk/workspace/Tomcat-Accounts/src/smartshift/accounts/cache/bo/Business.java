@@ -2,7 +2,6 @@ package smartshift.accounts.cache.bo;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.hibernate.HibernateException;
 import smartshift.accounts.hibernate.dao.AccountsDAOContext;
 import smartshift.accounts.hibernate.dao.BusinessDAO;
 import smartshift.accounts.hibernate.model.BusinessModel;
@@ -17,16 +16,15 @@ public class Business implements Stored {
     private final int _id;
     private final String _name;
     
-    private BusinessModel _model;
-    
     private Business(int id, String name) {
         _id = id;
         _name = name;
     }
     
-    private Business(BusinessModel model) {
-        this(model.getId(), model.getName());
-        _model = model;
+    private Business(int id) {
+        _id = id;
+        BusinessModel model = AccountsDAOContext.dao(BusinessDAO.class).uniqueByID(_id).execute();
+        _name = model.getName();
     }
 
     public int getID() {
@@ -38,18 +36,11 @@ public class Business implements Stored {
     }
     
     @Override
-    public void save() {
-        try {
-            if(_model != null) {
-                _model.setName(_name);
-                AccountsDAOContext.dao(BusinessDAO.class).update(_model);
-            } else {
-                // we probably never want to create a new business here
-                //_model = BusinessDAO.addBusiness(_name);
-            }
-        } catch (HibernateException e) {
-            logger.debug(e.getStackTrace());
-        }  
+    public BusinessModel getModel() {
+        BusinessModel model = new BusinessModel();
+        model.setId(_id);
+        model.setName(_name);
+        return model;
     }
     
     @Override
@@ -67,15 +58,8 @@ public class Business implements Stored {
             businesses = new HashMap<Integer, Business>();
         if(!businesses.containsKey(busID)) {
             BusinessModel model = AccountsDAOContext.dao(BusinessDAO.class).uniqueByID(busID).execute();
-            businesses.put(busID, new Business(model));           
+            businesses.put(busID, new Business(busID));           
         }
         return businesses.get(busID);
     }
-
-    @Override
-    public void saveRelationships() {
-        // do nothing
-    }
-    
-    
 }

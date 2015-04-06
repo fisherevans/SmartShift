@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import org.hibernate.HibernateException;
 import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.dao.GroupDAO;
 import smartshift.business.hibernate.dao.RoleDAO;
@@ -20,8 +19,6 @@ public class Role extends CachedObject {
     
     private String _name;
     private Map<Group, Set<Integer>> _capabilities;
-    
-    private RoleModel _model;
     
     private static String BASIC_ROLE_NAME = "basic";
     private static int BASIC_ROLE_ID = 0;
@@ -58,16 +55,12 @@ public class Role extends CachedObject {
         _capabilities = new HashMap<Group, Set<Integer>>();
     }
 
-    public void setName(String name) {
+    protected synchronized void setName(String name) {
         _name = name;
     }
     
     public String getName() {
         return _name;
-    }
-    
-    public void capabilityAdded(Group group, Integer capabilityID) {
-        _capabilities.get(group).add(capabilityID);
     }
     
     public static Role getBasicRole(Cache cache, Group parent) {
@@ -76,33 +69,39 @@ public class Role extends CachedObject {
         return basicRole;
     }
     
-    private void fork(Role role) {
-        Role old = new Role(getCache(), getName());
-        old.save();
-        getCache().cache(new UID(old), old);
-        save();
-    }
-
-    @Override
-    public void save() {
-        try {
-            if(_model != null) {
-                _model.setName(_name);
-                getDAO(RoleDAO.class).update(_model);
-                super.save();
-            } else {
-                _model = getDAO(RoleDAO.class).add(_name).execute();
-                setID(_model.getId());
-                super.save();
-            }
-        } catch (HibernateException e) {
-            logger.debug(e.getStackTrace());
-        }
+    public void capabilityAdded(Group group, Integer capabilityID) {
+        _capabilities.get(group).add(capabilityID);
     }
     
-    @Override
-    public void saveRelationships() {
-        // do nothing
+    public Role renameForGroup(Group group, String newName) {
+        if(_capabilities.containsKey(group) && _capabilities.keySet().size() == 1) {
+            synchronized(this) {
+                setName(newName);
+            }
+            return this;
+        }            
+        Role forGrp = fork();
+        forGrp.setName(newName);
+        group.addRole(forGrp);
+        for(Employee e : group.getRoleEmployees(this))
+            group.addRoleEmployee(forGrp, e);
+        for(Integer i : group.getRoleCapabilities(this))
+            group.addRoleCapability(forGrp, i);
+        group.removeRole(this);
+        return forGrp;
+    }
+    
+    private Role fork() {
+        Role newRole = create(getCache().getBusinessID(), getName());
+        getCache().cache(new UID(newRole), newRole);
+        return newRole;
+    }
+    
+    public RoleModel getModel() {
+        RoleModel model = new RoleModel();
+        model.setId(getID());
+        model.setName(_name);
+        return model;
     }
 
     @Override
@@ -157,7 +156,6 @@ public class Role extends CachedObject {
     public void init() {
         RoleModel model = getCache().getDAOContext().dao(RoleDAO.class).uniqueByID(getID()).execute();
         _name = model.getName();
-        _model = model;
     }
     
     public static Role create(int businessID, String name, Group parent) {
@@ -168,17 +166,12 @@ public class Role extends CachedObject {
                 role = new Role(cache, name);
             else
                 role = new Role(cache, name, parent);
-            role.save();
+            RoleDAO dao = role.getDAO(RoleDAO.class);
+            role.setID(dao.getNextID());
+            dao.add(role.getModel()).enqueue();
             cache.cache(new UID(role), role);
         }
         return role;
-    }
-    
-    public Role renameForGroup(Group group, String newName) {
-        // TODO drew - renames a role. check to see if any other groups use it, 
-        // if they do need to make a new role and refactor the relationships, if not just rename
-        logger.error("Hit a non-implemeneted block! renameForGroup()");
-        throw new RuntimeException("To implement!");
     }
     
     @Override
