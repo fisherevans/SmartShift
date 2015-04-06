@@ -21,7 +21,12 @@ import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.log4j.SmartLogger;
 import smartshift.common.util.properties.AppConstants;
 
+/**
+ * an employee--just a person
+ * @author drew
+ */
 public class Employee extends CachedObject {
+    /** the type identifier for an employee */
     public static final String TYPE_IDENTIFIER = "E";
     
     private static final SmartLogger logger = new SmartLogger(Employee.class);
@@ -34,6 +39,13 @@ public class Employee extends CachedObject {
     private List<AvailabilityInstance> _availabilities;
     private List<AvailabilityTemplate> _availabilityTemplates;
     
+    /**
+     * constructor for a newly created employee
+     * @param cache
+     * @param first
+     * @param last
+     * @param home
+     */
     private Employee(Cache cache, String first, String last, Group home) {
         super(cache);
         _firstName = first;
@@ -45,33 +57,59 @@ public class Employee extends CachedObject {
         _homeGroup.addRoleEmployee(Role.getBasicRole(cache, _homeGroup), this);
     }
     
+    /**
+     * constructor for a newly loaded employee
+     * @param cache
+     * @param id
+     */
     private Employee(Cache cache, int id) {
         super(cache, id);
         _roles = new HashMap<Group, Set<Role>>();
     }
 
+    /**
+     * set the first name
+     * @param firstName the first name to set
+     */
     public synchronized void setFirstName(String firstName) {
         _firstName = firstName;
         getDAO(EmployeeDAO.class).update(getModel()).enqueue();
     }
     
+    /**
+     * @return the first name
+     */
     public String getFirstName() {
         return _firstName;
     }
     
+    /**
+     * set the last name
+     * @param lastName the last name to set
+     */
     public synchronized void setLastName(String lastName) {
         _lastName = lastName;
         getDAO(EmployeeDAO.class).update(getModel()).enqueue();
     }
     
+    /**
+     * @return the last name
+     */
     public String getLastName() {
         return _lastName;
     }
     
+    /**
+     * @return the employee's display name
+     */
     public String getDisplayName() {
         return _firstName + " " + _lastName;
     }
     
+    /**
+     * set the employee's home group
+     * @param homeGroup the group to set
+     */
     public void setHomeGroup(Group homeGroup) {
         if(!belongsTo(homeGroup, false))
             throw new RuntimeException(String.format("Cannot set homegroup:%d on Employee:%d because the employee is not already a member.", homeGroup.getID(), getID()));
@@ -81,21 +119,35 @@ public class Employee extends CachedObject {
         }
     }
     
+    /**
+     * @return the employee's home group
+     */
     public Group getHomeGroup() {
         return _homeGroup;
     }
 
+    /**
+     * set the active flag on the employee
+     * @param active the flag to set
+     */
     public synchronized void setActive(Boolean active) {
         _active = active;
         getDAO(EmployeeDAO.class).update(getModel()).enqueue();
     }
 
+    /**
+     * @return the active flag
+     */
     public Boolean getActive() {
         return _active;
     }
     
     // --- GROUPS
     
+    /**
+     * the employee was added to the group
+     * @param group the group the employee was added to
+     */
     protected synchronized void groupAdded(Group group) {
         if(!_roles.containsKey(group))
             _roles.put(group, new HashSet<Role>());
@@ -103,10 +155,17 @@ public class Employee extends CachedObject {
             getDAO(GroupEmployeeDAO.class).link(group.getID(), getID()).enqueue();
     }
     
+    /**
+     * @return the groups that the employee is a part of
+     */
     public ROCollection<Group> getGroups() {
         return ROCollection.wrap(_roles.keySet());
     }
     
+    /**
+     * the employee was removed from a group
+     * @param group the group the employee was removed from
+     */
     protected synchronized void groupRemoved(Group group) {
         _roles.remove(group);
         if(getDAO(GroupEmployeeDAO.class).linkCount(group.getID(), getID()).execute() == 1)
@@ -115,15 +174,30 @@ public class Employee extends CachedObject {
     
     // --- GROUP ROLES
     
+    /**
+     * the employee was added to a role within a group
+     * @param group
+     * @param role
+     */
     protected synchronized void groupRoleAdded(Group group, Role role) {
         groupAdded(group);
         _roles.get(group).add(role);
     }
     
+    /**
+     * get the roles an employee has in a given group
+     * @param group
+     * @return the roles
+     */
     public ROCollection<Role> getRoles(Group group) {
         return ROCollection.wrap(_roles.get(group));
     }
     
+    /**
+     * the employee was removed from a role within a group
+     * @param group
+     * @param role
+     */
     protected void groupRoleRemoved(Group group, Role role) {
         Set<Role> groupRoles = _roles.get(group);
         if(groupRoles != null) {
@@ -137,6 +211,9 @@ public class Employee extends CachedObject {
     
     // --- AVAILABILITY
     
+    /**
+     * load the employee's availability into memory
+     */
     private void initAvailabilities() {
         try {
             for(AvailabilityInstanceModel aim : getDAO(AvailabilityInstanceDAO.class).listByEmployee(getID()).execute()) {
@@ -148,6 +225,9 @@ public class Employee extends CachedObject {
         }
     }
     
+    /**
+     * load the employee's availability templates into memory
+     */
     private void initAvailabilityTemplates() {
         try {
             for(AvailabilityTemplateModel atm : getDAO(AvailabilityTemplateDAO.class).listByEmployee(getID()).execute()) {
@@ -161,6 +241,11 @@ public class Employee extends CachedObject {
     
     // --- MISC
     
+    /**
+     * does the employee manage another employee
+     * @param other the other employee to check
+     * @return true if this manages the other employee
+     */
     public boolean manages(Employee other) {
         // TODO only check for master manager
         if(other.getGroups().size() == 0)
@@ -172,6 +257,13 @@ public class Employee extends CachedObject {
         return false;
     }
 
+    /**
+     * does the employee manage a group
+     * @param group the group to check
+     * @param checkParent should the parent be checked as well?
+     * @return true if the employee manages the group (or one of its parents,
+     *   if checkParent is true)
+     */
     public boolean manages(Group group, boolean checkParent) {
         // TODO only check for master manager
         if(_roles.get(group) != null)
@@ -182,6 +274,13 @@ public class Employee extends CachedObject {
                 manages(group.getParent(), checkParent);
     }
     
+    /**
+     * does the employee belong to a group
+     * @param group the group to check
+     * @param checkParent should the parent be checked as well?
+     * @return true if the employee belongs to the group (or one of its parents,
+     *   if checkParent is true)
+     */
     public boolean belongsTo(Group group, boolean checkParent) {
         for(Group employeeGroup:getGroups()) {
             if(employeeGroup.getID() == group.getID())
@@ -193,6 +292,9 @@ public class Employee extends CachedObject {
         return false;
     }
     
+    /**
+     * delete the employee
+     */
     public void delete() {
         setActive(false);
         for(Group group:getGroups()) {
@@ -201,6 +303,9 @@ public class Employee extends CachedObject {
         getCache().decache(getUID());
     }
     
+    /**
+     * @see smartshift.common.util.hibernate.Stored#getModel()
+     */
     public EmployeeModel getModel() {
         EmployeeModel model = new EmployeeModel();
         model.setId(getID());
@@ -211,6 +316,9 @@ public class Employee extends CachedObject {
         return model;
     }
 
+    /**
+     * @see smartshift.common.util.hibernate.Stored#loadAllChildren()
+     */
     @Override
     public void loadAllChildren() {
         try {
@@ -224,11 +332,20 @@ public class Employee extends CachedObject {
         }
     }
 
+    /**
+     * @see smartshift.common.util.Identifiable#typeCode()
+     */
     @Override
     public String typeCode() {
         return TYPE_IDENTIFIER;
     }
     
+    /**
+     * load an employee into memory (pulls from the cache if it already exists in memory)
+     * @param cache the cache to load into
+     * @param empID the id of the employee to load
+     * @return the employee requested
+     */
     public static Employee load(Cache cache, int empID) {
     	UID uid = new UID(TYPE_IDENTIFIER, empID);
         if(cache.contains(uid)) {
@@ -244,6 +361,9 @@ public class Employee extends CachedObject {
         }
     }
     
+    /**
+     * initialize the fields of this skeleton employee
+     */
     public void init() {
         EmployeeModel model = getCache().getDAOContext().dao(EmployeeDAO.class).uniqueByID(getID()).execute();
         _firstName = model.getFirstName();
@@ -251,6 +371,14 @@ public class Employee extends CachedObject {
         _homeGroup = Group.load(getCache(), model.getDefaultGroupID());
     }
     
+    /**
+     * create a new employee with the given parameters
+     * @param businessID the id of the business to create the employee for
+     * @param first the employee's first name
+     * @param last the employee's last name
+     * @param homeGroupID the id of the employee's homegroup
+     * @return the new employee
+     */
     public static Employee create(int businessID, String first, String last, int homeGroupID) {
         Cache cache = Cache.getCache(businessID);
         Employee emp = new Employee(cache, first, last, Group.load(cache, homeGroupID));
@@ -271,6 +399,9 @@ public class Employee extends CachedObject {
         return emp;
     }
     
+    /**
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
         return String.format("[ID:%d Name:%s Groups:%d Home:%s]", getID(), getDisplayName(), _roles.size(), _homeGroup);

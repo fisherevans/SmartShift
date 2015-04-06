@@ -12,7 +12,12 @@ import smartshift.business.hibernate.model.RoleModel;
 import smartshift.common.util.UID;
 import smartshift.common.util.log4j.SmartLogger;
 
+/**
+ * an organizational role
+ * @author drew
+ */
 public class Role extends CachedObject {
+    /** the type identifier for a role */
     public static final String TYPE_IDENTIFIER = "R";
     
     private static final SmartLogger logger = new SmartLogger(Role.class);
@@ -20,59 +25,117 @@ public class Role extends CachedObject {
     private String _name;
     private Map<Group, Set<Integer>> _capabilities;
     
+    /** the name of the basic role */
     private static String BASIC_ROLE_NAME = "basic";
+    /** the id for the basic role */
     private static int BASIC_ROLE_ID = 0;
     
+    /** the basic role */
     private static final class BasicRole extends Role {
+        
+        /** 
+         * constructor for a new basic role for the given group 
+         * @param cache 
+         * @param parent the group to add the role to
+         */
         public BasicRole(Cache cache, Group parent) {
             super(cache, BASIC_ROLE_NAME, parent);
         }
         
+        /**
+         * @see smartshift.business.cache.bo.CachedObject#getID()
+         */
         @Override
         public int getID() {
             return BASIC_ROLE_ID;
         }
     }
     
+    /**
+     * constructor for a newly created role
+     * @param cache
+     * @param name the name of the role
+     */
     private Role(Cache cache, String name) {
         super(cache);
         _name = name;
         _capabilities = new HashMap<Group, Set<Integer>>();
     }
     
+    /**
+     * constructor for a newly created role within a group
+     * @param cache
+     * @param name the name of the role
+     * @param parent the group to add the role to
+     */
     private Role(Cache cache, String name, Group parent) {
         this(cache, name);
         _capabilities.put(parent, new HashSet<Integer>());
         parent.addRole(this);
     }
     
+    /**
+     * constructor for a newly loaded role from a model
+     * @param cache
+     * @param model the model to load from
+     */
     private Role(Cache cache, RoleModel model) {
         this(cache, model.getName());
     }
     
+    /**
+     * constructor for a newly loaded role
+     * @param cache
+     * @param id
+     */
     private Role(Cache cache, int id) {
         super(cache, id);
         _capabilities = new HashMap<Group, Set<Integer>>();
     }
 
+    /**
+     * set the role's name
+     * @param name the name to set
+     */
     protected synchronized void setName(String name) {
         _name = name;
     }
     
+    /**
+     * @return the role's name
+     */
     public String getName() {
         return _name;
     }
     
+    /**
+     * get the basic role for the specified group
+     * @param cache
+     * @param parent
+     * @return the basic role for the specified group
+     */
     public static Role getBasicRole(Cache cache, Group parent) {
         Role basicRole = new BasicRole(cache, parent);
         parent.addRole(basicRole);
         return basicRole;
     }
     
+    /**
+     * a new capability has been added to the role within the group
+     * @param group
+     * @param capabilityID
+     */
     public void capabilityAdded(Group group, Integer capabilityID) {
         _capabilities.get(group).add(capabilityID);
     }
     
+    /**
+     * rename the role for a specific group, will fork the role if necessary
+     *   so that other groups using the same role don't have theirs renamed
+     * @param group
+     * @param newName
+     * @return the group with the new name
+     */
     public Role renameForGroup(Group group, String newName) {
         if(_capabilities.containsKey(group) && _capabilities.keySet().size() == 1) {
             synchronized(this) {
@@ -91,12 +154,24 @@ public class Role extends CachedObject {
         return forGrp;
     }
     
+    /**
+     * fork the role, creating and caching a copy of it
+     * @return the new role
+     */
     private Role fork() {
         Role newRole = create(getCache().getBusinessID(), getName());
+        for(Group g : _capabilities.keySet()) {
+            for(Integer c : _capabilities.get(g))
+                newRole.capabilityAdded(g, c);
+        }
         getCache().cache(new UID(newRole), newRole);
+        
         return newRole;
     }
     
+    /**
+     * @see smartshift.common.util.hibernate.Stored#getModel()
+     */
     public RoleModel getModel() {
         RoleModel model = new RoleModel();
         model.setId(getID());
@@ -104,6 +179,9 @@ public class Role extends CachedObject {
         return model;
     }
 
+    /**
+     * @see smartshift.common.util.hibernate.Stored#loadAllChildren()
+     */
     @Override
     public void loadAllChildren() {
         try {
@@ -117,11 +195,20 @@ public class Role extends CachedObject {
        }  
     }
 
+    /**
+     * @see smartshift.common.util.Identifiable#typeCode()
+     */
     @Override
     public String typeCode() {
         return TYPE_IDENTIFIER;
     }
     
+    /**
+     * load a role into memory (pulls from the cache if it already exists in memory)
+     * @param cache the cache to load into
+     * @param roleID the id of the role to load
+     * @return the role requested
+     */
     public static Role load(Cache cache, int roleID) {
         UID uid = new UID(TYPE_IDENTIFIER, roleID);
         if(cache.contains(uid))
@@ -135,7 +222,12 @@ public class Role extends CachedObject {
         }
     }
     
-    // never call in the initial load. plz plz plz.
+    /**
+     * load a role by name (never call in the initial load, will cause cycles)
+     * @param cache the cache to load into
+     * @param roleName the name of the role to load
+     * @return the role requested
+     */
     public static Role loadByName(Cache cache, String roleName) {
         Role role = cache.getRole(roleName);
         if(role == null) {
@@ -149,15 +241,31 @@ public class Role extends CachedObject {
         return role;
     }
     
+    /**
+     * create a new role without a group
+     * @param businessID the id of the business to create the role for
+     * @param name the name of the role
+     * @return the new role
+     */
     public static Role create(int businessID, String name) {
         return create(businessID, name, null);
     }
     
+    /**
+     * initialize the fields of this role skeleton
+     */
     public void init() {
         RoleModel model = getCache().getDAOContext().dao(RoleDAO.class).uniqueByID(getID()).execute();
         _name = model.getName();
     }
     
+    /**
+     * create a new role within a group
+     * @param businessID the id of the business to create the role for
+     * @param name the name of the role
+     * @param parent the group to create the role in
+     * @return the new role
+     */
     public static Role create(int businessID, String name, Group parent) {
         Cache cache = Cache.getCache(businessID);
         Role role = loadByName(cache, name);
@@ -174,6 +282,9 @@ public class Role extends CachedObject {
         return role;
     }
     
+    /**
+     * @see java.lang.Object#toString()
+     */
     @Override
     public String toString() {
         return String.format("[ID:%d Name:%s]", getID(), getName());
