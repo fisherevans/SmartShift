@@ -148,15 +148,23 @@ public class Group extends CachedObject {
      * add a role to the group
      * @param role the role to add
      */
-    public synchronized void addRole(Role role) {
+    public void addRole(Role role) {
         if(!hasRole(role)) {
-            GroupRoleModel model = getDAO(GroupRoleDAO.class).uniqueByGroupRole(getID(), role.getID()).execute();
-            if(model == null) {
-                AddTask<GroupRoleModel> task = getDAO(GroupRoleDAO.class).link(getID(), role.getID());
-                task.enqueue();
-                model = task.getModel();
+            int id = 0;
+            if(!role.isBasicRole()) {
+                GroupRoleModel model = getDAO(GroupRoleDAO.class).uniqueByGroupRole(getID(), role.getID()).execute();
+                if(model == null) {
+                    synchronized(this) {
+                        AddTask<GroupRoleModel> task = getDAO(GroupRoleDAO.class).link(getID(), role.getID());
+                        task.enqueue();
+                        model = task.getModel();
+                    }
+                }
+                id = model.getId();
             }
-            _employees.put(role, new GroupRole(model.getId()));
+            synchronized(this) {
+                _employees.put(role, new GroupRole(id));
+            }
         }
     }
     
