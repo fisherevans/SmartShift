@@ -88,7 +88,8 @@ public class Role extends CachedObject {
      * @param model the model to load from
      */
     private Role(Cache cache, RoleModel model) {
-        this(cache, model.getName());
+        this(cache, model.getId());
+        _name = model.getName();
     }
     
     /**
@@ -142,7 +143,7 @@ public class Role extends CachedObject {
      * @param group
      * @param capabilityID
      */
-    public void capabilityAdded(Group group, Integer capabilityID) {
+    public synchronized void capabilityAdded(Group group, Integer capabilityID) {
         _capabilities.get(group).add(capabilityID);
     }
     
@@ -234,13 +235,13 @@ public class Role extends CachedObject {
             Role role = new Role(cache, roleID);
             cache.cache(uid, role);
             role.loadAllChildren();
-            role.init();
+            role.initialize();
             return role;
         }
     }
     
     /**
-     * load a role by name (never call in the initial load, will cause cycles)
+     * load a role by name
      * @param cache the cache to load into
      * @param roleName the name of the role to load
      * @return the role requested
@@ -252,6 +253,8 @@ public class Role extends CachedObject {
             if(model != null) {
                 UID uid = new UID(TYPE_IDENTIFIER, model.getId());
                 role = new Role(cache, model);
+                role.loadAllChildren();
+                role.initialize();
                 cache.cache(uid, role);
             }
         }
@@ -273,7 +276,6 @@ public class Role extends CachedObject {
      */
     @Override
     public void init() {
-        super.init();
         RoleModel model = getCache().getDAOContext().dao(RoleDAO.class).uniqueByID(getID()).execute();
         _name = model.getName();
     }

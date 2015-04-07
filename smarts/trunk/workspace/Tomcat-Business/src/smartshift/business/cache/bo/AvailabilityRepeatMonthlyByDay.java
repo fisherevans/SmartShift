@@ -48,8 +48,8 @@ public class AvailabilityRepeatMonthlyByDay extends AvailabilityRepeat {
      * initialize the fields of this skeleton repeat from a model
      * @param model the db model to initialize based on
      */
-    public void init(AvailabilityRepeatMonthlyByDayModel model) {
-        init();
+    public void initialize(AvailabilityRepeatMonthlyByDayModel model) {
+        initialize();
         _dayOfWeek = model.getDayOfWeek();
     }
     
@@ -69,7 +69,7 @@ public class AvailabilityRepeatMonthlyByDay extends AvailabilityRepeat {
                 return null;
             AvailabilityRepeatMonthlyByDay repeat = new AvailabilityRepeatMonthlyByDay(cache, repeatID);
             cache.cache(uid, repeat);
-            repeat.init(model);
+            repeat.initialize(model);
             return repeat;
         }
     }

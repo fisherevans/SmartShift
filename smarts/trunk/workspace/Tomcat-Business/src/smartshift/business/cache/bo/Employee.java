@@ -360,7 +360,7 @@ public class Employee extends CachedObject {
             Employee employee = new Employee(cache, empID);
             cache.cache(uid, employee);
             employee.loadAllChildren();
-            employee.init();
+            employee.initialize();
             return employee;
         }
     }
@@ -370,7 +370,6 @@ public class Employee extends CachedObject {
      */
     @Override
     public void init() {
-        super.init();
         EmployeeModel model = getCache().getDAOContext().dao(EmployeeDAO.class).uniqueByID(getID()).execute();
         _firstName = model.getFirstName();
         _lastName = model.getLastName();

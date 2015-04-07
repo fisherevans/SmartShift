@@ -79,6 +79,14 @@ public abstract class AvailabilityRepeat extends CachedObject {
     }
     
     /**
+     * @see smartshift.business.cache.bo.CachedObject#init()
+     */
+    @Override
+    public void init() {
+        // do nothing
+    }
+    
+    /**
      * @return the logger for availability repeats
      */
     protected SmartLogger getLogger() {
