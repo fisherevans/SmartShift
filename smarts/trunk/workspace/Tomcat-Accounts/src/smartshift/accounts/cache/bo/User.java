@@ -120,6 +120,7 @@ public class User implements Stored {
     /**
      * @see smartshift.common.util.hibernate.Stored#getModel()
      */
+    @Override
     public UserModel getModel() {
         UserModel model = new UserModel();
         model.setId(_id);
@@ -155,7 +156,10 @@ public class User implements Stored {
             UserModel model = AccountsDAOContext.dao(UserDAO.class).uniqueByUsername(username).execute();
             if(model == null)
                 return null;
-            users.put(username, new User(model.getId()));
+            User user = new User(model.getId());
+            users.put(username, user);
+            // TODO Drew, is this the right spot for loading children.
+            user.loadAllChildren();
         }
         return users.get(username);
     }
