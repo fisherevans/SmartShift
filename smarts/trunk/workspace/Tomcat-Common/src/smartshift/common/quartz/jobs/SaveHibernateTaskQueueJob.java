@@ -17,7 +17,7 @@ import smartshift.common.util.log4j.SmartLogger;
 public class SaveHibernateTaskQueueJob implements Job {
     private static final SmartLogger logger = new SmartLogger(SaveHibernateTaskQueueJob.class);
     
-    private static final Map<String, HibernateTaskQueue> queueMap = new HashMap<>();;
+    private static final Map<Object, HibernateTaskQueue> queueMap = new HashMap<>();;
 
     /**
      * the group name for jobs using this
@@ -40,7 +40,7 @@ public class SaveHibernateTaskQueueJob implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         try {
-            Object contextID = context.get(JOB_CONTEXT_ID);
+            Object contextID = context.getJobDetail().getJobDataMap().get(JOB_CONTEXT_ID);
             HibernateTaskQueue queue = queueMap.get(contextID);
             queue.processAllTasks();
         } catch(Exception e) {
@@ -64,7 +64,7 @@ public class SaveHibernateTaskQueueJob implements Job {
     public static JobDataMap getJobData(HibernateTaskQueue queue, DAOContext context) {
         queueMap.put(context.getContextID().toString(), queue);
         JobDataMap data = new JobDataMap();
-        data.put(JOB_CONTEXT_ID, context.getContextID().toString());
+        data.put(JOB_CONTEXT_ID, context.getContextID());
         return data;
     }
 }
