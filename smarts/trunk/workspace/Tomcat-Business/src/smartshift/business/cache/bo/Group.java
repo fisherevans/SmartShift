@@ -33,7 +33,7 @@ public class Group extends CachedObject {
     
     private String _name;
     private Group _parent;
-    private Boolean _active;
+    private Boolean _active = true;
     private final Set<Group> _children;
     private final Map<Role, GroupRole> _employees;
 
