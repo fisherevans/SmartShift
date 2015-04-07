@@ -139,6 +139,7 @@ public class HibernateTaskQueue {
                     session.close();
                 } catch(Exception e) {
                     logger.fatal("Failed to close the hibernate connection after all tasks ran successfully!", e);
+                    throw e;
                 }
                 _scheduledTasks.clear();
             } catch(Exception e) {
