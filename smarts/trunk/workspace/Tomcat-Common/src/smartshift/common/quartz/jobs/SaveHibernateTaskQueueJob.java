@@ -62,7 +62,7 @@ public class SaveHibernateTaskQueueJob implements Job {
      * @return the param data to create the job with
      */
     public static JobDataMap getJobData(HibernateTaskQueue queue, DAOContext context) {
-        queueMap.put(context.getContextID().toString(), queue);
+        queueMap.put(context.getContextID(), queue);
         JobDataMap data = new JobDataMap();
         data.put(JOB_CONTEXT_ID, context.getContextID());
         return data;
