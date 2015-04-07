@@ -36,5 +36,11 @@ public class AddTask<T> extends BaseHibernateTask<T, T> {
         logger.debug("Exit. Got: " + _model);
         return _model;
     }
-
+    
+    /**
+     * @return the model to be added
+     */
+    public T getModel() {
+        return _model;
+    }
 }
