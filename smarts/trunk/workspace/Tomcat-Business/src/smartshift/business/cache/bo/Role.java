@@ -107,6 +107,8 @@ public class Role extends CachedObject {
      */
     protected synchronized void setName(String name) {
         _name = name;
+        if(isInitialized())
+            getDAO(RoleDAO.class).update(getModel()).enqueue();
     }
     
     /**
@@ -267,9 +269,11 @@ public class Role extends CachedObject {
     }
     
     /**
-     * initialize the fields of this role skeleton
+     * @see smartshift.business.cache.bo.CachedObject#init()
      */
+    @Override
     public void init() {
+        super.init();
         RoleModel model = getCache().getDAOContext().dao(RoleDAO.class).uniqueByID(getID()).execute();
         _name = model.getName();
     }

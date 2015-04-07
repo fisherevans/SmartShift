@@ -8,16 +8,19 @@ import smartshift.business.hibernate.model.ScheduleModel;
  * an employee's weekly schedule
  * @author drew
  */
-public class Schedule extends CachedObject {
+public class ScheduleTemplate extends CachedObject {
+    /** the type identifier for a schedule */
+    public static final String TYPE_IDENTIFIER = "ST";
     // maps from the day of the week to a set of shifts
     private Map<Integer, Set<Shift>> _shifts;
+    private String _name;
     
     /**
      * constructor for a newly loaded schedule
      * @param cache
      * @param id
      */
-    private Schedule(Cache cache, int id) {
+    private ScheduleTemplate(Cache cache, int id) {
         super(cache, id);
     }
 
@@ -26,8 +29,7 @@ public class Schedule extends CachedObject {
      */
     @Override
     public String typeCode() {
-        // TODO Auto-generated method stub
-        return null;
+        return TYPE_IDENTIFIER;
     }
 
     /**
@@ -43,7 +45,6 @@ public class Schedule extends CachedObject {
      */
     @Override
     public void loadAllChildren() {
-        // TODO Auto-generated method stub
-        
+        // do nothing
     }
 }

@@ -169,8 +169,9 @@ public class Availability extends CachedObject {
     }
     
     /**
-     * initialize a fields of a skeleton availability
+     * @see smartshift.business.cache.bo.CachedObject#init()
      */
+    @Override
     public void init() {
         AvailabilityModel model = getCache().getDAOContext().dao(AvailabilityDAO.class).uniqueByID(getID()).execute();
         _time = LocalTime.fromMillisOfDay(model.getStart() * 1000);

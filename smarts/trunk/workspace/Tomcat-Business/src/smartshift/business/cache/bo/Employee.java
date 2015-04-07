@@ -73,7 +73,8 @@ public class Employee extends CachedObject {
      */
     public synchronized void setFirstName(String firstName) {
         _firstName = firstName;
-        getDAO(EmployeeDAO.class).update(getModel()).enqueue();
+        if(isInitialized())
+            getDAO(EmployeeDAO.class).update(getModel()).enqueue();
     }
     
     /**
@@ -89,7 +90,8 @@ public class Employee extends CachedObject {
      */
     public synchronized void setLastName(String lastName) {
         _lastName = lastName;
-        getDAO(EmployeeDAO.class).update(getModel()).enqueue();
+        if(isInitialized())
+            getDAO(EmployeeDAO.class).update(getModel()).enqueue();
     }
     
     /**
@@ -115,7 +117,8 @@ public class Employee extends CachedObject {
             throw new RuntimeException(String.format("Cannot set homegroup:%d on Employee:%d because the employee is not already a member.", homeGroup.getID(), getID()));
         synchronized(this) {
             _homeGroup = homeGroup;
-            getDAO(EmployeeDAO.class).update(getModel()).enqueue();
+            if(isInitialized())
+                getDAO(EmployeeDAO.class).update(getModel()).enqueue();
         }
     }
     
@@ -132,7 +135,8 @@ public class Employee extends CachedObject {
      */
     public synchronized void setActive(Boolean active) {
         _active = active;
-        getDAO(EmployeeDAO.class).update(getModel()).enqueue();
+        if(isInitialized())
+            getDAO(EmployeeDAO.class).update(getModel()).enqueue();
     }
 
     /**
@@ -362,9 +366,11 @@ public class Employee extends CachedObject {
     }
     
     /**
-     * initialize the fields of this skeleton employee
+     * @see smartshift.business.cache.bo.CachedObject#init()
      */
+    @Override
     public void init() {
+        super.init();
         EmployeeModel model = getCache().getDAOContext().dao(EmployeeDAO.class).uniqueByID(getID()).execute();
         _firstName = model.getFirstName();
         _lastName = model.getLastName();
