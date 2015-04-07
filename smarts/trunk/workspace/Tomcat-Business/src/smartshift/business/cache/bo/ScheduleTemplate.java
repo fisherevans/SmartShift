@@ -47,4 +47,13 @@ public class ScheduleTemplate extends CachedObject {
     public void loadAllChildren() {
         // do nothing
     }
+
+    /**
+     * @see smartshift.business.cache.bo.CachedObject#init()
+     */
+    @Override
+    public void init() {
+        // TODO Auto-generated method stub
+        
+    }
 }

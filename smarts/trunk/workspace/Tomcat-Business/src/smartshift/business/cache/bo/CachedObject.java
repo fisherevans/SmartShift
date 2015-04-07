@@ -37,9 +37,15 @@ public abstract class CachedObject implements Identifiable, Stored{
     /**
      * initialize the fields of this skeleton object
      */
-    public synchronized void init() {
+    public synchronized void initialize() {
+        init();
         _initialized = true;
     }
+    
+    /**
+     * do the work for initializing object fields
+     */
+    public abstract void init();
 
     /**
      * @return true if this object is initialized 

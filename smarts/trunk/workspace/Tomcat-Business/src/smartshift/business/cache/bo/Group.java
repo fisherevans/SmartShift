@@ -405,7 +405,7 @@ public class Group extends CachedObject {
             Group group = new Group(cache, grpID);
             cache.cache(uid, group);
             group.loadAllChildren();
-            group.init();
+            group.initialize();
             return group;
         }
     }
@@ -415,7 +415,6 @@ public class Group extends CachedObject {
      */
     @Override
     public void init() {
-        super.init();
         GroupModel model = getCache().getDAOContext().dao(GroupDAO.class).uniqueByID(getID()).execute();
         _name = model.getName();
         _active = model.getActive();

@@ -50,8 +50,8 @@ public class AvailabilityRepeatYearly extends AvailabilityRepeat{
      * initialize the fields of this skeleton repeat from a model
      * @param model the db model to initialize based on
      */
-    public void init(AvailabilityRepeatYearlyModel model) {
-        init();
+    public void initialize(AvailabilityRepeatYearlyModel model) {
+        initialize();
         _month = model.getMonth();
         _dayOfMonth = model.getDayOfMonth();
     }
@@ -72,7 +72,7 @@ public class AvailabilityRepeatYearly extends AvailabilityRepeat{
                 return null;
             AvailabilityRepeatYearly repeat = new AvailabilityRepeatYearly(cache, repeatID);
             cache.cache(uid, repeat);
-            repeat.init(model);
+            repeat.initialize(model);
             return repeat;
         }
     }

@@ -84,7 +84,6 @@ public class AvailabilityInstance extends CachedObject {
      */
     @Override
     public void init() {
-        super.init();
         AvailabilityInstanceModel model = getCache().getDAOContext().dao(AvailabilityInstanceDAO.class).uniqueByID(getID()).execute();
         _startDate = new LocalDate(model.getStartDate());
         _endDate = new LocalDate(model.getEndDate());
@@ -104,7 +103,7 @@ public class AvailabilityInstance extends CachedObject {
             AvailabilityInstance instance = new AvailabilityInstance(cache, instID);
             cache.cache(uid, instance);
             instance.loadAllChildren();
-            instance.init();
+            instance.initialize();
             return instance;
         }
     }

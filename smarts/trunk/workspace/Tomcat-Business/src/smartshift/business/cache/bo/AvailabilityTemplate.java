@@ -87,7 +87,7 @@ public class AvailabilityTemplate extends CachedObject {
             AvailabilityTemplate template = new AvailabilityTemplate(cache, tempID);
             cache.cache(uid, template);
             template.loadAllChildren();
-            template.init();
+            template.initialize();
             return template;
         }
     }
@@ -97,7 +97,6 @@ public class AvailabilityTemplate extends CachedObject {
      */
     @Override
     public void init() {
-        super.init();
         AvailabilityTemplateModel model = getCache().getDAOContext().dao(AvailabilityTemplateDAO.class).uniqueByID(getID()).execute();
         _owner = Employee.load(getCache(), model.getEmployeeID());
         _name = model.getName();
