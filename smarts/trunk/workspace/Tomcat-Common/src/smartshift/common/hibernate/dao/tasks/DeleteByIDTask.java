@@ -35,7 +35,7 @@ public class DeleteByIDTask<T> extends BaseHibernateTask<T, T> {
     public T executeWithSession(Session session) throws HibernateException {
         logger.debug("Enter. ID: " + _id);
         @SuppressWarnings("unchecked")
-        T model = (T) getDAO().uniqueByID(_id);
+        T model = getDAO().uniqueByID(_id).executeWithSession(session);
         logger.debug("Got Model: " + model);
         if(model != null)
             getDAO().delete(model).executeWithSession(session);
