@@ -49,6 +49,14 @@ public class Role extends CachedObject {
         public int getID() {
             return BASIC_ROLE_ID;
         }
+        
+        /**
+         * @see smartshift.business.cache.bo.Role#isBasicRole()
+         */
+        @Override
+        public boolean isBasicRole() {
+            return true;
+        }
     }
     
     /**
@@ -118,6 +126,13 @@ public class Role extends CachedObject {
         Role basicRole = new BasicRole(cache, parent);
         parent.addRole(basicRole);
         return basicRole;
+    }
+    
+    /**
+     * @return true if this is a basic role
+     */
+    public boolean isBasicRole() {
+        return false;
     }
     
     /**
