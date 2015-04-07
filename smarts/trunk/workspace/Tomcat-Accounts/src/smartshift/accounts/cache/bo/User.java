@@ -158,7 +158,6 @@ public class User implements Stored {
                 return null;
             User user = new User(model.getId());
             users.put(username, user);
-            // TODO Drew, is this the right spot for loading children.
             user.loadAllChildren();
         }
         return users.get(username);
