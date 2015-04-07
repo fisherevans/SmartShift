@@ -405,6 +405,7 @@ public class Group extends CachedObject {
     public void init() {
         GroupModel model = getCache().getDAOContext().dao(GroupDAO.class).uniqueByID(getID()).execute();
         _name = model.getName();
+        _active = model.getActive();
         if(model.getParentID() == null)
             _parent = null;
         else
