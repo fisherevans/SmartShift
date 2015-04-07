@@ -14,6 +14,7 @@ import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.business.hibernate.model.GroupRoleCapabilityModel;
 import smartshift.business.hibernate.model.GroupRoleModel;
+import smartshift.common.hibernate.dao.tasks.AddTask;
 import smartshift.common.util.UID;
 import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.log4j.SmartLogger;
@@ -149,8 +150,13 @@ public class Group extends CachedObject {
      */
     public synchronized void addRole(Role role) {
         if(!hasRole(role)) {
-            Integer grID = getDAO(GroupRoleDAO.class).link(getID(), role.getID()).execute().getId();
-            _employees.put(role, new GroupRole(grID));
+            GroupRoleModel model = getDAO(GroupRoleDAO.class).uniqueByGroupRole(getID(), role.getID()).execute();
+            if(model == null) {
+                AddTask<GroupRoleModel> task = getDAO(GroupRoleDAO.class).link(getID(), role.getID());
+                task.enqueue();
+                model = task.getModel();
+            }
+            _employees.put(role, new GroupRole(model.getId()));
         }
     }
     
@@ -331,6 +337,7 @@ public class Group extends CachedObject {
     /**
      * @see smartshift.common.util.hibernate.Stored#getModel()
      */
+    @Override
     public GroupModel getModel() {
         GroupModel model = new GroupModel();
         model.setId(getID());
