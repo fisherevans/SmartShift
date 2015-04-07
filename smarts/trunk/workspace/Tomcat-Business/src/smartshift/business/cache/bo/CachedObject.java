@@ -6,12 +6,13 @@ import smartshift.common.util.UID;
 import smartshift.common.util.hibernate.Stored;
 
 /**
- * an object which can is cached
+ * an object which is cached
  * @author drew
  */
 public abstract class CachedObject implements Identifiable, Stored{
     private Cache _cache;
     private int _id;
+    private boolean _initialized;
     
     /**
      * constructor for a new cached object with no id yet determined
@@ -19,6 +20,7 @@ public abstract class CachedObject implements Identifiable, Stored{
      */
     public CachedObject(Cache cache) {
         this(cache, -1);
+        _initialized = true;
     }
     
     /**
@@ -29,6 +31,21 @@ public abstract class CachedObject implements Identifiable, Stored{
     public CachedObject(Cache cache, int id) {
         _cache = cache;
         _id = id;
+        _initialized = false;
+    }
+    
+    /**
+     * initialize the fields of this skeleton object
+     */
+    public synchronized void init() {
+        _initialized = true;
+    }
+
+    /**
+     * @return true if this object is initialized 
+     */
+    public boolean isInitialized() {
+        return _initialized;
     }
 
     /**

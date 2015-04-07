@@ -46,7 +46,8 @@ public class AvailabilityInstance extends CachedObject {
      */
     private synchronized void setTemplate(AvailabilityTemplate template) {
         _template = template;
-        getDAO(AvailabilityInstanceDAO.class).update(getModel());
+        if(isInitialized())
+            getDAO(AvailabilityInstanceDAO.class).update(getModel());
     }
     
     /**
@@ -79,9 +80,11 @@ public class AvailabilityInstance extends CachedObject {
     }
     
     /**
-     * initializer to populate a skeleton availability instance
+     * @see smartshift.business.cache.bo.CachedObject#init()
      */
+    @Override
     public void init() {
+        super.init();
         AvailabilityInstanceModel model = getCache().getDAOContext().dao(AvailabilityInstanceDAO.class).uniqueByID(getID()).execute();
         _startDate = new LocalDate(model.getStartDate());
         _endDate = new LocalDate(model.getEndDate());

@@ -93,9 +93,11 @@ public class AvailabilityTemplate extends CachedObject {
     }
     
     /**
-     * initialize the fields of this skeleton template
+     * @see smartshift.business.cache.bo.CachedObject#init()
      */
+    @Override
     public void init() {
+        super.init();
         AvailabilityTemplateModel model = getCache().getDAOContext().dao(AvailabilityTemplateDAO.class).uniqueByID(getID()).execute();
         _owner = Employee.load(getCache(), model.getEmployeeID());
         _name = model.getName();

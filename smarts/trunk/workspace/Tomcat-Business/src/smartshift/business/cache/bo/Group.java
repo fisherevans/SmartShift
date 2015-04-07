@@ -20,7 +20,7 @@ import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
- * an organizational group representing a node in the organizational structure
+ * an organizational group representing a node in the organizational tree
  * @author drew
  */
 public class Group extends CachedObject {
@@ -69,7 +69,8 @@ public class Group extends CachedObject {
      */
     public synchronized void setName(String name) {
         _name = name;
-        getDAO(GroupDAO.class).update(getModel()).enqueue();
+        if(isInitialized())
+            getDAO(GroupDAO.class).update(getModel()).enqueue();
     }
 
     /**
@@ -89,7 +90,8 @@ public class Group extends CachedObject {
         _parent = parent;
         if(_parent != null)
             _parent.childAdded(this);
-        getDAO(GroupDAO.class).update(getModel()).enqueue();
+        if(isInitialized())
+            getDAO(GroupDAO.class).update(getModel()).enqueue();
     }
     
     /**
@@ -105,7 +107,8 @@ public class Group extends CachedObject {
      */
     public synchronized void setActive(Boolean active) {
         _active = active;
-        getDAO(GroupDAO.class).update(getModel()).enqueue();
+        if(isInitialized())
+            getDAO(GroupDAO.class).update(getModel()).enqueue();
     }
     
     /**
@@ -408,9 +411,11 @@ public class Group extends CachedObject {
     }
     
     /**
-     * initialize the fields of this skeleton group
+     * @see smartshift.business.cache.bo.CachedObject#init()
      */
+    @Override
     public void init() {
+        super.init();
         GroupModel model = getCache().getDAOContext().dao(GroupDAO.class).uniqueByID(getID()).execute();
         _name = model.getName();
         _active = model.getActive();
