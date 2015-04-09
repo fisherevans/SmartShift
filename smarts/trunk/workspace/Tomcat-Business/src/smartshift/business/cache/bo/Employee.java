@@ -310,6 +310,7 @@ public class Employee extends CachedObject {
     /**
      * @see smartshift.common.util.hibernate.Stored#getModel()
      */
+    @Override
     public EmployeeModel getModel() {
         EmployeeModel model = new EmployeeModel();
         model.setId(getID());
@@ -387,6 +388,7 @@ public class Employee extends CachedObject {
     public static Employee create(int businessID, String first, String last, int homeGroupID) {
         Cache cache = Cache.getCache(businessID);
         Employee emp = new Employee(cache, first, last, Group.load(cache, homeGroupID));
+        // TODO - ge link task is added before employee add task making a FK error. need to rearrange the db enqueues here.
         Integer id;
         try {
             AccountsServiceInterface accts = RMIClient.getAccountsService();
