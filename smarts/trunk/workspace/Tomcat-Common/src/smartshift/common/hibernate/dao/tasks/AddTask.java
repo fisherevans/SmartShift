@@ -43,4 +43,11 @@ public class AddTask<T> extends BaseHibernateTask<T, T> {
     public T getModel() {
         return _model;
     }
+    
+    /**
+     * @param model the model to be set
+     */
+    public void setModel(T model) {
+        _model = model;
+    }
 }
