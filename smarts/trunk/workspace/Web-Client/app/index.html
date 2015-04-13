@@ -19,6 +19,7 @@
         <link href="../app/css/modals/login.css" rel="stylesheet" type="text/css" />
         <link href="../app/css/pages/newsFeed.css" rel="stylesheet" type="text/css" />
         <link href="../app/css/pages/messaging.css" rel="stylesheet" type="text/css" />
+        <link href="../app/css/pages/scheduling.css" rel="stylesheet" type="text/css" />
         <link href="../app/css/pages/manage-group.css" rel="stylesheet" type="text/css" />
         <link href="../app/css/pages/group-list.css" rel="stylesheet" type="text/css" />
         <link href="../global/css/lib/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" />
@@ -49,7 +50,7 @@
                     <div class="icon-arrow-right appNavigationArrow"></div>
                 </div>
                 <div id="dynamicAppNavigationTree">
-                    <div ng-repeat="element in mainCtrl.navigationElements"
+                    <div ng-repeat="element in mainCtrl.navigationElements" no-animate
                             ng-class="{'subArrow icon-arrow-right':element.type == 'arrow',
                                        'textElement':element.type == 'text',
                                        'linkElement fadeColors':element.type == 'link'}"

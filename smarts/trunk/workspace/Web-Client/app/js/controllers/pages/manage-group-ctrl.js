@@ -2,14 +2,15 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
     function($routeParams, $rootScope, modalService, cacheService, loadCache){
         var mngGrpCtrl = this;
 
-        mngGrpCtrl.filter = {
-            name : "",
-            groupRoles : {}
-        };
-
         mngGrpCtrl.group = cacheService.getGroups()[$routeParams.groupID];
+        mngGrpCtrl.groups = cacheService.getGroups();
         mngGrpCtrl.employees = cacheService.getEmployees();
         mngGrpCtrl.employeeHover = {};
+
+        mngGrpCtrl.filter = {
+            name : "",
+            groups: [ mngGrpCtrl.group.id ]
+        };
 
         mngGrpCtrl.addRoleSubmit = function() {
             $("#roleListAddRoleButton").prop("disabled", true);
@@ -39,8 +40,12 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
             var search = mngGrpCtrl.filter.name.toLocaleLowerCase();
             if(name.indexOf(search) < 0)
                 return false;
-            // TODO filter on group role too
-            return true;
+            var valid = false;
+            angular.forEach(employee.groupIDs, function(groupID, arrID) {
+                if(mngGrpCtrl.filter.groups.indexOf(groupID) >= 0)
+                    valid = true;
+            });
+            return valid;
         };
 
         mngGrpCtrl.openAddEmployeeModal = function() { modalService.addEmployeeModal({"homeGroupID":mngGrpCtrl.group.id}); };
