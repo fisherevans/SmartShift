@@ -1,5 +1,17 @@
 'use strict';
 
+var KeyCodes = {
+    BACKSPACE : 8,
+    TABKEY : 9,
+    RETURNKEY : 13,
+    ESCAPE : 27,
+    SPACEBAR : 32,
+    LEFTARROW : 37,
+    UPARROW : 38,
+    RIGHTARROW : 39,
+    DOWNARROW : 40,
+};
+
 Array.prototype.findBy = function(key, value) {
     for(var i in this){
         if(this.hasOwnProperty(i)

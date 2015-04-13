@@ -1,0 +1,24 @@
+<form name="addShiftForm" ng-submit="submit()">
+    <div class="modal-header">
+        <h3 class="modal-title">Create a new Shift</h3>
+    </div>
+    <div class="modal-body" id="addEmployeeModal">
+        <div class="smartInputLine">
+            <div class="smartInputLabel">Start Time</div>
+            <div class="smartInputWrapper">
+                <time-select time="startTime" time-error="startTimeError" minute-increment="15"></time-select>
+            </div>
+        </div>
+        <div class="smartInputLine">
+            <div class="smartInputLabel">End Time</div>
+            <div class="smartInputWrapper">
+                <time-select time="endTime" time-error="endTimeError" minute-increment="15"></time-select>
+            </div>
+        </div>
+        <p class="smartModelError smartModelPara" ng-if="error">{{error.message}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="smartButton fadeColors orangeBG floatLeft" ng-click="cancel()">Cancel</button>
+        <button type="submit" class="smartButton fadeColors blueBG">Create Shift</button>
+    </div>
+</form>

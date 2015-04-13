@@ -1,0 +1,31 @@
+<form name="filterEmployeesForm" ng-submit="group()">
+    <div class="modal-header">
+        <h3 class="modal-title">Filter Employee List</h3>
+    </div>
+    <div class="modal-body" id="filterEmployeesModal">
+        <div class="smartInputLine">
+            <div class="smartInputLabel">Name Filter</div>
+            <div class="smartInputWrapper">
+                <input ng-model="nameFilter" type="text"
+                       alt="Name Filter" class="smartInputText fadeColors">
+            </div>
+        </div>
+
+        <div class="smartInputLine">
+            <div class="smartInputLabel">Groups</div>
+            <div class="smartInputWrapper">
+                <label class="smartCheckboxLabel noTextSelect fadeColors" ng-repeat="(groupID, group) in groups" ng-class="{'checked':groupsSelected[group.id],inputError:error}" no-animate>
+                    <input type="checkbox" class="smartCheckbox" value="{{group.id}}" name="group" ng-model="groupsSelected[group.id]">
+                    <div class="smartCheckboxCheck" ng-class="{'icon-not-checked':!groupsSelected[group.id], 'icon-checked':groupsSelected[group.id] }"></div>
+                    {{group.name}}
+                </label>
+            </div>
+        </div>
+
+        <p class="smartModelError smartModelPara" ng-if="error">{{error}}</p>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="smartButton fadeColors orangeBG floatLeft" ng-click="cancel()">Cancel</button>
+        <button type="button" class="smartButton fadeColors blueBG" ng-click="submit()">Apply</button>
+    </div>
+</form>

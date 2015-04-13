@@ -116,13 +116,13 @@
     cursor: pointer;
     height: 33px;
     line-height: 34px;
-    opacity: 0.25;
+    opacity: 0.75;
     color:#fff;
     z-index: 12;
 }
 
 .deleteShift:hover, .editShift:hover {
-    opacity: 0.8;
+    opacity: 1;
 }
 
 .timeOverlay {
@@ -142,7 +142,6 @@
 
 .timeOverlay * {
     width: 100%;
-    display: block;
     opacity: 1;
     line-height: 15px;
     height: 19px;
@@ -152,6 +151,11 @@
     text-align: center;
     color: #000;
     margin: 0;
+}
+
+.timeOverlay .ampm {
+    color: #666;
+    font-size: 8px;
 }
 
 .timeOverlayBlocker {
@@ -173,7 +177,6 @@
     font-size: 11px;
     font-weight: 700;
     line-height: 17px;
-    display: block;
 }
 
 .timeLabel {
@@ -182,6 +185,15 @@
 
 .timeValue {
     float: right;
+}
+
+.timeValue * {
+    display: inline;
+}
+
+.timeValue .ampm {
+    color: #888;
+    font-size: 8px;
 }
 
 .duration * {
@@ -207,7 +219,6 @@
 }
 
 .assignedEmployeeName {
-    cursor: move;
     padding: 4px 3px;
 }
 
