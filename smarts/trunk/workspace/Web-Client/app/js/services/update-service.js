@@ -7,21 +7,25 @@ angular.module('smartsServices').factory('updateService', ['$q', '$timeout', '$r
             //    $timeout(pollForUpdates, $rootScope.api.updatePolling  * 1000);
             //}
             if(running) {
-                $timeout(pollForUpdates, 2  * 1000);
+                $timeout(pollForUpdates, 20  * 1000);
             }
         }
 
         function pollForUpdates() {
             if($rootScope.api && $rootScope.api.sessionID && cacheService.isLoaded()) {
                 console.log("Checking for updates...");
+                $rootScope.api.waitingCalls--;
                 httpService.businessRequest('GET', '/business/updates', {}).then(
                     function (response) {
                         cacheService.parseUpdates(response.data);
+                        $rootScope.api.updatePolling = 20;
+                        $rootScope.api.waitingCalls++;
                         schedulePolling();
                     },
                     function (response) {
                         console.log("Failed to poll updates! " + response.data.message);
-                        $rootScope.api.updatePolling = 15;
+                        $rootScope.api.updatePolling = 40;
+                        $rootScope.api.waitingCalls++;
                         schedulePolling();
                     }
                 );

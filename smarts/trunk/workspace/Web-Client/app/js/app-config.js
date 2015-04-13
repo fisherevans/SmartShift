@@ -1,7 +1,7 @@
 'use strict'
 
 angular.module('smartsApp').config(function($animateProvider) {
-    //$animateProvider.classNameFilter(/angular-animate/);
+    $animateProvider.classNameFilter(/angular-animate/);
 });
 
 angular.module('smartsApp').filter('orderObjectBy', function() {
@@ -15,6 +15,16 @@ angular.module('smartsApp').filter('orderObjectBy', function() {
         });
         if(reverse) filtered.reverse();
         return filtered;
+    };
+});
+
+angular.module('smartsApp').filter("toArray", function(){
+    return function(obj) {
+        var result = [];
+        angular.forEach(obj, function(val, key) {
+            result.push(val);
+        });
+        return result;
     };
 });
 
