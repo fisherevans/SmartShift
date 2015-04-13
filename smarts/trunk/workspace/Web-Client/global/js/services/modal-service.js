@@ -50,7 +50,7 @@ angular.module('smartsServices').factory('modalService', ['$modal', '$rootScope'
                     }
                 }).result;
             },
-           deleteEmployeeModal: function( employee ) {
+            deleteEmployeeModal: function( employee ) {
                 return $modal.open({
                     templateUrl: '../app/templates/modals/delete-employee-modal.html',
                     controller: 'DeleteEmployeeModalController',
@@ -59,6 +59,30 @@ angular.module('smartsServices').factory('modalService', ['$modal', '$rootScope'
                     keyboard: false,
                     resolve: {
                         "employee": function() { return employee; }
+                    }
+                }).result;
+            },
+            filterEmployeesModal: function( filter ) {
+                return $modal.open({
+                    templateUrl: '../app/templates/modals/filter-employees-modal.html',
+                    controller: 'FilterEmployeesModalController',
+                    backdrop: 'static',
+                    backdropClass: 'dim',
+                    keyboard: false,
+                    resolve: {
+                        "filter": function() { return filter; }
+                    }
+                }).result;
+            },
+            addShiftModal: function(initial) {
+                return $modal.open({
+                    templateUrl: '../app/templates/modals/add-shift-modal.html',
+                    controller: 'AddShiftModalController',
+                    backdrop: 'static',
+                    backdropClass: 'dim',
+                    keyboard: false,
+                    resolve: {
+                        "initial": function() { return initial; }
                     }
                 }).result;
             }

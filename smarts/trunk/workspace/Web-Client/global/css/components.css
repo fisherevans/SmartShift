@@ -71,6 +71,11 @@
     box-sizing: border-box;
 }
 
+.smartInputSelect.selectTimeHour, .smartInputSelect.selectTimeMinute, .smartInputSelect.selectTimeAMPM {
+    display: inline-block;
+    width: auto;
+}
+
 .smartInputSelect option {
     border-top: 1px solid #ccc;
     line-height: 20px;
@@ -184,4 +189,84 @@
 .smartModelError {
     color: #f00;
     font-weight: 700;
+}
+
+.timeSelect {
+    margin: 10px 0px;
+}
+
+.timeSelectUps, .timeSelectValues, .timeSelectDowns {
+    display: block;
+    font-size: 0;
+}
+
+.timeSelectUp, .timeSelectValue, .timeSelectDown {
+    display: inline-block;
+    width: 40px;
+    font-weight: 700;
+    margin-left: 10px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.timeSelectValue {
+    font-size: 14px;
+    height: 20px;
+    line-height: 20px;
+    border: 1px solid #ccc;
+    border-top: 0;
+    border-bottom: 0;
+    background-color: #fff;
+}
+
+.timeSelectValue.error {
+    background-color: #fdd;
+}
+
+.timeSelectValueInput {
+    width: 18px;
+    padding: 0 10px;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    outline-width: 0;
+    text-align: right;
+    background-color: transparent;
+}
+
+.timeSelectValueInput.ampmInput {
+    width: 22px;
+    padding: 0 8px;
+}
+
+.timeSelectUp, .timeSelectDown {
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #888;
+    font-size: 20px;
+    height: 20px;
+    line-height: 20px;
+}
+
+.timeSelectUp {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.timeSelectDown {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.timeSelectUp:hover, .timeSelectDown:hover {
+    background-color: #e8e8e8;
+    color: #888;
+}
+
+.timeSelectColon {
+    width: 0px;
+    margin-left: 0px;
+    border: 0;
 }

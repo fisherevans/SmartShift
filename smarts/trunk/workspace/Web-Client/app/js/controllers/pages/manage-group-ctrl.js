@@ -7,11 +7,6 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
         mngGrpCtrl.employees = cacheService.getEmployees();
         mngGrpCtrl.employeeHover = {};
 
-        mngGrpCtrl.filter = {
-            name : "",
-            groups: [ mngGrpCtrl.group.id ]
-        };
-
         mngGrpCtrl.addRoleSubmit = function() {
             $("#roleListAddRoleButton").prop("disabled", true);
             mngGrpCtrl.addRoleError = null;
@@ -35,34 +30,6 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
             );
         };
 
-        mngGrpCtrl.employeeListFilter = function(employee) {
-            var name = employee.sortName.toLowerCase();
-            var search = mngGrpCtrl.filter.name.toLocaleLowerCase();
-            if(name.indexOf(search) < 0)
-                return false;
-            var valid = false;
-            angular.forEach(employee.groupIDs, function(groupID, arrID) {
-                if(mngGrpCtrl.filter.groups.indexOf(groupID) >= 0)
-                    valid = true;
-            });
-            return valid;
-        };
-
-        mngGrpCtrl.openAddEmployeeModal = function() { modalService.addEmployeeModal({"homeGroupID":mngGrpCtrl.group.id}); };
-
-        mngGrpCtrl.openEditEmployeeModal = function(employee) {
-            modalService.editEmployeeModal(angular.copy(employee)).then(function(updatedEmployee) {
-                if (updatedEmployee == 'delete') {
-                    modalService.deleteEmployeeModal(employee).then(
-                        function (deleted) {
-                            if(!deleted)
-                                mngGrpCtrl.openEditEmployeeModal(updatedEmployee);
-                        }
-                    );
-                }
-            });
-        };
-
         mngGrpCtrl.openFilterEmployeeListModal = function() { alert("Not implemented"); };
 
         mngGrpCtrl.removeRoleEmployee = function(role, employee) {
@@ -84,16 +51,13 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
         };
 
         mngGrpCtrl.roleOnDrop = function(role, dropData) {
-            if(dropData.tasks.indexOf('add') >= 0) {
-                cacheService.addGroupRoleEmployee(mngGrpCtrl.group.id, role.id, dropData.employee.id).then(
-                    function() {
-                        if(dropData.tasks.indexOf('removeOld') >= 0) {
-                            mngGrpCtrl.removeRoleEmployee(dropData.oldRole, dropData.employee);
-                        }
-                    },
-                    function(response) { alert(response.data.message); }
-                );
-            }
+            cacheService.addGroupRoleEmployee(mngGrpCtrl.group.id, role.id, dropData.employee.id).then(
+                function() {
+                    if(dropData.from == 'role')
+                        mngGrpCtrl.removeRoleEmployee(dropData.oldRole, dropData.employee);
+                },
+                function(response) { alert(response.data.message); }
+            );
         };
 
         $rootScope.updateNavigationTree([
