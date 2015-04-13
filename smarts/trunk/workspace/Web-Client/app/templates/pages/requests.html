@@ -9,11 +9,14 @@
             <div ng-repeat="shift in day.shifts | orderObjectBy:'start'" class="shiftWrapper" ng-class="{notAssigned:shift.employee}">
                 <div class="shift appBlock" ng-class="{isAssigned:shift.employee}">
                     <div class="shiftActionWrapper fadeColorOpacity">
+                        <div class="timeOverlay" smart-draggable>
+                            <div ng-show="shift.role">{{shift.role.name}}</div>
+                            <div ng-hide="shift.role">Any Role</div>
+                            <div>{{shift.start | date:"h:mm a"}} - {{shift.end | date:"h:mm a"}}</div>
+                        </div>
+                        <div class="timeOverlayBlocker"></div>
                         <div class="icon-trash deleteShift fadeColorOpacity redBG"></div>
                         <div class="icon-pencil editShift fadeColorOpacity blueBG"></div>
-                        <div class="timeOverlay" smart-draggable>
-                            {{shift.start | date:"h:mm a"}} - {{shift.end | date:"h:mm a"}}
-                        </div>
                     </div>
                     <div class="times">
                         <div class="start timeLine">
