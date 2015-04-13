@@ -182,7 +182,6 @@ angular.module('smartsDirectives', [])
             templateUrl: '../app/templates/directives/time-select.html',
             scope: {
                 time: '=time',
-                error: '=timeError',
                 minuteIncrement: '=minuteIncrement'
             },
             link: function (scope, element, attrs) {
@@ -190,10 +189,13 @@ angular.module('smartsDirectives', [])
                 scope.input = {
                     "hour":scope.time.hour,
                     "minute":scope.time.minute < 10 ? '0'+scope.time.minute : scope.time.minute,
-                    "ampm":scope.time.ampm
+                    "ampm":scope.time.ampm,
                 };
-                scope.error.hour = false;
-                scope.error.minute = false;
+                scope.time.error = {
+                    "hour":false,
+                    "minute":false,
+                    "ampm":false
+                };
                 scope.shiftHourUp = function() {
                     scope.time.hour++;
                     switch(scope.time.hour) {
@@ -205,7 +207,7 @@ angular.module('smartsDirectives', [])
                             break;
                     }
                     scope.input.hour = scope.time.hour;
-                    scope.error.hour = false;
+                    scope.time.error.hour = false;
                 };
                 scope.shiftHourDown = function() {
                     scope.time.hour--;
@@ -218,7 +220,7 @@ angular.module('smartsDirectives', [])
                             break;
                     }
                     scope.input.hour = scope.time.hour;
-                    scope.error.hour = false;
+                    scope.time.error.hour = false;
                 };
                 scope.shiftMinute = function(amount) {
                     if(scope.time.minute % scope.minuteIncrement == 0) {
@@ -238,7 +240,7 @@ angular.module('smartsDirectives', [])
                         scope.shiftHourDown();
                     }
                     scope.input.minute = scope.time.minute < 10 ? '0'+scope.time.minute : scope.time.minute;
-                    scope.error.minute = false;
+                    scope.time.error.minute = false;
                 };
                 scope.toggleAMPM = function() {
                     scope.setAMPMTime(scope.time.ampm.toUpperCase() == 'AM' ? 'PM' : 'AM');
@@ -257,9 +259,9 @@ angular.module('smartsDirectives', [])
                     }
                     if(scope.input.hour % 1 === 0 && scope.input.hour > 0 && scope.input.hour <= 12) {
                         scope.time.hour = parseInt(scope.input.hour);
-                        scope.error.hour = false;
+                        scope.time.error.hour = false;
                     } else
-                        scope.error.hour = true;
+                        scope.time.error.hour = true;
                 };
                 scope.minuteKey = function(event) {
                     var e = event;
@@ -274,13 +276,17 @@ angular.module('smartsDirectives', [])
                     }
                     if(scope.input.minute % 1 === 0 && scope.input.minute >= 0 && scope.input.minute < 60) {
                         scope.time.minute = parseInt(scope.input.minute);
-                        scope.error.minute = false;
+                        scope.time.error.minute = false;
                     } else
-                        scope.error.minute = true;
+                        scope.time.error.minute = true;
                 };
+                scope.minuteBlur = function() {
+                    if(!scope.time.error.minute)
+                        scope.input.minute = scope.time.minute < 10 ? '0'+scope.time.minute : scope.time.minute;
+                }
                 scope.setAMPMTime = function(ampm) {
                     scope.time.ampm = ampm.toUpperCase();
-                    scope.error.ampm = false;
+                    scope.time.error.ampm = false;
                 };
                 scope.ampmKey = function(event) {
                     var e = event;
@@ -296,11 +302,11 @@ angular.module('smartsDirectives', [])
                     } else if(scope.input.ampm.toLowerCase() == 'p' || scope.input.ampm.toLowerCase() == 'pm') {
                         scope.setAMPMTime('PM');
                     } else {
-                        scope.error.ampm = true;
+                        scope.time.error.ampm = true;
                     }
                 };
                 scope.ampmBlur = function() {
-                    if(!scope.error.ampm)
+                    if(!scope.time.error.ampm)
                         scope.input.ampm = scope.time.ampm;
                 }
             }

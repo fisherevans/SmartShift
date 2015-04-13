@@ -5,14 +5,14 @@
         <div class="timeSelectUp icon-arrow-up fadeColors" ng-click="toggleAMPM()"></div>
     </div>
     <div class="timeSelectValues noTextSelect">
-        <div ng-class="{error:error.hour}" class="timeSelectValue fadeColors">
+        <div ng-class="{error:time.error.hour}" class="timeSelectValue fadeColors">
             <input class="timeSelectValueInput" type="text" ng-model="input.hour" ng-keyup="hourKey($event)" maxlength="2" />
         </div>
         <div class="timeSelectValue timeSelectColon">&nbsp;:</div>
-        <div ng-class="{error:error.minute}" class="timeSelectValue fadeColors">
-            <input class="timeSelectValueInput" type="text" ng-model="input.minute" ng-keyup="minuteKey($event)" maxlength="2" />
+        <div ng-class="{error:time.error.minute}" class="timeSelectValue fadeColors">
+            <input class="timeSelectValueInput" type="text" ng-model="input.minute" ng-keyup="minuteKey($event)" ng-blur="minuteBlur()" maxlength="2" />
         </div>
-        <div ng-class="{error:error.ampm}" class="timeSelectValue fadeColors">
+        <div ng-class="{error:time.error.ampm}" class="timeSelectValue fadeColors">
             <input class="timeSelectValueInput ampmInput" type="text" ng-model="input.ampm" ng-keyup="ampmKey($event)" ng-blur="ampmBlur()" maxlength="2" />
         </div>
     </div>
