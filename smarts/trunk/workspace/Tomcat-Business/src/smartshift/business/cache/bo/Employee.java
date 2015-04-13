@@ -53,8 +53,6 @@ public class Employee extends CachedObject {
         _homeGroup = home;
         _active = true;
         _roles = new HashMap<Group, Set<Role>>();
-        
-        _homeGroup.addRoleEmployee(Role.getBasicRole(cache, _homeGroup), this);
     }
     
     /**
@@ -388,7 +386,6 @@ public class Employee extends CachedObject {
     public static Employee create(int businessID, String first, String last, int homeGroupID) {
         Cache cache = Cache.getCache(businessID);
         Employee emp = new Employee(cache, first, last, Group.load(cache, homeGroupID));
-        // TODO - ge link task is added before employee add task making a FK error. need to rearrange the db enqueues here.
         Integer id;
         try {
             AccountsServiceInterface accts = RMIClient.getAccountsService();
@@ -402,6 +399,7 @@ public class Employee extends CachedObject {
         }
         emp.setID(id);
         emp.getDAO(EmployeeDAO.class).add(emp.getModel()).enqueue();
+        emp.getHomeGroup().addRoleEmployee(Role.getBasicRole(cache, emp.getHomeGroup()), emp);
         cache.cache(new UID(emp), emp);
         return emp;
     }
