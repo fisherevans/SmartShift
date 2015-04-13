@@ -7,14 +7,12 @@ angular.module('smartsApp').controller('AddShiftModalController', ['$scope', '$m
             "minute":0,
             "ampm":"AM"
         };
-        $scope.startTimeError = {"hour":false,"minute":false};
 
         $scope.endTime = {
             "hour":5,
             "minute":30,
             "ampm":"PM"
         };
-        $scope.endTimeError = {"hour":false,"minute":false};
 
         $scope.cancel = function() {
             $modalInstance.close(null);

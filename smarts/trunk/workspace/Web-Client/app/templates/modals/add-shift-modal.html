@@ -6,13 +6,13 @@
         <div class="smartInputLine">
             <div class="smartInputLabel">Start Time</div>
             <div class="smartInputWrapper">
-                <time-select time="startTime" time-error="startTimeError" minute-increment="15"></time-select>
+                <time-select time="startTime" minute-increment="15"></time-select>
             </div>
         </div>
         <div class="smartInputLine">
             <div class="smartInputLabel">End Time</div>
             <div class="smartInputWrapper">
-                <time-select time="endTime" time-error="endTimeError" minute-increment="15"></time-select>
+                <time-select time="endTime" minute-increment="15"></time-select>
             </div>
         </div>
         <p class="smartModelError smartModelPara" ng-if="error">{{error.message}}</p>
