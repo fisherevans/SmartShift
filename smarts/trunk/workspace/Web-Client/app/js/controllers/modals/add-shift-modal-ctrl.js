@@ -1,17 +1,23 @@
 angular.module('smartsApp').controller('AddShiftModalController', ['$scope', '$modalInstance', 'utilService', 'cacheService', 'initial',
     function($scope, $modalInstance, utilService, cacheService, initial){
-        console.log("In add employee modal");
+        $scope.groups = initial.groups;
+        $scope.weeks = initial.weeks;
+        $scope.days = initial.days;
 
-        $scope.startTime = {
-            "hour":9,
-            "minute":0,
-            "ampm":"AM"
-        };
-
-        $scope.endTime = {
-            "hour":5,
-            "minute":30,
-            "ampm":"PM"
+        $scope.form = {
+            "startTime": {
+                "hour":9,
+                "minute":0,
+                "ampm":"AM"
+            },
+            "endTime": {
+                "hour":5,
+                "minute":30,
+                "ampm":"PM"
+            },
+            "weekID":initial.weekID,
+            "groupID":initial.groupID,
+            "days": {}
         };
 
         $scope.cancel = function() {
@@ -19,7 +25,17 @@ angular.module('smartsApp').controller('AddShiftModalController', ['$scope', '$m
         };
 
         $scope.submit = function() {
-            $modalInstance.close(null);
+            var selDays = [];
+            angular.forEach($scope.form.days, function(selected, dayID) {
+                if(selected)
+                    selDays.push(dayID);
+            });
+            if(selDays.length == 0) {
+                $scope.error = "Select at least one day.";
+                return;
+            }
+            $scope.form.days = selDays;
+            $modalInstance.close($scope.form);
         };
     }
 ]);

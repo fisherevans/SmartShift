@@ -1,8 +1,33 @@
 <employee-list employee-hover="scheduleCtrl.employeeHover"></employee-list>
 
 <div class="newShiftForm appBlock">
-    New Shift Form
-    <button ng-click="scheduleCtrl.openAddShiftModal()">Add</button>
+    <div class="addFormRow">
+        <div class="addShiftLabel">Week</div>
+        <select alt="Group" class="smartInputSelect addShiftInput" ng-model="scheduleCtrl.addForm.weekID">
+            <option ng-repeat="week in scheduleCtrl.weeks" value="{{week.id}}">
+                {{week.sunday | date: "dd MMM"}} - {{week.saturday | date: "dd MMM"}}
+            </option>
+        </select>
+        <div class="addShiftLabel">Group</div>
+        <select alt="Group" class="smartInputSelect addShiftInput" ng-model="scheduleCtrl.addForm.groupID">
+            <option ng-repeat="group in scheduleCtrl.groups" value="{{group.id}}">
+                {{group.name}}
+            </option>
+        </select>
+        <div class="addShiftLabel">Role</div>
+<!--        <select alt="Group" class="smartInputSelect addShiftInput" ng-model="scheduleCtrl.addForm.roleID">
+            <option ng-repeat="role in scheduleCtrl.groups[scheduleCtrl.addForm.groupID].roles" value="{{role.id}}">
+                {{role.name}}
+            </option>
+        </select>-->
+        <select alt="Group" class="smartInputSelect addShiftInput" ng-model="scheduleCtrl.addForm.roleID"
+                ng-init="scheduleCtrl.addForm.roleID = scheduleCtrl.addForm.roleID || Object.keys(scheduleCtrl.groups[scheduleCtrl.addForm.groupID].roles)[0]">
+            <option ng-repeat="role in scheduleCtrl.groups[scheduleCtrl.addForm.groupID].roles" value="{{role.id}}">
+                {{role.name}}
+            </option>
+        </select>
+        <button class="smartButton addShiftButton blueBG fadeColors" ng-click="scheduleCtrl.openAddShiftModal()">Add Shift</button>
+    </div>
 </div>
 
 <div class="week appBlock">
