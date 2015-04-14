@@ -16,13 +16,8 @@
             </option>
         </select>
         <div class="addShiftLabel">Role</div>
-<!--        <select alt="Group" class="smartInputSelect addShiftInput" ng-model="scheduleCtrl.addForm.roleID">
-            <option ng-repeat="role in scheduleCtrl.groups[scheduleCtrl.addForm.groupID].roles" value="{{role.id}}">
-                {{role.name}}
-            </option>
-        </select>-->
-        <select alt="Group" class="smartInputSelect addShiftInput" ng-model="scheduleCtrl.addForm.roleID"
-                ng-init="scheduleCtrl.addForm.roleID = scheduleCtrl.addForm.roleID || Object.keys(scheduleCtrl.groups[scheduleCtrl.addForm.groupID].roles)[0]">
+        <select alt="Role" class="smartInputSelect addShiftInput" ng-model="scheduleCtrl.addForm.roleID"
+                ng-init="scheduleCtrl.addForm.roleID = scheduleCtrl.addForm.roleID || scheduleCtrl.getDefaultRoleID(scheduleCtrl.groups[scheduleCtrl.addForm.groupID].roles)">
             <option ng-repeat="role in scheduleCtrl.groups[scheduleCtrl.addForm.groupID].roles" value="{{role.id}}">
                 {{role.name}}
             </option>
@@ -31,67 +26,76 @@
     </div>
 </div>
 
-<div class="week appBlock">
-    <div ng-repeat="day in scheduleCtrl.days" class="dayWrapper">
-        <div class="dayName">{{day.name}}</div>
-        <div class="day antiAppBlock" ng-class="{firstDay:$first, lastDay:$last}">
-            <div ng-repeat="shift in day.shifts | orderObjectBy:'start'" class="shiftWrapper" ng-class="{notAssigned:shift.employee}">
-                <div class="shift appBlock fadeColors"
-                     ng-class="{hover:scheduleCtrl.shiftHover[shift.id]}" ng-mouseenter="scheduleCtrl.shiftHover[shift.id] = true" ng-mouseleave="scheduleCtrl.shiftHover[shift.id] = false"
-                     smart-dropzone valid-class="validDropZone" invalid-class="invalidDropZone"
-                     is-valid="scheduleCtrl.isValidEmployeeDrop(day, shift, dropData)" on-drop="scheduleCtrl.onEmployeeDrop(day, shift, dropData)">
-                    <div class="shiftActionWrapper fadeColorOpacity">
-                        <div class="timeOverlay" ><!--smart-draggable>-->
-                            <div ng-show="shift.role">{{shift.role.name}}</div>
-                            <div ng-hide="shift.role">Any Role</div>
-                            <div>
-                                {{shift.start.getMinutes() == 0 ? (shift.start | date:"h") : (shift.start | date:"h:mm")}}
-                                <span class="ampm">{{shift.start | date:"a"}}</span>
-                                -
-                                {{shift.end.getMinutes() == 0 ? (shift.end | date:"h") : (shift.end | date:"h:mm")}}
-                                <span class="ampm">{{shift.end | date:"a"}}</span>
+<div class="weekWrapper appBlock">
+    <div class="week">
+        <div ng-repeat="day in scheduleCtrl.days" class="dayWrapper" ng-class="{collapsed:day.hidden}">
+            <div class="dayName" ng-class="{firstDay:$first, lastDay:$last}" ng-click="day.hidden = day.hidden ? false : true">
+                {{day.name | limitTo: day.hidden ? 1 : 10}}
+                <div class="icon-eye dayToggle fadeColorOpacity"></div>
+            </div>
+            <div class="day antiAppBlock" ng-class="{firstDay:$first, lastDay:$last}">
+                <div ng-repeat="shift in day.shifts | orderObjectBy:'start'" class="shiftWrapper" ng-class="{notAssigned:shift.employee}">
+                    <div class="shift appBlock fadeColors"
+                         ng-class="{hover:scheduleCtrl.shiftHover[shift.id]}" ng-mouseenter="scheduleCtrl.shiftHover[shift.id] = true" ng-mouseleave="scheduleCtrl.shiftHover[shift.id] = false"
+                         smart-dropzone valid-class="validDropZone" invalid-class="invalidDropZone"
+                         is-valid="scheduleCtrl.isValidEmployeeDrop(day, shift, dropData)" on-drop="scheduleCtrl.onEmployeeDrop(day, shift, dropData)">
+                        <div class="shiftActionWrapper fadeColorOpacity">
+                            <div class="timeOverlay" ><!--smart-draggable>-->
+                                <div ng-show="shift.role">{{shift.role.name}}</div>
+                                <div ng-hide="shift.role">Any Role</div>
+                                <div>
+                                    {{shift.start.getMinutes() == 0 ? (shift.start | date:"h") : (shift.start | date:"h:mm")}}
+                                    <span class="ampm">{{shift.start | date:"a"}}</span>
+                                    -
+                                    {{shift.end.getMinutes() == 0 ? (shift.end | date:"h") : (shift.end | date:"h:mm")}}
+                                    <span class="ampm">{{shift.end | date:"a"}}</span>
+                                </div>
+                            </div>
+                            <div class="timeOverlayBlocker"></div>
+                            <div class="icon-trash deleteShift fadeColorOpacity redBG"></div>
+                            <div class="icon-pencil editShift fadeColorOpacity blueBG"></div>
+                        </div>
+                        <div class="times">
+                            <div class="start timeLine">
+                                <div class="timeLabel" ng-hide="day.hidden">Start:</div>
+                                <div class="timeValue">
+                                    {{shift.start.getMinutes() == 0 ? (shift.start | date:"h") : (shift.start | date:"h:mm")}}
+                                    <span class="ampm">{{shift.start | date:"a"}}</span>
+                                </div>
+                                <div class="clearBoth"></div>
+                            </div>
+                            <div class="end timeLine">
+                                <div class="timeLabel" ng-hide="day.hidden">End:</div>
+                                <div class="timeValue">
+                                    {{shift.end.getMinutes() == 0 ? (shift.end | date:"h") : (shift.end | date:"h:mm")}}
+                                    <span class="ampm">{{shift.end | date:"a"}}</span>
+                                </div>
+                                <div class="clearBoth"></div>
+                            </div>
+                            <div class="duration timeLine">
+                                <div class="timeLabel" ng-show="shift.role">{{shift.role.name}}</div>
+                                <div class="timeLabel" ng-hide="shift.role">Any Role</div>
+                                <div class="timeValue" ng-hide="day.hidden">{{scheduleCtrl.getDuration(shift)}} h</div>
+                                <div class="clearBoth"></div>
                             </div>
                         </div>
-                        <div class="timeOverlayBlocker"></div>
-                        <div class="icon-trash deleteShift fadeColorOpacity redBG"></div>
-                        <div class="icon-pencil editShift fadeColorOpacity blueBG"></div>
-                    </div>
-                    <div class="times">
-                        <div class="start timeLine">
-                            <div class="timeLabel">Start:</div>
-                            <div class="timeValue">
-                                {{shift.start.getMinutes() == 0 ? (shift.start | date:"h") : (shift.start | date:"h:mm")}}
-                                <span class="ampm">{{shift.start | date:"a"}}</span>
-                            </div>
+                        <div ng-hide="(day.shiftEmployees[shift.id] | isEmpty) || day.hidden" ng-repeat="(employeeID, employee) in day.shiftEmployees[shift.id] | orderObjectBy:'sortName'" class="assignedEmployee fadeColorOpacity"
+                             ng-class="{hover:scheduleCtrl.employeeHover[employee.id]}" ng-mouseenter="scheduleCtrl.employeeHover[employee.id] = true" ng-mouseleave="scheduleCtrl.employeeHover[employee.id] = false">
+                            <div class="assignedEmployeeName moveCursor" smart-draggable drag-class="dragging" drag-data="{'employee':employee, 'from':'dayShift', 'shift':shift, 'day':day}">{{employee.displayName}}</div>
+                            <div class="icon-x removeAssignedEmployee fadeColorOpacity" ng-click="scheduleCtrl.removeDayShiftEmployee(day, shift, employee)"></div>
                             <div class="clearBoth"></div>
                         </div>
-                        <div class="end timeLine">
-                            <div class="timeLabel">End:</div>
-                            <div class="timeValue">
-                                {{shift.end.getMinutes() == 0 ? (shift.end | date:"h") : (shift.end | date:"h:mm")}}
-                                <span class="ampm">{{shift.end | date:"a"}}</span>
-                            </div>
+                        <div ng-show="(day.shiftEmployees[shift.id] | isEmpty) && !day.hidden" class="assignedEmployee unassigned fadeColorOpacity">
+                            <div class="assignedEmployeeName">Unassigned</div>
                             <div class="clearBoth"></div>
                         </div>
-                        <div class="duration timeLine">
-                            <div class="timeLabel" ng-show="shift.role">{{shift.role.name}}</div>
-                            <div class="timeLabel" ng-hide="shift.role">Any Role</div>
-                            <div class="timeValue">{{scheduleCtrl.getDuration(shift)}} h</div>
+                        <div ng-show="day.hidden" class="assignedEmployee mini fadeColorOpacity">
+                            <div class="assignedEmployeeName">{{scheduleCtrl.employeeCount(day.shiftEmployees[shift.id])}} Emp's</div>
                             <div class="clearBoth"></div>
                         </div>
+                        <div class="validDropZoneOverlay fadeColorOpacity"></div>
+                        <div class="invalidDropZoneOverlay fadeColorOpacity"></div>
                     </div>
-                    <div ng-hide="day.shiftEmployees[shift.id] | isEmpty" ng-repeat="(employeeID, employee) in day.shiftEmployees[shift.id] | orderObjectBy:'sortName'" class="assignedEmployee fadeColorOpacity"
-                         ng-class="{hover:scheduleCtrl.employeeHover[employee.id]}" ng-mouseenter="scheduleCtrl.employeeHover[employee.id] = true" ng-mouseleave="scheduleCtrl.employeeHover[employee.id] = false">
-                        <div class="assignedEmployeeName moveCursor" smart-draggable drag-class="dragging" drag-data="{'employee':employee, 'from':'dayShift', 'shift':shift, 'day':day}">{{employee.displayName}}</div>
-                        <div class="icon-x removeAssignedEmployee fadeColorOpacity" ng-click="scheduleCtrl.removeDayShiftEmployee(day, shift, employee)"></div>
-                        <div class="clearBoth"></div>
-                    </div>
-                    <div ng-show="day.shiftEmployees[shift.id] | isEmpty" class="assignedEmployee unassigned fadeColorOpacity">
-                        <div class="assignedEmployeeName">Unassigned</div>
-                        <div class="clearBoth"></div>
-                    </div>
-                    <div class="validDropZoneOverlay fadeColorOpacity"></div>
-                    <div class="invalidDropZoneOverlay fadeColorOpacity"></div>
                 </div>
             </div>
         </div>

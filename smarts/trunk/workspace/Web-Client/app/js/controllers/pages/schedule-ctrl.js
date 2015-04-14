@@ -10,13 +10,13 @@ angular.module('smartsApp').controller('ScheduleController', ['$rootScope', 'cac
         var nextShiftId = 1;
 
         scheduleCtrl.days = [
-            { "id":0, "name":"Sunday",    "shifts":{}, "shiftEmployees":{} },
-            { "id":1, "name":"Monday",    "shifts":{}, "shiftEmployees":{} },
-            { "id":2, "name":"Tuesday",   "shifts":{}, "shiftEmployees":{} },
-            { "id":3, "name":"Wednesday", "shifts":{}, "shiftEmployees":{} },
-            { "id":4, "name":"Thursday",  "shifts":{}, "shiftEmployees":{} },
-            { "id":5, "name":"Friday",    "shifts":{}, "shiftEmployees":{} },
-            { "id":6, "name":"Saturday",  "shifts":{}, "shiftEmployees":{} }
+            { "id":0, "name":"Sunday",    "shifts":{}, "shiftEmployees":{}, "hidden":true },
+            { "id":1, "name":"Monday",    "shifts":{}, "shiftEmployees":{}, "hidden":false },
+            { "id":2, "name":"Tuesday",   "shifts":{}, "shiftEmployees":{}, "hidden":false },
+            { "id":3, "name":"Wednesday", "shifts":{}, "shiftEmployees":{}, "hidden":false },
+            { "id":4, "name":"Thursday",  "shifts":{}, "shiftEmployees":{}, "hidden":false },
+            { "id":5, "name":"Friday",    "shifts":{}, "shiftEmployees":{}, "hidden":false },
+            { "id":6, "name":"Saturday",  "shifts":{}, "shiftEmployees":{}, "hidden":true }
         ];
 
         scheduleCtrl.addForm = {
@@ -86,6 +86,14 @@ angular.module('smartsApp').controller('ScheduleController', ['$rootScope', 'cac
 
         scheduleCtrl.removeDayShiftEmployee = function(day, shift, employee) {
             delete day.shiftEmployees[shift.id][employee.id];
+        };
+
+        scheduleCtrl.employeeCount = function(employees) {
+            return Object.keys(employees).length;
+        };
+
+        scheduleCtrl.getDefaultRoleID = function(roles) {
+            return roles[Object.keys(roles)[0]].id;
         };
 
         $rootScope.updateNavigationTree([
