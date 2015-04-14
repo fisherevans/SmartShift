@@ -38,7 +38,7 @@
     width: 20%;
 }
 
-.week {
+.weekWrapper {
     box-sizing: border-box;
     position: absolute;
     top: 75px;
@@ -50,28 +50,67 @@
     font-size: 0;
     white-space: nowrap;
     overflow-x:auto;
+    display: block;
+}
+
+.week {
+    width: 100%;
+    height: 100%;
+    display: table;
+    table-layout: fixed;
 }
 
 .dayWrapper {
-    width: 14.285%;
     height: 100%;
-    padding: 0px 7px;
+    padding: 0px 3px;
     box-sizing: border-box;
     position: relative;
-    display: inline-block;
+    display: table-cell;
     overflow: hidden;
     min-width: 140px;
+    cursor: pointer;
+}
+
+.dayWrapper.collapsed {
+    min-width: 60px;
+    width: 60px;
 }
 
 .dayName {
     position: absolute;
-    top: 00px;
-    left: 0px;
-    right: 0px;
+    top: 0px;
+    left: 7px;
+    right: 7px;
     height: 40px;
     line-height: 40px;
     text-align: center;
     font-weight: 700;
+    background-color: #f0f0f0;
+}
+
+.dayName:not(.firstDay) {
+    left: 0px;
+}
+
+.dayName:not(.lastDay) {
+    right: 0px;
+}
+
+.dayToggle {
+    display: inline-block;
+    opacity: 0;
+}
+
+.dayName:hover {
+    background-color: #e8e8e8;
+}
+
+.dayWrapper.collapsed .dayToggle {
+    opacity: 0.5;
+}
+
+.dayName:hover .dayToggle {
+    opacity: 0.9;
 }
 
 .day {
@@ -102,7 +141,7 @@
 .shiftWrapper {
     width: 100%;
     box-sizing: border-box;
-    padding: 10px;
+    padding: 5px;
     padding-bottom: 0px;
 }
 
@@ -155,7 +194,7 @@
     background-color: #f0f0f0;
 }
 
-.shiftActionWrapper:hover {
+.dayWrapper:not(.collapsed) .shiftActionWrapper:hover {
     opacity: 1;
 }
 
@@ -185,6 +224,7 @@
     right: 0;
     height: 36px;
     /*cursor: move;*/
+    cursor: auto;
     display: block;
     opacity: 1;
     z-index: 10;
@@ -198,6 +238,7 @@
     line-height: 15px;
     height: 19px;
     /*cursor: move;*/
+    cursor: auto;
     font-size: 11px;
     font-weight: 700;
     text-align: center;
@@ -261,7 +302,7 @@
     cursor: auto;
 }
 
-.assignedEmployee:not(.unassigned):hover, .assignedEmployee.hover {
+.dayWrapper:not(.collapsed) .assignedEmployee:not(.unassigned):hover, .assignedEmployee.hover {
     background-color: #dddddd;
 }
 
@@ -300,4 +341,25 @@
 
 .assignedEmployeeName.dragging {
     opacity: 0.5;
+}
+
+.collapsed .shift * {
+    cursor: auto;
+}
+
+.collapsed .times * {
+    line-height: 12px;
+}
+
+.collapsed .timeLabel, .collapsed .timeValue {
+    font-size: 9px;
+}
+
+.collapsed .ampm {
+    font-size: 7px;
+}
+
+.collapsed .assignedEmployeeName {
+    font-size: 9px;
+    padding: 1px 3px;
 }
