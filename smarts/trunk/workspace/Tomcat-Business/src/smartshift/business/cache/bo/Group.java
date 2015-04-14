@@ -13,6 +13,7 @@ import smartshift.business.hibernate.dao.GroupRoleEmployeeDAO;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.business.hibernate.model.GroupRoleCapabilityModel;
+import smartshift.business.hibernate.model.GroupRoleEmployeeModel;
 import smartshift.business.hibernate.model.GroupRoleModel;
 import smartshift.common.hibernate.dao.tasks.AddTask;
 import smartshift.common.util.UID;
@@ -204,8 +205,6 @@ public class Group extends CachedObject {
         
     }
     
-    // --- Role Capabilities
-    
     /**
      * add a capability for a role within this group
      * @param role
@@ -218,7 +217,9 @@ public class Group extends CachedObject {
             GroupRole groupRole = _employees.get(role);
             groupRole.addCapability(capabilityID);
             role.capabilityAdded(this, capabilityID);
-            getDAO(GroupRoleCapabilityDAO.class).link(groupRole.getID(), capabilityID).enqueue();
+            int count = getDAO(GroupRoleCapabilityDAO.class).linkCount(groupRole.getID(), capabilityID).execute();
+            if(count == 0)
+                getDAO(GroupRoleCapabilityDAO.class).link(groupRole.getID(), capabilityID).enqueue();
         }
     }
     
@@ -257,7 +258,9 @@ public class Group extends CachedObject {
             GroupRole groupRole = _employees.get(role);
             groupRole.addEmployee(employee);
             employee.groupRoleAdded(this, role);
-            getDAO(GroupRoleEmployeeDAO.class).link(groupRole.getID(), employee.getID());
+            GroupRoleEmployeeModel model = getDAO(GroupRoleEmployeeDAO.class).uniqueByGroupRoleEmployee(groupRole.getID(), employee.getID()).execute();
+            if(model == null)
+                getDAO(GroupRoleEmployeeDAO.class).link(groupRole.getID(), employee.getID());
         }
     }
     
