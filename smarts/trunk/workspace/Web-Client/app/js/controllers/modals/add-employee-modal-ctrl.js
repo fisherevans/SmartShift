@@ -1,5 +1,5 @@
-angular.module('smartsApp').controller('AddEmployeeModalController', ['$scope', '$modalInstance', 'utilService', 'cacheService', 'defaultModel',
-    function($scope, $modalInstance, utilService, cacheService, defaultModel){
+angular.module('smartsApp').controller('AddEmployeeModalController', ['$scope', '$modalInstance', 'utilService', 'cacheService', 'defaultModel', 'utilService',
+    function($scope, $modalInstance, utilService, cacheService, defaultModel, utilService){
         console.log("In add employee modal");
 
         $scope.formData = defaultModel;
@@ -9,21 +9,7 @@ angular.module('smartsApp').controller('AddEmployeeModalController', ['$scope', 
 
         $scope.selectedGroupRoles = {};
 
-        var groupOptionsWorkingCopy = [];
-        var generateGroupOptions = function(group, prefix) {
-            groupOptionsWorkingCopy.push({
-                "id":group.id,
-                "name":prefix + " " + group.name
-            });
-            angular.forEach(group.childGroups, function(childGroup, childGroupID) {
-                generateGroupOptions(childGroup, prefix + "---");
-            });
-        }
-        angular.forEach($scope.groups, function(group, groupID) {
-            $scope.selectedGroupRoles[group.id] = {};
-            if(group.parentGroupID == null) generateGroupOptions(group, "");
-        });
-        $scope.groupOptions = groupOptionsWorkingCopy;
+        $scope.groupOptions = utilService.getGroupSelectOption($scope.groups);
 
         $scope.closeAddEmployeeModal = function() { $modalInstance.close(null); };
 
