@@ -35,3 +35,24 @@
     color: #fff;
     background-color: #0080ff;
 }
+
+
+.addShiftDaySelects {
+    position: relative;
+    display: block;
+}
+
+.addShiftDaySelect {
+    display: inline-block;
+    width: 14%;
+    text-align: center;
+    font-size: 0;
+}
+
+.addShiftDayName, .addShiftDayCheck {
+    display: block;
+    width: 100%;
+    height: 15px;
+    font-size: 12px;
+    font-weight: 700;
+}

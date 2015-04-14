@@ -2,19 +2,46 @@
     position: absolute;
     top: 0px;
     right: 0px;
-    height: 185px;
+    height: 60px;
     box-sizing: border-box;
-    padding: 15px 7px;
-    padding-top: 0px;
+    padding: 7px 7px;
     left: 315px;
     font-size: 0;
     white-space: nowrap;
+    vertical-align: middle;
+}
+
+.addFormRow {
+    position: relative;
+    width: 100%;
+    vertical-align: middle;
+}
+
+.addShiftLabel, .addShiftInput {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.addShiftLabel {
+    width: 5%;
+    padding-right: 1%;
+    font-weight: 700;
+    text-align: right;
+}
+
+.addShiftInput {
+    width: 19%;
+}
+
+.addShiftButton {
+    margin-left: 1%;
+    width: 20%;
 }
 
 .week {
     box-sizing: border-box;
     position: absolute;
-    top: 200px;
+    top: 75px;
     right: 0px;
     bottom: 0px;
     padding: 15px 7px;

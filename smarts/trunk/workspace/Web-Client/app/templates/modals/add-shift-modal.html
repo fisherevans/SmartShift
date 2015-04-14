@@ -4,18 +4,60 @@
     </div>
     <div class="modal-body" id="addEmployeeModal">
         <div class="smartInputLine">
+            <div class="smartInputLabel">Week</div>
+            <div class="smartInputWrapper">
+                <select alt="Week" class="smartInputSelect" ng-model="form.weekID">
+                    <option ng-repeat="week in weeks" value="{{week.id}}">
+                        {{week.sunday | date: "dd MMM"}} - {{week.saturday | date: "dd MMM"}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="smartInputLine">
+            <div class="smartInputLabel">Group</div>
+            <div class="smartInputWrapper">
+                <select alt="Group" class="smartInputSelect" ng-model="form.groupID">
+                    <option ng-repeat="group in groups" value="{{group.id}}">
+                        {{group.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="smartInputLine">
+            <div class="smartInputLabel">Role</div>
+            <div class="smartInputWrapper">
+                <select alt="Group" class="smartInputSelect" ng-model="form.roleID">
+                    <option ng-repeat="role in groups[form.groupID].roles" value="{{role.id}}">
+                        {{role.name}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <div class="smartInputLine">
             <div class="smartInputLabel">Start Time</div>
             <div class="smartInputWrapper">
-                <time-select time="startTime" minute-increment="15"></time-select>
+                <time-select time="form.startTime" minute-increment="15"></time-select>
             </div>
         </div>
         <div class="smartInputLine">
             <div class="smartInputLabel">End Time</div>
             <div class="smartInputWrapper">
-                <time-select time="endTime" minute-increment="15"></time-select>
+                <time-select time="form.endTime" minute-increment="15"></time-select>
             </div>
         </div>
-        <p class="smartModelError smartModelPara" ng-if="error">{{error.message}}</p>
+        <div class="smartInputLine">
+            <div class="smartInputLabel">Days</div>
+            <div class="smartInputWrapper">
+                <div class="addShiftDaySelects smartInput80Width">
+                    <label class="addShiftDaySelect" ng-repeat="(dayID, day) in days">
+                        {{day}}
+                        <div class="addShiftDayName">{{day.letter}}</div>
+                        <input class="addShiftDayCheck" type="checkbox" ng-model="form.days[dayID]" />
+                    </label>
+                </div>
+            </div>
+        </div>
+        <p class="smartModelError smartModelPara" ng-if="error">{{error}}</p>
     </div>
     <div class="modal-footer">
         <button type="button" class="smartButton fadeColors orangeBG floatLeft" ng-click="cancel()">Cancel</button>
