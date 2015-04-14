@@ -6,13 +6,13 @@ angular.module('smartsServices').factory('httpService', ['$http', '$q', '$rootSc
 
         httpService.httpCallID = 1;
 
-        httpService.httpRequest = function(server, password, method, path, data) {
+        httpService.httpRequest = function(server, username, password, method, path, data) {
             var request = {
                 method: method,
                 //url: 'http://localhost:8080' + path,
                 url: server + path,
                 headers: {
-                    'Authorization' : 'Basic ' + window.btoa($rootScope.api.username + ':' + password),
+                    'Authorization' : 'Basic ' + window.btoa(username + ':' + password),
                     'Content-Type' : 'application/json'
                 },
                 data: data
@@ -32,8 +32,8 @@ angular.module('smartsServices').factory('httpService', ['$http', '$q', '$rootSc
                 function(response, status, headers, config) {
                     console.log("HTTP Response (Error) " + callID);
                     console.log(response);
-                    if(response.status == 401) {
-                        $rootScope.forceLogout();
+                    if(!$rootScope.api.loggingIn && response.status == 401) {
+                        $rootScope.gracefullyLogout();
                     }
                     defer.reject(response);
                     $rootScope.api.waitingCalls--;
@@ -43,11 +43,11 @@ angular.module('smartsServices').factory('httpService', ['$http', '$q', '$rootSc
         };
 
         httpService.businessRequest = function(method, path, data) {
-            return httpService.httpRequest($rootScope.api.businessServer, $rootScope.api.sessionID, method, path, data);
+            return httpService.httpRequest($rootScope.api.businessServer, $rootScope.api.username, $rootScope.api.sessionID, method, path, data);
         };
 
         httpService.accountsRequest = function(method, path, data) {
-            return httpService.httpRequest($rootScope.api.accountsServer, $rootScope.api.password, method, path, data);
+            return httpService.httpRequest($rootScope.api.accountsServer, $rootScope.api.username, $rootScope.api.password, method, path, data);
         };
 
         httpService.business = {

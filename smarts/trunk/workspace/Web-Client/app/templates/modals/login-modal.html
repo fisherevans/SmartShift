@@ -2,11 +2,11 @@
   <div class="modal-header">
     <h3 class="modal-title">SmartShift Login</h3>
   </div>
-  <div class="modal-body" id="loginModal">
+  <div class="modal-body" id="loginModal" element-rendered="inputSelect()">
     <p>Please log in with your user credentials.</p>
     <div class="loginInputWrapper smartInputWrapper">
       <input ng-model="account.username" type="text" ng-class="{inputError:error}"
-          alt="Username"
+          alt="Username" ng-change="updateSavedUsername()"
           class="smartInputText smartInputFullWidth fadeColors" id="loginModalUsername"
           placeholder="User Name">
     </div>
@@ -20,13 +20,13 @@
       <div ng-show="error" class="loginError">{{error}}</div>
     </div>
     <div class="loginRememberWrapper smartInputWrapper textAlignRight noTextSelect">
-      <label class="loginRemember">Remember me<input type="checkbox"></label>
+      <label class="loginRemember">Remember me<input ng-model="rememberMeCheck" ng-change="updateSavedUsername()" type="checkbox"></label>
     </div>
   </div>
   <div class="modal-footer">
     <div class="loginRegister">
       Not registered? <a href="#/register">Click here</a> to register your business.
     </div>
-    <button type="submit" class="smartButton fadeColors blueBG" id="loginModalSubmit">Sign in</button>
+    <button type="submit" class="smartButton fadeColors blueBG" id="loginModalSubmit" >Sign in</button>
   </div>
 </form>
