@@ -27,6 +27,19 @@ angular.module('smartsApp').filter("toArray", function(){
         return result;
     };
 });
+angular.module('smartsApp').filter('isEmpty', function () {
+    var bar;
+    return function (obj) {
+        for (bar in obj) {
+            if (obj.hasOwnProperty(bar)) {
+                return false;
+            }
+        }
+        return true;
+    };
+})
+
+
 
 angular.module('smartsApp').config(function($routeProvider){
     $routeProvider

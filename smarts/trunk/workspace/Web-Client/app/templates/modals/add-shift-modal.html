@@ -49,10 +49,9 @@
             <div class="smartInputLabel">Days</div>
             <div class="smartInputWrapper">
                 <div class="addShiftDaySelects smartInput80Width">
-                    <label class="addShiftDaySelect" ng-repeat="(dayID, day) in days">
-                        {{day}}
-                        <div class="addShiftDayName">{{day.letter}}</div>
-                        <input class="addShiftDayCheck" type="checkbox" ng-model="form.days[dayID]" />
+                    <label class="addShiftDaySelect" ng-repeat="day in days">
+                        <div class="addShiftDayName">{{day.name | limitTo: 1}}</div>
+                        <input class="addShiftDayCheck" type="checkbox" ng-model="form.days[day.id]" />
                     </label>
                 </div>
             </div>
