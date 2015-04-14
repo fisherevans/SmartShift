@@ -10,7 +10,8 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                 accountsServer: 'http://lando.smartshift.info:6380',
                 businessServer: undefined,
                 waitingCalls: 0,
-                updatePolling: 5
+                updatePolling: 5,
+                loggingIn: true
             };
             mainController.api = $rootScope.api;
         };
@@ -21,6 +22,8 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
             $rootScope.api.sessionID = $cookieStore.get('sessionID');
             $rootScope.api.businessServer = $cookieStore.get('businessServer');
         }();
+
+        $rootScope.rememberUsername = $cookieStore.get('rememberUsername') == true ? true : false;
 
         mainController.navigationElements = {};
         $rootScope.updateNavigationTree = function(elements) {
@@ -87,10 +90,15 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
         });
 
         $rootScope.forceLogout = function() {
-            $cookieStore.remove('username');
+            $rootScope.gracefullyLogout();
+            window.location.href = "./";
+        }
+
+        $rootScope.gracefullyLogout = function() {
+            if(!$rootScope.rememberUsername)
+                $cookieStore.remove('username');
             $cookieStore.remove('sessionID');
             $cookieStore.remove('businessServer');
-            window.location.href = "./";
         }
     }
 ]);
