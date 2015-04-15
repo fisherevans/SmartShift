@@ -6,7 +6,6 @@ body {
 .renderWait {
     opacity: 0;
     transition: opacity 0.25s ease;
-    transition-delay: 0.25s;
 }
 
 .renderWait.loaded {

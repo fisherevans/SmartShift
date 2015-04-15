@@ -40,7 +40,7 @@
             </div>
         </div>
 
-        <div class="appPane renderWait" ng-class="{loaded:true}"> <!-- poor mans ng-cloak -->
+        <div class="appPane renderWait" ng-class="{loaded:mainCtrl.showRoutePage}">
             <div class="appNavigationTree appBlock noTextSelect">
                 <div id="logoutWrapper" class="fadeColors noTextSelect" ng-click="mainCtrl.logout()">
                     <div class="icon-exit logoutIcon fadeColors"></div>
@@ -61,7 +61,7 @@
                 </div>
                 <img class="loadingBox fadeOpacity" src="../global/images/loading.gif" ng-class="{active:mainCtrl.api.waitingCalls > 0}" />
             </div>
-            <div ng-view class="appContent angular-animate ngAnimateFade" ng-if="mainCtrl.showRoutePage"></div>
+            <div ng-view class="appContent angular-animate ngAnimateFade" ng-show="mainCtrl.showRoutePage"></div>
         </div>
         <div class="preventInput" ng-show="mainCtrl.api.waitingCalls > 0"></div>
 
