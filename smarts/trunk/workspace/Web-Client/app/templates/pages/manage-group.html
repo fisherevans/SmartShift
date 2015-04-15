@@ -35,7 +35,7 @@
                  ng-class="{hover:manageGroupCtrl.employeeHover[employee.id]}" ng-mouseenter="manageGroupCtrl.employeeHover[employee.id] = true" ng-mouseleave="manageGroupCtrl.employeeHover[employee.id] = false"
                  smart-draggable drag-class="dragging" drag-data="{'employee':employee, 'oldRole':role, 'from':'role'}">
                 <div ng-if="employee.justAddedRole" class="justAdded"></div>
-                <img src="../global/images/default.png" class="groupRoleEmployeeImage" />
+                <img ng-src="{{manageGroupCtrl.getEmployeeImage(employee.id)}}" class="groupRoleEmployeeImage" />
                 <div class="groupRoleEmployeeName fadeColors">{{employee.firstName}} {{employee.lastName}}</div>
                 <div class="groupRoleEmployeeEdit icon-pencil fadeColors" ng-click="manageGroupCtrl.openEditEmployeeModal(employee)"></div>
                 <div class="groupRoleEmployeeDelete icon-x fadeColors" ng-click="manageGroupCtrl.removeRoleEmployee(role, employee)"></div>

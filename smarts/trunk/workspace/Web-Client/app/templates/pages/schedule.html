@@ -30,7 +30,7 @@
                 <div class="icon-eye dayToggle fadeColorOpacity"></div>
             </div>
             <div class="day antiAppBlock" ng-class="{firstDay:$first, lastDay:$last}">
-                <div ng-repeat="shift in day.shifts | orderObjectBy:'start'" ng-show="scheduleCtrl.addForm.groupID == shift.group.id || scheduleCtrl.addForm.groupID == 0"
+                <div ng-repeat="shift in day.shifts | orderObjectBy:'start'" ng-show="scheduleCtrl.showShift(shift)""
                      class="shiftWrapper" ng-class="{notAssigned:shift.employee}">
                     <div class="shift appBlock fadeColors"
                          ng-class="{hover:scheduleCtrl.shiftHover[shift.id]}" ng-mouseenter="scheduleCtrl.shiftHover[shift.id] = true" ng-mouseleave="scheduleCtrl.shiftHover[shift.id] = false"
