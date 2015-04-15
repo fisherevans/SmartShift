@@ -17,6 +17,7 @@ angular.module('smartsApp').controller('AddShiftModalController', ['$scope', '$m
             },
             "weekID":initial.weekID,
             "groupID":initial.groupID,
+            "roleID":initial.roleID,
             "days": {}
         };
 

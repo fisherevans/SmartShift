@@ -9,17 +9,9 @@ angular.module('smartsApp').controller('AddEmployeeModalController', ['$scope', 
 
         $scope.selectedGroupRoles = {};
 
-        $scope.groupOptions = utilService.getGroupSelectOption($scope.groups);
+        $scope.groupOptions = utilService.getGroupSelectOption($scope.groups, false);
 
         $scope.closeAddEmployeeModal = function() { $modalInstance.close(null); };
-
-        $scope.debugMe = function() {
-            console.log("----------------");
-            console.log($scope.formData);
-            console.log($scope.groups);
-            console.log($scope.groupOptions);
-            console.log($scope.selectedGroupRoles);
-        };
 
         $scope.submit = function() {
             $(".addEmployeeModalButton").prop("disabled",true);

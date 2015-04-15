@@ -85,10 +85,18 @@
 
 .fadeMaxs {
     -webkit-transition: max-width 0.25s ease, max-height 0.25s ease;
-       -moz-transition: max-width 0.25s ease, max-height 0.25s ease;
-        -ms-transition: max-width 0.25s ease, max-height 0.25s ease;
-         -o-transition: max-width 0.25s ease, max-height 0.25s ease;
-            transition: max-width 0.25s ease, max-height 0.25s ease;
+    -moz-transition: max-width 0.25s ease, max-height 0.25s ease;
+    -ms-transition: max-width 0.25s ease, max-height 0.25s ease;
+    -o-transition: max-width 0.25s ease, max-height 0.25s ease;
+    transition: max-width 0.25s ease, max-height 0.25s ease;
+}
+
+.fadeMins {
+    -webkit-transition: min-width 0.25s ease, min-height 0.25s ease;
+    -moz-transition: min-width 0.25s ease, min-height 0.25s ease;
+    -ms-transition: min-width 0.25s ease, min-height 0.25s ease;
+    -o-transition: min-width 0.25s ease, min-height 0.25s ease;
+    transition: min-width 0.25s ease, min-height 0.25s ease;
 }
 
 .fadeNav {
