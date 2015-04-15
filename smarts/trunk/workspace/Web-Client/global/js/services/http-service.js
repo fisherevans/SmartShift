@@ -19,7 +19,7 @@ angular.module('smartsServices').factory('httpService', ['$http', '$q', '$rootSc
             };
             $rootScope.api.waitingCalls++;
             var callID = httpService.httpCallID++;
-            console.log("HTTP Call " + callID + " (" + $rootScope.api.waitingCalls + ")");
+            console.log("HTTP Call " + callID);
             console.log(request);
             var defer = $q.defer();
             $http(request).then(
@@ -32,9 +32,7 @@ angular.module('smartsServices').factory('httpService', ['$http', '$q', '$rootSc
                 function(response, status, headers, config) {
                     console.log("HTTP Response (Error) " + callID);
                     console.log(response);
-                    if(!$rootScope.api.loggingIn && response.status == 401) {
-                        $rootScope.gracefullyLogout();
-                    }
+                    if(response.status == 401) $rootScope.handleHTTP401();
                     defer.reject(response);
                     $rootScope.api.waitingCalls--;
                 }

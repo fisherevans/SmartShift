@@ -1,58 +1,40 @@
-angular.module('smartsApp').controller('LoginModalController', ['$scope', '$rootScope', '$modalInstance', 'accountsService', 'httpService', '$cookieStore',
-    function($scope, $rootScope, $modalInstance, accountsService, httpService, $cookieStore){
-        $rootScope.api.loggingIn = true;
+angular.module('smartsApp').controller('LoginModalController', ['$scope', '$rootScope', '$modalInstance', 'accountsService', 'initialErrorMessage',
+    function($scope, $rootScope, $modalInstance, accountsService, initialErrorMessage){
+        $scope.api = $rootScope.api;
 
-        $scope.account = {
-            username: '',
-            password: ''
-        };
-
-        if($rootScope.rememberUsername) {
-            if($rootScope.api.username != undefined)
-                $scope.account.username = $rootScope.api.username;
-        }
-
-        $scope.error = '';
-
-        $scope.rememberMeCheck = $rootScope.rememberUsername;
-
-        $scope.updateSavedUsername = function() {
-            $rootScope.rememberUsername = $scope.rememberMeCheck;
-            if($rootScope.rememberUsername) {
-                $cookieStore.put('username', $scope.account.username, {expires: new Date(new Date().getTime() + 999999999)});
-                $cookieStore.put('rememberUsername', $rootScope.rememberUsername, {expires: new Date(new Date().getTime() + 999999999)});
-            } else {
-                $cookieStore.remove('username');
-                $cookieStore.remove('rememberUsername');
-            }
+        $scope.form = {
+            username: $scope.api.rememberUsername ? $scope.api.username : '',
+            password: '',
+            rememberMe: $scope.api.rememberUsername,
+            working: false,
+            invalidInput: false,
+            errorMessage: initialErrorMessage
         };
 
         $scope.inputSelect = function() {
-            console.log("Selecting input");
-            if($scope.account.username == '')
+            console.log("Focusing Login modal input - User input length - " + $scope.form.username + " - " + $scope.form.username.trim().length);
+            if($scope.form.username.trim().length == 0)
                 $("#loginModalUsername").select();
             else
                 $("#loginModalPassword").select();
         };
 
         $scope.submit = function() {
-            $("#loginModalSubmit").prop("disabled",true);
-            $scope.error = '';
+            $scope.form.working = true;
+            $scope.form.invalidInput = false;
+            $scope.form.errorMessage = '';
 
-            httpService.httpRequest($rootScope.api.accountsServer, $scope.account.username, $scope.account.password, 'GET', '/accounts/user/full', {}).then (
+            $scope.api.username = $scope.form.username;
+            $scope.api.password = $scope.form.password;
+
+            accountsService.getFull().then (
                 function(reponse){
-                    $rootScope.api.username = $scope.account.username;
-                    $rootScope.api.password = $scope.account.password;
-                    $cookieStore.put('username', $rootScope.api.username, {expires: new Date(new Date().getTime() + 999999999)});
-                    $rootScope.api.loggingIn = false;
                     $modalInstance.close(reponse.data.businesses);
                 },
-                function(data){
-                    if(data.status == 401)
-                        $scope.error = data.data.message;
-                    else
-                        $scope.error = "The login server is down.";
-                    $("#loginModalSubmit").prop("disabled",false);
+                function(reponse){
+                    $scope.form.errorMessage = reponse.status == 401 ? reponse.data.message : "The login server is down.";
+                    $scope.form.invalidInput = reponse.status == 401 ? true : false;
+                    $scope.form.working = false;
                     $scope.inputSelect();
                 }
             );

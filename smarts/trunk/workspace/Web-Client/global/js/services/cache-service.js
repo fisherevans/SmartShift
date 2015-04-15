@@ -293,11 +293,16 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
         publicCacheService.loadCache = function() {
             var defer = $q.defer();
             if(loaded == false) {
+                console.log("Cache not yet loaded, pulling from API.");
                 businessService.getFull().then(
                     function(response) {
                         loadFromAPIResponse(response);
                         defer.resolve();
-                    }, defer.reject);
+                    },
+                    function(response) {
+                        defer.reject(response);
+                    }
+                );
             } else {
                 defer.resolve();
             }
