@@ -8,6 +8,8 @@ CREATE DATABASE Accounts;
 GRANT ALL PRIVILEGES ON Accounts.* TO 'smarts'@'%';
 COMMIT;
 
+SET FOREIGN_KEY_CHECKS=0;
+
 DROP TABLE IF EXISTS `Accounts`.`User`;
 CREATE TABLE `Accounts`.`User` (
 	`id` INT NOT NULL,
@@ -19,7 +21,6 @@ CREATE TABLE `Accounts`.`User` (
 	`inactive` TINYINT(1) NOT NULL DEFAULT 0,
 	`flags` INT(10) NOT NULL DEFAULT 0,
 	PRIMARY KEY (`id`),
-	-- UNIQUE (`email`),
 	UNIQUE (`username`)
 );
 
@@ -32,8 +33,7 @@ CREATE TABLE `Accounts`.`Registration` (
 	`email` VARCHAR(256) NOT NULL,
 	`createTS` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	PRIMARY KEY (`id`),
-	UNIQUE (`businessID`, `employeeID`),
-	-- UNIQUE (`email`)
+	UNIQUE (`businessID`, `employeeID`)
 );
 
 DROP TABLE IF EXISTS `Accounts`.`ContactMethod`;
@@ -158,14 +158,6 @@ CREATE TABLE `Accounts`.`NextID` (
 	PRIMARY KEY (`id`),
 	UNIQUE (`name`)
 );
-
-ALTER TABLE `Accounts`.`Session`
-ADD CONSTRAINT `session_userbusiness`
-	FOREIGN KEY (`userBusEmpID`)
-	REFERENCES `Accounts`.`UserBusinessEmployee`(`id`)
-	ON DELETE NO ACTION
-	ON UPDATE NO ACTION
-;
 
 DROP TABLE IF EXISTS `Accounts`.`BusinessPreference`;
 CREATE TABLE `Accounts`.`BusinessPreference` (
@@ -308,3 +300,5 @@ ADD CONSTRAINT `registration_business`
 	ON DELETE NO ACTION
 	ON UPDATE NO ACTION
 ;
+
+SET FOREIGN_KEY_CHECKS=1;
