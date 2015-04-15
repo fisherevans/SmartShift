@@ -6,7 +6,7 @@
     </div>
     <div class="timeSelectValues noTextSelect">
         <div ng-class="{error:time.error.hour}" class="timeSelectValue fadeColors">
-            <input class="timeSelectValueInput smartInputFullWidth" type="text" ng-model="input.hour" ng-keyup="hourKey($event)" maxlength="2" />
+            <input class="timeSelectValueInput smartInputFullWidth" type="text" ng-model="input.hour" ng-keyup="hourKey($event)" ng-blur="hourBlur()" maxlength="2" />
         </div>
         <div ng-class="{error:time.error.minute}" class="timeSelectValue fadeColors">
             <input class="timeSelectValueInput smartInputFullWidth" type="text" ng-model="input.minute" ng-keyup="minuteKey($event)" ng-blur="minuteBlur()" maxlength="2" />

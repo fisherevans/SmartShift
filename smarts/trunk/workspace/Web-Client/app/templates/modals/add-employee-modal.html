@@ -27,10 +27,6 @@
         <div class="smartInputLine">
             <div class="smartInputLabel">Home Group</div>
             <div class="smartInputWrapper">
-                <!-- <select alt="Home Group" class="smartInputSelect fadeColors" ng-class="{inputError:error.group}"
-                        ng-model="formData.homeGroupID"
-                        ng-options="group.name for group in groupOptions track by group.id">
-                </select> -->
                 <select alt="Home Group" class="smartInputSelect fadeColors" ng-class="{inputError:error.group}" ng-model="formData.homeGroupID">
                     <option ng-repeat="groupOption in groupOptions" value="{{groupOption.id}}" ng-selected="groupOption.id == formData.homeGroupID"> {{groupOption.name}} </option>
                 </select>

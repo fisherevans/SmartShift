@@ -5,26 +5,23 @@ angular.module('smartsDirectives')
             templateUrl: '../app/templates/directives/employee-list.html',
             scope: {
                 defaultGroupId: '=',
-                filterGroups: '=',
-                filterName: '=',
+                filterObject: '=',
                 employeeHover: '='
             },
             link: function(scope, element, attrs) {
                 scope.employees = cacheService.getEmployees();
                 scope.groups = cacheService.getGroups();
                 scope.group = cacheService.getGroup(scope.currentGroupID);
-                scope.filter = {};
-                if(scope.filterName)
-                    scope.filter.name = scope.filterName;
-                else
-                    scope.filter.name = "";
-                if(scope.filterGroups)
-                    scope.filter.groups = scope.filterGroups;
-                else {
-                    scope.filter.groups = [];
+                if(angular.isUndefined(scope.filterObject)) {
+                    scope.filter = {
+                        "name": "",
+                        "groups": []
+                    };
                     angular.forEach(scope.groups, function(group, groupID) {
                         scope.filter.groups.push(parseInt(groupID));
                     });
+                } else {
+                    scope.filter = scope.filterObject;
                 }
                 console.log("LIST");
                 console.log(scope.filterGroups);

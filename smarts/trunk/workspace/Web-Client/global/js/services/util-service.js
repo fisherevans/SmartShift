@@ -25,10 +25,16 @@ angular.module('smartsServices').factory('utilService', [
                     return false;
                 return true;
             },
-            getGroupSelectOption: function(groups) {
-                var groupOptionsWorkingCopy = [];
+            getGroupSelectOption: function(groups, includeAll) {
+                var groupOptions = [];
+                if(includeAll) {
+                    groupOptions.push({
+                        "name": "[All Groups]",
+                        "id": 0
+                    });
+                }
                 var generateGroupOptions = function(group, prefix) {
-                    groupOptionsWorkingCopy.push({
+                    groupOptions.push({
                         "id":group.id,
                         "name":prefix + " " + group.name
                     });
@@ -36,11 +42,27 @@ angular.module('smartsServices').factory('utilService', [
                         generateGroupOptions(childGroup, prefix + "---");
                     });
                 }
-                angular.forEach($scope.groups, function(group, groupID) {
-                    $scope.selectedGroupRoles[group.id] = {};
-                    if(group.parentGroupID == null) generateGroupOptions(group, "");
+                angular.forEach(groups, function(group, groupID) {
+                    if(group.parentGroupID == null)
+                        generateGroupOptions(group, "");
                 });
-                return groupOptionsWorkingCopy;
+                return groupOptions;
+            },
+            getRoleSelectOptions: function(roles, includeAll) {
+                var roleOptions = [];
+                if(includeAll) {
+                    roleOptions.push({
+                        "name": "[All Roles]",
+                        "id": 0
+                    });
+                }
+                angular.forEach(roles, function(role, roleID) {
+                    roleOptions.push({
+                        "name": role.name,
+                        "id": role.id
+                    });
+                });
+                return roleOptions;
             },
             getWeeks: function(back, forward) {
                 var weeks = [];
