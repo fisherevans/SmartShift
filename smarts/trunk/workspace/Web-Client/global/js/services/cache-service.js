@@ -185,7 +185,7 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
             groupEmployeeAdded(group, employee);
             group.roleEmployees[role.id][employee.id] = employee;
             addToSet(role.groupEmployeeIDs[group.id], employee.id);
-            addToSet(employee.groupRoleIDs[group.id], group.id);
+            addToSet(employee.groupRoleIDs[group.id], role.id);
         }
         function groupRoleCapabilityAdded(group, role, capability) {
             capabilitySet(capability);

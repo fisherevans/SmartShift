@@ -105,7 +105,7 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
         }(); // Run it after it's defined
 
         $rootScope.getEmployeeImage = function(employeeID) {
-            return "../global/images/default.png";
+            return employeeID <= 19 ? "../app/img/" + employeeID + ".png" : "../global/images/default.png";
         };
 
         // Prevent page load if there is no session
@@ -114,9 +114,10 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                 event.preventDefault();
         });
 
-        // Proxy objects
         mainController.logout = $rootScope.logout; // function
-        mainController.linkClick = $location.path; // function
+        mainController.linkClick = function(path) {
+            $location.path(path);
+        };
         mainController.showRoutePage = false;
 
         // Navigation trail stuff

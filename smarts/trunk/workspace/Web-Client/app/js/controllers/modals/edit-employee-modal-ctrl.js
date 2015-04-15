@@ -14,6 +14,9 @@ angular.module('smartsApp').controller('EditEmployeeModalController', ['$scope',
             });
         });
 
+        console.log($scope.employeeGroups);
+        console.log($scope.employeeGroupRoles);
+
         $scope.manageGroup = function(groupID) {
             $(".editEmployeeModalButton").prop("disabled",true);
             $location.path("groups/" + groupID);

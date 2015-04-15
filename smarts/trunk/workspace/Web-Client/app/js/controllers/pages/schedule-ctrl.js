@@ -126,6 +126,18 @@ angular.module('smartsApp').controller('ScheduleController', ['$rootScope', 'cac
             return roles[Object.keys(roles)[0]].id;
         };
 
+        scheduleCtrl.showShift = function(shift) {
+            if(parseInt(scheduleCtrl.addForm.groupID) == 0)
+                return true;
+            if(parseInt(scheduleCtrl.addForm.groupID) != shift.group.id)
+                return false;
+            if(parseInt(scheduleCtrl.addForm.roleID) == 0)
+                return true;
+            if(parseInt(scheduleCtrl.addForm.roleID) != shift.role.id)
+                return false;
+            return true;
+        };
+
         scheduleCtrl.onGroupChange();
 
         $rootScope.updateNavigationTree([

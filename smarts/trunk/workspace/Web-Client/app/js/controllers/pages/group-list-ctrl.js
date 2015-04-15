@@ -4,8 +4,6 @@ angular.module('smartsApp').controller('GroupListController', [ '$rootScope', '$
 
         groupListCtrl.groups = cacheService.getGroups();
 
-        console.log(groupListCtrl.groups);
-
         groupListCtrl.manageGroup = function(group) {
             $location.path("groups/" + group.id);
         };

@@ -30,6 +30,19 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
             );
         };
 
+        mngGrpCtrl.openEditEmployeeModal = function (employee) {
+            modalService.editEmployeeModal(angular.copy(employee)).then(function(updatedEmployee) {
+                if (updatedEmployee == 'delete') {
+                    modalService.deleteEmployeeModal(employee).then(
+                        function (deleted) {
+                            if(!deleted)
+                                scope.openEditEmployeeModal(updatedEmployee);
+                        }
+                    );
+                }
+            });
+        };
+
         mngGrpCtrl.openFilterEmployeeListModal = function() { alert("Not implemented"); };
 
         mngGrpCtrl.removeRoleEmployee = function(role, employee) {
@@ -59,6 +72,8 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
                 function(response) { alert(response.data.message); }
             );
         };
+
+        mngGrpCtrl.getEmployeeImage = $rootScope.getEmployeeImage;
 
         $rootScope.updateNavigationTree([
             { "type":"link", "text":"Group Management", "href":"groups" },
