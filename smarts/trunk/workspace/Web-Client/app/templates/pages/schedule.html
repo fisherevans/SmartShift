@@ -1,4 +1,4 @@
-<employee-list employee-hover="scheduleCtrl.employeeHover" default-group-id="1"></employee-list>
+<employee-list employee-hover="scheduleCtrl.employeeHover" default-group-id="1" filter-object="scheduleCtrl.employeeListFilter"></employee-list>
 
 <div class="newShiftForm appBlock">
     <div class="addFormRow">
@@ -10,17 +10,13 @@
             </option>
         </select>
         <div class="addShiftLabel">Group</div>
-        <select alt="Group" class="smartInputSelect addShiftInput" ng-model="scheduleCtrl.addForm.groupID">
-            <option ng-repeat="group in scheduleCtrl.groups" value="{{group.id}}">
+        <select alt="Group" class="smartInputSelect addShiftInput" ng-model="scheduleCtrl.addForm.groupID" ng-change="scheduleCtrl.onGroupChange()">
+            <option ng-repeat="group in scheduleCtrl.groupOptions" value="{{group.id}}">
                 {{group.name}}
             </option>
         </select>
         <div class="addShiftLabel">Role</div>
-        <select alt="Role" class="smartInputSelect addShiftInput" ng-model="scheduleCtrl.addForm.roleID"
-                ng-init="scheduleCtrl.addForm.roleID = scheduleCtrl.addForm.roleID || scheduleCtrl.getDefaultRoleID(scheduleCtrl.groups[scheduleCtrl.addForm.groupID].roles)">
-            <option ng-repeat="role in scheduleCtrl.groups[scheduleCtrl.addForm.groupID].roles" value="{{role.id}}">
-                {{role.name}}
-            </option>
+        <select alt="Role" class="smartInputSelect addShiftInput" ng-model="scheduleCtrl.addForm.roleID" ng-options="role.id as role.name for role in scheduleCtrl.roleOptions">
         </select>
         <button class="smartButton addShiftButton blueBG fadeColors" ng-click="scheduleCtrl.openAddShiftModal()">Add Shift</button>
     </div>
@@ -29,12 +25,13 @@
 <div class="weekWrapper appBlock">
     <div class="week">
         <div ng-repeat="day in scheduleCtrl.days" class="dayWrapper" ng-class="{collapsed:day.hidden}">
-            <div class="dayName" ng-class="{firstDay:$first, lastDay:$last}" ng-click="day.hidden = day.hidden ? false : true">
+            <div class="dayName fadeColors" ng-class="{firstDay:$first, lastDay:$last}" ng-click="day.hidden = day.hidden ? false : true">
                 {{day.name | limitTo: day.hidden ? 1 : 10}}
                 <div class="icon-eye dayToggle fadeColorOpacity"></div>
             </div>
             <div class="day antiAppBlock" ng-class="{firstDay:$first, lastDay:$last}">
-                <div ng-repeat="shift in day.shifts | orderObjectBy:'start'" class="shiftWrapper" ng-class="{notAssigned:shift.employee}">
+                <div ng-repeat="shift in day.shifts | orderObjectBy:'start'" ng-show="scheduleCtrl.addForm.groupID == shift.group.id || scheduleCtrl.addForm.groupID == 0"
+                     class="shiftWrapper" ng-class="{notAssigned:shift.employee}">
                     <div class="shift appBlock fadeColors"
                          ng-class="{hover:scheduleCtrl.shiftHover[shift.id]}" ng-mouseenter="scheduleCtrl.shiftHover[shift.id] = true" ng-mouseleave="scheduleCtrl.shiftHover[shift.id] = false"
                          smart-dropzone valid-class="validDropZone" invalid-class="invalidDropZone"
@@ -70,6 +67,10 @@
                                     {{shift.end.getMinutes() == 0 ? (shift.end | date:"h") : (shift.end | date:"h:mm")}}
                                     <span class="ampm">{{shift.end | date:"a"}}</span>
                                 </div>
+                                <div class="clearBoth"></div>
+                            </div>
+                            <div class="duration timeLine" ng-show="scheduleCtrl.addForm.groupID == 0">
+                                <div class="timeLabel" ng-show="shift.role">{{shift.group.name}}</div>
                                 <div class="clearBoth"></div>
                             </div>
                             <div class="duration timeLine">
