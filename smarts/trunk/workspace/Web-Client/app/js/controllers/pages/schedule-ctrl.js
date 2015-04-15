@@ -5,8 +5,14 @@ angular.module('smartsApp').controller('ScheduleController', ['$rootScope', 'cac
         scheduleCtrl.employeeHover = {};
         scheduleCtrl.shiftHover = {};
         scheduleCtrl.groups = cacheService.getGroups();
+        scheduleCtrl.groupOptions = utilService.getGroupSelectOption(scheduleCtrl.groups, true);
+        scheduleCtrl.roleOptions = [];
         scheduleCtrl.weeks = utilService.getWeeks(2, 4);
         scheduleCtrl.shifts = {};
+        scheduleCtrl.employeeListFilter = {
+            "name":"",
+            "groups":[]
+        };
         var nextShiftId = 1;
 
         scheduleCtrl.days = [
@@ -20,7 +26,8 @@ angular.module('smartsApp').controller('ScheduleController', ['$rootScope', 'cac
         ];
 
         scheduleCtrl.addForm = {
-            "groupID":1,
+            "groupID":0,
+            "roleID":0,
             "weekID":0,
             "startTime": {
                 "hour":9,
@@ -42,6 +49,28 @@ angular.module('smartsApp').controller('ScheduleController', ['$rootScope', 'cac
             return new Date(1970, 1, 1, hour, minute);
         };
 
+        scheduleCtrl.onGroupChange = function() {
+            var selGroupID = scheduleCtrl.addForm.groupID;
+            while(scheduleCtrl.employeeListFilter.groups.length) {
+                scheduleCtrl.employeeListFilter.groups.pop();
+            }
+            if(selGroupID == 0) {
+                scheduleCtrl.roleOptions = [{
+                    "id":0,
+                    "name":"[All Roles]"
+                }];
+                angular.forEach(scheduleCtrl.groups, function(group, groupID) {
+                    scheduleCtrl.employeeListFilter.groups.push(parseInt(groupID));
+                });
+                scheduleCtrl.addForm.roleID = 0;
+            } else {
+                var roles = scheduleCtrl.groups[selGroupID].roles;
+                scheduleCtrl.roleOptions = utilService.getRoleSelectOptions(roles, true);
+                scheduleCtrl.addForm.roleID = scheduleCtrl.roleOptions.length > 1 ? scheduleCtrl.roleOptions[1].id : 0;
+                scheduleCtrl.employeeListFilter.groups.push(parseInt(selGroupID));
+            }
+        };
+
         scheduleCtrl.openAddShiftModal = function() {
             modalService.addShiftModal({
                 "weekID":scheduleCtrl.addForm.weekID,
@@ -58,6 +87,7 @@ angular.module('smartsApp').controller('ScheduleController', ['$rootScope', 'cac
                     "id":nextShiftId++,
                     "start":timeToDate(result.startTime),
                     "end":timeToDate(result.endTime),
+                    "group":scheduleCtrl.groups[result.groupID],
                     "role":scheduleCtrl.groups[result.groupID].roles[result.roleID]
                 };
                 angular.forEach(result.days, function(dayID, arrID) {
@@ -95,6 +125,8 @@ angular.module('smartsApp').controller('ScheduleController', ['$rootScope', 'cac
         scheduleCtrl.getDefaultRoleID = function(roles) {
             return roles[Object.keys(roles)[0]].id;
         };
+
+        scheduleCtrl.onGroupChange();
 
         $rootScope.updateNavigationTree([
             { "type":"text", "text":"Work Schedule" }
