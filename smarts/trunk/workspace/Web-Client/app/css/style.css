@@ -3,6 +3,16 @@ body {
     max-width: 1528px;
 }
 
+.renderWait {
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    transition-delay: 0.25s;
+}
+
+.renderWait.loaded {
+    opacity: 1;
+}
+
 .appPane {
     position: absolute;
     left: 95px;
