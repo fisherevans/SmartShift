@@ -24,7 +24,7 @@
              smart-draggable drag-class="dragging" drag-data="{'employee':employee, 'from':'employee-list'}">
             <div class="employeeListItem fadeColors">
                 <div ng-if="employee.justAdded" class="justAdded"></div>
-                <img src="../global/images/default.png" class="employeeImage" />
+                <img src="{{getEmployeeImage(employee.id)}}" class="employeeImage" />
                 <div class="employeeText">
                     <div class="employeeName">{{employee.firstName}} {{employee.lastName}}</div>
                     <div class="employeeDefaultGroup">{{groups[employee.homeGroupID].name}}</div>

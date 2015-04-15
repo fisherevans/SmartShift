@@ -5,28 +5,28 @@
   <div class="modal-body" id="loginModal" element-rendered="inputSelect()">
     <p>Please log in with your user credentials.</p>
     <div class="loginInputWrapper smartInputWrapper">
-      <input ng-model="account.username" type="text" ng-class="{inputError:error}"
-          alt="Username" ng-change="updateSavedUsername()"
+      <input ng-model="form.username" type="text" ng-class="{inputError:form.invalidInput}"
+          alt="Username"
           class="smartInputText smartInputFullWidth fadeColors" id="loginModalUsername"
           placeholder="User Name">
     </div>
     <div class="loginInputWrapper smartInputWrapper">
-      <input ng-model="account.password" type="password" ng-class="{inputError:error}"
+      <input ng-model="form.password" type="password" ng-class="{inputError:form.invalidInput}"
           alt="Password"
           class="smartInputText smartInputFullWidth fadeColors" id="loginModalPassword"
           placeholder="Password">
     </div>
     <div class="loginInputWrapper smartInputWrapper">
-      <div ng-show="error" class="loginError">{{error}}</div>
+      <div ng-show="form.errorMessage" class="loginError">{{form.errorMessage}}</div>
     </div>
     <div class="loginRememberWrapper smartInputWrapper textAlignRight noTextSelect">
-      <label class="loginRemember">Remember me<input ng-model="rememberMeCheck" ng-change="updateSavedUsername()" type="checkbox"></label>
+      <label class="loginRemember">Remember me<input ng-model="form.rememberMe" type="checkbox"></label>
     </div>
   </div>
   <div class="modal-footer">
     <div class="loginRegister">
       Not registered? <a href="#/register">Click here</a> to register your business.
     </div>
-    <button type="submit" class="smartButton fadeColors blueBG" id="loginModalSubmit" >Sign in</button>
+    <button type="submit" class="smartButton fadeColors blueBG" id="loginModalSubmit" ng-disabled="form.working">Sign in</button>
   </div>
 </form>

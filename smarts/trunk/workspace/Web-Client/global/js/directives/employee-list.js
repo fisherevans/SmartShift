@@ -1,5 +1,5 @@
 angular.module('smartsDirectives')
-    .directive('employeeList', function (modalService, cacheService) {
+    .directive('employeeList', function ($rootScope, modalService, cacheService) {
         return {
             restrict: 'E',
             templateUrl: '../app/templates/directives/employee-list.html',
@@ -23,9 +23,6 @@ angular.module('smartsDirectives')
                 } else {
                     scope.filter = scope.filterObject;
                 }
-                console.log("LIST");
-                console.log(scope.filterGroups);
-                console.log(scope.filter);
                 scope.addEmployeeListener = function () {
                     modalService.addEmployeeModal({"homeGroupID": scope.defaultGroupId});
                 };
@@ -54,8 +51,6 @@ angular.module('smartsDirectives')
                     });
                 };
                 scope.openFilterModal = function() {
-                    console.log("Sending:");
-                    console.log(scope.filter);
                     modalService.filterEmployeesModal(scope.filter).then(function(filter) {
                         if(filter != null) {
                             console.log("Got back:");
@@ -63,7 +58,8 @@ angular.module('smartsDirectives')
                             console.log(scope.filter);
                         }
                     });
-                }
+                };
+                scope.getEmployeeImage = $rootScope.getEmployeeImage;
             }
         }
     })

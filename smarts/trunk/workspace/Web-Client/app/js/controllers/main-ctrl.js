@@ -1,104 +1,128 @@
-angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope', 'modalService', '$location', '$route', '$cookieStore', '$cookies', 'httpService', 'accountsService', 'utilService', 'cacheService', 'updateService',
-    function($scope, $rootScope, modalService, $location, $route, $cookieStore, $cookies, httpService, accountsService, utilService, cacheService, updateService){
+angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope', 'modalService', '$location', '$route', '$cookieStore', '$cookies', 'httpService', 'accountsService', 'utilService', 'cacheService', 'updateService', 'smartCookies',
+    function($scope, $rootScope, modalService, $location, $route, $cookieStore, $cookies, httpService, accountsService, utilService, cacheService, updateService, smartCookies){
         var mainController = this;
 
-        $rootScope.clearAPIData = function() {
+        $rootScope.initializeAPIData = function() {
+            console.log("Clearing/Reseting the API session object");
             $rootScope.api = {
+                // Stored in Cookies
                 username: undefined,
-                password: undefined,
-                sessionID: undefined,
-                accountsServer: 'http://lando.smartshift.info:6380',
                 businessServer: undefined,
+                sessionID: undefined,
+                rememberUsername: false,
+
+                // Static
+                accountsServer: 'http://lando.smartshift.info:6380',
+
+                // Dynamic
+                password: undefined,
                 waitingCalls: 0,
-                updatePolling: 5,
-                loggingIn: true
+                updatePolling: 20,
+                failOn401: false
             };
-            mainController.api = $rootScope.api;
         };
 
-        $scope.init = function(){
-            $rootScope.clearAPIData();
-            $rootScope.api.username = $cookieStore.get('username');
-            $rootScope.api.sessionID = $cookieStore.get('sessionID');
-            $rootScope.api.businessServer = $cookieStore.get('businessServer');
-        }();
+        $rootScope.handleHTTP401 = function() {
+            if($rootScope.api.failOn401) {
+                $rootScope.logout("Your session has expired.");
+            }
+        }
 
-        $rootScope.rememberUsername = $cookieStore.get('rememberUsername') == true ? true : false;
+        $rootScope.logout = function(message) {
+            smartCookies.clearAPI();
+            $rootScope.openLoginModal(message == null ? "Logged out" : message);
+        }
 
-        mainController.navigationElements = {};
-        $rootScope.updateNavigationTree = function(elements) {
-            mainController.navigationElements = elements;
+        $rootScope.openLoginModal = function(initialError) {
+            $rootScope.api.failOn401 = false;
+            mainController.showRoutePage = false;
+            modalService.loginModal(initialError).then(
+                function(businesses) {
+                    // Protip - login modal sets api variables for user/pass
+                    if(utilService.getSize(businesses) > 1)
+                        $rootScope.openBusinessSelectModal(businesses);
+                    else
+                        $rootScope.createSession(businesses[0]);
+                }
+            );
         };
 
-        mainController.linkClick = function(path) {
-            $location.path(path);
+        $rootScope.openBusinessSelectModal = function(businesses) {
+            modalService.businessModal(businesses).then(
+                function(business) {
+                    if(business == null) // canceled
+                        $rootScope.openLoginModal();
+                    else
+                        $rootScope.createSession(business);
+                }
+            )
+        };
+
+        $rootScope.createSession = function(business) {
+            $scope.business = business;
+            accountsService.getSession(business.id, business.employeeID).then(
+                function (response) {
+                    // TODO - load from - result.data.server
+                    $rootScope.api.businessServer = 'http://lando.smartshift.info:6380';
+                    $rootScope.api.sessionID = response.data.sessionKey;
+                    $rootScope.api.failOn401 = true;
+                    smartCookies.saveAPI();
+                    mainController.showRoutePage = true;
+                    $route.reload();
+                },
+                function (result) {
+                    alert("Failed to create a session. Re-opening login modal");
+                    $rootScope.logout("An unexpected error occurred");
+                }
+            );
+        };
+
+        $rootScope.initSessionState = function() {
+            console.log("Initialized the Session State");
+            $rootScope.initializeAPIData();
+            smartCookies.loadAPI();
+            if($rootScope.api.username == null || $rootScope.api.username.trim().length == 0
+                || $rootScope.api.sessionID == null || $rootScope.api.sessionID.trim().length == 0
+                || $rootScope.api.businessServer == null || $rootScope.api.businessServer.trim().length == 0) {
+                console.log("Session cookies don't exist - opening up Login Modal");
+                $rootScope.openLoginModal();
+            } else {
+                console.log("Session cookies exist - Attempting to load the Cache");
+                console.log("Cache failed to load - bringing up Login Modal");
+                cacheService.loadCache().then(
+                    function() { // Success
+                        console.log("Cache loaded - continuing to load page");
+                        $rootScope.api.failOn401 = true;
+                        mainController.showRoutePage = true;
+                        $route.reload();
+                    },
+                    function(result) { // Error
+                        console.log("Cache failed to load - bringing up login modal");
+                        $rootScope.openLoginModal();
+                    }
+                );
+            }
+        }(); // Run it after it's defined
+
+        $rootScope.getEmployeeImage = function(employeeID) {
+            return "../global/images/default.png";
         };
 
         // Prevent page load if there is no session
         $rootScope.$on("$locationChangeStart", function(event, next, current){
-            if($rootScope.api.sessionID === undefined)
+            if($rootScope.api.sessionID == null)
                 event.preventDefault();
         });
 
-        $rootScope.$on("$routeChangeError", function (event, current, previous, rejection) {
-            //if(rejection.status == 401)
-            //    $rootScope.forceLogout();
-        });
+        // Proxy objects
+        mainController.logout = $rootScope.logout; // function
+        mainController.linkClick = $location.path; // function
+        mainController.showRoutePage = false;
 
-
-        $scope.hasSession = function(){
-            return $rootScope.api.sessionID;
+        // Navigation trail stuff
+        mainController.navigationElements = {};
+        $rootScope.updateNavigationTree = function(elements) {
+            mainController.navigationElements = elements;
         };
-
-        $scope.logout = function(){
-            $rootScope.forceLogout();
-        };
-
-        $scope.$watch('$rootScope.api.sessionID', function(){
-            if(!$rootScope.api.sessionID){
-                var result = modalService.loginModal()
-                    .then(function (businesses) {
-                        var executeLogin = function(business) {
-                            $scope.business = business;
-                            accountsService.getSession(business.id, business.employeeID).then(
-                                function (response) {
-                                    console.log("S");
-                                    console.log(response);
-                                    $rootScope.api.sessionID = response.data.sessionKey;
-                                    $rootScope.api.businessServer = 'http://lando.smartshift.info:6380'; //result.data.server;
-                                    var expireDate = new Date(new Date().getTime() + response.data.timeout + 999999999); // TODO update cookie on http calls to reflect new expiration
-                                    $cookieStore.put('username', $rootScope.api.username, {expires: expireDate});
-                                    $cookieStore.put('sessionID', $rootScope.api.sessionID, {expires: expireDate});
-                                    $cookieStore.put('businessServer', $rootScope.api.businessServer, {expires: expireDate});
-                                    $rootScope.api.updatePolling = 5;
-                                    $route.reload();
-                                },
-                                function (result) {
-                                    alert("Something went terribly wrong");
-                                }
-                            );
-                        };
-                        if(utilService.getSize(businesses) > 1)
-                            modalService.businessModal(businesses).then(executeLogin)
-                        else {
-                            console.log(businesses);
-                            executeLogin(businesses[0]);
-                        }
-                    } // end then function
-                ); // end modalService.loginModal
-            } // end if no session
-        });
-
-        $rootScope.forceLogout = function() {
-            $rootScope.gracefullyLogout();
-            window.location.href = "./";
-        }
-
-        $rootScope.gracefullyLogout = function() {
-            if(!$rootScope.rememberUsername)
-                $cookieStore.remove('username');
-            $cookieStore.remove('sessionID');
-            $cookieStore.remove('businessServer');
-        }
     }
 ]);

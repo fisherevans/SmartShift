@@ -3,13 +3,18 @@
 angular.module('smartsServices').factory('modalService', ['$modal', '$rootScope', '$location', 'httpService', 'utilService', 'accountsService',
     function( $modal, $rootScope, $location, httpService, utilService, accountsService){
         return {
-            loginModal: function( path ){
+            loginModal: function(initialErrorMessage){
                 return $modal.open({
                     templateUrl: '../app/templates/modals/login-modal.html',
                     controller: 'LoginModalController',
                     backdrop: 'static',
                     backdropClass: 'dim',
-                    keyboard: false
+                    keyboard: false,
+                    resolve: {
+                        initialErrorMessage: function() {
+                            return initialErrorMessage == null ? '' : initialErrorMessage;
+                        }
+                    }
                 }).result;
             },
             businessModal: function( business ) {
