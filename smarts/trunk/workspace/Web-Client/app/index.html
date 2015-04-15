@@ -32,7 +32,7 @@
             <img class="navLogo" src="../global/images/logoicon.png" />
             <div ng-repeat="navTab in tabCtrl.navTabs">
                 <a href="#/{{navTab.link}}">
-                    <div class="navElement fadeNav {{navTab.otherClass}}" ng-class="{ current: tabCtrl.isSet(navTab.tabID) }">
+                    <div class="navElement fadeNav {{navTab.otherClass}}" ng-class="{ current: tabCtrl.isSet(navTab.tabID) && mainCtrl.showRoutePage }">
                         <div class="navLabel fadeLeft">{{navTab.label}}</div>
                         <div class="navIcon {{navTab.iconClass}}"></div>
                     </div>
