@@ -1,6 +1,7 @@
 angular.module('smartsApp').controller('AddShiftModalController', ['$scope', '$modalInstance', 'utilService', 'cacheService', 'initial',
     function($scope, $modalInstance, utilService, cacheService, initial){
-        $scope.groups = initial.groups;
+        $scope.groupOptions = utilService.getGroupSelectOption(initial.groups, false);
+        $scope.roleOptions = [];
         $scope.weeks = initial.weeks;
         $scope.days = initial.days;
 
@@ -16,10 +17,18 @@ angular.module('smartsApp').controller('AddShiftModalController', ['$scope', '$m
                 "ampm":"PM"
             },
             "weekID":initial.weekID,
-            "groupID":initial.groupID,
+            "groupID":initial.groupID == 0 ? 1 : initial.groupID,
             "roleID":initial.roleID,
             "days": {}
         };
+        console.log($scope.form);
+
+        var firstRun = true;
+        $scope.onGroupChange = function() {
+            $scope.roleOptions = utilService.getRoleSelectOptions(initial.groups[$scope.form.groupID].roles, true);
+            if(firstRun) $scope.form.roleID = 0;
+            firstRun = false;
+        }();
 
         $scope.cancel = function() {
             $modalInstance.close(null);

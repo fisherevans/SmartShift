@@ -66,16 +66,17 @@ angular.module('smartsApp').controller('ScheduleController', ['$rootScope', 'cac
             } else {
                 var roles = scheduleCtrl.groups[selGroupID].roles;
                 scheduleCtrl.roleOptions = utilService.getRoleSelectOptions(roles, true);
-                scheduleCtrl.addForm.roleID = scheduleCtrl.roleOptions.length > 1 ? scheduleCtrl.roleOptions[1].id : 0;
+                //scheduleCtrl.addForm.roleID = scheduleCtrl.roleOptions.length > 1 ? scheduleCtrl.roleOptions[1].id : 0;
+                scheduleCtrl.addForm.roleID = 0;
                 scheduleCtrl.employeeListFilter.groups.push(parseInt(selGroupID));
             }
         };
 
         scheduleCtrl.openAddShiftModal = function() {
             modalService.addShiftModal({
-                "weekID":scheduleCtrl.addForm.weekID,
-                "groupID":scheduleCtrl.addForm.groupID,
-                "roleID":scheduleCtrl.addForm.roleID,
+                "weekID":parseInt(scheduleCtrl.addForm.weekID),
+                "groupID":parseInt(scheduleCtrl.addForm.groupID),
+                "roleID":parseInt(scheduleCtrl.addForm.roleID),
                 "weeks":scheduleCtrl.weeks,
                 "days":scheduleCtrl.days,
                 "groups":scheduleCtrl.groups
