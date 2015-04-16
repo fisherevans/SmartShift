@@ -3,6 +3,11 @@ angular.module('smartsApp').controller('GroupListController', [ '$rootScope', '$
         var groupListCtrl = this;
 
         groupListCtrl.groups = cacheService.getGroups();
+        groupListCtrl.rootGroups = [];
+        angular.forEach(groupListCtrl.groups, function(group, groupID) {
+            if(group.parentGroupID == null)
+                groupListCtrl.rootGroups.push(group);
+        });
 
         groupListCtrl.manageGroup = function(group) {
             $location.path("groups/" + group.id);

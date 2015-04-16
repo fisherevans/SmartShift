@@ -66,7 +66,7 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
             if(group.roles == null) group.roles = {};
             if(group.roleEmployees == null) group.roleEmployees = {};
             if(group.roleCapabilities == null) group.roleCapabilities = {};
-            if(group.childGroups == null) group.childGroups = [];
+            if(group.childGroups == null) group.childGroups = {};
             if(group.homeEmployeeIDs == null) group.homeEmployeeIDs = [];
             if(group.parentGroupID != null) {
                 parentGroupSet(group, groups[group.parentGroupID]);
@@ -107,11 +107,14 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
         }
 
         function parentGroupSet(group, parentGroup) {
+            if(parentGroup != null && group.id == parentGroup.id)
+                throw "Cannot set parent group to self.";
             if(group.parentGroupID != null) {
                 delete groups[group.parentGroupID].childGroups[group.id];
             }
-            group.parentGroupID = parentGroup.id;
-            parentGroup.childGroups[group.id] = group;
+            group.parentGroupID = parentGroup == null ? null : parentGroup.id;
+            if(parentGroup != null)
+                parentGroup.childGroups[group.id] = group;
         }
 
         // ROOT REMOVES

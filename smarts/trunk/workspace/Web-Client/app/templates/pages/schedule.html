@@ -74,6 +74,7 @@
                                 <div class="clearBoth"></div>
                             </div>
                             <div class="duration timeLine">
+                                <!--<div class="timeLabel" ng-show="shift.role && scheduleCtrl.addForm.roleID == 0">{{shift.role.name}}</div>-->
                                 <div class="timeLabel" ng-show="shift.role">{{shift.role.name}}</div>
                                 <div class="timeLabel" ng-hide="shift.role">Any Role</div>
                                 <div class="timeValue" ng-hide="day.hidden">{{scheduleCtrl.getDuration(shift)}} h</div>

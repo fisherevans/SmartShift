@@ -8,7 +8,6 @@ angular.module('smartsDirectives')
                 minuteIncrement: '='
             },
             link: function (scope, element, attrs) {
-                console.log("Minute skip = " + scope.minuteIncrement);
                 scope.input = {
                     "hour":scope.time.hour,
                     "minute":scope.time.minute < 10 ? '0'+scope.time.minute : scope.time.minute,
