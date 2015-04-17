@@ -5,12 +5,13 @@ angular.module('smartsServices').factory('httpService', ['$http', '$q', '$rootSc
         var httpService = {};
 
         httpService.httpCallID = 1;
+        httpService.version = "http";
 
         httpService.httpRequest = function(server, username, password, method, path, data) {
             var request = {
                 method: method,
                 //url: 'http://localhost:8080' + path,
-                url: server + path,
+                url: httpService.version + "://" + server + path,
                 headers: {
                     'Authorization' : 'Basic ' + window.btoa(username + ':' + password),
                     'Content-Type' : 'application/json'

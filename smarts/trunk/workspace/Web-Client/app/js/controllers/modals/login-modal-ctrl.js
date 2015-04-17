@@ -24,8 +24,9 @@ angular.module('smartsApp').controller('LoginModalController', ['$scope', '$root
             $scope.form.invalidInput = false;
             $scope.form.errorMessage = '';
 
-            $scope.api.username = $scope.form.username;
-            $scope.api.password = $scope.form.password;
+            $rootScope.api.username = $scope.form.username;
+            $rootScope.api.password = $scope.form.password;
+            $rootScope.api.rememberUsername = $scope.form.rememberMe;
 
             accountsService.getFull().then (
                 function(reponse){

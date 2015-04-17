@@ -12,10 +12,22 @@
     margin-top: 4px;
 }
 
+.employeeListButtons.fullWidth {
+    margin-top: 0px;
+    box-sizing: border-box;
+    padding:4px 14px;
+}
+
 .employeeListButton {
     position: relative;
     margin: 7px 4px;
     padding: 8px 13px;
+}
+
+.employeeListButtons.fullWidth .employeeListButton {
+    box-sizing: border-box;
+    margin: 7px 0px;
+    width: 100%;
 }
 
 .employeeListButton .icon-plus {

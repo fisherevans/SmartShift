@@ -12,7 +12,7 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                 rememberUsername: false,
 
                 // Static
-                accountsServer: 'http://lando.smartshift.info:6380',
+                accountsServer: 'lando.smartshift.info:6380',
 
                 // Dynamic
                 password: undefined,
@@ -63,7 +63,7 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
             accountsService.getSession(business.id, business.employeeID).then(
                 function (response) {
                     // TODO - load from - result.data.server
-                    $rootScope.api.businessServer = 'http://lando.smartshift.info:6380';
+                    $rootScope.api.businessServer = response.data.server;
                     $rootScope.api.sessionID = response.data.sessionKey;
                     $rootScope.api.failOn401 = true;
                     smartCookies.saveAPI();
@@ -98,6 +98,8 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                     },
                     function(result) { // Error
                         console.log("Cache failed to load - bringing up login modal");
+                        $rootScope.initializeAPIData();
+                        smartCookies.clearAPI();
                         $rootScope.openLoginModal();
                     }
                 );

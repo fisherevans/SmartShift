@@ -1,4 +1,4 @@
-<employee-list employee-hover="scheduleCtrl.employeeHover" default-group-id="1" filter-object="scheduleCtrl.employeeListFilter"></employee-list>
+<employee-list employee-hover="scheduleCtrl.employeeHover" default-group-id="1" filter-object="scheduleCtrl.employeeListFilter" hide-filter="true"></employee-list>
 
 <div class="newShiftForm appBlock">
     <div class="addFormRow">
@@ -70,7 +70,7 @@
                                 <div class="clearBoth"></div>
                             </div>
                             <div class="duration timeLine" ng-show="scheduleCtrl.addForm.groupID == 0">
-                                <div class="timeLabel" ng-show="shift.role">{{shift.group.name}}</div>
+                                <div class="timeLabel">{{shift.group.name}}</div>
                                 <div class="clearBoth"></div>
                             </div>
                             <div class="duration timeLine">
@@ -102,4 +102,5 @@
             </div>
         </div>
     </div>
+{{scheduleCtrl.employeeHover}}
 </div>
