@@ -1,5 +1,6 @@
 package smartshift.business.hibernate.model;
 
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -16,11 +17,8 @@ public class ShiftModel {
     @Column(name = "id", nullable = false)
     private Integer id;
 
-    @Column(name = "dayOfWeek", nullable = false)
-    private Integer templateID;
-
     @Column(name = "start", nullable = false)
-    private Integer start;
+    private Date start;
 
     @Column(name = "duration", nullable = false)
     private Integer duration;
@@ -47,30 +45,16 @@ public class ShiftModel {
     }
 
     /**
-     * @return the templateID
-     */
-    public Integer getTemplateID() {
-        return templateID;
-    }
-
-    /**
-     * @param templateID the templateID to set
-     */
-    public void setTemplateID(Integer templateID) {
-        this.templateID = templateID;
-    }
-
-    /**
      * @return the start
      */
-    public Integer getStart() {
+    public Date getStart() {
         return start;
     }
 
     /**
      * @param start the start to set
      */
-    public void setStart(Integer start) {
+    public void setStart(Date start) {
         this.start = start;
     }
 

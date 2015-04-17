@@ -50,14 +50,31 @@ public class GroupRoleCapabilityDAO extends BaseBusinessDAO<GroupRoleCapabilityM
         return add(model);
     }
     
+    /**
+     * 
+     * @param groupRoleID
+     * @param capability
+     * @return the task
+     */
     public RowCountTask<GroupRoleCapabilityModel> linkCount(Integer groupRoleID, Integer capability) {
         return rowCount(getGroupRoleCapabilityCriterion(groupRoleID, capability));
     }
     
+    /**
+     * 
+     * @param groupRoleID
+     * @param capability
+     * @return the task
+     */
     public DeleteByIDTask<GroupRoleCapabilityModel> remove(Integer groupRoleID, Integer capability) {
         return deleteByID(new GroupRoleCapabilityID(groupRoleID, capability));
     }
     
+    /**
+     * 
+     * @param groupRoleID
+     * @return the task
+     */
     public DeleteByCriteriaTask<GroupRoleCapabilityModel> removeAll(Integer groupRoleID) {
         return deleteByCriteria(Restrictions.eq("groupRoleID", groupRoleID));
     }

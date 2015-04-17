@@ -163,7 +163,7 @@ public class Availability extends CachedObject {
         else {          
             Availability avail = new Availability(cache, availID);
             cache.cache(uid, avail);             
-            avail.initialize();
+            avail.initialize(null);
             return avail;
         }
     }

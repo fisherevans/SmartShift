@@ -36,8 +36,9 @@ public abstract class CachedObject implements Identifiable, Stored{
     
     /**
      * initialize the fields of this skeleton object
+     * @param requester the employee the object is being initialized for
      */
-    public synchronized void initialize() {
+    public synchronized void initialize(Employee requester) {
         init();
         _initialized = true;
     }

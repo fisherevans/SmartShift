@@ -22,8 +22,11 @@ public class EmployeeScheduleShiftModel {
     @Column(name = "shiftID", nullable = false)
     private Integer shiftID;
 
-    @Column(name = "grpRoleID", nullable = false)
-    private Integer groupRoleID;
+    @Column(name = "grpID", nullable = false)
+    private Integer groupID;
+    
+    @Column(name = "roleID", nullable = true)
+    private Integer roleID;
 
     /**
      * Initializes the object.
@@ -61,16 +64,30 @@ public class EmployeeScheduleShiftModel {
     }
 
     /**
-     * @return the groupRoleID
+     * @return the groupID
      */
-    public Integer getGroupRoleID() {
-        return groupRoleID;
+    public Integer getGroupID() {
+        return groupID;
     }
 
     /**
-     * @param groupRoleID the groupRoleID to set
+     * @param groupID the groupID to set
      */
-    public void setGroupRoleID(Integer groupRoleID) {
-        this.groupRoleID = groupRoleID;
+    public void setGroupID(Integer groupID) {
+        this.groupID = groupID;
+    }
+    
+    /**
+     * @return the roleID
+     */
+    public Integer getRoleID() {
+        return roleID;
+    }
+    
+    /**
+     * @param roleID the roleID to set
+     */
+    public void setRoleID(Integer roleID) {
+        this.roleID = roleID;
     }
 }

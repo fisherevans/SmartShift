@@ -142,11 +142,10 @@ CREATE TABLE `AvailRepeatYearly` (
 
 DROP TABLE `Shift`;
 CREATE TABLE `Shift` (
-  `id` INT NOT NULL,
-  `dayOfWeek` INT NOT NULL,
-  `startTime` TIME NOT NULL,
-  `duration` INT NOT NULL,
-  PRIMARY KEY (`id`)
+	`id` INT NOT NULL,
+	`start` TIMESTAMP NOT NULL,
+	`duration` INT NOT NULL,
+	PRIMARY KEY (`id`)
 );
 
 DROP TABLE `SchedTemplateVersion`;
@@ -193,10 +192,18 @@ CREATE TABLE `EmpSchedule` (
 
 DROP TABLE `EmpScheduleShift`;
 CREATE TABLE `EmpScheduleShift` (
+<<<<<<< .mine
+	`empSchedID` INT NOT NULL,
+	`shiftID` INT NOT NULL,
+	`grpID` INT NOT NULL,
+	`roleID` INT NULL,
+	PRIMARY KEY (`empSchedID`, `shiftID`)
+=======
   `empSchedID` INT NOT NULL,
   `shiftID` INT NOT NULL,
   `grpRoleID` INT NOT NULL,
   PRIMARY KEY (`empSchedID`, `shiftID`)
+>>>>>>> .r1299
 );
 
 DROP TABLE `Content`;
@@ -412,6 +419,29 @@ ADD CONSTRAINT `empsched_emp`
   REFERENCES `Employee` (`id`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION
+;
+
+ALTER TABLE `EmpScheduleShift`
+ADD CONSTRAINT `empschedshift_empsched`
+	FOREIGN KEY (`empSchedID`)
+	REFERENCES `EmpSchedule` (`id`)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION,
+ADD CONSTRAINT `empschedshift_shift`
+	FOREIGN KEY (`shiftID`)
+	REFERENCES `Shift` (`id`)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION,
+ADD CONSTRAINT `empschedshift_grp`
+	FOREIGN KEY (`grpID`)
+	REFERENCES `Group` (`id`)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION,
+ADD CONSTRAINT `empschedshift_role`
+	FOREIGN KEY (`roleID`)
+	REFERENCES `Role` (`id`)
+	ON DELETE NO ACTION
+	ON UPDATE NO ACTION
 ;
 
 ALTER TABLE `RoleSchedule`

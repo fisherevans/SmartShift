@@ -103,7 +103,7 @@ public class AvailabilityInstance extends CachedObject {
             AvailabilityInstance instance = new AvailabilityInstance(cache, instID);
             cache.cache(uid, instance);
             instance.loadAllChildren();
-            instance.initialize();
+            instance.initialize(null);
             return instance;
         }
     }
