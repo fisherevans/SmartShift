@@ -47,7 +47,7 @@ public class AvailabilityRepeatMonthlyByDate extends AvailabilityRepeat {
      * @param model the db model to initialize based on
      */
     public void initialize(AvailabilityRepeatMonthlyByDateModel model) {
-        initialize();
+        initialize((Employee)null);
         _dayOfMonth = model.getDayOfMonth();
     }
     

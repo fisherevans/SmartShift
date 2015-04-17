@@ -359,7 +359,7 @@ public class Employee extends CachedObject {
             Employee employee = new Employee(cache, empID);
             cache.cache(uid, employee);
             employee.loadAllChildren();
-            employee.initialize();
+            employee.initialize(null);
             return employee;
         }
     }

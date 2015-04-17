@@ -408,7 +408,7 @@ public class Group extends CachedObject {
             Group group = new Group(cache, grpID);
             cache.cache(uid, group);
             group.loadAllChildren();
-            group.initialize();
+            group.initialize(null);
             return group;
         }
     }

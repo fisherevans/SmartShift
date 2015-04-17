@@ -51,7 +51,7 @@ public class AvailabilityRepeatYearly extends AvailabilityRepeat{
      * @param model the db model to initialize based on
      */
     public void initialize(AvailabilityRepeatYearlyModel model) {
-        initialize();
+        initialize((Employee) null);
         _month = model.getMonth();
         _dayOfMonth = model.getDayOfMonth();
     }

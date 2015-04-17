@@ -235,7 +235,7 @@ public class Role extends CachedObject {
             Role role = new Role(cache, roleID);
             cache.cache(uid, role);
             role.loadAllChildren();
-            role.initialize();
+            role.initialize(null);
             return role;
         }
     }
@@ -254,7 +254,7 @@ public class Role extends CachedObject {
                 UID uid = new UID(TYPE_IDENTIFIER, model.getId());
                 role = new Role(cache, model);
                 role.loadAllChildren();
-                role.initialize();
+                role.initialize(null);
                 cache.cache(uid, role);
             }
         }

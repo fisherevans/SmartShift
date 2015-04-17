@@ -47,7 +47,7 @@ public class AvailabilityRepeatWeekly extends AvailabilityRepeat {
      * @param model the db model to initialize based on
      */
     public void initialize(AvailabilityRepeatWeeklyModel model) {
-        initialize();
+        initialize((Employee) null);
         _dayOfWeek = model.getDayOfWeek();
     }
     

@@ -87,7 +87,7 @@ public class AvailabilityTemplate extends CachedObject {
             AvailabilityTemplate template = new AvailabilityTemplate(cache, tempID);
             cache.cache(uid, template);
             template.loadAllChildren();
-            template.initialize();
+            template.initialize(null);
             return template;
         }
     }

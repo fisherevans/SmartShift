@@ -19,6 +19,9 @@ public class ScheduleModel {
 
     @Column(name = "startDate")
     private Date startDate;
+    
+    @Column(name = "schedTempVersionID", nullable = false)
+    private Integer scheduleTemplateVersionID;
 
     /**
      * Initializes the object.
@@ -53,5 +56,19 @@ public class ScheduleModel {
      */
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
+    }
+    
+    /**
+     * @return the scheduleTemplateVersionID
+     */
+    public Integer getScheduleTemplateVersionID() {
+        return scheduleTemplateVersionID;
+    }
+    
+    /**
+     * @param scheduleTemplateVersionID the id to set
+     */
+    public void setScheduleTemplateVersionID(Integer scheduleTemplateVersionID) {
+        this.scheduleTemplateVersionID = scheduleTemplateVersionID;
     }
 }
