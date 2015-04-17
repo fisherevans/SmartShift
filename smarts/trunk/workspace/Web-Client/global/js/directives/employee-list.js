@@ -6,7 +6,8 @@ angular.module('smartsDirectives')
             scope: {
                 defaultGroupId: '=',
                 filterObject: '=',
-                employeeHover: '='
+                employeeHover: '=',
+                hideFilter: '='
             },
             link: function(scope, element, attrs) {
                 scope.employees = cacheService.getEmployees();

@@ -117,6 +117,7 @@ angular.module('smartsApp').controller('ScheduleController', ['$rootScope', 'cac
 
         scheduleCtrl.removeDayShiftEmployee = function(day, shift, employee) {
             delete day.shiftEmployees[shift.id][employee.id];
+            scheduleCtrl.employeeHover[employee.id] = false;
         };
 
         scheduleCtrl.employeeCount = function(employees) {

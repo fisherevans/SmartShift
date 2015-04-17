@@ -1,6 +1,6 @@
 <div class="employeeListWrapper appBlock">
-    <div class="employeeListButtons">
-        <div class="smartButton blueBG fadeColors employeeListButton" ng-click="openFilterModal()">
+    <div class="employeeListButtons" ng-class="{fullWidth:hideFilter}">
+        <div class="smartButton blueBG fadeColors employeeListButton" ng-click="openFilterModal()" ng-hide="hideFilter">
             <span class="icon-filter"></span>
             &nbsp;&nbsp;
             Filter

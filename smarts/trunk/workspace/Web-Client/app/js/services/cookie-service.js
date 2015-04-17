@@ -11,6 +11,7 @@ angular.module('smartsServices').factory('smartCookies', ['$rootScope', '$cookie
             "saveAPI" : function() {
                 console.log("Saving Session State info to Cookies");
                 // TODO update cookie on http calls to reflect new expiration - set remember username to diff
+                console.log($rootScope.api);
                 var expireDate = new Date(2100);
                 $cookieStore.put('username', $rootScope.api.username, {expires: expireDate});
                 $cookieStore.put('sessionID', $rootScope.api.sessionID, {expires: expireDate});
