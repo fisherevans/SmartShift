@@ -2,6 +2,7 @@ package smartshift.business.updates;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import smartshift.business.security.session.UserSessionManager;
@@ -64,10 +65,11 @@ public class UpdateManager {
     
     public void debugPrint() {
         logger.debug("Business: " + _businessID);
+        List<String> sessionsToRemove = new LinkedList<String>();
         for(String session:_updates.keySet()) {
             UserSession userSession = UserSessionManager.getSession(session, true);
             if(userSession == null) {
-                UserSessionManager.removeSession(session);
+                sessionsToRemove.add(session);
             } else {
                 logger.debug("  Session: " + session + " - " + userSession.username);
                 for(BaseUpdate update:_updates.get(session)) {
@@ -75,6 +77,8 @@ public class UpdateManager {
                 }
             }
         }
+        for(String sessionKey:sessionsToRemove)
+            deleteSessionUpdates(sessionKey);
     }
     
     public static void debugPrintAll() {
