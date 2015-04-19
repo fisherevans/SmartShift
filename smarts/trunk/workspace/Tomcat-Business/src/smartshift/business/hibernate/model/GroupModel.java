@@ -135,4 +135,17 @@ public class GroupModel {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
+    
+    /** Overridden method - see parent javadoc
+      * @see java.lang.Object#toString()
+      */
+    @Override
+    public String toString() {
+        String out = "";
+        out += "id:" + id + ", ";
+        out += "parentID:" + parentID + ", ";
+        out += "name:" + name + ", ";
+        out += "active:" + active;
+        return out;
+    }
 }

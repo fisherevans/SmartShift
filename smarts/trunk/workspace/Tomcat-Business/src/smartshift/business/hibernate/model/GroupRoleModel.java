@@ -102,4 +102,16 @@ public class GroupRoleModel {
     public void setRoleID(Integer roleID) {
         this.roleID = roleID;
     }
+    
+    /** Overridden method - see parent javadoc
+      * @see java.lang.Object#toString()
+      */
+    @Override
+    public String toString() {
+        String out = "";
+        out += "id:" + id + ", ";
+        out += "groupID:" + groupID + ", ";
+        out += "roleID:" + roleID;
+        return out;
+    }
 }

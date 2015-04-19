@@ -54,4 +54,15 @@ public class GroupEmployeeModel {
     public void setEmployeeID(Integer employeeID) {
         this.employeeID = employeeID;
     }
+    
+    /** Overridden method - see parent javadoc
+      * @see java.lang.Object#toString()
+      */
+    @Override
+    public String toString() {
+        String out = "";
+        out += "groupID:" + groupID + ", ";
+        out += "employeeID:" + employeeID;
+        return out;
+    }
 }
