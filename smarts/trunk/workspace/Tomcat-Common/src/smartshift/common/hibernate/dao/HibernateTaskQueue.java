@@ -83,9 +83,11 @@ public class HibernateTaskQueue {
             _incomingTasks = new LinkedList<>();
         }
         synchronized(SCHEDULE_LOCK) {
-            @SuppressWarnings("rawtypes")
-            BaseHibernateTask incommingTask, scheduledTask, compoundTask;
+            // @SuppressWarnings("rawtypes")
+            // BaseHibernateTask incommingTask, scheduledTask, compoundTask;
             for(EnqueuedTaskWrapper incommingWrapper:incommingTasks) {
+                _scheduledTasks.add(incommingWrapper);
+                /** TODO - cancel out stuff if possible
                 incommingTask = incommingWrapper.getTask();
                 boolean addTask = true, checkCompounds = true;
                 ListIterator<EnqueuedTaskWrapper> scheduledIttr = _scheduledTasks.listIterator(_scheduledTasks.size()); // get ittr starting at last position
@@ -114,7 +116,7 @@ public class HibernateTaskQueue {
                     }
                 }
                 if(addTask)
-                    _scheduledTasks.add(incommingWrapper);
+                    _scheduledTasks.add(incommingWrapper); */
             }
         }
     }
@@ -125,7 +127,7 @@ public class HibernateTaskQueue {
     public void processScheduledTasks() {
         logger.debug("Running scheduled tasks for: " + _daoContext.getContextID());
         synchronized(SCHEDULE_LOCK) {
-            Collections.sort(_scheduledTasks);
+            // Collections.sort(_scheduledTasks);
             Session session = null;
             Transaction transaction = null;
             try {
