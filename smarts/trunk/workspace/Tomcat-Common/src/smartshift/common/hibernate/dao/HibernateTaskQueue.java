@@ -132,7 +132,7 @@ public class HibernateTaskQueue {
                 session = _daoContext.getSession();
                 transaction = session.beginTransaction();
                 for(EnqueuedTaskWrapper task:_scheduledTasks) {
-                    logger.info("Executing: " + task.toString());
+                    logger.info("Executing: " + task.getTask().toString());
                     task.getTask().executeWithSession(session);
                 }
                 try {
