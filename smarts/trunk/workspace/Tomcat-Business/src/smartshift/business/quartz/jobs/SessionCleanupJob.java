@@ -25,7 +25,7 @@ public class SessionCleanupJob implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         try {
             if(UserSessionManager.clean() > 0)
-                logger.info("Cleaned up some sessions");
+                logger.debug("Cleaned up some sessions");
         } catch(Exception e) {
             logger.error("An unexpected error occured", e);
             return;

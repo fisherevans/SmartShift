@@ -9,6 +9,7 @@ import java.util.Map;
 import org.dom4j.IllegalAddException;
 import smartshift.business.updates.UpdateManager;
 import smartshift.common.security.session.UserSession;
+import smartshift.common.util.SessionUtil;
 import smartshift.common.util.collections.ROSet;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -26,7 +27,7 @@ public class UserSessionManager {
      * @param session the session to add
      */
     public static synchronized void addSession(UserSession session) {
-        logger.info("Adding session: " + getDebugStr(session) + "... for " + session.username + ":" + session.employeeID);
+        logger.info("Adding session: " + SessionUtil.getDebugStr(session.sessionID) + "... for " + session.username + ":" + session.employeeID);
         if(sessions.get(session.sessionID) != null) {
             logger.warn("Attempted to add an existing session!");
             throw new IllegalAddException("A session already exists with the sessionID: " + session.sessionID);
@@ -43,7 +44,7 @@ public class UserSessionManager {
     public static synchronized UserSession getSession(String sessionID, boolean requireActive) {
         UserSession session = sessions.get(sessionID);
         if(session != null && requireActive &&  !session.stillActive()) {
-            logger.info("Session is inactive: " + sessionID);
+            logger.info("Session is inactive: " + SessionUtil.getDebugStr(sessionID));
             removeSession(sessionID);
             return null;
         }
@@ -56,7 +57,7 @@ public class UserSessionManager {
      * @return the user session obect remove d- null if none were
      */
     public static synchronized UserSession removeSession(String sessionID) {
-        logger.info("Removing session: " + sessionID);
+        logger.info("Removing session: " + SessionUtil.getDebugStr(sessionID));
         UserSession session = sessions.remove(sessionID);
         if(session != null)
             UpdateManager.getManager(session.businessID).deleteSessionUpdates(sessionID);
@@ -105,7 +106,7 @@ public class UserSessionManager {
         for(String sessionID:toRemove)
             removeSession(sessionID);
         if(toRemove.size() > 0)
-            logger.info("Removed " + toRemove.size() + " sessions with clean()");
+            logger.debug("Removed " + toRemove.size() + " sessions with clean()");
         else
             logger.debug("Removed " + toRemove.size() + " sessions with clean()");
         return toRemove.size();
@@ -129,10 +130,6 @@ public class UserSessionManager {
         }
         logger.info("Removed " + sessionsRemoved + " sessions with invalidateAllSessions(): " + sessionList);
         return sessionsRemoved;
-    }
-    
-    private static String getDebugStr(UserSession session) {
-        return session.sessionID.substring(0, Math.min(session.sessionID.length(), 8));
     }
 
     /** get all sessions or a business

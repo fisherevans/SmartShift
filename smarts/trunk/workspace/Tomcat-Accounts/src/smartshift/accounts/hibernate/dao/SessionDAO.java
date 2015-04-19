@@ -4,9 +4,9 @@ import java.util.Date;
 import org.hibernate.criterion.Restrictions;
 import smartshift.accounts.hibernate.dao.tasks.GetActiveSessionsTask;
 import smartshift.accounts.hibernate.model.SessionModel;
-import smartshift.accounts.util.SessionUtil;
 import smartshift.common.hibernate.dao.tasks.criteria.UniqueByCriteriaTask;
 import smartshift.common.hibernate.dao.tasks.model.AddTask;
+import smartshift.common.util.SessionUtil;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -40,7 +40,11 @@ public class SessionDAO extends BaseAccountsDAO<SessionModel> {
      */
     public AddTask<SessionModel> createNewSession(Integer ubeID) {
         SessionModel model = new SessionModel();
-        model.setSessionKey(SessionUtil.generateSessionKey());
+        String key = "";
+        do {
+            key = SessionUtil.getRandomSessionKey(SessionUtil.keyLength);
+        } while(AccountsDAOContext.dao(SessionDAO.class).list(Restrictions.eq("sessionKey", key)).execute().size() > 0);
+        model.setSessionKey(key);
         model.setUserBusinessEmployeeID(ubeID);
         return new AddTask<SessionModel>(this, model);
     }

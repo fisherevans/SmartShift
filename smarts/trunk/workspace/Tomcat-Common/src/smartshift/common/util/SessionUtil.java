@@ -1,9 +1,8 @@
-package smartshift.accounts.util;
+package smartshift.common.util;
 
 import java.security.SecureRandom;
 import org.hibernate.criterion.Restrictions;
-import smartshift.accounts.hibernate.dao.AccountsDAOContext;
-import smartshift.accounts.hibernate.dao.SessionDAO;
+import smartshift.common.security.session.UserSession;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -16,26 +15,12 @@ public class SessionUtil {
     /**
      * The characters to use in session keys
      */
-    private static String keyAlphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
+    public static String keyAlphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890_";
     
     /**
      * Length of session keys
      */
-    private static Integer keyLength = 255;
-    
-    /**
-     * Generate a new session key that is unique
-     * @return a unique session key
-     */
-    public static String generateSessionKey() {
-        logger.debug("generateSessionKey() Enter");
-        String key = "";
-        do {
-            logger.debug("generateSessionKey() Generating key");
-            key = getRandomSessionKey(keyLength);
-        } while(AccountsDAOContext.dao(SessionDAO.class).list(Restrictions.eq("sessionKey", key)).execute().size() > 0);
-        return key;
-    }
+    public static Integer keyLength = 255;
     
     /**
      * get random string using the key alphabet
@@ -78,5 +63,28 @@ public class SessionUtil {
      */
     public static void setKeyLength(Integer keyLength) {
         SessionUtil.keyLength = keyLength;
+    }
+    
+    public static String getDebugStr(String session) {
+        int length = session.length();
+        if(length < 8)
+            return session.substring(0, length/2) + "...";
+        String start = session.substring(0, Math.min(length, 4));
+        String end = session.substring(length-4, length);
+        return start + "..." + end;
+    }
+    
+    /** TODO
+     * @param args
+     */
+    public static void main (String[] args) {
+        String a = "0123456789";
+        String b = "123456";
+        String c = "12";
+        String d= "";
+        System.out.println(getDebugStr(a));
+        System.out.println(getDebugStr(b));
+        System.out.println(getDebugStr(c));
+        System.out.println(getDebugStr(d));
     }
 }
