@@ -94,4 +94,17 @@ public abstract class BaseHibernateTask<T1, T2> {
     protected BaseDAO<T1> getDAO() {
         return _dao;
     }
+    
+    /** Overridden method - see parent javadoc
+      * @see java.lang.Object#toString()
+      */
+    @Override
+    public String toString() {
+        return _dao.getModelClass().getSimpleName() + "." + this.getClass().getSimpleName() + " -> " + getDebugString();
+    }
+    
+    /**
+     * @return a string used for debugging print outs
+     */
+    public abstract String getDebugString();
 }

@@ -1,4 +1,4 @@
-package smartshift.common.hibernate.dao.tasks;
+package smartshift.common.hibernate.dao.tasks.criteria;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -6,6 +6,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Projections;
 import smartshift.common.hibernate.dao.BaseDAO;
+import smartshift.common.hibernate.dao.tasks.BaseHibernateTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -15,19 +16,16 @@ import smartshift.common.util.log4j.SmartLogger;
  * 
  * task to get row count based on criterion
  */
-public class RowCountTask<T> extends BaseHibernateTask<T, Integer>{
-    private static final SmartLogger logger = new SmartLogger(RowCountTask.class);
-    
-    private final Criterion[] _criterions;
+public class CountByCriteriaTask<T> extends BaseCriteriaTask<T, Integer>{
+    private static final SmartLogger logger = new SmartLogger(CountByCriteriaTask.class);
     
     /**
      * Initializes the task.
      * @param dao the DAO the task belongs to
      * @param criterions the requirements
      */
-    public RowCountTask(BaseDAO<T> dao, Criterion ... criterions) {
-        super(dao);
-        _criterions = criterions;
+    public CountByCriteriaTask(BaseDAO<T> dao, Criterion ... criterions) {
+        super(dao, criterions);
     }
 
     /**
@@ -35,9 +33,9 @@ public class RowCountTask<T> extends BaseHibernateTask<T, Integer>{
      */
     @Override
     public Integer executeWithSession(Session session) throws HibernateException {
-        logger.debug("Enter. Criterions: " + _criterions.length);
+        logger.debug("Enter. Criterions: " + getCriterions().length);
         Criteria criteria = session.createCriteria(getDAO().getModelClass());
-        for(Criterion criterion : _criterions) {
+        for(Criterion criterion : getCriterions()) {
             logger.trace("Adding criteria: " + criteria.toString());
             criteria.add(criterion);
         }

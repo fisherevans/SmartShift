@@ -4,10 +4,10 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.BusinessDAOContext;
 import smartshift.business.hibernate.model.GroupRoleEmployeeModel;
-import smartshift.common.hibernate.dao.tasks.AddTask;
-import smartshift.common.hibernate.dao.tasks.DeleteByCriteriaTask;
-import smartshift.common.hibernate.dao.tasks.RowCountTask;
-import smartshift.common.hibernate.dao.tasks.UniqueByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.CountByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.DeleteByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.UniqueByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.model.AddTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -55,7 +55,7 @@ public class GroupRoleEmployeeDAO extends BaseBusinessDAO<GroupRoleEmployeeModel
      * @param employeeID the employee id
      * @return the task object
      */
-    public RowCountTask<GroupRoleEmployeeModel> linkCount(Integer groupRoleID, Integer employeeID) {
+    public CountByCriteriaTask<GroupRoleEmployeeModel> linkCount(Integer groupRoleID, Integer employeeID) {
         return rowCount(getGroupRoleEmployeeCriterion(groupRoleID, employeeID));
     }
     

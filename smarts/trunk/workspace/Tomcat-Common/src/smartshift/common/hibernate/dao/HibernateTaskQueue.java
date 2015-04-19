@@ -68,7 +68,7 @@ public class HibernateTaskQueue {
     public void processAllTasks() {
         processAddedTasks();
         processScheduledTasks();
-        logger.info("DB task queue has been flushed to the DB for: " + _daoContext.getContextID());
+        logger.debug("DB task queue has been flushed to the DB for: " + _daoContext.getContextID());
     }
     
     /**
@@ -76,7 +76,7 @@ public class HibernateTaskQueue {
      * adds remaining to schedule queue (to be run)
      */
     public void processAddedTasks() {
-        logger.info("Processing added tasks for: " + _daoContext.getContextID());
+        logger.debug("Processing added tasks for: " + _daoContext.getContextID());
         List<EnqueuedTaskWrapper> incommingTasks = null;
         synchronized(ADD_LOCK) {
             incommingTasks = _incomingTasks;
@@ -123,7 +123,7 @@ public class HibernateTaskQueue {
      * actually runs all tasks that are scheduled to run
      */
     public void processScheduledTasks() {
-        logger.info("Running scheduled tasks for: " + _daoContext.getContextID());
+        logger.debug("Running scheduled tasks for: " + _daoContext.getContextID());
         synchronized(SCHEDULE_LOCK) {
             Collections.sort(_scheduledTasks);
             Session session = null;
@@ -131,8 +131,10 @@ public class HibernateTaskQueue {
             try {
                 session = _daoContext.getSession();
                 transaction = session.beginTransaction();
-                for(EnqueuedTaskWrapper task:_scheduledTasks)
+                for(EnqueuedTaskWrapper task:_scheduledTasks) {
+                    logger.info("Executing: " + task.toString());
                     task.getTask().executeWithSession(session);
+                }
                 try {
                     transaction.commit();
                     session.flush();

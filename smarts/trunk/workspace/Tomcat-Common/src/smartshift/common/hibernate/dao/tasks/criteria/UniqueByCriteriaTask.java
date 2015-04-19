@@ -1,10 +1,11 @@
-package smartshift.common.hibernate.dao.tasks;
+package smartshift.common.hibernate.dao.tasks.criteria;
 
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import smartshift.common.hibernate.dao.BaseDAO;
+import smartshift.common.hibernate.dao.tasks.BaseHibernateTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -12,10 +13,8 @@ import smartshift.common.util.log4j.SmartLogger;
  * @author "D. Fisher Evans <contact@fisherevans.com>"
  * @param <T> The DB Model class this object should return
  */
-public class UniqueByCriteriaTask<T> extends BaseHibernateTask<T, T> {
+public class UniqueByCriteriaTask<T> extends BaseCriteriaTask<T, T> {
     private static final SmartLogger logger = new SmartLogger(UniqueByCriteriaTask.class);
-    
-    private final Criterion[] _criterions;
     
     /**
      * Initializes the task.
@@ -23,8 +22,7 @@ public class UniqueByCriteriaTask<T> extends BaseHibernateTask<T, T> {
      * @param criterions the requirements
      */
     public UniqueByCriteriaTask(BaseDAO<T> dao, Criterion ... criterions) {
-        super(dao);
-        _criterions = criterions;
+        super(dao, criterions);
     }
 
     /**
@@ -33,9 +31,9 @@ public class UniqueByCriteriaTask<T> extends BaseHibernateTask<T, T> {
      */
     @Override
     public T executeWithSession(Session session) throws HibernateException {
-        logger.debug("Enter. Criterions: " + _criterions.length);
+        logger.debug("Enter. Criterions: " + getCriterions().length);
         Criteria criteria = session.createCriteria(getDAO().getModelClass());
-        for(Criterion criterion : _criterions) {
+        for(Criterion criterion : getCriterions()) {
             logger.trace("Adding criteria: " + criteria.toString());
             criteria.add(criterion);
         }
@@ -44,5 +42,4 @@ public class UniqueByCriteriaTask<T> extends BaseHibernateTask<T, T> {
         logger.debug("Exit. Got: " + model);
         return model;
     }
-
 }

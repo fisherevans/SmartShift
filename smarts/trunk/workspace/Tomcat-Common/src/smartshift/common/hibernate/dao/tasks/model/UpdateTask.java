@@ -1,8 +1,10 @@
-package smartshift.common.hibernate.dao.tasks;
+package smartshift.common.hibernate.dao.tasks.model;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import smartshift.common.hibernate.dao.BaseDAO;
+import smartshift.common.hibernate.dao.BaseDAO.NamedParameter;
+import smartshift.common.hibernate.dao.tasks.BaseHibernateTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -10,10 +12,8 @@ import smartshift.common.util.log4j.SmartLogger;
  * @author "D. Fisher Evans <contact@fisherevans.com>"
  * @param <T> The DB Model class this object should return
  */
-public class UpdateTask<T> extends BaseHibernateTask<T, T> {
+public class UpdateTask<T> extends BaseModelTask<T, T> {
     private static final SmartLogger logger = new SmartLogger(UpdateTask.class);
-    
-    private T _model;
     
     /**
      * Initializes the task.
@@ -21,8 +21,7 @@ public class UpdateTask<T> extends BaseHibernateTask<T, T> {
      * @param model the existing made model to update
      */
     public UpdateTask(BaseDAO<T> dao, T model) {
-        super(dao);
-        _model = model;
+        super(dao, model);
     }
 
     /**
@@ -31,10 +30,9 @@ public class UpdateTask<T> extends BaseHibernateTask<T, T> {
      */
     @Override
     public T executeWithSession(Session session) throws HibernateException {
-        logger.debug("Enter. Model: " + _model);
-        session.update(_model);
-        logger.debug("Exit. Got: " + _model);
-        return _model;
+        logger.debug("Enter. Model: " + getModel());
+        session.update(getModel());
+        logger.debug("Exit. Got: " + getModel());
+        return getModel();
     }
-
 }

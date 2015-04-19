@@ -1,10 +1,12 @@
-package smartshift.common.hibernate.dao.tasks;
+package smartshift.common.hibernate.dao.tasks.namedquery;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
 import smartshift.common.hibernate.dao.BaseDAO;
 import smartshift.common.hibernate.dao.BaseDAO.NamedParameter;
+import smartshift.common.hibernate.dao.tasks.BaseHibernateTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -12,12 +14,8 @@ import smartshift.common.util.log4j.SmartLogger;
  * @author "D. Fisher Evans <contact@fisherevans.com>"
  * @param <T> The DB Model class this object should return as list
  */
-public class UniqueNamedQueryTask<T> extends BaseHibernateTask<T, T> {
+public class UniqueNamedQueryTask<T> extends BaseNamedQueryTask<T, T> {
     private static final SmartLogger logger = new SmartLogger(UniqueNamedQueryTask.class);
-
-    private final String _queryName;
-    
-    private final NamedParameter[] _parameters;
     
     /**
      * Initializes the task.
@@ -26,9 +24,7 @@ public class UniqueNamedQueryTask<T> extends BaseHibernateTask<T, T> {
      * @param parameters the parameters
      */
     public UniqueNamedQueryTask(BaseDAO<T> dao, String queryName, NamedParameter ... parameters) {
-        super(dao);
-        _queryName = queryName;
-        _parameters = parameters;
+        super(dao, queryName, parameters);
     }
 
     /**
@@ -37,12 +33,11 @@ public class UniqueNamedQueryTask<T> extends BaseHibernateTask<T, T> {
      */
     @Override
     public T executeWithSession(Session session) throws HibernateException {
-        logger.debug("Enter. Name: " + _queryName);
-        Query query = getDAO().prepareNamedQuery(session, _queryName, _parameters);
+        logger.debug("Enter. Name: " + getQueryName());
+        Query query = getDAO().prepareNamedQuery(session, getQueryName(), getParameters());
         @SuppressWarnings("unchecked")
         T model = (T) query.uniqueResult();
         logger.debug("Exit. Got: " + model);
         return model;
     }
-
 }

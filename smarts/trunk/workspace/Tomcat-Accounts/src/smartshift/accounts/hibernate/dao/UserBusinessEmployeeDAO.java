@@ -2,9 +2,9 @@ package smartshift.accounts.hibernate.dao;
 
 import org.hibernate.criterion.Restrictions;
 import smartshift.accounts.hibernate.model.UserBusinessEmployeeModel;
-import smartshift.common.hibernate.dao.tasks.AddTask;
-import smartshift.common.hibernate.dao.tasks.ListTask;
-import smartshift.common.hibernate.dao.tasks.UniqueByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.ListByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.UniqueByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.model.AddTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -42,7 +42,7 @@ public class UserBusinessEmployeeDAO extends BaseAccountsDAO<UserBusinessEmploye
      * @param businessID the business id
      * @return the task object
      */
-    public ListTask<UserBusinessEmployeeModel> listByUserBusiness(Integer userID, Integer businessID) {
+    public ListByCriteriaTask<UserBusinessEmployeeModel> listByUserBusiness(Integer userID, Integer businessID) {
         return list(
                 Restrictions.eq("userID", userID),
                 Restrictions.eq("businessID", businessID));
@@ -53,7 +53,7 @@ public class UserBusinessEmployeeDAO extends BaseAccountsDAO<UserBusinessEmploye
      * @param userID the user to lookup
      * @return the task object
      */
-    public ListTask<UserBusinessEmployeeModel> listByUser(Integer userID) {
+    public ListByCriteriaTask<UserBusinessEmployeeModel> listByUser(Integer userID) {
         return list(Restrictions.eq("userID", userID));
     }
     

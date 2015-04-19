@@ -1,4 +1,4 @@
-package smartshift.common.hibernate.dao.tasks;
+package smartshift.common.hibernate.dao.tasks.criteria;
 
 import java.util.List;
 import org.hibernate.Criteria;
@@ -6,6 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import smartshift.common.hibernate.dao.BaseDAO;
+import smartshift.common.hibernate.dao.tasks.BaseHibernateTask;
 import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.log4j.SmartLogger;
 
@@ -14,19 +15,16 @@ import smartshift.common.util.log4j.SmartLogger;
  * @author "D. Fisher Evans <contact@fisherevans.com>"
  * @param <T> The DB Model class this object should return as list
  */
-public class ListTask<T> extends BaseHibernateTask<T, ROCollection<T>> {
-    private static final SmartLogger logger = new SmartLogger(ListTask.class);
-    
-    private final Criterion[] _criterions;
+public class ListByCriteriaTask<T> extends BaseCriteriaTask<T, ROCollection<T>> {
+    private static final SmartLogger logger = new SmartLogger(ListByCriteriaTask.class);
     
     /**
      * Initializes the task.
      * @param dao the DAO the task belongs to
      * @param criterions the requirements
      */
-    public ListTask(BaseDAO<T> dao, Criterion ... criterions) {
-        super(dao);
-        _criterions = criterions;
+    public ListByCriteriaTask(BaseDAO<T> dao, Criterion ... criterions) {
+        super(dao, criterions);
     }
 
     /**
@@ -35,9 +33,9 @@ public class ListTask<T> extends BaseHibernateTask<T, ROCollection<T>> {
      */
     @Override
     public ROCollection<T> executeWithSession(Session session) throws HibernateException {
-        logger.debug("Enter. Criterions: " + _criterions.length);
+        logger.debug("Enter. Criterions: " + getCriterions().length);
         Criteria criteria = session.createCriteria(getDAO().getModelClass());
-        for(Criterion criterion : _criterions) {
+        for(Criterion criterion : getCriterions()) {
             logger.trace("Adding criteria: " + criteria.toString());
             criteria.add(criterion);
         }
@@ -46,5 +44,4 @@ public class ListTask<T> extends BaseHibernateTask<T, ROCollection<T>> {
         logger.debug("Exit. Got: " + (models == null ? null : models.size()));
         return ROCollection.wrap(models);
     }
-
 }

@@ -1,9 +1,10 @@
-package smartshift.common.hibernate.dao.tasks;
+package smartshift.common.hibernate.dao.tasks.id;
 
 import java.io.Serializable;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import smartshift.common.hibernate.dao.BaseDAO;
+import smartshift.common.hibernate.dao.tasks.BaseHibernateTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -11,10 +12,8 @@ import smartshift.common.util.log4j.SmartLogger;
  * @author "D. Fisher Evans <contact@fisherevans.com>"
  * @param <T> The DB Model class this object should return
  */
-public class DeleteByIDTask<T> extends BaseHibernateTask<T, T> {
+public class DeleteByIDTask<T> extends BaseIDTask<T, T> {
     private static final SmartLogger logger = new SmartLogger(DeleteByIDTask.class);
-    
-    private Serializable _id;
     
     /**
      * Initializes the task.
@@ -22,8 +21,7 @@ public class DeleteByIDTask<T> extends BaseHibernateTask<T, T> {
      * @param id the model id
      */
     public DeleteByIDTask(BaseDAO<T> dao, Serializable id) {
-        super(dao);
-        _id = id;
+        super(dao, id);
     }
 
     /**
@@ -33,14 +31,13 @@ public class DeleteByIDTask<T> extends BaseHibernateTask<T, T> {
      */
     @Override
     public T executeWithSession(Session session) throws HibernateException {
-        logger.debug("Enter. ID: " + _id);
+        logger.debug("Enter. ID: " + getID());
         @SuppressWarnings("unchecked")
-        T model = getDAO().uniqueByID(_id).executeWithSession(session);
+        T model = getDAO().uniqueByID(getID()).executeWithSession(session);
         logger.debug("Got Model: " + model);
         if(model != null)
             getDAO().delete(model).executeWithSession(session);
         logger.debug("Exit.");
         return null;
     }
-
 }

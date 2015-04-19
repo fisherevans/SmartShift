@@ -3,8 +3,8 @@ package smartshift.business.hibernate.dao;
 import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.BusinessDAOContext;
 import smartshift.business.hibernate.model.AvailabilityTemplateModel;
-import smartshift.common.hibernate.dao.tasks.AddTask;
-import smartshift.common.hibernate.dao.tasks.ListTask;
+import smartshift.common.hibernate.dao.tasks.criteria.ListByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.model.AddTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -26,7 +26,7 @@ public class AvailabilityTemplateDAO extends BaseBusinessDAO<AvailabilityTemplat
      * @param employeeID the owner
      * @return the task object
      */
-    public ListTask<AvailabilityTemplateModel> listByEmployee(Integer employeeID) {
+    public ListByCriteriaTask<AvailabilityTemplateModel> listByEmployee(Integer employeeID) {
         return list(Restrictions.eq("employeeID", employeeID));
     }
     

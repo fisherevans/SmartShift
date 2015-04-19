@@ -2,7 +2,7 @@ package smartshift.business.hibernate.dao;
 
 import smartshift.business.hibernate.BusinessDAOContext;
 import smartshift.business.hibernate.model.AvailabilityRepeatYearlyModel;
-import smartshift.common.hibernate.dao.tasks.AddTask;
+import smartshift.common.hibernate.dao.tasks.model.AddTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
