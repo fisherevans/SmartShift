@@ -192,18 +192,11 @@ CREATE TABLE `EmpSchedule` (
 
 DROP TABLE `EmpScheduleShift`;
 CREATE TABLE `EmpScheduleShift` (
-<<<<<<< .mine
 	`empSchedID` INT NOT NULL,
 	`shiftID` INT NOT NULL,
 	`grpID` INT NOT NULL,
 	`roleID` INT NULL,
 	PRIMARY KEY (`empSchedID`, `shiftID`)
-=======
-  `empSchedID` INT NOT NULL,
-  `shiftID` INT NOT NULL,
-  `grpRoleID` INT NOT NULL,
-  PRIMARY KEY (`empSchedID`, `shiftID`)
->>>>>>> .r1299
 );
 
 DROP TABLE `Content`;
