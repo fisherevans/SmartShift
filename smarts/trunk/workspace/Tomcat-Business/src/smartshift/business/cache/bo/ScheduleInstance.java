@@ -160,7 +160,7 @@ public class ScheduleInstance extends CachedObject{
                 EmployeeScheduleShiftModel model = new EmployeeScheduleShiftModel();
                 model.setEmployeeScheduleID(surrogate);
                 model.setShiftID(shift.getID());
-                getDAO(EmployeeScheduleShiftDAO.class).delete(model);
+                getDAO(EmployeeScheduleShiftDAO.class).delete(model).enqueue();
             }
         }
     }

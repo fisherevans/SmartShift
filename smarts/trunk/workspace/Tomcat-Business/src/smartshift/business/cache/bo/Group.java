@@ -199,7 +199,7 @@ public class Group extends CachedObject {
                 removeRoleEmployee(role, employee);
             synchronized(this) {
                 _employees.remove(role);
-                getDAO(GroupRoleDAO.class).deleteByID(groupRole.getID());
+                getDAO(GroupRoleDAO.class).deleteByID(groupRole.getID()).enqueue();
             }
         }
         
@@ -259,7 +259,7 @@ public class Group extends CachedObject {
             groupRole.addEmployee(employee);
             employee.groupRoleAdded(this, role);
             if(getDAO(GroupRoleEmployeeDAO.class).linkCount(groupRole.getID(), employee.getID()).execute() == 0)
-                getDAO(GroupRoleEmployeeDAO.class).link(groupRole.getID(), employee.getID());
+                getDAO(GroupRoleEmployeeDAO.class).link(groupRole.getID(), employee.getID()).enqueue();
         }
     }
     
@@ -368,7 +368,7 @@ public class Group extends CachedObject {
         try {
              // load child groups
              for(GroupModel gm : getDAO(GroupDAO.class).listChildGroups(getID()).execute())
-                 Group.load(getCache(), gm.getId()).setParent(this);
+                 Group.load(getCache(), gm.getId());
              
              for(GroupRoleModel gr:getDAO(GroupRoleDAO.class).listByGroup(getID()).execute()) {
                  Role role = Role.load(getCache(), gr.getRoleID());
