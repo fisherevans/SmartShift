@@ -151,10 +151,11 @@ public class Employee extends CachedObject {
      * @param group the group the employee was added to
      */
     protected synchronized void groupAdded(Group group) {
-        if(!_roles.containsKey(group))
+        if(!_roles.containsKey(group)) {
             _roles.put(group, new HashSet<Role>());
-        if(getDAO(GroupEmployeeDAO.class).linkCount(group.getID(), getID()).execute() < 1)
-            getDAO(GroupEmployeeDAO.class).link(group.getID(), getID()).enqueue();
+            if(getDAO(GroupEmployeeDAO.class).linkCount(group.getID(), getID()).execute() == 0)
+                getDAO(GroupEmployeeDAO.class).link(group.getID(), getID()).enqueue();
+        }
     }
     
     /**
@@ -169,9 +170,11 @@ public class Employee extends CachedObject {
      * @param group the group the employee was removed from
      */
     protected synchronized void groupRemoved(Group group) {
-        _roles.remove(group);
-        if(getDAO(GroupEmployeeDAO.class).linkCount(group.getID(), getID()).execute() == 1)
-            getDAO(GroupEmployeeDAO.class).unlink(group.getID(), getID()).enqueue();
+        if(!_roles.containsKey(group)) {
+            _roles.remove(group);
+            if(getDAO(GroupEmployeeDAO.class).linkCount(group.getID(), getID()).execute() > 0)
+                getDAO(GroupEmployeeDAO.class).unlink(group.getID(), getID()).enqueue();
+        }
     }
     
     // --- GROUP ROLES
