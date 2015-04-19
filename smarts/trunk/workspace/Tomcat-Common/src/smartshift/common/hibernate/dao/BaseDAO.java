@@ -6,17 +6,17 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import smartshift.common.hibernate.DAOContext;
 import smartshift.common.hibernate.DynamicNextID;
-import smartshift.common.hibernate.dao.tasks.AddTask;
-import smartshift.common.hibernate.dao.tasks.DeleteByCriteriaTask;
-import smartshift.common.hibernate.dao.tasks.DeleteByIDTask;
-import smartshift.common.hibernate.dao.tasks.DeleteTask;
-import smartshift.common.hibernate.dao.tasks.ListNamedQueryTask;
-import smartshift.common.hibernate.dao.tasks.ListTask;
-import smartshift.common.hibernate.dao.tasks.RowCountTask;
-import smartshift.common.hibernate.dao.tasks.UniqueByCriteriaTask;
-import smartshift.common.hibernate.dao.tasks.UniqueByIDTask;
-import smartshift.common.hibernate.dao.tasks.UniqueNamedQueryTask;
-import smartshift.common.hibernate.dao.tasks.UpdateTask;
+import smartshift.common.hibernate.dao.tasks.criteria.CountByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.DeleteByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.ListByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.UniqueByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.id.DeleteByIDTask;
+import smartshift.common.hibernate.dao.tasks.id.UniqueByIDTask;
+import smartshift.common.hibernate.dao.tasks.model.AddTask;
+import smartshift.common.hibernate.dao.tasks.model.DeleteTask;
+import smartshift.common.hibernate.dao.tasks.model.UpdateTask;
+import smartshift.common.hibernate.dao.tasks.namedquery.ListNamedQueryTask;
+import smartshift.common.hibernate.dao.tasks.namedquery.UniqueNamedQueryTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -43,16 +43,16 @@ public abstract class BaseDAO<T> {
      * @param criterions any requirements
      * @return the task object
      */
-    public ListTask<T> list(Criterion ... criterions) {
-        return new ListTask<T>(this, criterions);
+    public ListByCriteriaTask<T> list(Criterion ... criterions) {
+        return new ListByCriteriaTask<T>(this, criterions);
     }
     
     /** creates a list task that can be executed
      * @param criterions any requirements
      * @return the task object
      */
-    public RowCountTask<T> rowCount(Criterion ... criterions) {
-        return new RowCountTask<T>(this, criterions);
+    public CountByCriteriaTask<T> rowCount(Criterion ... criterions) {
+        return new CountByCriteriaTask<T>(this, criterions);
     }
     
     /** Gets a task that fetches a unique model by id

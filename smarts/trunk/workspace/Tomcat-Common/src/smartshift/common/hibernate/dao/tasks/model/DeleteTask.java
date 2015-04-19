@@ -1,8 +1,9 @@
-package smartshift.common.hibernate.dao.tasks;
+package smartshift.common.hibernate.dao.tasks.model;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import smartshift.common.hibernate.dao.BaseDAO;
+import smartshift.common.hibernate.dao.tasks.BaseHibernateTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -10,10 +11,8 @@ import smartshift.common.util.log4j.SmartLogger;
  * @author "D. Fisher Evans <contact@fisherevans.com>"
  * @param <T> The DB Model class this object should return
  */
-public class DeleteTask<T> extends BaseHibernateTask<T, T> {
+public class DeleteTask<T> extends BaseModelTask<T, T> {
     private static final SmartLogger logger = new SmartLogger(DeleteTask.class);
-    
-    private T _model;
     
     /**
      * Initializes the task.
@@ -21,8 +20,7 @@ public class DeleteTask<T> extends BaseHibernateTask<T, T> {
      * @param model the model to delete
      */
     public DeleteTask(BaseDAO<T> dao, T model) {
-        super(dao);
-        _model = model;
+        super(dao, model);
     }
 
     /**
@@ -32,10 +30,9 @@ public class DeleteTask<T> extends BaseHibernateTask<T, T> {
      */
     @Override
     public T executeWithSession(Session session) throws HibernateException {
-        logger.debug("Enter. Model: " + _model);
-        session.delete(_model);
+        logger.debug("Enter. Model: " + getModel());
+        session.delete(getModel());
         logger.debug("Exit.");
         return null;
     }
-
 }

@@ -3,8 +3,8 @@ package smartshift.accounts.hibernate.dao;
 import org.hibernate.criterion.Restrictions;
 import org.mindrot.jbcrypt.BCrypt;
 import smartshift.accounts.hibernate.model.UserModel;
-import smartshift.common.hibernate.dao.tasks.AddTask;
-import smartshift.common.hibernate.dao.tasks.UniqueByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.UniqueByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.model.AddTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**

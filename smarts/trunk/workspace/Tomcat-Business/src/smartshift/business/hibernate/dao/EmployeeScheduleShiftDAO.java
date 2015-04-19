@@ -4,10 +4,10 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.BusinessDAOContext;
 import smartshift.business.hibernate.model.EmployeeScheduleShiftModel;
-import smartshift.common.hibernate.dao.tasks.AddTask;
-import smartshift.common.hibernate.dao.tasks.DeleteByCriteriaTask;
-import smartshift.common.hibernate.dao.tasks.RowCountTask;
-import smartshift.common.hibernate.dao.tasks.UniqueByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.CountByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.DeleteByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.UniqueByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.model.AddTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -71,7 +71,7 @@ public class EmployeeScheduleShiftDAO extends BaseBusinessDAO<EmployeeScheduleSh
      * @param shiftID the shift id
      * @return the task
      */
-    public RowCountTask<EmployeeScheduleShiftModel> linkCount(Integer employeeScheduleID, Integer shiftID) {
+    public CountByCriteriaTask<EmployeeScheduleShiftModel> linkCount(Integer employeeScheduleID, Integer shiftID) {
         return rowCount(getEmployeeScheduleShiftCriterion(employeeScheduleID, shiftID));
     }
     

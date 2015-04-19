@@ -7,7 +7,7 @@ import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDateModel;
 import smartshift.business.hibernate.model.AvailabilityRepeatMonthlyByDayModel;
 import smartshift.business.hibernate.model.AvailabilityRepeatWeeklyModel;
 import smartshift.business.hibernate.model.AvailabilityRepeatYearlyModel;
-import smartshift.common.hibernate.dao.tasks.ListTask;
+import smartshift.common.hibernate.dao.tasks.criteria.ListByCriteriaTask;
 
 /**
  * @author "D. Fisher Evans <contact@fisherevans.com>"
@@ -41,7 +41,7 @@ public abstract class AvailabilityRepeatDAO<T extends AvailabilityRepeatInterfac
      * @param availabilityID the avail id
      * @return the task object
      */
-    public ListTask<T> listByAvailability(Integer availabilityID) {
+    public ListByCriteriaTask<T> listByAvailability(Integer availabilityID) {
         return list(Restrictions.eq("availabilityID", availabilityID));
     }
 }

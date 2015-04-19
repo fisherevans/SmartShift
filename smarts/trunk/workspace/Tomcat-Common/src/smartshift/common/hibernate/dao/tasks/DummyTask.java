@@ -32,4 +32,11 @@ public class DummyTask<T> extends BaseHibernateTask<T, T> {
         return null;
     }
 
+    /** Overridden method - see parent javadoc
+      * @see smartshift.common.hibernate.dao.tasks.BaseHibernateTask#getDebugString()
+      */
+    @Override
+    public String getDebugString() {
+        return "Dummy Task";
+    }
 }

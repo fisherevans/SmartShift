@@ -49,4 +49,12 @@ public class GetActiveSessionsTask extends BaseHibernateTask<SessionModel, ROCol
         logger.debug("Exit.");
         return ROCollection.wrap(models);
     }
+
+    /** Overridden method - see parent javadoc
+      * @see smartshift.common.hibernate.dao.tasks.BaseHibernateTask#getDebugString()
+      */
+    @Override
+    public String getDebugString() {
+        return "B: " + _businessID + " - D: " + _lastAccess.toString();
+    }
 }

@@ -5,7 +5,7 @@ import java.util.Map;
 import org.hibernate.criterion.Restrictions;
 import smartshift.accounts.hibernate.model.NextIDModel;
 import smartshift.common.hibernate.DBAction;
-import smartshift.common.hibernate.dao.tasks.UniqueByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.UniqueByCriteriaTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**

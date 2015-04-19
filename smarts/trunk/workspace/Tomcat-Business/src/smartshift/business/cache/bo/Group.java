@@ -15,7 +15,7 @@ import smartshift.business.hibernate.model.GroupModel;
 import smartshift.business.hibernate.model.GroupRoleCapabilityModel;
 import smartshift.business.hibernate.model.GroupRoleEmployeeModel;
 import smartshift.business.hibernate.model.GroupRoleModel;
-import smartshift.common.hibernate.dao.tasks.AddTask;
+import smartshift.common.hibernate.dao.tasks.model.AddTask;
 import smartshift.common.util.UID;
 import smartshift.common.util.collections.ROCollection;
 import smartshift.common.util.log4j.SmartLogger;

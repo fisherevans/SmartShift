@@ -4,8 +4,8 @@ import java.util.Date;
 import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.BusinessDAOContext;
 import smartshift.business.hibernate.model.AvailabilityInstanceModel;
-import smartshift.common.hibernate.dao.tasks.AddTask;
-import smartshift.common.hibernate.dao.tasks.ListTask;
+import smartshift.common.hibernate.dao.tasks.criteria.ListByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.model.AddTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -27,7 +27,7 @@ public class AvailabilityInstanceDAO extends BaseBusinessDAO<AvailabilityInstanc
      * @param employeeID the owner
      * @return the task object
      */
-    public ListTask<AvailabilityInstanceModel> listByEmployee(Integer employeeID) {
+    public ListByCriteriaTask<AvailabilityInstanceModel> listByEmployee(Integer employeeID) {
         return list(Restrictions.eq("employeeID", employeeID));
     }
     
@@ -35,7 +35,7 @@ public class AvailabilityInstanceDAO extends BaseBusinessDAO<AvailabilityInstanc
      * @param templateID the template id
      * @return the task object
      */
-    public ListTask<AvailabilityInstanceModel> listByTemplate(Integer templateID) {
+    public ListByCriteriaTask<AvailabilityInstanceModel> listByTemplate(Integer templateID) {
         return list(Restrictions.eq("templateID", templateID));
     }
     
@@ -44,7 +44,7 @@ public class AvailabilityInstanceDAO extends BaseBusinessDAO<AvailabilityInstanc
      * @param templateID the template id
      * @return the task object
      */
-    public ListTask<AvailabilityInstanceModel> listByEmployeeTemplate(Integer employeeID, Integer templateID) {
+    public ListByCriteriaTask<AvailabilityInstanceModel> listByEmployeeTemplate(Integer employeeID, Integer templateID) {
         return list(Restrictions.eq("templateID", templateID), Restrictions.eq("employeeID", employeeID));
     }
     

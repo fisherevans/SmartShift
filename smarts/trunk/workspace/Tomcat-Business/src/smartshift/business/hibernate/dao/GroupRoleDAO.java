@@ -4,12 +4,12 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import smartshift.business.hibernate.BusinessDAOContext;
 import smartshift.business.hibernate.model.GroupRoleModel;
-import smartshift.common.hibernate.dao.tasks.AddTask;
-import smartshift.common.hibernate.dao.tasks.DeleteByCriteriaTask;
-import smartshift.common.hibernate.dao.tasks.ListNamedQueryTask;
-import smartshift.common.hibernate.dao.tasks.ListTask;
-import smartshift.common.hibernate.dao.tasks.RowCountTask;
-import smartshift.common.hibernate.dao.tasks.UniqueByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.CountByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.DeleteByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.ListByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.criteria.UniqueByCriteriaTask;
+import smartshift.common.hibernate.dao.tasks.model.AddTask;
+import smartshift.common.hibernate.dao.tasks.namedquery.ListNamedQueryTask;
 import smartshift.common.util.log4j.SmartLogger;
 
 /**
@@ -35,7 +35,7 @@ public class GroupRoleDAO extends BaseBusinessDAO<GroupRoleModel> {
      * @param roleID the role id
      * @return the task object
      */
-    public RowCountTask<GroupRoleModel> linkCount(Integer groupID, Integer roleID) {
+    public CountByCriteriaTask<GroupRoleModel> linkCount(Integer groupID, Integer roleID) {
         return rowCount(getGroupRoleCriterion(groupID, roleID));
     }
     
@@ -74,7 +74,7 @@ public class GroupRoleDAO extends BaseBusinessDAO<GroupRoleModel> {
      * @param groupID the group id
      * @return the task
      */
-    public ListTask<GroupRoleModel> listByGroup(Integer groupID) {
+    public ListByCriteriaTask<GroupRoleModel> listByGroup(Integer groupID) {
         return list(Restrictions.eq("groupID", groupID));
     }
     
