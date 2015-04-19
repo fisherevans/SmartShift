@@ -258,8 +258,7 @@ public class Group extends CachedObject {
             GroupRole groupRole = _employees.get(role);
             groupRole.addEmployee(employee);
             employee.groupRoleAdded(this, role);
-            GroupRoleEmployeeModel model = getDAO(GroupRoleEmployeeDAO.class).uniqueByGroupRoleEmployee(groupRole.getID(), employee.getID()).execute();
-            if(model == null)
+            if(getDAO(GroupRoleEmployeeDAO.class).linkCount(groupRole.getID(), employee.getID()).execute() == 0)
                 getDAO(GroupRoleEmployeeDAO.class).link(groupRole.getID(), employee.getID());
         }
     }
