@@ -172,4 +172,18 @@ public class EmployeeModel {
 	public void setActive(Boolean active) {
 		this.active = active;
 	}
+    
+    /** Overridden method - see parent javadoc
+      * @see java.lang.Object#toString()
+      */
+    @Override
+    public String toString() {
+        String out = "";
+        out += "id:" + id + ", ";
+        out += "defaultGroupID:" + defaultGroupID + ", ";
+        out += "firstName:" + firstName + ", ";
+        out += "lastName:" + lastName + ", ";
+        out += "active:" + active;
+        return out;
+    }
 }

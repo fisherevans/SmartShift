@@ -109,4 +109,15 @@ public class RoleModel {
     public void setName(String name) {
         this.name = name;
     }
+    
+    /** Overridden method - see parent javadoc
+      * @see java.lang.Object#toString()
+      */
+    @Override
+    public String toString() {
+        String out = "";
+        out += "id:" + id + ", ";
+        out += "name:" + name;
+        return out;
+    }
 }
