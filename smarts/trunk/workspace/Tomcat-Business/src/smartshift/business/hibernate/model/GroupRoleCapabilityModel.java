@@ -36,4 +36,15 @@ public class GroupRoleCapabilityModel {
     public void setCapabilityID(Integer capabilityID) {
         this.capabilityID = capabilityID;
     }
+    
+    /** Overridden method - see parent javadoc
+      * @see java.lang.Object#toString()
+      */
+    @Override
+    public String toString() {
+        String out = "";
+        out += "groupRoleID:" + groupRoleID + ", ";
+        out += "capabilityID:" + capabilityID;
+        return out;
+    }
 }
