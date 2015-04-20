@@ -27,6 +27,8 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
         }
 
         function removeFromSet(set, item) {
+            if(angular.isUndefined(set))
+                return false;
             var index = set.indexOf(item);
             if(index > -1)set.splice(index, 1);
         }
@@ -212,12 +214,9 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
                 groupRoleEmployeeRemoved(group, role, employee);
             });
             removeFromSet(employee.groupIDs, group.id);
-            removeFromSet(employee.groupRoleIDs, group.id);
+            delete employee.groupRoleIDs[group.id];
         }
         function groupRoleEmployeeRemoved(group, role, employee) {
-            if(employee.groupRoleIDs[group.id].length == 0) {
-                groupEmployeeRemoved(group, employee);
-            }
             delete group.roleEmployees[role.id][employee.id];
             removeFromSet(role.groupEmployeeIDs[group.id], employee.id);
             removeFromSet(employee.groupRoleIDs[group.id], role.id);
@@ -351,6 +350,17 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
             businessService.removeGroupRoleEmployee(groupID, roleID, employeeID).then(
                 function(response) {
                     groupRoleEmployeeRemoved(groups[groupID], roles[roleID], employees[employeeID]);
+                    if(employees[employeeID].groupRoleIDs[groupID].length == 0)
+                        groupEmployeeRemoved(groups[groupID], employees[employeeID]);
+                    defer.resolve();
+                }, defer.reject);
+            return defer.promise;
+        };
+        publicCacheService.removeGroupEmployee = function(groupID, employeeID) {
+            var defer = $q.defer();
+            businessService.removeGroupEmployee(groupID, employeeID).then(
+                function(response) {
+                    groupEmployeeRemoved(groups[groupID], employees[employeeID]);
                     defer.resolve();
                 }, defer.reject);
             return defer.promise;

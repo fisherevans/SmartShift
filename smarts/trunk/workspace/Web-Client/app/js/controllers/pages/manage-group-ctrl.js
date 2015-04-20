@@ -66,7 +66,17 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
                 modalService.lastEmployeeRoleModal({
                     "employee": employee,
                     "group": mngGrpCtrl.group,
-                    "currentRole": role
+                    "currentRole": role,
+                    "delete": true
+                });
+            } else if(angular.isDefined(employee.groupRoleIDs[mngGrpCtrl.group.id])
+                && employee.groupRoleIDs[mngGrpCtrl.group.id].length == 1
+                && employee.groupRoleIDs[mngGrpCtrl.group.id].indexOf(role.id) >= 0) {
+                modalService.lastEmployeeRoleModal({
+                    "employee": employee,
+                    "group": mngGrpCtrl.group,
+                    "currentRole": role,
+                    "delete": false
                 });
             } else
                 doRemove();
@@ -80,7 +90,7 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
         mngGrpCtrl.roleIsValidDrop = function(role, dropData) {
             var employee = dropData.employee;
             if(employee.groupIDs.indexOf(mngGrpCtrl.group.id) < 0)
-                return "<b>" + employee.displayName + "</b> is not in the <b>" + mngGrpCtrl.group.name + "</b> group.";//"You may still drop the employee to add them to the group as well as the roll.";
+                return {valid:true, message:"<b>" + employee.displayName + "</b> is not in the <b>" + mngGrpCtrl.group.name + "</b> group. You may still drop the employee to add them to the group as well as the roll."};
             if(role.groupEmployeeIDs[mngGrpCtrl.group.id].indexOf(dropData.employee.id) >= 0)
                 return "<b>" + employee.displayName + "</b> already exists in the <b>" + role.name + "</b> role.";
             return true;

@@ -38,27 +38,25 @@ angular.module('smartsDirectives')
             },
             link: function(scope, element, attrs) {
                 var nestDepth = 0;
-                var validDrop = false;
+                var isValidData = {};
                 element[0].addEventListener('dragenter', function(event) {
                     if(nestDepth == 0) {
                         var response = scope.isValid({dropData:smartDragData});
-                        if(response === true) {
-                            validDrop = true;
+                        if(typeof response == 'string') isValidData = {valid:false, message:response};
+                        else if(typeof response == 'boolean') isValidData = {valid:response,message:null};
+                        else isValidData = response;
+                        if(isValidData.valid === true) {
                             event.preventDefault();
                             this.classList.add(scope.validClass);
-                        } else {
-                            validDrop = false;
+                        } else
                             this.classList.add(scope.invalidClass);
-                            if(typeof response == 'string')
-                                $rootScope.updateDragDropMessage(response);
-                        }
+                        if(isValidData.message != null) $rootScope.updateDragDropMessage(isValidData.message);
                     }
                     nestDepth++;
                     return false;
                 }, false);
                 element[0].addEventListener('dragover', function(event) {
-                    if(validDrop)
-                        event.preventDefault();
+                    if(isValidData.valid) event.preventDefault();
                     return false;
                 }, false);
                 element[0].addEventListener('dragleave', function(event) {
@@ -75,8 +73,8 @@ angular.module('smartsDirectives')
                     event.stopPropagation();
                     this.classList.remove(scope.validClass);
                     this.classList.remove(scope.invalidClass);
-                    if(scope.isValid({dropData:smartDragData}) === true)
-                        scope.onDrop({dropData:smartDragData});
+                    $rootScope.updateDragDropMessage();
+                    if(isValidData.valid) scope.onDrop({dropData:smartDragData});
                     return false;
                 }, false);
             }
