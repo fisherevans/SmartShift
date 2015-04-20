@@ -142,6 +142,11 @@
     color: #fff;
 }
 
+.smartCheckboxLabel.orangeCheckbox.checked {
+    background-color: #FF7F00;
+    color: #fff;
+}
+
 .smartCheckboxCheck {
     font-size: 14px;
     padding-right: 5px;

@@ -63,7 +63,7 @@
             </div>
             <div ng-view class="appContent angular-animate ngAnimateFade" ng-show="mainCtrl.showRoutePage"></div>
         </div>
-        <div class="dragDropMessage longFadeOpacityMargin" ng-class="{show:mainCtrl.dragDropMessageShow}">
+        <div class="dragDropMessage fadeOpacityMargin" ng-class="{show:mainCtrl.dragDropMessageShow}">
             <span class="message" ng-bind-html="mainCtrl.dragDropMessage | trustHTML"></span>
         </div>
         <div class="preventInput" ng-show="mainCtrl.api.waitingCalls > 0"></div>

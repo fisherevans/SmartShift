@@ -5,6 +5,7 @@ angular.module('smartsApp').controller('LastEmployeeRoleModalController', ['$sco
         $scope.form.employee = modalData.employee;
         $scope.form.currentRole = modalData.currentRole;
         $scope.form.deleteEmployee = true;
+        $scope.form.actuallyDelete = modalData.delete;
         $scope.form.selectedRoles = {};
         $scope.form.working = false;
 
@@ -39,8 +40,14 @@ angular.module('smartsApp').controller('LastEmployeeRoleModalController', ['$sco
                 return;
             }
             if($scope.form.deleteEmployee) {
-                $modalInstance.close();
-                modalService.deleteEmployeeModal($scope.form.employee);
+                if($scope.form.actuallyDelete) {
+                    $modalInstance.close();
+                    modalService.deleteEmployeeModal($scope.form.employee);
+                } else {
+                    cacheService.removeGroupEmployee( $scope.form.group.id, $scope.form.employee.id).then(function() {
+                        $modalInstance.close();
+                    });
+                }
             } else {
                 var groupID = $scope.form.group.id, empID = $scope.form.employee.id, cRoleID = $scope.form.currentRole.id;
                 var removeCurrent = true;

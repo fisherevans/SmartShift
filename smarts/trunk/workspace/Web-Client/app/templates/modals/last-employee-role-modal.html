@@ -1,18 +1,22 @@
 <form name="addEmployeeForm" ng-submit="submit()">
     <div class="modal-header">
-        <h3 class="modal-title">Delete or Keep this Employee</h3>
+        <h3 class="modal-title" ng-show="form.actuallyDelete">Delete Employee Forever?</h3>
+        <h3 class="modal-title" ng-hide="form.actuallyDelete">Remove Employee from Group?</h3>
     </div>
     <div class="modal-body" id="addEmployeeModal">
-        <div class="modalContent centered">
+        <div class="modalContent centered" ng-show="form.actuallyDelete">
             You are attempting to remove <b>{{form.employee.displayName}}</b> from the <b>{{form.currentRole.name}}</b> role in <b>{{form.group.name}}</b> which is their last role. Employees must always belong to at least one role, what would you like to do?
+        </div>
+        <div class="modalContent centered" ng-hide="form.actuallyDelete">
+            You are attempting to remove <b>{{form.employee.displayName}}</b> from the <b>{{form.currentRole.name}}</b> role in <b>{{form.group.name}}</b> which is their last role within this group. Employees must always belong to at least one role to remain in a group, what would you like to do?
         </div>
         <div class="smartInputLine">
             <div class="smartInputLabel">Actions<div class="sub"><span class="fakeLink">Add Role</span></div></div>
             <div class="smartInputWrapper">
-                <label class="smartCheckboxLabel noTextSelect fadeColors redCheckbox" ng-class="{'checked':form.deleteEmployee,inputError:error}" no-animate>
+                <label class="smartCheckboxLabel noTextSelect fadeColors" ng-class="{'checked':form.deleteEmployee,inputError:error, redCheckbox:form.actuallyDelete, orangeCheckbox:!form.actuallyDelete}" no-animate>
                     <input type="checkbox" class="smartCheckbox" value="{{group.id}}" name="group" ng-model="form.deleteEmployee" ng-change="onDeleteChange()">
                     <div class="smartCheckboxCheck" ng-class="{'icon-not-checked':!form.deleteEmployee, 'icon-checked':form.deleteEmployee }"></div>
-                    Delete {{form.employee.firstName}} forever
+                    {{form.actuallyDelete ? "Delete " + form.employee.firstName + " forever" : "Remove " + form.employee.firstName + " from " + form.group.name}}
                 </label>
                 <div class="checkboxSplitter">Or, add them to any of the following roles:</div>
                 <label class="smartCheckboxLabel noTextSelect fadeColors" ng-repeat="(roleID, role) in form.group.roles" ng-class="{'checked':form.selectedRoles[role.id],inputError:error}" no-animate>
