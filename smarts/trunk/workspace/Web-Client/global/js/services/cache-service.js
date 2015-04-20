@@ -327,6 +327,15 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
                 }, defer.reject);
             return defer.promise;
         };
+        publicCacheService.removeEmployee = function(employeeID) {
+            var defer = $q.defer();
+            businessService.deleteEmployee(employeeID).then(
+                function(response) {
+                    employeeRemoved(employeeID);
+                    defer.resolve();
+                }, defer.reject);
+            return defer.promise;
+        };
         publicCacheService.updateEmployee = function(employeeModel) {
             var defer = $q.defer();
             businessService.updateEmployee(employeeModel).then(

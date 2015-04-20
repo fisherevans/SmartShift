@@ -14,6 +14,12 @@ angular.module('smartsApp').controller('FilterEmployeesModalController', ['$scop
             $scope.groupsSelected[groupID] = true;
         });
 
+        $scope.setAll = function(value) {
+            angular.forEach($scope.groupsSelected, function(selected, arrID) {
+                $scope.groupsSelected[arrID] = value;
+            });
+        };
+
         $scope.submit = function() {
             var newGroups = [];
             angular.forEach($scope.groupsSelected, function(selected, groupID) {

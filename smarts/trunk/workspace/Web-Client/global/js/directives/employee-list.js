@@ -24,6 +24,18 @@ angular.module('smartsDirectives')
                 } else {
                     scope.filter = scope.filterObject;
                 }
+                scope.employeeGroupList = function (employee) {
+                    var first = true;
+                    var groups = "";
+                    angular.forEach(employee.groupIDs, function(groupID) {
+                        if(!first) groups += " | ";
+                        if(groupID == employee.homeGroupID)
+                            groups += "<span class='icon-home'></span> ";
+                        groups += scope.groups[groupID].name;
+                        first = false;
+                    });
+                    return groups;
+                };
                 scope.addEmployeeListener = function () {
                     modalService.addEmployeeModal({"homeGroupID": scope.defaultGroupId});
                 };

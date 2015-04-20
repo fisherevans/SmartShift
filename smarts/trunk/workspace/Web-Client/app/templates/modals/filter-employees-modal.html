@@ -20,6 +20,11 @@
                     {{group.name}}
                 </label>
             </div>
+            <div class="centeredText">
+                <span class="fakeLink fadeColors" ng-click="setAll(true)">Select All</span>
+                -
+                <span class="fakeLink fadeColors" ng-click="setAll(false)">Clear Selection</span>
+            </div>
         </div>
 
         <p class="smartModelError smartModelPara" ng-if="error">{{error}}</p>

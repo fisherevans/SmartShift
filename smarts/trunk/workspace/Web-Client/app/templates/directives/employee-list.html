@@ -27,7 +27,8 @@
                 <img ng-src="{{getEmployeeImage(employee.id)}}" class="employeeImage" />
                 <div class="employeeText">
                     <div class="employeeName">{{employee.firstName}} {{employee.lastName}}</div>
-                    <div class="employeeDefaultGroup">{{groups[employee.homeGroupID].name}}</div>
+                    <div class="employeeGroups" ng-bind-html="employeeGroupList(employee) | trustHTML"></div>
+                    <!--<div class="employeeDefaultGroup">{{groups[employee.homeGroupID].name}}</div>-->
                 </div>
                 <div class="employeeMenuButton fadeColorOpacity icon-pencil" ng-click="editEmployeeListener(employee)"></div>
             </div>

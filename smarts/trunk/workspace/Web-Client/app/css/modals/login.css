@@ -1,3 +1,10 @@
+.loginLogo {
+    width: 90%;
+    margin: 0 4.9%;
+    margin-top: 10px;
+    margin-bottom: -40px;
+}
+
 #loginModal p {
   width: 50%;
   margin: 10px auto;

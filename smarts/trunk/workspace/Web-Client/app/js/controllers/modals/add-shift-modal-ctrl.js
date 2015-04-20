@@ -1,5 +1,6 @@
 angular.module('smartsApp').controller('AddShiftModalController', ['$scope', '$modalInstance', 'utilService', 'cacheService', 'initial',
     function($scope, $modalInstance, utilService, cacheService, initial){
+        $scope.initial = initial;
         $scope.groupOptions = utilService.getGroupSelectOption(initial.groups, false);
         $scope.roleOptions = [];
         $scope.weeks = initial.weeks;
@@ -8,7 +9,7 @@ angular.module('smartsApp').controller('AddShiftModalController', ['$scope', '$m
         $scope.form = {
             "startTime": {
                 "hour":9,
-                "minute":0,
+                "minute":00,
                 "ampm":"AM"
             },
             "endTime": {
@@ -17,7 +18,7 @@ angular.module('smartsApp').controller('AddShiftModalController', ['$scope', '$m
                 "ampm":"PM"
             },
             "weekID":initial.weekID,
-            "groupID":initial.groupID == 0 ? 1 : initial.groupID,
+            "groupID":(initial.groupID == 0 ? 1 : initial.groupID),
             "roleID":initial.roleID,
             "days": {}
         };
@@ -25,9 +26,11 @@ angular.module('smartsApp').controller('AddShiftModalController', ['$scope', '$m
         var firstRun = true;
         $scope.onGroupChange = function() {
             $scope.roleOptions = utilService.getRoleSelectOptions(initial.groups[$scope.form.groupID].roles, true);
-            if(firstRun) $scope.form.roleID = 0;
+            if(!firstRun) $scope.form.roleID = 1;
             firstRun = false;
-        }();
+        };
+
+        $scope.onGroupChange();
 
         $scope.cancel = function() {
             $modalInstance.close(null);

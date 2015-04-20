@@ -6,7 +6,7 @@
         <div class="smartInputLine">
             <div class="smartInputLabel">First Name</div>
             <div class="smartInputWrapper">
-                <input ng-model="formData.firstName" type="text" ng-class="{inputError:error.name}"
+                <input ng-model="formData.firstName" type="text" ng-class="{inputError:error.name}" focus-on-render
                        alt="First Name" class="smartInputText fadeColors" placeholder="Required">
             </div>
         </div>
@@ -35,11 +35,13 @@
         <div class="smartInputLine">
             <div class="smartInputLabel">Roles<div class="sub"><span class="fakeLink" ng-click="debugMe()">Add Role</span></div></div>
             <div class="smartInputWrapper">
-                <label class="smartCheckboxLabel noTextSelect fadeColors" ng-repeat="(roleID, role) in groups[formData.homeGroupID].roles" ng-class="{inputError:error.role}" no-animate>
-                    <input type="checkbox" class="smartCheckbox" value="{{role.id}}" name="role" ng-model="selectedGroupRoles[formData.homeGroupID][role.id]" ng-change="onRoleChange()">
-                    <div class="smartCheckboxCheck icon-not-checked"></div>
-                    {{role.name}}
-                </label>
+                <div class="ngAnimateAccord" ng-repeat="(roleID, role) in groups[formData.homeGroupID].roles">
+                    <label class="smartCheckboxLabel noTextSelect fadeColors" ng-class="{inputError:error.role}" no-animate>
+                        <input type="checkbox" class="smartCheckbox" value="{{role.id}}" name="role" ng-model="selectedGroupRoles[formData.homeGroupID][role.id]" ng-change="onRoleChange()">
+                        <div class="smartCheckboxCheck icon-not-checked"></div>
+                        {{role.name}}
+                    </label>
+                </div>
             </div>
         </div>
         <p class="smartModelError smartModelPara" ng-if="error">{{error.message}}</p>

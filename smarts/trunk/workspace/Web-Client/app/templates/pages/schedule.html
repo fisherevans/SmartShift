@@ -25,13 +25,13 @@
 <div class="weekWrapper appBlock">
     <div class="week">
         <div ng-repeat="day in scheduleCtrl.days" class="dayWrapper" ng-class="{collapsed:day.hidden}">
-            <div class="dayName fadeColors" ng-class="{firstDay:$first, lastDay:$last}" ng-click="day.hidden = day.hidden ? false : true">
+            <div class="dayName fadeColors noTextSelect" ng-class="{firstDay:$first, lastDay:$last}" ng-click="day.hidden = day.hidden ? false : true">
                 {{day.name | limitTo: day.hidden ? 1 : 10}}
                 <div class="icon-eye dayToggle fadeColorOpacity"></div>
             </div>
             <div class="day antiAppBlock" ng-class="{firstDay:$first, lastDay:$last}">
-                <div ng-repeat="shift in day.shifts | orderObjectBy:'start'" ng-show="scheduleCtrl.showShift(shift)""
-                     class="shiftWrapper" ng-class="{notAssigned:shift.employee}">
+                <div ng-repeat="shift in day.shifts | orderObjectBy:'start'" ng-show="scheduleCtrl.showShift(shift)"
+                     class="shiftWrapper ngAnimateAccord" ng-class="{notAssigned:shift.employee}">
                     <div class="shift appBlock fadeColors"
                          ng-class="{hover:scheduleCtrl.shiftHover[shift.id]}" ng-mouseenter="scheduleCtrl.shiftHover[shift.id] = true" ng-mouseleave="scheduleCtrl.shiftHover[shift.id] = false"
                          smart-dropzone valid-class="validDropZone" invalid-class="invalidDropZone"

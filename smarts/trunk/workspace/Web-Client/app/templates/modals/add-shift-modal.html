@@ -16,20 +16,14 @@
         <div class="smartInputLine">
             <div class="smartInputLabel">Group</div>
             <div class="smartInputWrapper">
-                <select alt="Group" class="smartInputSelect" ng-model="form.groupID" ng-change="onGroupChange()">
-                    <option ng-repeat="group in groupOptions" value="{{group.id}}">
-                        {{group.name}}
-                    </option>
+                <select alt="Group" class="smartInputSelect" ng-model="form.groupID" ng-change="onGroupChange()" ng-options="group.id as group.name for group in groupOptions">
                 </select>
             </div>
         </div>
         <div class="smartInputLine">
             <div class="smartInputLabel">Role</div>
             <div class="smartInputWrapper">
-                <select alt="Group" class="smartInputSelect" ng-model="form.roleID">
-                    <option ng-repeat="role in roleOptions" value="{{role.id}}">
-                        {{role.name}}
-                    </option>
+                <select alt="Group" class="smartInputSelect" ng-model="form.roleID" ng-options="role.id as role.name for role in roleOptions">
                 </select>
             </div>
         </div>
