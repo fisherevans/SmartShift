@@ -17,8 +17,9 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                 // Dynamic
                 password: undefined,
                 waitingCalls: 0,
-                updatePolling: 20,
-                failOn401: false
+                updatePolling: 5,
+                failOn401: false,
+                loggedIn: false
             };
         };
 
@@ -30,6 +31,8 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
 
         $rootScope.logout = function(message) {
             smartCookies.clearAPI();
+            updateService.stop();
+            $rootScope.api.loggedIn = false;
             $rootScope.openLoginModal(message == null ? "Logged out" : message);
         }
 
@@ -62,12 +65,13 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
             $scope.business = business;
             accountsService.getSession(business.id, business.employeeID).then(
                 function (response) {
-                    // TODO - load from - result.data.server
                     $rootScope.api.businessServer = response.data.server;
                     $rootScope.api.sessionID = response.data.sessionKey;
                     $rootScope.api.failOn401 = true;
                     smartCookies.saveAPI();
                     mainController.showRoutePage = true;
+                    updateService.start();
+                    $rootScope.api.loggedIn = true;
                     $route.reload();
                 },
                 function (result) {
@@ -94,6 +98,7 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                         console.log("Cache loaded - continuing to load page");
                         $rootScope.api.failOn401 = true;
                         mainController.showRoutePage = true;
+                        $rootScope.api.loggedIn = true;
                         $route.reload();
                     },
                     function(result) { // Error
@@ -112,7 +117,7 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
 
         // Prevent page load if there is no session
         $rootScope.$on("$locationChangeStart", function(event, next, current){
-            if($rootScope.api.sessionID == null)
+            if($rootScope.api.loggedIn == false || $rootScope.api.sessionID == null)
                 event.preventDefault();
         });
 
@@ -126,6 +131,17 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
         mainController.navigationElements = {};
         $rootScope.updateNavigationTree = function(elements) {
             mainController.navigationElements = elements;
+        };
+
+        mainController.dragDropMessage = "";
+        mainController.dragDropMessageShow = false;
+        $rootScope.updateDragDropMessage = function(message) {
+            if(typeof message == 'string' && message.length > 0) {
+                mainController.dragDropMessage = message;
+                mainController.dragDropMessageShow = true;
+            } else
+                mainController.dragDropMessageShow = false;
+            $scope.$apply();
         };
     }
 ]);

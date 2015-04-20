@@ -1,9 +1,5 @@
 angular.module('smartsApp').controller('FilterEmployeesModalController', ['$scope', '$modalInstance', 'cacheService', 'filter',
     function($scope, $modalInstance, cacheService, filter){
-        console.log("In add employee modal");
-
-        console.log(filter);
-
         $scope.nameFilter = filter.name;
         $scope.groupsSelected = {};
 
@@ -17,12 +13,8 @@ angular.module('smartsApp').controller('FilterEmployeesModalController', ['$scop
         angular.forEach(filter.groups, function(groupID, arrID) {
             $scope.groupsSelected[groupID] = true;
         });
-        console.log("FILTER");
-        console.log($scope.groupsSelected);
 
         $scope.submit = function() {
-            console.log("SUBMIT");
-            console.log($scope.groupsSelected);
             var newGroups = [];
             angular.forEach($scope.groupsSelected, function(selected, groupID) {
                 if(selected)
@@ -31,12 +23,9 @@ angular.module('smartsApp').controller('FilterEmployeesModalController', ['$scop
             console.log(newGroups);
             if(newGroups.length == 0) {
                 $scope.error = "Please select at least on group.";
-                console.log("ERROR");
             } else {
-                console.log("GOOD");
                 filter.name = $scope.nameFilter;
                 filter.groups = newGroups;
-                console.log(filter);
                 $modalInstance.close(filter);
             }
         };

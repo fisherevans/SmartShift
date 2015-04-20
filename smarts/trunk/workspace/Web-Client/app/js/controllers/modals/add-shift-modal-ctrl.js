@@ -21,7 +21,6 @@ angular.module('smartsApp').controller('AddShiftModalController', ['$scope', '$m
             "roleID":initial.roleID,
             "days": {}
         };
-        console.log($scope.form);
 
         var firstRun = true;
         $scope.onGroupChange = function() {

@@ -63,6 +63,9 @@
             </div>
             <div ng-view class="appContent angular-animate ngAnimateFade" ng-show="mainCtrl.showRoutePage"></div>
         </div>
+        <div class="dragDropMessage longFadeOpacityMargin" ng-class="{show:mainCtrl.dragDropMessageShow}">
+            <span class="message" ng-bind-html="mainCtrl.dragDropMessage | trustHTML"></span>
+        </div>
         <div class="preventInput" ng-show="mainCtrl.api.waitingCalls > 0"></div>
 
         <script src="../global/js/lib/jquery/jquery-2.1.1.min.js"></script>
@@ -102,6 +105,8 @@
         <script src="../app/js/controllers/tab-ctrl.js"></script>
         <script src="../app/js/controllers/pages/calendar-ctrl.js"></script>
 
+        <script src="../app/js/controllers/modals/confirmation-modal-ctrl.js"></script>
+        <script src="../app/js/controllers/modals/last-employee-role-modal-ctrl.js"></script>
         <script src="../app/js/controllers/modals/login-modal-ctrl.js"></script>
         <script src="../app/js/controllers/modals/business-modal-ctrl.js"></script>
         <script src="../app/js/controllers/modals/add-employee-modal-ctrl.js"></script>

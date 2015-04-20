@@ -1,40 +1,49 @@
 angular.module('smartsServices').factory('updateService', ['$q', '$timeout', '$rootScope', 'httpService', 'cacheService',
     function($q, $timeout, $rootScope, httpService, cacheService) {
         var running = false;
+        var nextRunPromise = null;
 
-        function schedulePolling(seconds) {
+        var schedulePolling = function() {
             //if(running && $rootScope.api != null && $rootScope.api.updatePolling != null) {
             //    $timeout(pollForUpdates, $rootScope.api.updatePolling  * 1000);
             //}
             if(running) {
-                $timeout(pollForUpdates, 20  * 1000);
+                nextRunPromise = $timeout(pollForUpdates, $rootScope.api.updatePolling  * 1000);
             }
-        }
+        };
 
-        function pollForUpdates() {
+        var pollForUpdates = function() {
             if($rootScope.api && $rootScope.api.sessionID && cacheService.isLoaded()) {
                 console.log("Checking for updates...");
-                $rootScope.api.waitingCalls--;
+                $rootScope.api.waitingCalls--; // this call doesn't prevent input
                 httpService.businessRequest('GET', '/business/updates', {}).then(
                     function (response) {
                         cacheService.parseUpdates(response.data);
-                        $rootScope.api.updatePolling = 20;
-                        $rootScope.api.waitingCalls++;
+                        $rootScope.api.waitingCalls++; // this call doesn't prevent input
                         schedulePolling();
                     },
                     function (response) {
                         console.log("Failed to poll updates! " + response.data.message);
-                        $rootScope.api.updatePolling = 40;
-                        $rootScope.api.waitingCalls++;
+                        $rootScope.api.waitingCalls++; // this call doesn't prevent input
                         schedulePolling();
                     }
                 );
             }
-        }
+        };
 
-        if (!running) {
-            running = true;
-            schedulePolling(10)
-        }
+        return {
+            start: function() {
+                if(!running) {
+                    running = true;
+                    schedulePolling();
+                }
+            },
+            stop: function() {
+                if(running) {
+                    running = false;
+                    if(nextRunPromise != null) $timeout.cancel(nextRunPromise);
+                }
+            }
+        };
     }
 ]);
