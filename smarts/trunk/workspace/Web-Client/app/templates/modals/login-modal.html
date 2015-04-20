@@ -2,7 +2,7 @@
   <div class="modal-header">
     <h3 class="modal-title">SmartShift Login</h3>
   </div>
-  <div class="modal-body" id="loginModal" element-rendered="inputSelect()">
+  <div class="modal-body" id="loginModal">
     <p>Please log in with your user credentials.</p>
     <div class="loginInputWrapper smartInputWrapper">
       <input ng-model="form.username" type="text" ng-class="{inputError:form.invalidInput}"
@@ -27,6 +27,6 @@
     <div class="loginRegister">
       Not registered? <a href="#/register">Click here</a> to register your business.
     </div>
-    <button type="submit" class="smartButton fadeColors blueBG" id="loginModalSubmit" ng-disabled="form.working">Sign in</button>
+    <button type="submit" class="smartButton fadeColors blueBG" id="loginModalSubmit" ng-disabled="form.working" element-rendered="inputSelect">Sign in</button>
   </div>
 </form>

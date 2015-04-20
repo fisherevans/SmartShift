@@ -39,12 +39,16 @@
   float: left;
 }
 
+.selectBusinessModal {
+    text-align: center;
+}
+
 .selectBusinessModal p {
-  width: 80%;
-  text-align: center;
-  margin: 10px auto;
-  padding-bottom: 5px;
-  display: block;
+    width: 80%;
+    text-align: center;
+    margin: 10px auto;
+    padding-bottom: 5px;
+    display: block;
 }
 
 .loginBusinessBlock {
@@ -52,11 +56,10 @@
   margin: 15px auto;
   background-color: #f8f8f8;
   cursor: pointer;
-  border-top: 1px solid #ccc;
-  border-bottom: 1px solid #ccc;
+  border: 1px solid #ccc;
 }
 
-.loginBusinessBlock:hover {
+.loginBusinessBlock:hover, .loginBusinessBlock:focus {
   background-color: #f0f0f0;
   border-color:#0080ff;
 }

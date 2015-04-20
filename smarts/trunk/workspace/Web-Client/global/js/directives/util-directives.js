@@ -14,14 +14,27 @@ angular.module('smartsDirectives')
             $animate.enabled(false, element);
         };
     })
-    .directive('elementRendered', function() {
+    .directive('elementRendered', function($timeout) {
         return {
             restrict: 'A',
+            scope: { elementRendered : '&' },
             link: function(scope, element, attrs) {
-                element.on('load', function(event) {
-                    scope.$apply(attrs.elementRendered);
-                });
+                $timeout(function () {
+                    scope.$apply(scope.elementRendered());
+                }, 50);
             }
         };
     })
+    .directive('focusOnRender', function ($timeout) {
+        return {
+            scope: { focusOnRender : '=' },
+            link: function (scope, element, attrs, model) {
+                if(angular.isUndefined(scope.focusOnRender) || scope.focusOnRender == true) {
+                    $timeout(function () {
+                        element[0].focus();
+                    }, 50);
+                }
+            }
+        };
+    });
 ;

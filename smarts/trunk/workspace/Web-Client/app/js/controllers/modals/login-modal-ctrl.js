@@ -12,7 +12,6 @@ angular.module('smartsApp').controller('LoginModalController', ['$scope', '$root
         };
 
         $scope.inputSelect = function() {
-            console.log("Focusing Login modal input - User input length - " + $scope.form.username + " - " + $scope.form.username.trim().length);
             if($scope.form.username.trim().length == 0)
                 $("#loginModalUsername").select();
             else
