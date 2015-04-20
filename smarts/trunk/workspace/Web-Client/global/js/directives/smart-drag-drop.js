@@ -27,7 +27,7 @@ angular.module('smartsDirectives')
             }
         }
     })
-    .directive('smartDropzone', function () {
+    .directive('smartDropzone', ['$rootScope', function ($rootScope) {
         return {
             restrict: 'A',
             scope: {
@@ -37,40 +37,49 @@ angular.module('smartsDirectives')
                 invalidClass : '@invalidClass'
             },
             link: function(scope, element, attrs) {
-                element[0].addEventListener('dragover', function(event) {
-                    if(scope.isValid({dropData:smartDragData})) {
-                        if (event.preventDefault)
+                var nestDepth = 0;
+                var validDrop = false;
+                element[0].addEventListener('dragenter', function(event) {
+                    if(nestDepth == 0) {
+                        var response = scope.isValid({dropData:smartDragData});
+                        if(response === true) {
+                            validDrop = true;
                             event.preventDefault();
-                        this.classList.add(scope.validClass);
-                    } else
-                        this.classList.add(scope.invalidClass);
+                            this.classList.add(scope.validClass);
+                        } else {
+                            validDrop = false;
+                            this.classList.add(scope.invalidClass);
+                            if(typeof response == 'string')
+                                $rootScope.updateDragDropMessage(response);
+                        }
+                    }
+                    nestDepth++;
                     return false;
                 }, false);
-                element[0].addEventListener('dragenter', function(event) {
-                    if(scope.isValid({dropData:smartDragData})) {
-                        if (event.preventDefault)
-                            event.preventDefault();
-                        this.classList.add(scope.validClass);
-                    } else
-                        this.classList.add(scope.invalidClass);
+                element[0].addEventListener('dragover', function(event) {
+                    if(validDrop)
+                        event.preventDefault();
                     return false;
                 }, false);
                 element[0].addEventListener('dragleave', function(event) {
-                    this.classList.remove(scope.validClass);
-                    this.classList.remove(scope.invalidClass);
+                    nestDepth--;
+                    if(nestDepth == 0) {
+                        this.classList.remove(scope.validClass);
+                        this.classList.remove(scope.invalidClass);
+                        $rootScope.updateDragDropMessage();
+                    }
                     return false;
                 }, false);
                 element[0].addEventListener('drop', function(event) {
-                    if (event.stopPropagation)
-                        event.stopPropagation();
-                    if(scope.isValid({dropData:smartDragData})) {
-                        scope.onDrop({dropData:smartDragData});
-                    }
+                    nestDepth = 0;
+                    event.stopPropagation();
                     this.classList.remove(scope.validClass);
                     this.classList.remove(scope.invalidClass);
+                    if(scope.isValid({dropData:smartDragData}) === true)
+                        scope.onDrop({dropData:smartDragData});
                     return false;
                 }, false);
             }
         }
-    })
+    }])
 ;

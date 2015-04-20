@@ -10,7 +10,6 @@ angular.module('smartsServices').factory('httpService', ['$http', '$q', '$rootSc
         httpService.httpRequest = function(server, username, password, method, path, data) {
             var request = {
                 method: method,
-                //url: 'http://localhost:8080' + path,
                 url: httpService.version + "://" + server + path,
                 headers: {
                     'Authorization' : 'Basic ' + window.btoa(username + ':' + password),
@@ -18,20 +17,18 @@ angular.module('smartsServices').factory('httpService', ['$http', '$q', '$rootSc
                 },
                 data: data
             };
-            $rootScope.api.waitingCalls++;
+            //request.url = 'http://localhost:8080' + path; // for debugging
+            $rootScope.api.waitingCalls++; // update-service also changes this to prevent input prevention
             var callID = httpService.httpCallID++;
-            console.log("HTTP Call " + callID);
-            console.log(request);
             var defer = $q.defer();
             $http(request).then(
                 function(response, status, headers, config) {
-                    console.log("HTTP Response (Success) " + callID);
-                    console.log(response);
                     defer.resolve(response.data);
                     $rootScope.api.waitingCalls--;
                 },
                 function(response, status, headers, config) {
-                    console.log("HTTP Response (Error) " + callID);
+                    console.log("HTTP Response Error - ID:" + callID);
+                    console.log(request);
                     console.log(response);
                     if(response.status == 401) $rootScope.handleHTTP401();
                     defer.reject(response);

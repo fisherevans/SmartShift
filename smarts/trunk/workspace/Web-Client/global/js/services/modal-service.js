@@ -90,6 +90,30 @@ angular.module('smartsServices').factory('modalService', ['$modal', '$rootScope'
                         "initial": function() { return initial; }
                     }
                 }).result;
+            },
+            confirmationModal: function(windowData) {
+                return $modal.open({
+                    templateUrl: '../app/templates/modals/confirmation-modal.html',
+                    controller: 'ConfirmationModalController',
+                    backdrop: 'static',
+                    backdropClass: 'dim',
+                    keyboard: false,
+                    resolve: {
+                        "windowData": function() { return windowData; }
+                    }
+                }).result;
+            },
+            lastEmployeeRoleModal: function(modalData) {
+                return $modal.open({
+                    templateUrl: '../app/templates/modals/last-employee-role-modal.html',
+                    controller: 'LastEmployeeRoleModalController',
+                    backdrop: 'static',
+                    backdropClass: 'dim',
+                    keyboard: false,
+                    resolve: {
+                        "modalData": function() { return modalData; }
+                    }
+                }).result;
             }
         }
     }

@@ -6,6 +6,10 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
         mngGrpCtrl.groups = cacheService.getGroups();
         mngGrpCtrl.employees = cacheService.getEmployees();
         mngGrpCtrl.employeeHover = {};
+        mngGrpCtrl.employeeListFilter = {
+            'name':'',
+            'groups':[mngGrpCtrl.group.id]
+        };
 
         mngGrpCtrl.addRoleSubmit = function() {
             $("#roleListAddRoleButton").prop("disabled", true);
@@ -46,12 +50,26 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
         mngGrpCtrl.openFilterEmployeeListModal = function() { alert("Not implemented"); };
 
         mngGrpCtrl.removeRoleEmployee = function(role, employee) {
-            cacheService.removeGroupRoleEmployee(mngGrpCtrl.group.id, role.id, employee.id).then(
-                function(response) {
-                    mngGrpCtrl.employeeHover[employee.id] = false;
-                },
-                function(response) { alert(response.data.message); }
-            );
+            var doRemove = function() {
+                cacheService.removeGroupRoleEmployee(mngGrpCtrl.group.id, role.id, employee.id).then(
+                    function(response) {
+                        mngGrpCtrl.employeeHover[employee.id] = false;
+                    },
+                    function(response) { alert(response.data.message); }
+                );
+            };
+            if(employee.groupIDs.length == 1
+                && employee.groupIDs.indexOf(mngGrpCtrl.group.id) >= 0
+                && angular.isDefined(employee.groupRoleIDs[mngGrpCtrl.group.id])
+                && employee.groupRoleIDs[mngGrpCtrl.group.id].length == 1
+                && employee.groupRoleIDs[mngGrpCtrl.group.id].indexOf(role.id) >= 0) {
+                modalService.lastEmployeeRoleModal({
+                    "employee": employee,
+                    "group": mngGrpCtrl.group,
+                    "currentRole": role
+                });
+            } else
+                doRemove();
         };
 
         mngGrpCtrl.isEmpty = function(obj) {
@@ -60,10 +78,31 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
         };
 
         mngGrpCtrl.roleIsValidDrop = function(role, dropData) {
-            return role.groupEmployeeIDs[mngGrpCtrl.group.id].indexOf(dropData.employee.id) < 0;
+            var employee = dropData.employee;
+            if(employee.groupIDs.indexOf(mngGrpCtrl.group.id) < 0)
+                return "<b>" + employee.displayName + "</b> is not in the <b>" + mngGrpCtrl.group.name + "</b> group.";//"You may still drop the employee to add them to the group as well as the roll.";
+            if(role.groupEmployeeIDs[mngGrpCtrl.group.id].indexOf(dropData.employee.id) >= 0)
+                return "<b>" + employee.displayName + "</b> already exists in the <b>" + role.name + "</b> role.";
+            return true;
         };
 
         mngGrpCtrl.roleOnDrop = function(role, dropData) {
+            if(dropData.employee.groupIDs.indexOf(mngGrpCtrl.group.id) >= 0) {
+                mngGrpCtrl.addGroupRoleEmployee(role, dropData);
+            } else {
+                modalService.confirmationModal({
+                    "title":"Add " + dropData.employee.displayName + " to " + mngGrpCtrl.group.name + "?",
+                    "content": "<b>" + dropData.employee.displayName + "</b> is not in the <b>" + mngGrpCtrl.group.name + "</b> group.<br>Would you like to add them to the group?"
+                }).then(
+                    function(confirmed) {
+                        if(confirmed)
+                            mngGrpCtrl.addGroupRoleEmployee(role, dropData);
+                    }
+                );
+            }
+        };
+
+        mngGrpCtrl.addGroupRoleEmployee = function(role, dropData) {
             cacheService.addGroupRoleEmployee(mngGrpCtrl.group.id, role.id, dropData.employee.id).then(
                 function() {
                     if(dropData.from == 'role')
@@ -71,7 +110,7 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
                 },
                 function(response) { alert(response.data.message); }
             );
-        };
+        }
 
         mngGrpCtrl.getEmployeeImage = $rootScope.getEmployeeImage;
 

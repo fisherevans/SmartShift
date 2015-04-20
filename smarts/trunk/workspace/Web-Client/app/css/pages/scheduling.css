@@ -343,6 +343,19 @@
     opacity: 0.5;
 }
 
+.assignedEmployeeCount {
+    text-align: right;
+    font-size: 10px;
+    line-height: 11px;
+    padding: 1px 2px;
+}
+
+.assignedEmployeeCount .icon-user {
+    color:#666;
+    font-size: 10px;
+    line-height: 11px;
+}
+
 .collapsed .shift * {
     cursor: auto;
 }

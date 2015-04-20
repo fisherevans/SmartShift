@@ -137,6 +137,11 @@
     color: #fff;
 }
 
+.smartCheckboxLabel.redCheckbox.checked {
+    background-color: #d90000;
+    color: #fff;
+}
+
 .smartCheckboxCheck {
     font-size: 14px;
     padding-right: 5px;
@@ -144,6 +149,11 @@
 
 .smartCheckboxLabel.checked .smartCheckboxCheck {
     color: #fff;
+}
+
+.checkboxSplitter {
+    padding: 6px 0px;
+    font-size: 14px;
 }
 
 .smartInputLine {
@@ -287,4 +297,18 @@
     width: 0px;
     margin-right: 0px;
     border: 0;
+}
+
+.modalHeaderLink {
+    float:right;
+    padding: 4px;
+    margin-top: 3px;
+}
+
+.modalContent {
+    padding: 20px 5%;
+}
+
+.modalContent.centered {
+    text-align: center;
 }

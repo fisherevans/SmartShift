@@ -83,7 +83,6 @@ angular.module('smartsApp').controller('ScheduleController', ['$rootScope', 'cac
             }).then(function(result){
                 if(result == null)
                     return;
-                console.log(result);
                 var shift = {
                     "id":nextShiftId++,
                     "start":timeToDate(result.startTime),
@@ -105,6 +104,11 @@ angular.module('smartsApp').controller('ScheduleController', ['$rootScope', 'cac
         };
 
         scheduleCtrl.isValidEmployeeDrop = function(day, shift, dropData) {
+            var employee = dropData.employee;
+            if(employee.groupIDs.indexOf(shift.group.id) < 0)
+                return "<b>" + employee.displayName + "</b> is not in the group <b>" + shift.group.name + "</b>.";
+            if(angular.isDefined(shift.role) && employee.groupRoleIDs[shift.group.id].indexOf(shift.role.id) < 0)
+                return "<b>" + employee.displayName + "</b> is not in the role <b>" + shift.role.name + "</b>.";
             return true;
         };
 

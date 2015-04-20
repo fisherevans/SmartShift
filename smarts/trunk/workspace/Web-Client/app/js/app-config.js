@@ -27,6 +27,7 @@ angular.module('smartsApp').filter("toArray", function(){
         return result;
     };
 });
+
 angular.module('smartsApp').filter('isEmpty', function () {
     var bar;
     return function (obj) {
@@ -37,9 +38,13 @@ angular.module('smartsApp').filter('isEmpty', function () {
         }
         return true;
     };
-})
+});
 
-
+angular.module('smartsApp').filter('trustHTML', function ($sce) {
+    return function(val) {
+        return $sce.trustAsHtml(val);
+    }
+});
 
 angular.module('smartsApp').config(function($routeProvider){
     $routeProvider

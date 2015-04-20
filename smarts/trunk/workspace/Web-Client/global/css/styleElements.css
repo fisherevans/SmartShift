@@ -77,10 +77,18 @@
 
 .fadeOpacity {
     -webkit-transition: opacity 0.25s ease;
-       -moz-transition: opacity 0.25s ease;
-        -ms-transition: opacity 0.25s ease;
-         -o-transition: opacity 0.25s ease;
-            transition: opacity 0.25s ease;
+    -moz-transition: opacity 0.25s ease;
+    -ms-transition: opacity 0.25s ease;
+    -o-transition: opacity 0.25s ease;
+    transition: opacity 0.25s ease;
+}
+
+.longFadeOpacityMargin {
+    -webkit-transition: opacity 0.5s ease-in-out, margin 0.5s ease-in-out;
+    -moz-transition: opacity 0.5s ease-in-out, margin 0.5s ease-in-out;
+    -ms-transition: opacity 0.5s ease-in-out, margin 0.5s ease-in-out;
+    -o-transition: opacity 0.5s ease-in-out, margin 0.5s ease-in-out;
+    transition: opacity 0.5s ease-in-out, margin 0.5s ease-in-out;
 }
 
 .fadeMaxs {
@@ -159,10 +167,4 @@
 .deleteLink:hover {
     color: #fff;
     background-color: #ff0000;
-}
-
-.modalHeaderLink {
-    float:right;
-    padding: 4px;
-    margin-top: 3px;
 }

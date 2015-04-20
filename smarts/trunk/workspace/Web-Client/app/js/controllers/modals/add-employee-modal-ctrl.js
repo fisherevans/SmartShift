@@ -10,6 +10,13 @@ angular.module('smartsApp').controller('AddEmployeeModalController', ['$scope', 
         $scope.selectedGroupRoles = {};
 
         $scope.groupOptions = utilService.getGroupSelectOption($scope.groups, false);
+        angular.forEach($scope.groups, function(group, groupID) {
+            $scope.selectedGroupRoles[groupID] = {};
+        });
+
+        $scope.onRoleChange = function() {
+            $scope.error = null;
+        };
 
         $scope.closeAddEmployeeModal = function() { $modalInstance.close(null); };
 
