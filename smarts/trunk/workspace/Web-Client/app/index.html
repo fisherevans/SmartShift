@@ -51,7 +51,7 @@
                     <div class="icon-arrow-right appNavigationArrow"></div>
                 </div>
                 <div id="dynamicAppNavigationTree">
-                    <div ng-repeat="element in mainCtrl.navigationElements" no-animate
+                    <div ng-repeat="element in mainCtrl.navigationElements" no-animate class="disable-animations"
                             ng-class="{'subArrow icon-arrow-right':element.type == 'arrow',
                                        'textElement':element.type == 'text',
                                        'linkElement fadeColors':element.type == 'link'}"
@@ -61,7 +61,7 @@
                 </div>
                 <img class="loadingBox fadeOpacity" src="../global/images/loading.gif" ng-class="{active:mainCtrl.api.waitingCalls > 0}" />
             </div>
-            <div ng-view class="appContent angular-animate ngAnimateFade" ng-show="mainCtrl.showRoutePage"></div>
+            <div ng-view class="appContent ngAnimateFade angular-animate" ng-show="mainCtrl.showRoutePage"></div>
         </div>
         <div class="dragDropMessage fadeOpacityMargin" ng-class="{show:mainCtrl.dragDropMessageShow}">
             <span class="message" ng-bind-html="mainCtrl.dragDropMessage | trustHTML"></span>

@@ -6,13 +6,13 @@
 @-moz-keyframes    fadeOutAnim { 0% { opacity: 1; } 50%, 100% { opacity: 0; } }
 @-webkit-keyframes fadeOutAnim { 0% { opacity: 1; } 50%, 100% { opacity: 0; } }
 
-@keyframes         vertAccordIn { 0% { max-height:0px; } 100% { max-height:0px; } }
-@-moz-keyframes    vertAccordIn { 0% { -moz-transform: scaleY(0); } 100% { -moz-transform: scaleY(1); } }
-@-webkit-keyframes vertAccordIn { 0% { -webkit-transform: scaleY(0); } 100% { -webkit-transform: scaleY(1); } }
+@keyframes         vertAccordIn { 0% { max-height: 0px; opacity: 0; } 100% { max-height: 100px; opacity: 1; } }
+@-moz-keyframes    vertAccordIn { 0% { max-height: 0px; opacity: 0; } 100% { max-height: 100px; opacity: 1; } }
+@-webkit-keyframes vertAccordIn { 0% { max-height: 0px; opacity: 0; } 100% { max-height: 100px; opacity: 1; } }
 
-@keyframes         vertAccordOut { 0% { transform: scaleY(1); } 100% { transform: scaleY(0); } }
-@-moz-keyframes    vertAccordOut { 0% { -moz-transform: scaleY(1); } 100% { -moz-transform: scaleY(0); } }
-@-webkit-keyframes vertAccordOut { 0% { -webkit-transform: scaleY(1); } 100% { -webkit-transform: scaleY(0); } }
+@keyframes         vertAccordOut { 0% { max-height: 100px; opacity: 1; } 100% { max-height: 0px; opacity: 0; } }
+@-moz-keyframes    vertAccordOut { 0% { max-height: 100px; opacity: 1; } 100% { max-height: 0px; opacity: 0; } }
+@-webkit-keyframes vertAccordOut { 0% { max-height: 100px; opacity: 1; } 100% { max-height: 0px; opacity: 0; } }
 
 @keyframes         groupRoleEmployeeIn { 0% { opacity: 0; width:0px; margin-right: 0px; } 100% { opacity: 1; width:200px; margin-right: 15px; } }
 @-moz-keyframes    groupRoleEmployeeIn { 0% { opacity: 0; width:0px; margin-right: 0px; } 100% { opacity: 1; width:200px; margin-right: 15px; } }
@@ -78,4 +78,13 @@
     -webkit-animation: fadeInOut 1.5s both ease-in;
     -moz-animation: fadeInOut 1.5s both ease-in;
     animation: fadeInOut 1.5s both ease-in;
+}
+
+.disable-animations.ng-enter,
+.disable-animations.ng-leave,
+.disable-animations.ng-animate{
+    -webkit-transition: none !important;
+    transition: none !important;
+    -webkit-animation: none 0s;
+    animation: none 0s;
 }

@@ -9,11 +9,11 @@ angular.module('smartsDirectives')
             }
         }
     })
-    .directive("enableAnimations", function ($animate) {
-        return function (scope, element) {
-            $animate.enabled(false, element);
-        };
-    })
+//    .directive("disableAnimations", function ($animate) {
+//        return function (scope, element) {
+//            $animate.enabled(false, element);
+//        };
+//    })
     .directive('elementRendered', function($timeout) {
         return {
             restrict: 'A',

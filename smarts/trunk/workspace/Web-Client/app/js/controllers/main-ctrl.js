@@ -1,5 +1,5 @@
-angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope', 'modalService', '$location', '$route', '$cookieStore', '$cookies', 'httpService', 'accountsService', 'utilService', 'cacheService', 'updateService', 'smartCookies',
-    function($scope, $rootScope, modalService, $location, $route, $cookieStore, $cookies, httpService, accountsService, utilService, cacheService, updateService, smartCookies){
+angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope', 'modalService', '$location', '$route', '$cookieStore', '$cookies', 'httpService', 'accountsService', 'utilService', 'cacheService', 'updateService', 'smartCookies', '$animate',
+    function($scope, $rootScope, modalService, $location, $route, $cookieStore, $cookies, httpService, accountsService, utilService, cacheService, updateService, smartCookies, $animate){
         var mainController = this;
 
         $rootScope.initializeAPIData = function() {

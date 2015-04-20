@@ -10,9 +10,10 @@ angular.module('smartsApp').controller('DeleteEmployeeModalController', ['$scope
         };
 
         $scope.submit = function() {
-            cacheService.deleteEmployee($scope.employee.id).then(
+            $scope.noInput = true;
+            cacheService.removeEmployee($scope.employee.id).then(
                 function(response) {
-                    $scope.noInput = true;
+                    $scope.noInput = false;
                     $modalInstance.close(true);
                 },
                 function (response) {

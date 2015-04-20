@@ -131,6 +131,21 @@
     white-space: nowrap;
 }
 
+.employeeGroups {
+    padding-top: 6px;
+    color: #888;
+    white-space: nowrap;
+    font-size: 11px;
+}
+
+.employeeGroups .icon-home {
+    display: inline;
+    padding-top: 6px;
+    color: #bbb;
+    white-space: nowrap;
+    font-size: 10px;
+}
+
 .employeeDefaultGroup {
     color: #888;
     white-space: nowrap;
