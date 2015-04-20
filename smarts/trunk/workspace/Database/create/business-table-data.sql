@@ -1,3 +1,5 @@
+USE Business_1;
+
 INSERT INTO `Capability` (`id`, `name`) VALUES ('0', 'Add Employees');
 INSERT INTO `Capability` (`id`, `name`) VALUES ('2', 'Edit Employees');
 INSERT INTO `Capability` (`id`, `name`) VALUES ('4', 'Delete Employees');
