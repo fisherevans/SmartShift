@@ -3,10 +3,10 @@
 </div>
 <div class="modal-body selectBusinessModal">
     <p>Please select which business you would like to access.</p>
-    <div ng-repeat="business in businesses" ng-click="selectBusiness(business)" class="loginBusinessBlock fadeColors">
+    <button ng-repeat="business in businesses" ng-click="selectBusiness(business)" class="loginBusinessBlock fadeColors" focus-on-render="$first">
         <img src="../global/images/arrow.png" class="loginBusinessArrow" />
         <div class="loginBusinessName">{{business.name}}</div>
-    </div>
+    </button>
 </div>
 <div class="modal-footer">
     <button type="submit" class="smartButton fadeColors blueBG" ng-click="cancel()">Cancel</button>
