@@ -1,15 +1,12 @@
 package smartshift.common.hibernate.dao;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Map;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
+import org.hibernate.HibernateException;
 import org.quartz.JobDataMap;
 import org.quartz.JobKey;
 import smartshift.common.hibernate.DAOContext;
@@ -87,7 +84,7 @@ public class HibernateTaskQueue {
             // BaseHibernateTask incommingTask, scheduledTask, compoundTask;
             for(EnqueuedTaskWrapper incommingWrapper:incommingTasks) {
                 _scheduledTasks.add(incommingWrapper);
-                /** TODO - cancel out stuff if possible
+                /* TODO - cancel out stuff if possible
                 incommingTask = incommingWrapper.getTask();
                 boolean addTask = true, checkCompounds = true;
                 ListIterator<EnqueuedTaskWrapper> scheduledIttr = _scheduledTasks.listIterator(_scheduledTasks.size()); // get ittr starting at last position
@@ -127,12 +124,10 @@ public class HibernateTaskQueue {
     public void processScheduledTasks() {
         logger.debug("Running scheduled tasks for: " + _daoContext.getContextID());
         synchronized(SCHEDULE_LOCK) {
-            // Collections.sort(_scheduledTasks);
+            /*Collections.sort(_scheduledTasks); // Can be done on on session once things are canceled out properly
             Session session = null;
             Transaction transaction = null;
             try {
-                session = _daoContext.getSession();
-                transaction = session.beginTransaction();
                 for(EnqueuedTaskWrapper task:_scheduledTasks) {
                     logger.info("Executing: " + task.getTask().toString());
                     task.getTask().executeWithSession(session);
@@ -156,7 +151,16 @@ public class HibernateTaskQueue {
                 } catch(Exception e2) {
                     logger.fatal("Failed to close the hibernate connection after an error occured!", e2);
                 }
+            }*/
+            for(EnqueuedTaskWrapper task:_scheduledTasks) {
+                try {
+                    logger.info("Executing: " + task.getTask().toString());
+                    task.getTask().execute();
+                } catch(HibernateException e) {
+                    logger.fatal("Failed to run task! Preventing additional DB tasks from running.", e);
+                }
             }
+            _scheduledTasks.clear();
         }
     }
     
