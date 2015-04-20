@@ -13,7 +13,6 @@ import smartshift.business.hibernate.dao.GroupRoleEmployeeDAO;
 import smartshift.business.hibernate.model.EmployeeModel;
 import smartshift.business.hibernate.model.GroupModel;
 import smartshift.business.hibernate.model.GroupRoleCapabilityModel;
-import smartshift.business.hibernate.model.GroupRoleEmployeeModel;
 import smartshift.business.hibernate.model.GroupRoleModel;
 import smartshift.common.hibernate.dao.tasks.model.AddTask;
 import smartshift.common.util.UID;
@@ -295,7 +294,7 @@ public class Group extends CachedObject {
      * @param employee
      */
     public void removeEmployee(Employee employee) {
-        if(equals(employee.getHomeGroup()))
+        if(employee.getActive() && equals(employee.getHomeGroup()))
             throw new RuntimeException(String.format("Employee:%d has a parent group of %d, so cannot remove from %d",
                     employee.getID(), employee.getHomeGroup().getID(), this.getID()));
         for(Role role:_employees.keySet())
