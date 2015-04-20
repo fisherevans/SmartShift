@@ -8,7 +8,7 @@ USE Business_1;
 
 SET FOREIGN_KEY_CHECKS=0;
 
-DROP TABLE `Group`;
+DROP TABLE IF EXISTS `Group`;
 CREATE TABLE `Group` (
   `id` INT NOT NULL,
   `parentID` INT NULL,
@@ -17,14 +17,14 @@ CREATE TABLE `Group` (
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `Role`;
+DROP TABLE IF EXISTS `Role`;
 CREATE TABLE `Role` (
   `id` INT NOT NULL,
   `name` VARCHAR(45),
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `Employee`;
+DROP TABLE IF EXISTS `Employee`;
 CREATE TABLE `Employee` (
   `id` INT NOT NULL,
   `defaultGrpID` INT NOT NULL,
@@ -34,14 +34,14 @@ CREATE TABLE `Employee` (
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `Capability`;
+DROP TABLE IF EXISTS `Capability`;
 CREATE TABLE `Capability` (
   `id` INT NOT NULL,
   `name` VARCHAR(45),
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `GroupRole`;
+DROP TABLE IF EXISTS `GroupRole`;
 CREATE TABLE `GroupRole` (
   `id` INT NOT NULL,
   `grpID` INT NOT NULL,
@@ -49,28 +49,28 @@ CREATE TABLE `GroupRole` (
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `GroupEmployee`;
+DROP TABLE IF EXISTS `GroupEmployee`;
 CREATE TABLE `GroupEmployee` (
   `grpID` INT NOT NULL,
   `empID` INT NOT NULL,
   PRIMARY KEY (`grpID`, `empID`)
 );
 
-DROP TABLE `GroupRoleEmployee`;
+DROP TABLE IF EXISTS `GroupRoleEmployee`;
 CREATE TABLE `GroupRoleEmployee` (
   `grpRoleID` INT NOT NULL,
   `empID` INT NOT NULL,
   PRIMARY KEY (`grpRoleID`, `empID`)
 );
 
-DROP TABLE `GroupRoleCapability`;
+DROP TABLE IF EXISTS `GroupRoleCapability`;
 CREATE TABLE `GroupRoleCapability` (
   `grpRoleID` INT NOT NULL,
   `capID` INT NOT NULL,
   PRIMARY KEY (`grpRoleID`, `capID`)
 );
 
-DROP TABLE `AvailInstance`;
+DROP TABLE IF EXISTS `AvailInstance`;
 CREATE TABLE `AvailInstance` (
   `id` INT NOT NULL,
   `templateID` INT NOT NULL,
@@ -79,7 +79,7 @@ CREATE TABLE `AvailInstance` (
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `AvailTemplate`;
+DROP TABLE IF EXISTS `AvailTemplate`;
 CREATE TABLE `AvailTemplate` (
   `id` INT NOT NULL,
   `name` VARCHAR(45),
@@ -87,7 +87,7 @@ CREATE TABLE `AvailTemplate` (
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `Availability`;
+DROP TABLE IF EXISTS `Availability`;
 CREATE TABLE `Availability` (
   `id` INT NOT NULL,
   `templateID` INT NOT NULL,
@@ -100,7 +100,7 @@ CREATE TABLE `Availability` (
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `AvailRepeatWeekly`;
+DROP TABLE IF EXISTS `AvailRepeatWeekly`;
 CREATE TABLE `AvailRepeatWeekly` (
     `id` INT NOT NULL,
   `availID` INT NOT NULL,
@@ -109,7 +109,7 @@ CREATE TABLE `AvailRepeatWeekly` (
   UNIQUE(`availID`, `dayOfWeek`)
 );
 
-DROP TABLE `AvailRepeatMonthlyByDate`;
+DROP TABLE IF EXISTS `AvailRepeatMonthlyByDate`;
 CREATE TABLE `AvailRepeatMonthlyByDate` (
     `id` INT NOT NULL,
   `availID` INT NOT NULL,
@@ -119,7 +119,7 @@ CREATE TABLE `AvailRepeatMonthlyByDate` (
   UNIQUE(`availID`, `dayOfMonth`)
 );
 
-DROP TABLE `AvailRepeatMonthlyByDay`;
+DROP TABLE IF EXISTS `AvailRepeatMonthlyByDay`;
 CREATE TABLE `AvailRepeatMonthlyByDay` (
     `id` INT NOT NULL,
   `availID` INT NOT NULL,
@@ -130,7 +130,7 @@ CREATE TABLE `AvailRepeatMonthlyByDay` (
   UNIQUE(`availID`, `offset`, `dayOfWeek`)
 );
 
-DROP TABLE `AvailRepeatYearly`;
+DROP TABLE IF EXISTS `AvailRepeatYearly`;
 CREATE TABLE `AvailRepeatYearly` (
     `id` INT NOT NULL,
   `availID` INT NOT NULL,
@@ -140,7 +140,7 @@ CREATE TABLE `AvailRepeatYearly` (
   UNIQUE(`availID`, `month`, `dayOfMonth`)
 );
 
-DROP TABLE `Shift`;
+DROP TABLE IF EXISTS `Shift`;
 CREATE TABLE `Shift` (
 	`id` INT NOT NULL,
 	`start` TIMESTAMP NOT NULL,
@@ -148,7 +148,7 @@ CREATE TABLE `Shift` (
 	PRIMARY KEY (`id`)
 );
 
-DROP TABLE `SchedTemplateVersion`;
+DROP TABLE IF EXISTS `SchedTemplateVersion`;
 CREATE TABLE `SchedTemplateVersion` (
   `id` INT NOT NULL,
   `schedTempID` INT NOT NULL,
@@ -158,7 +158,7 @@ CREATE TABLE `SchedTemplateVersion` (
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `Schedule`;
+DROP TABLE IF EXISTS `Schedule`;
 CREATE TABLE `Schedule` (
   `id` INT NOT NULL,
   `schedTempVersionID` INT NOT NULL,
@@ -166,7 +166,7 @@ CREATE TABLE `Schedule` (
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `RoleSchedule`;
+DROP TABLE IF EXISTS `RoleSchedule`;
 CREATE TABLE `RoleSchedule` (
   `id` INT NOT NULL,
   `schedID` INT NOT NULL,
@@ -174,14 +174,14 @@ CREATE TABLE `RoleSchedule` (
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `RoleSchedShift`;
+DROP TABLE IF EXISTS `RoleSchedShift`;
 CREATE TABLE `RoleSchedShift` (
   `roleSchedID` INT NOT NULL,
   `shiftID` INT NOT NULL,
   PRIMARY KEY(`roleSchedID`, `shiftID`)
 );
 
-DROP TABLE `EmpSchedule`;
+DROP TABLE IF EXISTS `EmpSchedule`;
 CREATE TABLE `EmpSchedule` (
   `id` INT NOT NULL,
   `schedID` INT NOT NULL,
@@ -190,7 +190,7 @@ CREATE TABLE `EmpSchedule` (
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `EmpScheduleShift`;
+DROP TABLE IF EXISTS `EmpScheduleShift`;
 CREATE TABLE `EmpScheduleShift` (
 	`empSchedID` INT NOT NULL,
 	`shiftID` INT NOT NULL,
@@ -199,20 +199,20 @@ CREATE TABLE `EmpScheduleShift` (
 	PRIMARY KEY (`empSchedID`, `shiftID`)
 );
 
-DROP TABLE `Content`;
+DROP TABLE IF EXISTS `Content`;
 CREATE TABLE `Content` (
   `id` INT NOT NULL,
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `TextContent`;
+DROP TABLE IF EXISTS `TextContent`;
 CREATE TABLE `TextContent` (
   `id` INT NOT NULL,
   `text` VARCHAR(256) NOT NULL,
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `CompoundContent`;
+DROP TABLE IF EXISTS `CompoundContent`;
 CREATE TABLE `CompoundContent` (
   `id` INT NOT NULL,
   `seqNum` INT NOT NULL,
@@ -220,14 +220,14 @@ CREATE TABLE `CompoundContent` (
   PRIMARY KEY (`id`, `seqNum`)
 );
 
-DROP TABLE `StyledContent`;
+DROP TABLE IF EXISTS `StyledContent`;
 CREATE TABLE `StyledContent` (
   `id` INT NOT NULL,
   `styleID` INT NOT NULL,
   PRIMARY KEY (`id`, `styleID`)
 );
 
-DROP TABLE `Style`;
+DROP TABLE IF EXISTS `Style`;
 CREATE TABLE `Style` (
   `id` INT NOT NULL,
   `attribute` VARCHAR(30),
@@ -235,21 +235,21 @@ CREATE TABLE `Style` (
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `TaggedContent`;
+DROP TABLE IF EXISTS `TaggedContent`;
 CREATE TABLE `TaggedContent` (
   `id` INT NOT NULL,
   `tagID` INT NOT NULL,
   PRIMARY KEY (`id`, `tagID`)
 );
 
-DROP TABLE `Tag`;
+DROP TABLE IF EXISTS `Tag`;
 CREATE TABLE `Tag` (
   `id` INT NOT NULL,
   `name` VARCHAR(128),
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `Message`;
+DROP TABLE IF EXISTS `Message`;
 CREATE TABLE `Message` (
   `id` INT NOT NULL,
   `parentID` INT NOT NULL,
@@ -259,7 +259,7 @@ CREATE TABLE `Message` (
   PRIMARY KEY (`id`)
 );
 
-DROP TABLE `MessageDelivery`;
+DROP TABLE IF EXISTS `MessageDelivery`;
 CREATE TABLE `MessageDelivery` (
   `id` INT NOT NULL,
   `messageID` INT NOT NULL,
