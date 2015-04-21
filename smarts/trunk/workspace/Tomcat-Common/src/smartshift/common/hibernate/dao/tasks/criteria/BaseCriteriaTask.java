@@ -40,8 +40,13 @@ public abstract class BaseCriteriaTask<T1, T2> extends BaseHibernateTask<T1, T2>
     @Override
     public String getDebugString() {
         String out = "";
-        for(Criterion crit:_criterions)
-            out += crit.toString() + ", ";
+        boolean first = true;
+        for(Criterion crit:_criterions) {
+            if(!first)
+                out += ", ";
+            out += crit.toString();
+            first = false;
+        }
         return out;
     }
 }
