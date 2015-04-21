@@ -121,6 +121,17 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                 event.preventDefault();
         });
 
+        // Update Title
+        $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
+            if(angular.isDefined(current.$$route.title)) {
+                var title = current.$$route.title;
+                if(typeof title == 'function')
+                    $rootScope.page.title = title(cacheService, current.params);
+                else
+                    $rootScope.page.title = title;
+            }
+        });
+
         mainController.logout = $rootScope.logout; // function
         mainController.linkClick = function(path) {
             $location.path(path);

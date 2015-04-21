@@ -46,6 +46,7 @@ angular.module('smartsApp').config(function($routeProvider){
     $routeProvider
         .when('/newsfeed', {
             templateUrl: '../app/templates/pages/newsfeed.html',
+            title: 'New Feed',
             controller: 'NewsfeedController',
             controllerAs: 'newsfeedCtrl',
             resolve: {
@@ -56,6 +57,7 @@ angular.module('smartsApp').config(function($routeProvider){
         })
         .when('/messages', {
             templateUrl: '../app/templates/pages/messages.html',
+            title: 'Messaging',
             controller: 'MessagesController',
             controllerAs: 'messagesCtrl',
             resolve: {
@@ -66,6 +68,7 @@ angular.module('smartsApp').config(function($routeProvider){
         })
         .when('/requests', {
             templateUrl: '../app/templates/pages/requests.html',
+            title: 'Request Queue',
             controller: 'RequestsController',
             controllerAs: 'requestsCtrl',
             resolve: {
@@ -76,6 +79,7 @@ angular.module('smartsApp').config(function($routeProvider){
         })
         .when('/schedule', {
             templateUrl: '../app/templates/pages/schedule.html',
+            title: 'Scheduling',
             controller: 'ScheduleController',
             controllerAs: 'scheduleCtrl',
             resolve: {
@@ -86,6 +90,7 @@ angular.module('smartsApp').config(function($routeProvider){
         })
         .when('/groups', {
             templateUrl: '../app/templates/pages/group-list.html',
+            title: 'Group Management',
             controller: 'GroupListController',
             controllerAs: 'groupListCtrl',
             resolve: {
@@ -96,6 +101,9 @@ angular.module('smartsApp').config(function($routeProvider){
         })
         .when('/groups/:groupID', {
             templateUrl: '../app/templates/pages/manage-group.html',
+            title: function(cacheService, params) {
+                return 'Group Management | ' + cacheService.getGroup(params.groupID).name
+            },
             controller: 'ManageGroupController',
             controllerAs: 'manageGroupCtrl',
             resolve: {
@@ -106,6 +114,7 @@ angular.module('smartsApp').config(function($routeProvider){
         })
         .when('/settings', {
             templateUrl: '../app/templates/pages/settings.html',
+            title: 'User Settings',
             controller: 'SettingsController',
             controllerAs: 'settingsCtrl',
             resolve: {
