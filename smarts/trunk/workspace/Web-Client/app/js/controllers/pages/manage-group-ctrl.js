@@ -99,7 +99,7 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
             if(employee.groupIDs.indexOf(mngGrpCtrl.group.id) < 0) {
                 return {
                     valid: true,
-                    message: "<b>" + emloyee.displayName + "</b> is not in the <b>" + mngGrpCtrl.group.name + "</b> group. You may still drop the employee to add them to the group as well as the roll.",
+                    message: "<b>" + employee.displayName + "</b> is not in the <b>" + mngGrpCtrl.group.name + "</b> group. You may still drop the employee to add them to the group as well as the roll.",
                     animate: true
                 };
             }
