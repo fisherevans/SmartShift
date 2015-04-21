@@ -1,5 +1,7 @@
 angular.module('smartsApp').controller('LoginModalController', ['$scope', '$rootScope', '$modalInstance', 'accountsService', 'initialErrorMessage',
     function($scope, $rootScope, $modalInstance, accountsService, initialErrorMessage){
+        $rootScope.page.title = "Login";
+
         $scope.api = $rootScope.api;
 
         $scope.form = {
