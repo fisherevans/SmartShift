@@ -4,6 +4,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
 import smartshift.common.hibernate.dao.BaseDAO;
 import smartshift.common.hibernate.dao.BaseDAO.NamedParameter;
 import smartshift.common.hibernate.dao.tasks.BaseHibernateTask;
@@ -47,8 +48,13 @@ public abstract class BaseNamedQueryTask<T1, T2> extends BaseHibernateTask<T1, T
     @Override
     public String getDebugString() {
         String out = _queryName + ": ";
-        for(NamedParameter np:_parameters)
-            out += np.toString() + ", ";
+        boolean first = true;
+        for(NamedParameter np:_parameters) {
+            if(!first)
+                out += ", ";
+            out += np.toString();
+            first = false;
+        }
         return out;
     }
 }
