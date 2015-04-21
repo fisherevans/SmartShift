@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" ng-app="smartsApp" ng-strict-di>
-    <head>
-        <title>Smart Shift | SampleLayout</title>
+    <head ng-controller="HeadController as headCtrl">
+        <title>Smart Shift | {{headCtrl.page.title}}</title>
         <link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
 
         <link href="../global/css/root.css" rel="stylesheet" type="text/css" />
@@ -26,8 +26,28 @@
         <link href="../global/css/lib/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" />
 
         <link href="../app/css/animations.css" rel="stylesheet" type="text/css" />
+
+        <link rel="apple-touch-icon" sizes="57x57" href="../global/images/favicon/apple-touch-icon-57x57.png">
+        <link rel="apple-touch-icon" sizes="60x60" href="../global/images/favicon/apple-touch-icon-60x60.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="../global/images/favicon/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="76x76" href="../global/images/favicon/apple-touch-icon-76x76.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="../global/images/favicon/apple-touch-icon-114x114.png">
+        <link rel="apple-touch-icon" sizes="120x120" href="../global/images/favicon/apple-touch-icon-120x120.png">
+        <link rel="apple-touch-icon" sizes="144x144" href="../global/images/favicon/apple-touch-icon-144x144.png">
+        <link rel="apple-touch-icon" sizes="152x152" href="../global/images/favicon/apple-touch-icon-152x152.png">
+        <link rel="apple-touch-icon" sizes="180x180" href="../global/images/favicon/apple-touch-icon-180x180.png">
+        <link rel="icon" type="image/png" href="../global/images/favicon/favicon-32x32.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="../global/images/favicon/android-chrome-192x192.png" sizes="192x192">
+        <link rel="icon" type="image/png" href="../global/images/favicon/favicon-96x96.png" sizes="96x96">
+        <link rel="icon" type="image/png" href="../global/images/favicon/favicon-16x16.png" sizes="16x16">
+        <link rel="manifest" href="../global/images/favicon/manifest.json">
+        <link rel="shortcut icon" href="../global/images/favicon/favicon.ico">
+        <meta name="msapplication-TileColor" content="#2d89ef">
+        <meta name="msapplication-TileImage" content="../global/images/favicon/mstile-144x144.png">
+        <meta name="msapplication-config" content="../global/images/favicon/browserconfig.xml">
+        <meta name="theme-color" content="#ffffff">
     </head>
-    <body ng-controller="MainController as mainCtrl" >
+    <body ng-controller="MainController as mainCtrl">
         <div class="navPane renderWait" ng-class="{loaded:true}" ng-controller="TabController as tabCtrl"> <!-- poor mans ng-cloak -->
             <img class="navLogo" src="../global/images/logoicon.png" />
             <div ng-repeat="navTab in tabCtrl.navTabs">
@@ -51,7 +71,7 @@
                     <div class="icon-arrow-right appNavigationArrow"></div>
                 </div>
                 <div id="dynamicAppNavigationTree">
-                    <div ng-repeat="element in mainCtrl.navigationElements" no-animate class="disable-animations"
+                    <div ng-repeat="element in mainCtrl.navigationElements" class="disable-animations"
                             ng-class="{'subArrow icon-arrow-right':element.type == 'arrow',
                                        'textElement':element.type == 'text',
                                        'linkElement fadeColors':element.type == 'link'}"
@@ -101,6 +121,7 @@
         <script src="../global/js/services/group-service.js"></script>
         <script src="../global/js/jquery-listeners.js"></script>
 
+        <script src="../app/js/controllers/head-ctrl.js"></script>
         <script src="../app/js/controllers/main-ctrl.js"></script>
         <script src="../app/js/controllers/tab-ctrl.js"></script>
         <script src="../app/js/controllers/pages/calendar-ctrl.js"></script>
