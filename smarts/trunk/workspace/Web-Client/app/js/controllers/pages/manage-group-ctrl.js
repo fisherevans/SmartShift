@@ -88,11 +88,24 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
         };
 
         mngGrpCtrl.roleIsValidDrop = function(role, dropData) {
+            if(dropData.from == "role" && role.id == dropData.oldRole.id) {
+                return {
+                    valid: false,
+                    message: null,
+                    animate: false
+                };
+            }
             var employee = dropData.employee;
-            if(employee.groupIDs.indexOf(mngGrpCtrl.group.id) < 0)
-                return {valid:true, message:"<b>" + employee.displayName + "</b> is not in the <b>" + mngGrpCtrl.group.name + "</b> group. You may still drop the employee to add them to the group as well as the roll."};
-            if(role.groupEmployeeIDs[mngGrpCtrl.group.id].indexOf(dropData.employee.id) >= 0)
+            if(employee.groupIDs.indexOf(mngGrpCtrl.group.id) < 0) {
+                return {
+                    valid: true,
+                    message: "<b>" + emloyee.displayName + "</b> is not in the <b>" + mngGrpCtrl.group.name + "</b> group. You may still drop the employee to add them to the group as well as the roll.",
+                    animate: true
+                };
+            }
+            if(role.groupEmployeeIDs[mngGrpCtrl.group.id].indexOf(dropData.employee.id) >= 0) {
                 return "<b>" + employee.displayName + "</b> already exists in the <b>" + role.name + "</b> role.";
+            }
             return true;
         };
 

@@ -42,13 +42,14 @@ angular.module('smartsDirectives')
                 element[0].addEventListener('dragenter', function(event) {
                     if(nestDepth == 0) {
                         var response = scope.isValid({dropData:smartDragData});
-                        if(typeof response == 'string') isValidData = {valid:false, message:response};
-                        else if(typeof response == 'boolean') isValidData = {valid:response,message:null};
+                        if(typeof response == 'string') isValidData = {valid:false, message:response, animate: true};
+                        else if(typeof response == 'boolean') isValidData = {valid:response,message:null, animate: true};
                         else isValidData = response;
                         if(isValidData.valid === true) {
                             event.preventDefault();
-                            this.classList.add(scope.validClass);
-                        } else
+                            if(isValidData.animate)
+                                this.classList.add(scope.validClass);
+                        } else if(isValidData.animate)
                             this.classList.add(scope.invalidClass);
                         if(isValidData.message != null) $rootScope.updateDragDropMessage(isValidData.message);
                     }
@@ -62,8 +63,10 @@ angular.module('smartsDirectives')
                 element[0].addEventListener('dragleave', function(event) {
                     nestDepth--;
                     if(nestDepth == 0) {
-                        this.classList.remove(scope.validClass);
-                        this.classList.remove(scope.invalidClass);
+                        if(isValidData.animate) {
+                            this.classList.remove(scope.validClass);
+                            this.classList.remove(scope.invalidClass);
+                        }
                         $rootScope.updateDragDropMessage();
                     }
                     return false;
@@ -71,8 +74,10 @@ angular.module('smartsDirectives')
                 element[0].addEventListener('drop', function(event) {
                     nestDepth = 0;
                     event.stopPropagation();
-                    this.classList.remove(scope.validClass);
-                    this.classList.remove(scope.invalidClass);
+                    if(isValidData.animate) {
+                        this.classList.remove(scope.validClass);
+                        this.classList.remove(scope.invalidClass);
+                    }
                     $rootScope.updateDragDropMessage();
                     if(isValidData.valid) scope.onDrop({dropData:smartDragData});
                     return false;
