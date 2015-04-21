@@ -1,6 +1,7 @@
 package smartshift.business.updates;
 
 import java.util.Arrays;
+import smartshift.common.util.log4j.SmartLogger;
 
 /**
  * @author D. Fisher Evans <contact@fisherevans.com>
@@ -57,15 +58,17 @@ public class MultiID {
             MultiID other = (MultiID) obj;
             if(other == null || this.getLength() != other.getLength())
                 return false;
-            Object a, b;
-            for(int position = 0;position < this.getLength();position++) {
-                a = this.getID(position);
-                b = other.getID(position);
-                if((a == null && b != null) || !a.equals(b)) // IF: a is null and b is not -OR- a does not equal b
+            for(int position = 0;position < this.getLength();position++)
+                if(!isEqual(this.getID(position), other.getID(position)))
                     return false;
-            }
             return true;
-        } else
-            return false;
+        }
+        return false;
+    }
+    
+    private boolean isEqual(Object a, Object b) {
+        if(a == null)
+            return b == null;
+        return a.equals(b);
     }
 }
