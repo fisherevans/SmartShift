@@ -46,7 +46,7 @@ angular.module('smartsApp').config(function($routeProvider){
     $routeProvider
         .when('/newsfeed', {
             templateUrl: '../app/templates/pages/newsfeed.html',
-            title: 'New Feed',
+            title: ' | New Feed',
             controller: 'NewsfeedController',
             controllerAs: 'newsfeedCtrl',
             resolve: {
@@ -57,7 +57,7 @@ angular.module('smartsApp').config(function($routeProvider){
         })
         .when('/messages', {
             templateUrl: '../app/templates/pages/messages.html',
-            title: 'Messaging',
+            title: ' | Messaging',
             controller: 'MessagesController',
             controllerAs: 'messagesCtrl',
             resolve: {
@@ -68,7 +68,7 @@ angular.module('smartsApp').config(function($routeProvider){
         })
         .when('/requests', {
             templateUrl: '../app/templates/pages/requests.html',
-            title: 'Request Queue',
+            title: ' | Request Queue',
             controller: 'RequestsController',
             controllerAs: 'requestsCtrl',
             resolve: {
@@ -79,7 +79,7 @@ angular.module('smartsApp').config(function($routeProvider){
         })
         .when('/schedule', {
             templateUrl: '../app/templates/pages/schedule.html',
-            title: 'Scheduling',
+            title: ' | Scheduling',
             controller: 'ScheduleController',
             controllerAs: 'scheduleCtrl',
             resolve: {
@@ -90,7 +90,7 @@ angular.module('smartsApp').config(function($routeProvider){
         })
         .when('/groups', {
             templateUrl: '../app/templates/pages/group-list.html',
-            title: 'Group Management',
+            title: ' | Group Management',
             controller: 'GroupListController',
             controllerAs: 'groupListCtrl',
             resolve: {
@@ -102,7 +102,7 @@ angular.module('smartsApp').config(function($routeProvider){
         .when('/groups/:groupID', {
             templateUrl: '../app/templates/pages/manage-group.html',
             title: function(cacheService, params) {
-                return 'Group Management | ' + cacheService.getGroup(params.groupID).name
+                return ' | Group Management | ' + cacheService.getGroup(params.groupID).name
             },
             controller: 'ManageGroupController',
             controllerAs: 'manageGroupCtrl',
@@ -114,7 +114,7 @@ angular.module('smartsApp').config(function($routeProvider){
         })
         .when('/settings', {
             templateUrl: '../app/templates/pages/settings.html',
-            title: 'User Settings',
+            title: ' | User Settings',
             controller: 'SettingsController',
             controllerAs: 'settingsCtrl',
             resolve: {
@@ -124,6 +124,7 @@ angular.module('smartsApp').config(function($routeProvider){
             }
         })
         .otherwise({
-            redirectTo: '/newsfeed'
+            redirectTo: '/newsfeed',
+            title: ' | New Feed'
         })
 });
