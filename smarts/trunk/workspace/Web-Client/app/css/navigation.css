@@ -116,14 +116,14 @@
 }
 
 .navLogo .minute {
-    transform: rotate(0deg);
+    transform: rotate(300deg);
     animation: minuteSpin 2s linear infinite;
     -moz-animation: minuteSpin 2s linear infinite;
     -webkit-animation: minuteSpin 2s linear infinite;
 }
 
 .navLogo .hour {
-    transform: rotate(150deg);
+    transform: rotate(205deg);
     animation: hourSpin 24s linear infinite;
     -moz-animation: hourSpin 24s linear infinite;
     -webkit-animation: hourSpin 24s linear infinite;

@@ -31,33 +31,33 @@
 @-webkit-keyframes flashInOut { 0% { opacity: 0; } 15% { opacity: 1; } 99% { width: auto; } 100% { opacity: 0; width: 0px; } }
 
 @keyframes minuteSpin {
-    0% { transform:rotate(0deg); }
-    100% { transform:rotate(360deg); }
+    0% { transform:rotate(330deg); }
+    100% { transform:rotate(690deg); }
 }
 
 @-moz-keyframes minuteSpin {
-    0% { -moz-transform:rotate(0deg); }
-    100% { -moz-transform:rotate(360deg); }
+    0% { -moz-transform:rotate(330deg); }
+    100% { -moz-transform:rotate(690deg); }
 }
 
 @-webkit-keyframes minuteSpin {
-    0% { -webkit-transform:rotate(0deg); }
-    100% { -webkit-transform:rotate(360deg); }
+    0% { -webkit-transform:rotate(330deg); }
+    100% { -webkit-transform:rotate(690deg); }
 }
 
 @keyframes hourSpin {
-    0% { transform:rotate(150deg); }
-    100% { transform:rotate(510deg); }
+    0% { transform:rotate(207.5deg); }
+    100% { transform:rotate(567.5deg); }
 }
 
 @-moz-keyframes hourSpin {
-    0% { -moz-transform:rotate(150deg); }
-    100% { -moz-transform:rotate(510deg); }
+    0% { -moz-transform:rotate(207.5deg); }
+    100% { -moz-transform:rotate(567.5deg); }
 }
 
 @-webkit-keyframes hourSpin {
-    0% { -webkit-transform:rotate(150deg); }
-    100% { -webkit-transform:rotate(510deg); }
+    0% { -webkit-transform:rotate(207.5deg); }
+    100% { -webkit-transform:rotate(567.5deg); }
 }
 
 .ngAnimateFade.ng-enter {
