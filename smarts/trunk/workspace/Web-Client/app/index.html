@@ -49,7 +49,12 @@
     </head>
     <body ng-controller="MainController as mainCtrl">
         <div class="navPane renderWait" ng-class="{loaded:true}" ng-controller="TabController as tabCtrl"> <!-- poor mans ng-cloak -->
-            <img class="navLogo" src="../global/images/logoicon.png" />
+            <!--<img class="navLogo" src="../global/images/logoicon.png" />-->
+            <div class="navLogo">
+                <img class="base" src="../global/images/logo_base.png" />
+                <img class="minute" src="../global/images/logo_minute.png" />
+                <img class="hour" src="../global/images/logo_hour.png" />
+            </div>
             <div ng-repeat="navTab in tabCtrl.navTabs">
                 <a href="#/{{navTab.link}}">
                     <div class="navElement fadeNav {{navTab.otherClass}}" ng-class="{ current: tabCtrl.isSet(navTab.tabID) && mainCtrl.showRoutePage }">

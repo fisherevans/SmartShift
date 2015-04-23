@@ -100,8 +100,49 @@
 
 .navLogo {
   display:inline-block;
+    position: relative;
   width: 60px;
   height: 71px;
   margin-top: 15px;
   margin-bottom: 10px;
 }
+
+.navLogo .base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 71px;
+}
+
+.navLogo .minute {
+    transform: rotate(0deg);
+    animation: minuteSpin 2s linear infinite;
+    -moz-animation: minuteSpin 2s linear infinite;
+    -webkit-animation: minuteSpin 2s linear infinite;
+}
+
+.navLogo .hour {
+    transform: rotate(150deg);
+    animation: hourSpin 24s linear infinite;
+    -moz-animation: hourSpin 24s linear infinite;
+    -webkit-animation: hourSpin 24s linear infinite;
+}
+
+.navLogo .minute, .navLogo .hour {
+    position: absolute;
+    top: 11px;
+    left: 0;
+    width: 60px;
+    height: 60px;
+    -webkit-animation-play-state: paused;
+    -moz-animation-play-state: paused;
+    animation-play-state: paused;
+}
+
+.navLogo:hover .minute, .navLogo:hover .hour {
+    -webkit-animation-play-state: running;
+    -moz-animation-play-state: running;
+    animation-play-state: running;
+}
+
