@@ -123,7 +123,7 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
 
         // Update Title
         $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
-            if(angular.isDefined(current.$$route.title)) {
+            if(angular.isDefined(current.$$route) && angular.isDefined(current.$$route.title)) {
                 var title = current.$$route.title;
                 if(typeof title == 'function')
                     $rootScope.page.title = title(cacheService, current.params);

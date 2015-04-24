@@ -8,22 +8,14 @@ angular.module('smartsApp').controller('ScheduleController', ['$rootScope', 'cac
         scheduleCtrl.groupOptions = utilService.getGroupSelectOption(scheduleCtrl.groups, true);
         scheduleCtrl.roleOptions = [];
         scheduleCtrl.weeks = utilService.getWeeks(2, 4);
-        scheduleCtrl.shifts = {};
+        scheduleCtrl.days = cacheService.getSchedule().days;
+        scheduleCtrl.shifts = cacheService.getSchedule().shifts;
         scheduleCtrl.employeeListFilter = {
             "name":"",
-            "groups":[]
+            "groups":[],
+            groupRoles:{}
         };
         var nextShiftId = 1;
-
-        scheduleCtrl.days = [
-            { "id":0, "name":"Sunday",    "shifts":{}, "shiftEmployees":{}, "hidden":true },
-            { "id":1, "name":"Monday",    "shifts":{}, "shiftEmployees":{}, "hidden":false },
-            { "id":2, "name":"Tuesday",   "shifts":{}, "shiftEmployees":{}, "hidden":false },
-            { "id":3, "name":"Wednesday", "shifts":{}, "shiftEmployees":{}, "hidden":false },
-            { "id":4, "name":"Thursday",  "shifts":{}, "shiftEmployees":{}, "hidden":false },
-            { "id":5, "name":"Friday",    "shifts":{}, "shiftEmployees":{}, "hidden":false },
-            { "id":6, "name":"Saturday",  "shifts":{}, "shiftEmployees":{}, "hidden":true }
-        ];
 
         scheduleCtrl.addForm = {
             "groupID":0,
@@ -61,6 +53,10 @@ angular.module('smartsApp').controller('ScheduleController', ['$rootScope', 'cac
                 }];
                 angular.forEach(scheduleCtrl.groups, function(group, groupID) {
                     scheduleCtrl.employeeListFilter.groups.push(parseInt(groupID));
+                    scheduleCtrl.employeeListFilter.groupRoles[groupID] = [];
+                    angular.forEach(group.roles, function(role, roleID) {
+                        scheduleCtrl.employeeListFilter.groupRoles[groupID].push(parseInt(roleID));
+                    });
                 });
                 scheduleCtrl.addForm.roleID = 0;
             } else {
@@ -69,7 +65,29 @@ angular.module('smartsApp').controller('ScheduleController', ['$rootScope', 'cac
                 //scheduleCtrl.addForm.roleID = scheduleCtrl.roleOptions.length > 1 ? scheduleCtrl.roleOptions[1].id : 0;
                 scheduleCtrl.addForm.roleID = 0;
                 scheduleCtrl.employeeListFilter.groups.push(parseInt(selGroupID));
+                angular.forEach(roles, function(role, roleID) {
+                    scheduleCtrl.employeeListFilter.groupRoles[selGroupID].push(parseInt(roleID));
+                });
             }
+        };
+
+        scheduleCtrl.onRoleChange = function() {
+            scheduleCtrl.employeeListFilter.groupRoles[scheduleCtrl.addForm.groupID] =  [];
+            if(scheduleCtrl.addForm.roleID == 0) {
+                angular.forEach(scheduleCtrl.groups[scheduleCtrl.addForm.groupID].roles, function(role, roleID) {
+                    scheduleCtrl.employeeListFilter.groupRoles[scheduleCtrl.addForm.groupID].push(parseInt(roleID));
+                });
+            } else
+                scheduleCtrl.employeeListFilter.groupRoles[scheduleCtrl.addForm.groupID].push(parseInt(scheduleCtrl.addForm.roleID));
+        };
+
+        scheduleCtrl.onGroupChange();
+
+        scheduleCtrl.filterOnShift = function(shift) {
+            scheduleCtrl.addForm.groupID = shift.group.id;
+            scheduleCtrl.onGroupChange();
+            scheduleCtrl.addForm.roleID = angular.isDefined(shift.role) ? shift.role.id : 0;
+            scheduleCtrl.onRoleChange();
         };
 
         scheduleCtrl.openAddShiftModal = function() {

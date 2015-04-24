@@ -91,7 +91,7 @@
     margin: 0px auto;
     border-radius: 3px;
     border: 1px solid #ccc;
-    width: 60%;
+    width: 65%;
     line-height: 16px;
     padding: 5px 8px;
     margin: 4px 0px;
@@ -105,6 +105,11 @@
     cursor: pointer;
     background-color: #f0f0f0;
     color: #444;
+}
+
+.smartCheckboxLabel.subCheckbox {
+    width: 50%;
+    margin-left: 15%;
 }
 
 .smartCheckboxLabel:hover {
@@ -316,4 +321,14 @@
 
 .modalContent.centered {
     text-align: center;
+}
+
+.smartCheckboxLinkWrapper {
+    height: 0px;
+    margin-left: 67%;
+}
+
+.smartCheckboxLink {
+    height: 26px;
+    line-height: 36px;
 }

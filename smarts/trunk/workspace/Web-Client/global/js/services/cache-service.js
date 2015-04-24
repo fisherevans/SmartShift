@@ -388,6 +388,19 @@ angular.module('smartsServices').factory('cacheService', ['$q', 'businessService
         publicCacheService.getCapabilities = function() { return capabilities; };
         publicCacheService.getCapability = function(capabilityID) { return capabilities[capabilityID]; };
 
+        var schedule = {};
+        schedule.shifts = {};
+        schedule.days = [
+            { "id":0, "name":"Sunday",    "shifts":{}, "shiftEmployees":{}, "hidden":true },
+            { "id":1, "name":"Monday",    "shifts":{}, "shiftEmployees":{}, "hidden":false },
+            { "id":2, "name":"Tuesday",   "shifts":{}, "shiftEmployees":{}, "hidden":false },
+            { "id":3, "name":"Wednesday", "shifts":{}, "shiftEmployees":{}, "hidden":false },
+            { "id":4, "name":"Thursday",  "shifts":{}, "shiftEmployees":{}, "hidden":false },
+            { "id":5, "name":"Friday",    "shifts":{}, "shiftEmployees":{}, "hidden":false },
+            { "id":6, "name":"Saturday",  "shifts":{}, "shiftEmployees":{}, "hidden":true }
+        ];
+        publicCacheService.getSchedule = function() { return schedule; };
+
         return publicCacheService;
     }
 ]);
