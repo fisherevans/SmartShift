@@ -16,10 +16,15 @@ angular.module('smartsDirectives')
                 if(angular.isUndefined(scope.filterObject)) {
                     scope.filter = {
                         "name": "",
-                        "groups": []
+                        "groups": [],
+                        "groupRoles": {}
                     };
                     angular.forEach(scope.groups, function(group, groupID) {
                         scope.filter.groups.push(parseInt(groupID));
+                        scope.filter.groupRoles[groupID] = [];
+                        angular.forEach(group.roles, function(role, roleID) {
+                            scope.filter.groupRoles[groupID][roleID] = true;
+                        });
                     });
                 } else {
                     scope.filter = scope.filterObject;
@@ -46,8 +51,12 @@ angular.module('smartsDirectives')
                         return false;
                     var valid = false;
                     angular.forEach(employee.groupIDs, function (groupID, arrID) {
-                        if (scope.filter.groups.indexOf(groupID) >= 0)
-                            valid = true;
+                        if (scope.filter.groups.indexOf(groupID) >= 0 && angular.isDefined(scope.filter.groupRoles[groupID])) {
+                            angular.forEach(employee.groupRoleIDs[groupID], function(roleID, arrID) {
+                                if(scope.filter.groupRoles[groupID].indexOf(roleID) >= 0)
+                                    valid = true;
+                            });
+                        }
                     });
                     return valid;
                 };

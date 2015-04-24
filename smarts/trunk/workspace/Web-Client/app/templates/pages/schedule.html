@@ -16,7 +16,7 @@
             </option>
         </select>
         <div class="addShiftLabel">Role</div>
-        <select alt="Role" class="smartInputSelect addShiftInput" ng-model="scheduleCtrl.addForm.roleID" ng-options="role.id as role.name for role in scheduleCtrl.roleOptions">
+        <select alt="Role" class="smartInputSelect addShiftInput" ng-model="scheduleCtrl.addForm.roleID" ng-options="role.id as role.name for role in scheduleCtrl.roleOptions" ng-change="scheduleCtrl.onRoleChange()">
         </select>
         <button class="smartButton addShiftButton blueBG fadeColors" ng-click="scheduleCtrl.openAddShiftModal()">Add Shift</button>
     </div>
@@ -49,6 +49,7 @@
                                 </div>
                             </div>
                             <div class="timeOverlayBlocker"></div>
+                            <div class="icon-filter filterShift fadeColorOpacity grayBG" ng-click="scheduleCtrl.filterOnShift(shift)"></div>
                             <div class="icon-trash deleteShift fadeColorOpacity redBG"></div>
                             <div class="icon-pencil editShift fadeColorOpacity blueBG"></div>
                         </div>

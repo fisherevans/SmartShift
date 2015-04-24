@@ -8,8 +8,13 @@ angular.module('smartsApp').controller('ManageGroupController', [ '$routeParams'
         mngGrpCtrl.employeeHover = {};
         mngGrpCtrl.employeeListFilter = {
             'name':'',
-            'groups':[mngGrpCtrl.group.id]
+            'groups':[mngGrpCtrl.group.id],
+            groupRoles:{}
         };
+        mngGrpCtrl.employeeListFilter.groupRoles[mngGrpCtrl.group.id] = [];
+        angular.forEach(mngGrpCtrl.group.roles, function(role, roleID) {
+            mngGrpCtrl.employeeListFilter.groupRoles[mngGrpCtrl.group.id].push(parseInt(roleID));
+        });
 
         mngGrpCtrl.addRoleSubmit = function() {
             $("#roleListAddRoleButton").prop("disabled", true);

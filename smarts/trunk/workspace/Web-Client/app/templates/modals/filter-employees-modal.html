@@ -14,11 +14,20 @@
         <div class="smartInputLine">
             <div class="smartInputLabel">Groups</div>
             <div class="smartInputWrapper">
-                <label class="smartCheckboxLabel noTextSelect fadeColors" ng-repeat="(groupID, group) in groups" ng-class="{'checked':groupsSelected[group.id],inputError:error}" no-animate>
-                    <input type="checkbox" class="smartCheckbox" value="{{group.id}}" name="group" ng-model="groupsSelected[group.id]">
+                <div class="smartCheckboxLinkWrapper" ng-repeat-start="group in groupOptions">
+                    <div class="smartCheckboxLink fakeLink noTextSelect" ng-click="toggleGroupRoleShow(group)">{{group.showRoles ? "Hide" : "Show"}} Roles</div>
+                </div>
+                <label class="smartCheckboxLabel noTextSelect fadeColors" ng-class="{'checked':groupsSelected[group.id],inputError:error}" no-animate>
+                    <input type="checkbox" class="smartCheckbox" value="{{group.id}}" name="group" ng-model="groupsSelected[group.id]" ng-change="groupChanged(group)">
                     <div class="smartCheckboxCheck" ng-class="{'icon-not-checked':!groupsSelected[group.id], 'icon-checked':groupsSelected[group.id] }"></div>
                     {{group.name}}
                 </label>
+                <label class="smartCheckboxLabel subCheckbox noTextSelect fadeColors" ng-show="group.showRoles" ng-repeat="role in group.roleOptions" ng-class="{'checked':groupRolesSelected[group.id][role.id],inputError:error}" no-animate>
+                    <input type="checkbox" class="smartCheckbox" value="{{role.id}}" name="group" ng-model="groupRolesSelected[group.id][role.id]" ng-change="roleChanged(role)">
+                    <div class="smartCheckboxCheck" ng-class="{'icon-not-checked':!groupRolesSelected[group.id][role.id], 'icon-checked':groupRolesSelected[group.id][role.id] }"></div>
+                    {{role.name}}
+                </label>
+                <div ng-repeat-end></div>
             </div>
             <div class="centeredText">
                 <span class="fakeLink fadeColors" ng-click="setAll(true)">Select All</span>
