@@ -12,6 +12,9 @@
   left: 0px;
   bottom: 0px;
   right: 60%;
+    overflow-y: auto;
+    padding-top:40px;
+    padding-bottom: 15px;
 }
 
 .rightDash {
@@ -42,6 +45,9 @@
   left: 15px;
   right: 0px;
   bottom: 0px;
+    overflow-y: auto;
+
+    padding-bottom: 15px;
 }
 
 .quickMessages {
@@ -50,4 +56,126 @@
   left: 15px;
   right: 0px;
   bottom: 0px;
+    overflow-y: hidden;
+}
+
+.blockTitle {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    background-color: #fff;
+    height: 35px;
+    text-align: center;
+    font-size: 18px;
+    line-height: 35px;
+    border-bottom: 1px solid #ccc;
+}
+
+.blockContent {
+    position: absolute;
+    top: 36px;
+    width: 100%;
+    bottom: 0px;
+    overflow-y: auto;
+    padding-bottom: 15px;
+}
+
+.newsCard {
+    margin: 15px;
+    margin-bottom: 0px;
+    padding: 15px;
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+}
+
+.newsCard .ribbons {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 20px;
+    font-size: 0;
+}
+
+.newsCard .ribbons .ribbon {
+    color: #fff;
+    height: 20px;
+    font-size: 0;
+    line-height: 20px;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-right: 0;
+    border-top: 0;
+}
+
+.newsCard .ribbons .ribbon.blue {
+    background-color: #0080ff;
+}
+
+.newsCard .ribbons .ribbon.orange {
+    background-color: #ff8000;
+}
+
+.newsCard .ribbons .ribbon.gray {
+    background-color: #a0a0a0;
+}
+
+.newsCard .ribbons .ribbon.last {
+    border-bottom-left-radius: 5px;
+}
+
+.newsCard .ribbons .ribbon .icon, .newsCard .ribbons .ribbon .text {
+    font-size: 12px;
+    line-height: 20px;
+    height: 20px;
+    display: inline-block;
+    padding: 0px 8px;
+}
+
+.newsCard .title {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.newsCard .subTitle {
+    font-size: 14px;
+    color: #888;
+}
+
+.newsCard .content {
+    font-size: 12px;
+    color: #444;
+    margin: 2px 0px;
+}
+
+.newsCard .content .contentLink {
+    font-size: 12px;
+    color: #0080ff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.newsCard .links {
+    width: 100%;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    padding-top: 8px;
+}
+
+.newsCard .link {
+    display: inline-block;
+    font-size: 12px;
+    height: 20px;
+    line-height: 20px;
+    background-color: #fff;
+    color: #0080ff;
+    cursor: pointer;
+    padding: 0px 15px;
+    margin: 0px 5px;
+}
+
+.newsCard .link:hover {
+    background-color: #f0f0f0;
+    color: #0070e1;
 }
