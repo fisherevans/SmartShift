@@ -103,7 +103,7 @@
     font-size: 0;
     line-height: 20px;
     display: inline-block;
-    border: 1px solid #ccc;
+    border: 1px solid #fff  ;
     border-right: 0;
     border-top: 0;
 }
@@ -120,6 +120,11 @@
     background-color: #a0a0a0;
 }
 
+.newsCard .ribbons .ribbon.white     {
+    background-color: #fff;
+    border-color: #fff;
+}
+
 .newsCard .ribbons .ribbon.last {
     border-bottom-left-radius: 5px;
 }
@@ -130,6 +135,10 @@
     height: 20px;
     display: inline-block;
     padding: 0px 8px;
+}
+
+.newsCard .ribbons .ribbon.white .text {
+    color: #888;
 }
 
 .newsCard .title {
@@ -178,4 +187,22 @@
 .newsCard .link:hover {
     background-color: #f0f0f0;
     color: #0070e1;
+}
+
+.cardImageWrapper {
+    float: left;
+    height: 100%;
+    display: block;
+    position: relative;
+    margin-right: 15px;
+}
+
+.newsCard .cardImage {
+    float: left;
+    height: 100px;
+    border: 1px solid #aaa;
+    box-shadow: 0px 0px 3px #888;
+}
+.newsCard .cardImage.small {
+    height: 50px;
 }

@@ -6,7 +6,7 @@ angular.module('smartsApp').controller('TabController', ['$scope', '$rootScope',
         tabController.navTabs = [
             { "tabID":1, "link":"newsfeed", "iconClass":"icon-newspaper", "label":"News Feed" },
             { "tabID":2, "link":"messages", "iconClass":"icon-chat",      "label":"Messages" },
-            { "tabID":3, "link":"requests", "iconClass":"icon-drawer",    "label":"Requests" },
+            //{ "tabID":3, "link":"requests", "iconClass":"icon-drawer",    "label":"Requests" },
             { "tabID":4, "link":"schedule", "iconClass":"icon-calendar",  "label":"Schedule" },
             { "tabID":5, "link":"groups",   "iconClass":"icon-users",     "label":"Group Management", "otherClass":"navElementAddPadding" },
             { "tabID":6, "link":"settings", "iconClass":"icon-cog",       "label":"Settings" }
