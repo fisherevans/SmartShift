@@ -216,7 +216,7 @@ public class HibernateTaskQueue {
             JobKey jobKey = QuartzHelper.createRepeatingJob(SaveHibernateTaskQueueJob.class,
                     SaveHibernateTaskQueueJob.getJobName(context),
                     SaveHibernateTaskQueueJob.JOB_GROUP_NAME,
-                    "hibernate.queue.savePolling", 60, jobData);
+                    "hibernate.queue.savePolling", 10, jobData);
             queue.setJobKey(jobKey);
         }
         return queue;
