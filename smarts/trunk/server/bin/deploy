@@ -1,0 +1,29 @@
+#!/bin/bash
+
+project="$1"
+justBuild="$2"
+
+if [ ! "$project" == "accounts" ] && [ ! "$project" == "business" ] ; then
+  echo "Please pass a project to build: accounts business"
+  exit 1
+fi
+
+running=`ps -ef | grep org.apache.catalina.startup.Bootstra[p] | wc -l`
+
+if [ ! $running == "0" ] ; then
+  echo "Tomcat is currently running..."
+  tomcat stop
+fi
+
+build $project $2
+
+if [ ! "$justBuild" == "just-build" ] ; then
+  tomcat-config just-copy
+fi
+
+echo "Deploying WAR file: $project.war"
+cp -f $SDIST/$project.war $STOM/webapps
+
+if [ ! $running == "0" ] ; then
+  tomcat start
+fi

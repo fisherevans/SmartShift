@@ -1,0 +1,15 @@
+#!/bin/bash
+
+cd $STOM/logs
+
+command="tail -f server.log accounts/application.log business/application.log"
+
+if [[ $1 == *"e"* ]] ; then
+  command+=" accounts/exceptions.log business/exceptions.log"
+fi
+
+if [[ $1 == *"s"* ]] ; then
+  command+=" accounts/sql.log business/sql.log"
+fi
+
+$command

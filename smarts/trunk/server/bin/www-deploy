@@ -1,0 +1,64 @@
+#!/bin/bash
+
+update no-lib $2
+
+indirs[1]=$SBUILDWWW/test
+indirs[2]=$SBUILDWWW/api
+indirs[3]=$SBUILDWWW/global
+indirs[4]=$SBUILDWWW/app
+
+outdirs[1]=$SWWW/test
+outdirs[2]=$SWWW/api
+outdirs[3]=$SWWW/global
+outdirs[4]=$SWWW/app
+
+# 1:indir, 2:outdir
+function prep {
+  echo "Deploying: $1 -> $1"
+  rm -rf $2
+  cp -Rf $1 $2
+  cd $1
+}
+
+# 1:indir, 2:outdir, 3:type, 4:file
+function minify {
+  if [ $3 == "html" ] ; then
+    java -jar $SLIB/htmlcompressor-1.5.3.jar --type html $4 > $2/$4
+  elif [ $3 == "js" ] ; then
+    cp $2/$4 "$2/$4.base"
+    tempFile="$2/$4.ng-ann"
+    ng-annotate -a $4 > $tempFile
+    java -jar $SLIB/yuicompressor-2.4.8.jar --type js $tempFile > $2/$4
+    #rm $tempFile
+  elif [ $3 == "css" ] ; then
+    java -jar $SLIB/yuicompressor-2.4.8.jar --type css $4 > $2/$4
+  fi
+}
+
+# 1:indir, 2:outdir, 3:file
+function printStats {
+  oldSize=`stat -c "%s" $1/$3`
+  newSize=`stat -c "%s" $2/$3`
+  ratio=`awk "BEGIN {printf \"%.1f%%\", $newSize / $oldSize * 100}"`
+  echo "  $3 [$ratio] ($oldSize -> $newSize)"
+}
+
+for i in 1 2 3 4 ; do
+  indir="${indirs[i]}"
+  outdir="${outdirs[i]}"
+  if [ -d $indir ] ; then
+    prep $indir $outdir
+    if [ ! "$1" == "no-minify" ] ; then
+      for type in html css js ; do
+        find . -name "*.$type" -type f | grep -v /lib/ | while read file ; do
+          if [ -f "$indir/$file" ] && [ -s "$indir/$file" ] ; then
+            minify $indir $outdir $type $file
+            printStats $indir $outdir $file
+          fi
+        done
+      done
+    fi
+  else
+    echo "Error: $indir is not a valid directory"
+  fi
+done

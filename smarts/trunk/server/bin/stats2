@@ -1,0 +1,30 @@
+#!/bin/bash
+
+cd $SBUILD/smarts/trunk/workspace
+
+files=`find . -name "*.java" | wc -l`
+lines=`find . -name "*.java" | xargs cat | wc -l`
+
+echo "Java File Statistics"
+echo "Files: $files"
+echo "Lines: $lines"
+
+
+cd $SBUILD/smarts/trunk/workspace/Web-Client
+
+files=`find app global -name \*.js -o -name \*.html -o -name \*.css | grep -v "/lib/" | wc -l`
+lines=`find app global -name \*.js -o -name \*.html -o -name \*.css | grep -v "/lib/" | xargs cat | wc -l`
+
+echo "Web File Statistics"
+echo "Files: $files"
+echo "Lines: $lines"
+
+
+cd $SBUILD/smarts
+
+echo "SVN Stats"
+svn log -v --xml | grep '<author.*/author>' | sort $* | uniq -c | sort -rn
+
+
+echo "Curses"
+svn log -v --xml | grep '(fuck|shit|hell|balls)'

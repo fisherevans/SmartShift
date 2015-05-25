@@ -1,0 +1,18 @@
+#!/bin/bash
+
+project="$1"
+noUpdate="$2"
+
+if [ ! "$project" == "accounts" ] && [ ! "$project" == "business" ] ; then
+  echo "Please pass a project to build: accounts business"
+  exit 1
+fi
+
+if [ ! "$noUpdate" == "just-build" ] ; then
+  update
+fi
+
+echo "Building Project... [$project]"
+cd $SBUILD/smarts/trunk/workspace/Build
+ant -buildfile ant/tomcat.xml build-clean prep-$project > /dev/null
+ant -buildfile ant/tomcat.xml build-war > /dev/null

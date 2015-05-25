@@ -1,0 +1,21 @@
+#!/bin/bash
+
+cd $SVNSTAT
+rm -rf svn.log
+cd $SWWW/svn-stat
+rm -rf *
+
+update no-lib
+
+echo "Generating SVN log..."
+cd $SBUILD/smarts
+svn log --xml -v > $SVNSTAT/svn.log
+
+
+echo "Generating HTML site..."
+cd $SWWW/svn-stat
+java -jar $SVNSTAT/statsvn.jar \
+-title "Smart Shift Java Files" \
+-disable-twitter-button \
+-include "**/*.java" \
+$SVNSTAT/svn.log $SBUILD/smarts &> /dev/null

@@ -1,0 +1,41 @@
+#!/bin/bash
+
+action="$1"
+
+if [ ! "$action" == "stop" ] && [ ! "$action" == "start" ] ; then
+  echo "Please pass an action: start, stop"
+  exit 1
+fi
+
+cd $STOM/bin
+
+running=`ps -ef | grep org.apache.catalina.startup.Bootstra[p] | wc -l`
+
+if [ "$action" == "start" ] ; then
+  if [ ! $running == "0" ] ; then
+    echo "Tomcat is already running. Use 'stop' first..."
+    exit 0
+  fi
+  echo 'Archiving log files...'
+  ts=`date +"%Y.%m.%d-%H.%M.%S"`
+  mkdir $STOM/../logs_archive/$ts
+  mv $STOM/logs/* $STOM/../logs_archive/$ts/
+  cp -R $STOM/../logs_template/* $STOM/logs/
+  echo 'Starting the Tomcat Server...'
+  ./startup.sh > /dev/null
+else
+  if [ $running == "0" ] ; then
+    echo "Tomcat is not running."
+    exit 0
+  fi
+  echo 'Shutting down Tomcat...'
+  ./shutdown.sh > /dev/null
+  echo "Waiting 25 seconds for Tomcat to shut down..."
+  sleep 25
+  stillrunning=`ps -ef | grep org.apache.catalina.startup.Bootstra[p] | wc -l`
+  if [ ! $stillrunning == "0" ] ; then
+    tpid=`ps -ef | grep org.apache.catalina.startup.Bootstra[p] | awk '{print $2}' | head -n1`
+    echo "Tomcat still running, killing process [$tpid]..."
+    kill -9 $tpid
+  fi
+fi

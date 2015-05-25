@@ -1,0 +1,10 @@
+#!/bin/bash
+
+tomcat stop
+update lib $1
+deploy business just-build
+deploy accounts just-build
+www-deploy no-minify $1
+tomcat-config just-copy
+tomcat start
+ftl es

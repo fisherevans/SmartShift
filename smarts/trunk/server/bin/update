@@ -1,0 +1,17 @@
+#!/bin/bash
+
+cd $SBUILD
+
+if [ -z "$2" ] ; then
+  echo 'Checking out HEAD...'
+  svn checkout svn://dunari.cis.vtc.edu/smarts
+else
+  echo "Checking out $2..."
+  svn checkout svn://dunari.cis.vtc.edu/smarts@$2
+fi
+
+if [ ! "$1" == "no-lib" ] ; then
+  echo 'Fetching external Libraries...'
+  cd smarts/trunk/workspace/Build
+  ant -buildfile ant/libraries.xml > /dev/null
+fi

@@ -1,0 +1,22 @@
+#!/bin/bash
+
+project="$1"
+
+if [ ! "$project" == "accounts" ] && [ ! "$project" == "business" ] ; then
+  echo "Please pass a project to build: accounts business"
+  exit 1
+fi
+
+running=`ps -ef | grep org.apache.catalina.startup.Bootstra[p] | wc -l`
+
+if [ ! $running == "0" ] ; then
+  echo "Tomcat is currently running..."
+  tomcat stop
+fi
+
+echo "Undeploying WAR file: $project.war"
+rm -f $STOM/webapps/$project.war
+
+if [ ! $running == "0" ] ; then
+  tomcat start
+fi
