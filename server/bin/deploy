@@ -22,7 +22,8 @@ if [ ! "$justBuild" == "just-build" ] ; then
 fi
 
 echo "Deploying WAR file: $project.war"
-cp -f $SDIST/$project.war $STOM/webapps
+rm -f $STOM/webapps/$project.war
+cp $SDIST/$project.war $STOM/webapps
 
 if [ ! $running == "0" ] ; then
   tomcat start

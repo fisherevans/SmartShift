@@ -4,4 +4,4 @@ if [ $# -eq 0 ] || [ ! $1 == "just-copy" ] ; then
 fi
 
 echo 'Copying Tomcat CFG files from SVN...'
-cp -Rf $SBUILD/smarts/trunk/tomcat7/* $STOM
+cp -Rf $SBUILD/server/tomcat7/default/* $STOM

@@ -13,6 +13,6 @@ if [ ! "$noUpdate" == "just-build" ] ; then
 fi
 
 echo "Building Project... [$project]"
-cd $SBUILD/smarts/trunk/workspace/Build
+cd $SBUILD/workspace/Build
 ant -buildfile ant/tomcat.xml build-clean prep-$project > /dev/null
 ant -buildfile ant/tomcat.xml build-war > /dev/null

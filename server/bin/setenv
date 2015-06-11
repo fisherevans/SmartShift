@@ -1,0 +1,9 @@
+#!/bin/bash
+
+export SHOME=/home/smarts
+export SBUILD=$SHOME/build/SmartShift
+export STOM=$SHOME/tomcat/apache-tomcat-7.0.62
+export SDIST=$SBUILD/workspace/Build/out/dist
+export SBUILDWWW=$SBUILD/workspace/Web-Client
+export SWWW=$SHOME/www
+export SLIB=$SHOME/lib

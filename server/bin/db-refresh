@@ -2,7 +2,7 @@
 tomcat stop
 update no-lib
 cd $SBUILD
-cd smarts/trunk/workspace/Database/create/
+cd workspace/Database/create/
 echo "Dropping and Recreating Tables..."
 mysql --user=root --password=P3oPZFbl3HtvU41Z < business-table-defs.sql
 echo "Creating Initial Data..."
