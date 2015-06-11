@@ -11,7 +11,7 @@ INSERT INTO `Accounts`.`Preference` (`id`, `name`) VALUES (2, 'somePreference');
 -- Test Data
 INSERT INTO `Accounts`.`Build` (`id`, `version`) VALUES (1, 1);
 
-INSERT INTO `Accounts`.`Server` (`id`, `hostname`, `ipAddr`) VALUES (1, 'lando.smartshift.info:6380', '127.0.0.1');
+INSERT INTO `Accounts`.`Server` (`id`, `hostname`, `ipAddr`) VALUES (1, 'home.fisherevans.com:6380', '127.0.0.1');
 
 INSERT INTO `Accounts`.`Address` (`id`, `street1`, `street2`, `city`, `subDivision`, `country`, `postalCode`, `phoneNumber`) VALUES (1, '101 Loop Lane', 'Suite 8', 'Somewhere', 'In Cali', 'USA', '12345', '18885551234');
 
