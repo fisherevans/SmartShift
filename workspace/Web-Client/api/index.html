@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html ng-app="smartsApi">
+<head>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+<script src="api-def.js"></script>
+<script src="api.js"></script>
+<link href="style.css" rel="stylesheet" />
+<title>API Documentation</title>
+</head>
+<body>
+  <div ng-app ng-controller="APIDocController">
+
+    <!-- Right pane that displays the full API method documentation -->
+    <div class='pathDocsPane'>
+      <div class='pathDocs' ng-hide='currentPath == ""'>
+        <!-- Methods (GET, PUT, etc) are boxed separately -->
+        <div class='methodDocs fadeColor {{methodObject.notImplemented == true ? "warn" : ""}}'
+          ng-repeat="(method, methodObject) in currentMethods">
+          <!-- Title and description of the method -->
+          <div class='methodDocTitle'>
+            <div class='methodDocType method{{method}}'>{{method}}</div>
+            <div class='methodDocPath'>{{currentPath}}</div>
+            <div class='methodDocDescription'>({{methodObject.shortDescription}})</div>
+          </div>
+          <div ng-hide='methodObject.longDescription == undefined' class='methodDocLongDescription'>{{methodObject.longDescription}}</div>
+          <!-- List any requirements if there are any -->
+          <div ng-hide='methodObject.requires == undefined || objSize(methodObject.requires) == 0'
+            class='methodRequiresList'>
+            <div class='methodRequires' ng-repeat="req in methodObject.requires">
+              <div ng-hide="req.name == undefined" class='methodRequiresName'>Requires {{req.name}}</div>
+              <div ng-hide="req.description == undefined" class='methodRequiresDescription'>{{req.description}}</div>
+              <div ng-hide="req.example == undefined" class='methodRequiresExample codeBox'>{{req.example}}</div>
+            </div>
+          </div>
+          <!-- List any URL parameters if there are any -->
+          <div ng-hide='methodObject.params == undefined || objSize(methodObject.params) == 0' class='methodParams'>
+            <div class='methodParamsTitle'>URL Parameters</div>
+            <div class='methodParam' ng-repeat="(paramName, paramDesc) in methodObject.params">
+              <div class='methodParamName'>{{paramName}}</div>
+              <div class='methodParamDescription'>{{paramDesc}}</div>
+            </div>
+          </div>
+          <!-- Display an example HTTP body this method takes if there is one -->
+          <div class='methodTakes' ng-hide='methodObject.takes == undefined'>
+            <div class='methodTakesTitle'>Takes</div>
+            <pre class='methodTakesJSON codeBox'>{{prettyJson(methodObject.takes)}}</pre>
+          </div>
+          <!-- List the return responses -->
+          <div class='returnTitle'>Returns</div>
+          <div class='methodResponses'>
+            <!-- Each response is boxed separately -->
+            <div class='methodResponse' ng-repeat="(responseCode, response) in methodObject.responses">
+              <!-- HTTP code and description -->
+              <div class='methodResponseTitle'>
+                <div class='httpCode'>{{responseCode}}</div>
+                <div class='responseDescription'>{{response.result}}</div>
+              </div>
+              <div ng-hide='response.explanation == undefined' class='responseExplanation'>{{response.explanation}}</div>
+              <!-- Sample data object returned -->
+              <pre ng-hide='returnStructure(response) == undefined' class='responseExample codeBox'>{{prettyJson(returnStructure(response))}}</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Placeholder if not method is selected -->
+      <div class='pathDocsSelect' ng-hide='currentPath != ""'>Select an API call to the left...</div>
+    </div>
+
+    <!-- Top left text input for user to filter method list -->
+    <div class='filter'>
+      <input type='text' id='filterInput' value='' ng-keyup='filterListener()' placeholder='Filter'></input>
+    </div>
+
+    <!-- Bottom left list of methods/paths -->
+    <div class='paths'>
+      <!-- Each path is boxed separately -->
+      <div class='path fadeColor' ng-class="{current:currentPath==path}" ng-repeat="(path, pathObj) in filteredPaths"
+        ng-click="updateCurrent(path, pathObj)">
+        <!-- Path -->
+        <div class='pathLabel fadeColor'>{{path}}</div>
+        <div class='methods'>
+          <!-- Each method is boxed separately -->
+          <div class='method fadeColor' ng-repeat="(method, methodObject) in pathObj">
+            <!-- Method type and what it does -->
+            <div class='methodText'>
+              <div class='methodLabel method{{method}} fadeColor'>{{method}}</div>
+              <div class='methodDescription fadeColor'>{{methodObject.shortDescription}}</div>
+            </div>
+            <!-- If it's marked as not implemented, say so -->
+            <div class='methodNotAvailable' ng-show="methodObject.notImplemented == true">Not Implemented!</div>
+            <!-- List all possible reponse codes -->
+            <div class='response'>
+              <div class='responseLabel fadeColor'>Returns:</div>
+              <div class='responseCodes fadeColor' ng-repeat="(responseCode, responseObject) in methodObject.responses">
+                <div class='responseCode'>{{responseCode}}</div>
+                <div class='responseCodeGlue' ng-show="!$last">,</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Place holder if the filter is too narrow/doesn't match anything -->
+      <div class='noResults' ng-hide='objSize(filteredPaths) > 0'>No results found</div>
+    </div>
+
+  </div>
+</body>
+</html>

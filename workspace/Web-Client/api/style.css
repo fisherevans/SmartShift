@@ -1,0 +1,360 @@
+* {
+  padding: 0px;
+  margin: 0px;
+  font-family: Ubuntu, Arial, sans-serif;
+  font-size: 14px;
+}
+
+.filter {
+  position: absolute;
+  left: 0px;
+  top: 0px;
+  height: 50px;
+  width: 400px;
+  background-color:#333;
+  border-bottom: 1px solid #666;
+  border-right:1px solid #666;
+}
+
+#filterInput {
+  position: absolute;
+  background-color:#333;
+  border:0px;
+  top: 10px;
+  bottom: 10px;
+  left: 10px;
+  width: 90%;
+  line-height:30px;
+  font-size: 24px;
+  color:#eee;
+  outline: 0;
+}
+
+.paths {
+  position: absolute;
+  left: 0px;
+  top: 51px;
+  bottom: 0px;
+  background-color:#181818;
+  color: #888;
+  width: 400px;
+  overflow-y: auto;
+  border-right:1px solid #666;
+}
+
+.path {
+  border-bottom:1px solid #666;
+  width: 100%;
+  overflow: hidden;
+}
+
+.path.current {
+  background-color: #282828;
+}
+
+.path:hover {
+  background-color:#282828;
+}
+
+.pathLabel {
+  padding: 10px 15px;
+  font-size: 16px;
+  font-weight: 700;
+  color:#eee;
+  cursor: pointer;
+  position: relative;
+  padding-bottom: 0px;
+}
+
+.path:hover .pathLabel {
+  color:#fff;
+}
+
+.method {
+  padding: 10px 15px;
+  padding-left: 30px;
+  cursor: pointer;
+}
+
+.methodText {
+  line-height: 20px;
+}
+
+.methodText * {
+  display: inline;
+}
+
+.methodNotAvailable {
+  font-weight: 700;
+  color: #d55;
+  padding-top: 5px;
+}
+
+.methodLabel {
+  background-color:#bbb;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  padding: 3px;
+  border-radius:3px;
+  text-align:center;
+  margin-right: 5px;
+  letter-spacing: 1px;
+}
+
+.methodGET {
+  background-color:#4EA642;
+}
+
+.methodPUT {
+  background-color:#4265A6;
+}
+
+.methodPOST {
+  background-color:#8296D9;
+}
+
+.methodDELETE {
+  background-color:#A64E42;
+}
+
+.methodDescription {
+  color:#bbb;
+}
+
+.path:hover .methodDescription {
+  color:#ccc;
+}
+
+.response {
+  padding-top: 5px;
+}
+
+.response * {
+  display: inline;
+}
+
+.responseLabel {
+  color: #999;
+}
+
+.path:hover .responseLabel {
+  color:#aaa;
+}
+
+.responseCodes {
+  color:#666;
+}
+
+.path:hover .responseCodes {
+  color:#777;
+}
+
+.noResults {
+  font-size: 18px;
+  text-align: center;
+  padding: 20px;
+}
+
+/* ------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------- */
+
+.pathDocsPane {
+  position: absolute;
+  left:401px;
+  right: 0px;
+  top:0px;
+  bottom:0px;
+  background-color: #eee;
+  overflow-y:auto;
+}
+
+.pathDocsSelect {
+  margin: 35px 50px;
+  font-size: 24px;
+  color:#a0a0a0;
+}
+
+.pathDocs {
+  margin: 10px 20px;
+}
+
+.docTitle {
+  font-size: 24px;
+  font-weight: 700;
+  padding-top:15px;
+  padding-left: 20px;
+  padding-bottom: 25px;
+}
+
+.docHR {
+  border-bottom: 1px solid #ccc;
+  margin: 20px 5%;
+}
+
+.methodDocs {
+  border: 1px solid #ccc;
+  background-color: #f6f6f6;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #aaa;
+  background-color: #fbfbfb;
+  box-shadow: 0px 0px 5px #aaa;
+}
+
+.methodDocs.warn {
+  background-color: #fbcbcb;
+  box-shadow: 0px 0px 5px #aaa;
+}
+
+.methodDocTitle * {
+  display: inline-block;
+}
+
+.methodDocPath {
+  font-size: 22px;
+  font-weight: 700;
+  color: #222;
+}
+
+.methodDocType {
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 5px;
+  border-radius:5px;
+  text-align:center;
+  margin-right: 5px;
+  letter-spacing: 1px;
+  display: inline-block;
+}
+
+.methodDocDescription {
+  font-size: 18px;
+  padding-bottom: 0px;
+}
+
+.methodDocLongDescription {
+  padding-top: 15px;
+  padding-left: 10px;
+  width: 50%;
+}
+
+.methodRequires {
+  font-size: 16px;
+  padding-top: 15px;
+  padding-left: 10px;
+}
+
+.methodRequiresName {
+  font-weight: 700;
+  font-size: 18px;
+  padding-bottom:6px;
+}
+
+.methodRequiresDescription {
+  font-size: 16px;
+  padding-bottom:10px;
+}
+
+.methodRequiresExample {
+}
+
+
+.methodParams {
+  font-size: 16px;
+  padding-top: 15px;
+  padding-left: 10px;
+}
+
+.methodParamsTitle {
+  font-weight: 700;
+  font-size: 18px;
+  padding-bottom:6px;
+}
+
+.methodParam {
+  font-weight: 400;
+  font-size: 14px;
+  padding-bottom:6px;
+}
+
+.methodParam * {
+  display: inline;
+}
+
+.methodParamName {
+  font-size: 16px;
+  font-weight: 700;
+  padding-right: 4px;
+}
+
+.methodTakes {
+  padding-top: 15px;
+  padding-left: 10px;
+}
+
+.methodTakesTitle {
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.methodTakesJSON {
+}
+
+.returnTitle {
+  padding-left: 10px;
+  font-weight: 700;
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.responseExplanation {
+  margin: 10px 0px;
+}
+
+.returnTitle {
+  padding-top: 15px;
+}
+
+.methodResponse {
+  border: 1px solid #bbb;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px;
+}
+
+.httpCode {
+  display: inline;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.responseDescription {
+  display: inline;
+  font-size: 16px;
+  padding-left: 15px;
+}
+
+.responseExample {
+  margin: 5px;
+}
+
+/* ------------------------------------------------------------------------------------------------- */
+/* ------------------------------------------------------------------------------------------------- */
+
+.fadeColor {
+  transition: color 0.25s ease, background 0.25s ease;
+}
+
+.codeBox {
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  color: #555;
+  background-color: #eee;
+  font-family: "Lucida Console", Monaco, monospace;
+  display: inline-block;
+}

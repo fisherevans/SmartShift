@@ -1,0 +1,186 @@
+/** ------------------------------------------------------------------------ */
+/** ---------------------------------------------- RESET CLASSES ----------- */
+/** ------------------------------------------------------------------------ */
+
+.noInputLines {
+  border: none;
+  overflow: auto;
+  outline: none;
+
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+}
+
+.noTextSelect {
+    -webkit-user-select: none;
+       -moz-user-select: none;
+        -ms-user-select: none;
+            user-select: none;
+}
+
+/** ------------------------------------------------------------------------ */
+/** ------------------------------------------ COLORING CLASSES ------------ */
+/** ------------------------------------------------------------------------ */
+
+.blueBG { background-color: #0080ff; }
+.blueBG:hover, .blueBG:focus, .blueBG:active, .blueBG.active { background-color: #0070e1; }
+.blueBG:disabled { background-color: #a0a0a0; }
+
+.grayBG { background-color: #a0a0a0; }
+.grayBG:hover, .blueBG:focus, .blueBG:active, .blueBG.active { background-color: #a8a8a8; }
+.grayBG:disabled { background-color: #787878; }
+
+.orangeBG { background-color: #FF7F00; }
+.orangeBG:hover, .orangeBG:focus, .orangeBG:active, .orangeBG.active  {  background-color: #E17100; }
+.orangeBG:disabled { background-color: #a0a0a0; }
+
+.redBG { background-color: #FF2F00; }
+.redBG:hover, .redBG:focus, .redBG:active, .redBG.active  {  background-color: #E12900; }
+.redBG:disabled { background-color: #a0a0a0; }
+
+.greenBG { background-color: #0DFF00; }
+.greenBG:hover, .greenBG:focus, .greenBG:active, .greenBG.active  {  background-color: #0BE100; }
+.greenBG:disabled { background-color: #a0a0a0; }
+
+/** ------------------------------------------------------------------------ */
+/** ------------------------------------------TRANSITION CLASSES ----------- */
+/** ------------------------------------------------------------------------ */
+
+.fadeLeft {
+    -webkit-transition: left 0.25s ease;
+       -moz-transition: left 0.25s ease;
+        -ms-transition: left 0.25s ease;
+         -o-transition: left 0.25s ease;
+            transition: left 0.25s ease;
+}
+
+.fadeColors {
+    -webkit-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    -moz-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    -ms-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    -o-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.fadeColorOpacity {
+    -webkit-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+    -moz-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+    -ms-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+    -o-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+    transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+}
+
+.fadeColorBorders {
+    -webkit-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, border 0.25s ease;
+    -moz-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, border 0.25s ease;
+    -ms-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, border 0.25s ease;
+    -o-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, border 0.25s ease;
+    transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, border 0.25s ease;
+}
+
+.fadeColorWidthOpacity {
+    -webkit-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, width 0.25s ease;
+    -moz-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, width 0.25s ease;
+    -ms-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, width 0.25s ease;
+    -o-transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, width 0.25s ease;
+    transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease, width 0.25s ease;
+}
+
+.fadeOpacity {
+    -webkit-transition: opacity 0.25s ease;
+    -moz-transition: opacity 0.25s ease;
+    -ms-transition: opacity 0.25s ease;
+    -o-transition: opacity 0.25s ease;
+    transition: opacity 0.25s ease;
+}
+
+.fadeOpacityMargin {
+    -webkit-transition: opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
+    -moz-transition: opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
+    -ms-transition: opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
+    -o-transition: opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
+    transition: opacity 0.25s ease-in-out, margin 0.25s ease-in-out;
+}
+
+.fadeMaxs {
+    -webkit-transition: max-width 0.25s ease, max-height 0.25s ease;
+    -moz-transition: max-width 0.25s ease, max-height 0.25s ease;
+    -ms-transition: max-width 0.25s ease, max-height 0.25s ease;
+    -o-transition: max-width 0.25s ease, max-height 0.25s ease;
+    transition: max-width 0.25s ease, max-height 0.25s ease;
+}
+
+.fadeMins {
+    -webkit-transition: min-width 0.25s ease, min-height 0.25s ease;
+    -moz-transition: min-width 0.25s ease, min-height 0.25s ease;
+    -ms-transition: min-width 0.25s ease, min-height 0.25s ease;
+    -o-transition: min-width 0.25s ease, min-height 0.25s ease;
+    transition: min-width 0.25s ease, min-height 0.25s ease;
+}
+
+.fadeNav {
+    -webkit-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
+    -moz-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
+    -ms-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
+    -o-transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
+    transition: padding 0.25s ease, background-color 0.25s ease, color 0.25s ease, margin 0.25s ease, border-radius 0.25s ease;
+}
+
+/** ------------------------------------------------------------------------ */
+/** ------------------------------------------- POSITION CLASSES ----------- */
+/** ------------------------------------------------------------------------ */
+
+.centeredText {
+    text-align: center;
+}
+
+.moveCursor {
+    cursor: move;
+}
+
+.clearBoth {
+    clear: both;
+}
+
+.floatLeft {
+  float: left;
+}
+
+.floatRight {
+  float: right;
+}
+
+.textAlignLeft {
+  text-align: left;
+}
+
+.textAlignRight {
+  text-align: right;
+}
+
+.fakeLink {
+    color: #0080ff;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+.fakeLink:hover {
+    color: #0073E6;
+}
+
+.deleteLink {
+    color: #ff0000;
+    font-weight: 300;
+    cursor: pointer;
+    display: inline-block;
+    padding: 4px;
+    vertical-align: middle;
+    background-color: #fff;
+    border-radius: 3px;
+}
+
+.deleteLink:hover {
+    color: #fff;
+    background-color: #ff0000;
+}

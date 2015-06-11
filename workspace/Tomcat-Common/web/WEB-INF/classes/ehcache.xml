@@ -1,0 +1,22 @@
+<ehcache updateCheck="false">
+	<diskStore path="java.io.tmpdir" />
+
+	<defaultCache eternal="false" maxElementsInMemory="500" timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="false"/>
+
+	<cache name="org.hibernate.cache.StandardQueryCache" eternal="false" maxElementsInMemory="500" timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="false"/>
+	
+	<cache name="smartshift.common.hibernate.model.accounts.ApplicationTip" eternal="false" maxElementsInMemory="500" timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="false"/>
+	<cache name="smartshift.common.hibernate.model.accounts.Build" eternal="false" maxElementsInMemory="500" timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="false"/>
+	<cache name="smartshift.common.hibernate.model.accounts.Business" eternal="false" maxElementsInMemory="500" timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="false"/>
+	<cache name="smartshift.common.hibernate.model.accounts.BusinessPreference" eternal="false" maxElementsInMemory="500" timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="false"/>
+	<cache name="smartshift.common.hibernate.model.accounts.ContactMethod" eternal="false" maxElementsInMemory="500" timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="false"/>
+	<cache name="smartshift.common.hibernate.model.accounts.Image" eternal="false" maxElementsInMemory="500" timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="false"/>
+	<cache name="smartshift.common.hibernate.model.accounts.Preference" eternal="false" maxElementsInMemory="500" timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="false"/>
+	<cache name="smartshift.common.hibernate.model.accounts.Server" eternal="false" maxElementsInMemory="500" timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="false"/>
+	<cache name="smartshift.common.hibernate.model.accounts.Session" eternal="false" maxElementsInMemory="500" timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="false"/>
+	<cache name="smartshift.common.hibernate.model.accounts.SystemProperty" eternal="false" maxElementsInMemory="500" timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="false"/>
+	<cache name="smartshift.common.hibernate.model.accounts.User" eternal="false" maxElementsInMemory="500" timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="false"/>
+	<cache name="smartshift.common.hibernate.model.accounts.UserBusiness" eternal="false" maxElementsInMemory="500" timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="false"/>
+	<cache name="smartshift.common.hibernate.model.accounts.UserBusinessPreference" eternal="false" maxElementsInMemory="500" timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="false"/>
+	<cache name="smartshift.common.hibernate.model.accounts.UserContactMethod" eternal="false" maxElementsInMemory="500" timeToIdleSeconds="60" timeToLiveSeconds="60" overflowToDisk="false"/>
+</ehcache>

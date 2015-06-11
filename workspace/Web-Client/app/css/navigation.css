@@ -1,0 +1,148 @@
+.navPane {
+    position: absolute;
+    top:0;
+    left:0;
+    width: 80px;
+    text-align: center;
+    font-size: 14px;
+    overflow: visible;
+    z-index: 10;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    background-color: #282828;
+    display: block;
+    height: 100%;
+    transition-delay: 0.25s;
+}
+.navPane:after, .navPane:before{
+/*    -webkit-box-sizing: content-box;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;*/
+}
+.navPane * {
+   -moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+}
+
+.navElement {
+  position: relative;
+  display:inline-block;
+  width: 60px;
+  height: 60px;
+  background-color: #0080ff;
+  margin: 5px 10px;
+  margin-left: 0;
+  padding: 0;
+  padding-left: 10px;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.navElement:not(.current):not(.noScroll):hover {
+  padding-left: 80px;
+}
+
+.navElementAddPadding.navElement:not(.current):not(.noScroll):hover {
+  padding-left: 140px;
+}
+
+.navLabel {
+    position: absolute;
+    width: 100px;
+    height: 60px;
+    top:0;
+    left:-110px;
+    color:#fff;
+    line-height: 60px;
+    font-size: 14px;
+    text-align: right;
+}
+
+.navElementAddPadding .navLabel {
+    width: 130px;
+    left: -140px;
+}
+
+.navElement:not(.current):not(.noScroll):hover .navLabel {
+  left:-20px;
+}
+
+.navElementAddPadding.navElement:not(.current):not(.noScroll):hover .navLabel {
+  left:10px;
+}
+
+.navElement.current {
+  display:inline-block;
+  background-color: #fff;
+  margin: 5px 10px;
+  margin-right: 0px;
+  padding: 0px;
+  padding-right: 10px;
+  border-radius: 0px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.navIcon {
+  width: 60px;
+  height: 60px;
+  font-size: 38px;
+  line-height: 60px;
+  color:#fff;
+}
+
+.navElement.current .navIcon {
+  color:#0080ff;
+}
+
+.navLogo {
+  display:inline-block;
+    position: relative;
+  width: 60px;
+  height: 71px;
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+.navLogo .base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 71px;
+}
+
+.navLogo .minute {
+    transform: rotate(300deg);
+    animation: minuteSpin 2s linear infinite;
+    -moz-animation: minuteSpin 2s linear infinite;
+    -webkit-animation: minuteSpin 2s linear infinite;
+}
+
+.navLogo .hour {
+    transform: rotate(205deg);
+    animation: hourSpin 24s linear infinite;
+    -moz-animation: hourSpin 24s linear infinite;
+    -webkit-animation: hourSpin 24s linear infinite;
+}
+
+.navLogo .minute, .navLogo .hour {
+    position: absolute;
+    top: 11px;
+    left: 0;
+    width: 60px;
+    height: 60px;
+    -webkit-animation-play-state: paused;
+    -moz-animation-play-state: paused;
+    animation-play-state: paused;
+}
+
+.navLogo:hover .minute, .navLogo:hover .hour {
+    -webkit-animation-play-state: running;
+    -moz-animation-play-state: running;
+    animation-play-state: running;
+}
+

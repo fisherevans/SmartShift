@@ -1,0 +1,41 @@
+<div class="chatThreadsBox appBlock">
+    <div class="chatThreads">
+        <div class="chatThread fadeColors" ng-repeat="thread in messagesCtrl.threads">
+            <img class="chatThreadPicture" src="../app/img/{{thread.id}}.png" />
+            <div class="chatThreadText">
+                <div class="chatThreadName">{{thread.name}}</div>
+                <div class="chatThreadPreview"><span class="sender">{{thread.sender}}: </span>{{thread.text}}</div>
+                <div class="chatThreadTime">{{thread.time}}</div>
+            </div>
+            <div class="chatThreadLine"></div>
+        </div>
+    </div>
+    <div class="newChatThread">
+        <div class="chatNewButton fadeColors dBlueHover"><div class="icon-add"></div><div>New Chat</div></div>
+        <div class="chatSearchWrapper">
+            <input type="text" class="chatSearch noInputLines" ng-model="threadSearch"/>
+        </div>
+        <div class="chatSearchButton fadeColors">Search</div>
+    </div>
+</div>
+<div class="chatBox appBlock">
+    <div class="chatMessagesWrapper appBlock">
+        <div class="chatMessages">
+            <div class="chatMessage fadeColorBorders" ng-repeat="message in messagesCtrl.messages" ng-class="{alt:$index%2==0}">
+                <img src="../app/img/{{message.id}}.png" class="messagePicture" />
+                <div class="messageSender">{{message.sender}}</div>
+                <div class="messageTime"><span class="date">{{message.date}}</span><span class="time">{{message.time}}</span></div>
+                <div class="messageTexts">
+                    <div class="messageText" ng-repeat="text in message.texts">{{text}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chatActions">
+        <div class="chatInputWrapper">
+            <textarea class="chatInput noInputLines"></textarea>
+        </div>
+        <div class="chatSend fadeColors dBlueHover">SEND</div>
+        <div class="chatEnterSend"><input type="checkbox" checked/>Send on Enter</div>
+    </div>
+</div>

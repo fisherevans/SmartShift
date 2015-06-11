@@ -1,0 +1,86 @@
+.loginLogo {
+    width: 90%;
+    margin: 0 4.9%;
+    margin-top: 10px;
+    margin-bottom: -40px;
+}
+
+#loginModal p {
+  width: 50%;
+  margin: 10px auto;
+  padding-bottom: 10px;
+  text-align: center;
+}
+
+.loginInputWrapper.smartInputWrapper {
+  width: 55%;
+  margin: 10px auto;
+}
+
+.loginError {
+  float: left;
+  font-weight: 700;
+  color: #ff0000;
+  margin-top: 8px;
+  margin-left: 10px;
+}
+
+.loginRememberWrapper {
+  width: 55%;
+  margin: 10px auto;
+  margin-bottom: 0px;
+}
+
+.loginRemember {
+  line-height: 10px;
+  font-weight: 300;
+  cursor: pointer;
+}
+
+.loginRemember input {
+  margin: 10px;
+}
+
+.loginRegister {
+  line-height: 40px;
+  float: left;
+}
+
+.selectBusinessModal {
+    text-align: center;
+}
+
+.selectBusinessModal p {
+    width: 80%;
+    text-align: center;
+    margin: 10px auto;
+    padding-bottom: 5px;
+    display: block;
+}
+
+.loginBusinessBlock {
+  width: 70%;
+  margin: 15px auto;
+  background-color: #f8f8f8;
+  cursor: pointer;
+  border: 1px solid #ccc;
+}
+
+.loginBusinessBlock:hover, .loginBusinessBlock:focus {
+  background-color: #f0f0f0;
+  border-color:#0080ff;
+}
+
+.loginBusinessName {
+  padding: 10px 30px;
+  line-height: 30px;
+  font-size: 20px;
+}
+
+.loginBusinessArrow {
+  float: right;
+  padding-top: 16px;
+  padding-right: 25px;
+  line-height: 50px;
+  font-size: 50px;
+}

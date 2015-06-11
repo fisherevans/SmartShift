@@ -1,0 +1,17 @@
+<script type="text/ng-template"  id="groupListTreeTemplate">
+    <div class="groupInfo fadeColors" ng-click="groupListCtrl.manageGroup(group)">
+        <div class="groupName">{{group.name}}</div>
+        <div class="groupRoles">
+            <div class="groupRoleLabel">Roles: </div>
+            <div class="groupRole" ng-repeat="(roleID, role) in group.roles">
+                {{role.name}}
+            </div>
+        </div>
+    </div>
+    <div ng-repeat="(groupId, group) in group.childGroups" class="groupBlock" ng-include="'groupListTreeTemplate'"></div>
+</script>
+
+<div class="appBlock">
+    <div class="header">Groups</div>
+    <div ng-repeat="group in groupListCtrl.rootGroups" class="groupBlock rootGroup" ng-include="'groupListTreeTemplate'"></div>
+</div>

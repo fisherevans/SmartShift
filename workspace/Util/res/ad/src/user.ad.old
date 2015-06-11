@@ -1,0 +1,290 @@
+/user/self
+  GET - Gets basic information for this user
+    REQUIRES
+      Basic Authentication
+    RETURNS
+      200 - User information
+        {
+          "username":"The username",
+          "email":"email@google.com",
+          "image":{
+            "id":imagesID,
+            "uri":"Some hash",
+            "alt":"Alt text"
+          }
+        }
+      401 - The Basic Authentication credentials are invalid
+/user/register
+  PUT - Registers a new user
+    TAKES
+      {
+        "username":"The username",
+        "password":"new password",
+        "email":"matching email address",
+        "code":"Registration code"
+      }
+    RETURNS
+      201 - User was registered.
+      400 - Username is taken, the password is invalid.
+      401 - Bad registration code or email
+/user/session/{businessID}/{employeeID}
+  PARAMS
+    businessID - The id of a business
+    employeeID - The id of an employee
+  PUT - Creates a new session token
+    REQUIRES
+      Basic Authentication
+    RETURNS
+      201 - A session was created
+        {
+          "businessID":businessID,
+          "employeeID":employeeID,
+          "sessionID":"Some session id",
+          "server":"someserver.domain",
+          "timeout":timeoutInSeconds
+        }
+      401 - The Basic Authentication credentials are invalid
+  DELETE - Destroys and existing session token
+    REQUIRES
+      Basic Authentication
+    TAKES
+      {
+        "sessionID":"The session id to destroy"
+      }
+    RETURNS
+      200 - The session was destroyed
+      400 - The session does not exist or is already expired
+      401 - The Basic Authentication credentials are invalid
+/user/business
+  GET - Fetches a list of businesses this user is linked to
+    REQUIRES
+      Basic Authentication
+    RETURNS
+      200 - A map of Integer -> Business of businesses that the user has an employee in
+        {
+          businessID:{ 
+            "id":businessID,
+            "name":"Business Name",
+            "server":"some.domain",
+            "img":{
+              "id":imageID,
+              "alt":"Alternate text"
+            },
+            "address":{
+              "street1": "101 Loop Lane",
+              "street2": "Suite 8",
+              "city": "Somewhere",
+              "subDivision": "In Cali",
+              "country": "USA",
+              "postalCode": "12345",
+              "phoneNumber": "18885551234"
+            }
+          },
+          ...
+        }
+      401 - The Basic Authentication credentials are invalid
+/user/business/{id}
+  PARAMS
+    id - A business ID
+  GET - Fetches a business this user is linked to
+    REQUIRES
+      Basic Authentication
+    RETURNS
+      200 - The corresponding business object
+        { 
+          "id":businessID,
+          "name":"Business Name",
+          "server":"some.domain",
+          "img":{
+            "id":imageID,
+            "alt":"Alternate text"
+          },
+          "address":{
+            "street1": "101 Loop Lane",
+            "street2": "Suite 8",
+            "city": "Somewhere",
+            "subDivision": "In Cali",
+            "country": "USA",
+            "postalCode": "12345",
+            "phoneNumber": "18885551234"
+          }
+        }
+      400 - The business id is invalid, or the user does not have access to it
+      401 - The Basic Authentication credentials are invalid
+/user/employee
+  GET - Fetches a list of employees this user is linked to
+    REQUIRES
+      Basic Authentication
+    RETURNS
+      200 - A map of Integer -> Employee of employees that the user is linked to
+        {
+          employeeID:{
+            "id":employeeID,
+            "businessID":businessID,
+            "firstName":"First Name",
+            "lastName":"Last Name",
+            "img":{
+              "id":imageID,
+              "alt":"Alternate text"
+            }
+          }
+          ...
+        }
+      401 - The Basic Authentication credentials are invalid
+/user/employee/{id}
+  PARAMS
+    id - An employee ID
+  GET - Fetches an employee this user is linked to
+    REQUIRES
+      Basic Authentication
+    RETURNS
+      200 - The corresponding employee object
+        {
+          "id":employeeID,
+          "businessID":businessID,
+          "firstName":"First Name",
+          "lastName":"Last Name",
+          "img":{
+            "id":imageID,
+            "alt":"Alternate text"
+          }
+        }
+      400 - The employee id is invalid, or the user is not linked to it
+      401 - The Basic Authentication credentials are invalid
+/user/contactMethod
+  GET - Fetches a list of contact methods for this user
+    REQUIRES
+      Basic Authentication
+    RETURNS
+      200 - The set of contact methods for this user
+        {
+          contactMethodID:{
+            "id":contactMethodID,
+            "name":"cell phone",
+            "value":"8025551234"
+          },
+          ...
+        }
+      401 - The Basic Authentication credentials are invalid
+  POST - Updates contact methods for this user
+    REQUIRES
+      Basic Authentication
+    TAKES
+        {
+          contactMethodID:"8025551234",
+          contactMethodID:"email@google.com"
+        }
+    RETURNS
+      200 - The contact methods were updated
+      400 - A new value is invalid or malformed
+      401 - The Basic Authentication credentials are invalid
+/user/contactMethod/{id}
+  PARAMS
+    id - A contact method type ID
+  GET - Fetches contact method for this user
+    REQUIRES
+      Basic Authentication
+    RETURNS
+      200 - Fetches a contact method for this user
+        {
+          "id":contactMethodID,
+          "name":"cell phone",
+          "value":"8025551234"
+        }
+      401 - The Basic Authentication credentials are invalid
+/user/preferences/{businessID}
+  PARAMS
+    id - A businessID ID
+  GET - Gets a set of preferences for a business
+    REQUIRES
+      Basic Authentication
+    RETURNS
+      200 - A Map<PreferenceID, Value>
+        {
+          preferenceID:{
+            "id":preferenceID,
+            "name":"preference name",
+            "value":"preference value",
+          }
+          ...
+        }
+      401 - The Basic Authentication credentials are invalid
+  POST - Updates preferences
+    REQUIRES
+      Basic Authentication
+    TAKES
+      {
+        preferenceID:"new preference value",
+        ...
+      }
+    RETURNS
+      200 - The preferences were updated
+      400 - One of the new preference values is invalid
+      401 - The Basic Authentication credentials are invalid
+/user/full
+  GET - A call that fetches all user inforation in one go
+    REQUIRES
+      Basic Authentication
+    RETURNS
+      200 - All user information
+        {
+          "user":{
+            "username":"The username",
+            "lastLogin":"Last time they logged in",
+            "lastLoginIP":"Last IP they logged in from"
+          },
+          "businesses":{
+            businessID:{ 
+              "id":businessID,
+              "name":"Business Name",
+              "server":"some.domain",
+              "img":{
+                "id":imageID,
+                "alt":"Alternate text"
+              },
+              "address":{
+                "street1": "101 Loop Lane",
+                "street2": "Suite 8",
+                "city": "Somewhere",
+                "subDivision": "In Cali",
+                "country": "USA",
+                "postalCode": "12345",
+                "phoneNumber": "18885551234"
+              }
+            },
+            ...
+          },
+          "employees":{
+            employeeID:{
+              "id":employeeID,
+              "businessID":businessID,
+              "firstName":"First Name",
+              "lastName":"Last Name",
+              "img":{
+                "id":imageID,
+                "alt":"Alternate text"
+              }
+            },
+            ...
+          },
+          "contactMethods":{
+            contactMethodID:{
+              "id":contactMethodID,
+              "name":"cell phone",
+              "value":"8025551234"
+            },
+            ...
+          },
+          "preferences":{
+            businessID:{
+              preferenceID:{
+                "id":preferenceID,
+                "name":"preference name",
+                "value":"preference value",
+              },
+              ...
+            },
+            ...
+          }
+        }
+      401 - The Basic Authentication credentials are invalid

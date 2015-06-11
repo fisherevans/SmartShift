@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	id="WebApp_ID" version="3.0">
+	
+	<display-name>accounts</display-name>
+	
+	<listener><listener-class>smartshift.common.jersey.initializers.AppPropertiesListener</listener-class></listener>
+	<listener><listener-class>smartshift.common.jersey.initializers.CleanupListener</listener-class></listener>
+	<listener><listener-class>smartshift.common.jersey.initializers.GsonFactoryListener</listener-class></listener>
+	<listener><listener-class>smartshift.accounts.jersey.initializers.AccountsHibernateMapperListener</listener-class></listener>
+	<listener><listener-class>smartshift.common.jersey.initializers.HibernateListener</listener-class></listener>
+	<listener><listener-class>smartshift.accounts.jersey.initializers.AccountsRMIListener</listener-class></listener>
+	<listener><listener-class>smartshift.accounts.jersey.initializers.TopAccountListener</listener-class></listener>
+
+	<servlet>
+		<servlet-name>smartshift-accounts</servlet-name>
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>jersey.config.server.provider.packages</param-name>
+			<param-value>smartshift.common.jersey.providers;smartshift.common.jersey.providers.exceptionMappers;smartshift.accounts.jersey.providers;smartshift.common.jersey;smartshift.accounts.jersey</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>smartshift-accounts</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>log4j-config-servlet</servlet-name>
+		<servlet-class>smartshift.common.util.servlets.Log4JManager</servlet-class>
+	</servlet>
+	
+	<servlet-mapping>
+		<servlet-name>log4j-config-servlet</servlet-name>
+		<url-pattern>/admin/log4j</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>default</servlet-name>
+		<url-pattern>/static/*</url-pattern>
+	</servlet-mapping>
+	
+	<login-config>
+		<auth-method>BASIC</auth-method>
+	</login-config>
+	
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>admin-security</web-resource-name>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>manager-gui</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+</web-app> 

@@ -1,0 +1,334 @@
+.smartButton {
+    background-color: #808080;
+    color:#ffffff;
+    border: 0;
+    border-radius: 3px;
+    display: inline-block;
+    margin: 2px 4px;
+    padding: 8px 20px;
+    line-height: 20px;
+    font-weight: 700;
+    font-size: 14px;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.smartButton:hover, .grayBG:focus, .grayBG:active, .grayBG.active {
+    background-color: #616161;
+    box-shadow: 0px 0px 2px #aaa;
+}
+.smartButton:disabled { background-color: #a0a0a0; }
+
+.smartInputWrapper {
+    position: relative;
+}
+
+.smartInputText {
+    margin: 0px auto;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 80%;
+    line-height: 20px;
+    padding: 12px;
+    -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+      -ms-box-sizing: border-box;
+       -o-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+.smartInputText:focus, .smartInputText:active, .smartInputText.active {
+    border: 1px solid #0080ff;
+    outline: none;
+    box-shadow: 0px 0px 3px #aaa;
+}
+
+.smartInputText.inputError {
+    background-color: #FFF0F1;
+}
+
+.smartInputText.inputError:focus, .smartInputText.inputError:active, .smartInputText.inputError.active {
+    border: 1px solid #ff0000;
+    outline: none;
+    box-shadow: 0px 0px 3px #aaa;
+}
+
+.smartInputSelect {
+    margin: 0px auto;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 80%;
+    line-height: 20px;
+    padding: 12px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.smartInputSelect.mini {
+    line-height: 14px;
+    padding: 8px;
+}
+
+.smartInputSelect.selectTimeHour, .smartInputSelect.selectTimeMinute, .smartInputSelect.selectTimeAMPM {
+    display: inline-block;
+    width: auto;
+}
+
+.smartInputSelect option {
+    border-top: 1px solid #ccc;
+    line-height: 20px;
+    padding: 12px;
+}
+
+.smartCheckboxLabel {
+    margin: 0px auto;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    width: 65%;
+    line-height: 16px;
+    padding: 5px 8px;
+    margin: 4px 0px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -ms-box-sizing: border-box;
+    -o-box-sizing: border-box;
+    box-sizing: border-box;
+    font-size: 14px;
+    font-weight: 300;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    color: #444;
+}
+
+.smartCheckboxLabel.subCheckbox {
+    width: 50%;
+    margin-left: 15%;
+}
+
+.smartCheckboxLabel:hover {
+    background-color: #e8e8e8;
+}
+
+.smartCheckboxLabel * {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.smartCheckboxLabel input {
+    position: absolute;
+    right: 30px;
+    opacity: 0;
+}
+
+.smartCheckboxLabel.inputError {
+    background-color: #FFF0F1;
+}
+
+.smartCheckboxLabel.inputError:focus, .smartCheckboxLabel.inputError:active, .smartCheckboxLabel.inputError.active, .smartCheckboxLabel.inputError:hover {
+    border: 1px solid #ff0000;
+    outline: none;
+    box-shadow: 0px 0px 3px #aaa;
+}
+
+.smartCheckboxLabel.checked {
+    background-color: #0075d9;
+    color: #fff;
+}
+
+.smartCheckboxLabel.redCheckbox.checked {
+    background-color: #d90000;
+    color: #fff;
+}
+
+.smartCheckboxLabel.orangeCheckbox.checked {
+    background-color: #FF7F00;
+    color: #fff;
+}
+
+.smartCheckboxCheck {
+    font-size: 14px;
+    padding-right: 5px;
+}
+
+.smartCheckboxLabel.checked .smartCheckboxCheck {
+    color: #fff;
+}
+
+.checkboxSplitter {
+    padding: 6px 0px;
+    font-size: 14px;
+}
+
+.smartInputLine {
+    width: 95%;
+    margin: 5px auto;
+    vertical-align: middle;
+}
+
+.smartInputLine.alignRight {
+    text-align: right;
+}
+
+.smartInputLabel {
+    display: inline-block;
+    width: 27%;
+    text-align: right;
+    font-size: 16px;
+    font-weight: 700;
+    padding-right: 2%;
+    vertical-align: middle;
+}
+
+.smartInputLabel .sub {
+    display: block;
+    font-size: 14px;
+    font-weight: 300;
+}
+
+.smartInputLabel.autoWidth {
+    width: auto;
+    padding-right: 5px;
+}
+
+.smartInputLine .smartInputWrapper {
+    display: inline-block;
+    width: 70%;
+    vertical-align: middle;
+}
+
+.smartInputFullWidth {
+    width: 100%;
+}
+
+.smartInput80Width {
+    width: 80%;
+}
+
+.smartModalHR {
+    height: 0px;
+    width: 80%;
+    margin: 10px auto;
+    border-bottom: solid 1px #ccc;
+}
+
+.smartModelPara {
+    text-align: center;
+    width: 70%;
+    margin: 5px auto;
+}
+
+.smartModelError {
+    color: #f00;
+    font-weight: 700;
+}
+
+.timeSelect {
+    margin: 4px 0px;
+}
+
+.timeSelectUps, .timeSelectValues, .timeSelectDowns {
+    display: block;
+    font-size: 0;
+}
+
+.timeSelectUp, .timeSelectValue, .timeSelectDown {
+    display: inline-block;
+    width: 40px;
+    font-weight: 700;
+    margin-right: 5px;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.timeSelectValue {
+    font-size: 14px;
+    height: 20px;
+    line-height: 20px;
+    border: 1px solid #ccc;
+    border-top: 0;
+    border-bottom: 0;
+    background-color: #fff;
+}
+
+.timeSelectValue.error {
+    background-color: #fdd;
+}
+
+.timeSelectValueInput {
+    width: 18px;
+    padding: 0 10px;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    outline-width: 0;
+    text-align: right;
+    background-color: transparent;
+}
+
+.timeSelectValueInput.ampmInput {
+    width: 22px;
+    padding: 0 8px;
+}
+
+.timeSelectUp, .timeSelectDown {
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #888;
+    font-size: 10px;
+    height: 12px;
+    line-height: 12px;
+}
+
+.timeSelectUp {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.timeSelectDown {
+    border-top-right-radius: 0;
+    border-top-left-radius: 0;
+}
+
+.timeSelectUp:hover, .timeSelectDown:hover {
+    background-color: #e0e0e0;
+    color: #888;
+}
+
+.timeSelectColon {
+    width: 0px;
+    margin-right: 0px;
+    border: 0;
+}
+
+.modalHeaderLink {
+    float:right;
+    padding: 4px;
+    margin-top: 3px;
+}
+
+.modalContent {
+    padding: 20px 5%;
+}
+
+.modalContent.centered {
+    text-align: center;
+}
+
+.smartCheckboxLinkWrapper {
+    height: 0px;
+    margin-left: 67%;
+}
+
+.smartCheckboxLink {
+    height: 26px;
+    line-height: 36px;
+}

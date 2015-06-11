@@ -1,0 +1,23 @@
+<div class="timeSelect">
+    <div class="timeSelectUps noTextSelect">
+        <div class="timeSelectUp icon-arrow-up fadeColors" ng-click="shiftHourUp()"></div>
+        <div class="timeSelectUp icon-arrow-up fadeColors" ng-click="shiftMinute(1)"></div>
+        <div class="timeSelectUp icon-arrow-up fadeColors" ng-click="toggleAMPM()"></div>
+    </div>
+    <div class="timeSelectValues noTextSelect">
+        <div ng-class="{error:time.error.hour}" class="timeSelectValue fadeColors">
+            <input class="timeSelectValueInput smartInputFullWidth" type="text" ng-model="input.hour" ng-keyup="hourKey($event)" ng-blur="hourBlur()" maxlength="2" />
+        </div>
+        <div ng-class="{error:time.error.minute}" class="timeSelectValue fadeColors">
+            <input class="timeSelectValueInput smartInputFullWidth" type="text" ng-model="input.minute" ng-keyup="minuteKey($event)" ng-blur="minuteBlur()" maxlength="2" />
+        </div>
+        <div ng-class="{error:time.error.ampm}" class="timeSelectValue fadeColors">
+            <input class="timeSelectValueInput smartInputFullWidth ampmInput" type="text" ng-model="input.ampm" ng-keyup="ampmKey($event)" ng-blur="ampmBlur()" maxlength="2" />
+        </div>
+    </div>
+    <div class="timeSelectDowns noTextSelect">
+        <div class="timeSelectDown icon-arrow-down fadeColors" ng-click="shiftHourDown()"></div>
+        <div class="timeSelectDown icon-arrow-down fadeColors" ng-click="shiftMinute(-1)"></div>
+        <div class="timeSelectDown icon-arrow-down fadeColors" ng-click="toggleAMPM()"></div>
+    </div>
+</div>
