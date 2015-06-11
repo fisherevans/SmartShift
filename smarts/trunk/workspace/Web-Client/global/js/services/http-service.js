@@ -23,6 +23,9 @@ angular.module('smartsServices').factory('httpService', ['$http', '$q', '$rootSc
             var defer = $q.defer();
             $http(request).then(
                 function(response, status, headers, config) {
+                    console.log("HTTP Response Success - ID:" + callID);
+                    console.log(request);
+                    console.log(response);
                     defer.resolve(response.data);
                     $rootScope.api.waitingCalls--;
                 },
