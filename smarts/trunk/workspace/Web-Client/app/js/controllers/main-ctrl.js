@@ -12,7 +12,7 @@ angular.module('smartsApp').controller('MainController', ['$scope', '$rootScope'
                 rememberUsername: false,
 
                 // Static
-                accountsServer: 'lando.smartshift.info:6380',
+                accountsServer: 'home.fisherevans.com:6380',
 
                 // Dynamic
                 password: undefined,
