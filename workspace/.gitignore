@@ -1,0 +1,6 @@
+.metadata
+*/bin
+*/.settings
+Build/out
+Build/lib
+RemoteSystemsTempFiles

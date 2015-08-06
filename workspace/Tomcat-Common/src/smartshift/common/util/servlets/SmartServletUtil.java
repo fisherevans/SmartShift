@@ -3,13 +3,16 @@ package smartshift.common.util.servlets;
 import javax.servlet.http.HttpServlet;
 import smartshift.common.util.properties.AppConstants;
 
-/** base servlet for admin utilities
+/** util functions for admin utility servlets
  * @author D. Fisher Evans <contact@fisherevans.com>
  */
-public class SmartServlet extends HttpServlet {
-    private static final long serialVersionUID = 2536987667576697899L;
-
-    protected String getHeadHTML(String title) {
+abstract class SmartServletUtil {
+    /**
+     * Gets header for default admin servlet styling
+     * @param title The title of the web page
+     * @return the header html
+     */
+    public static String getHeadHTML(String title) {
         String html = "";
         html += "<html>";
         html += "  <head>";
@@ -21,8 +24,12 @@ public class SmartServlet extends HttpServlet {
         html += "  <body>";
         return html;
     }
-    
-    protected String getFootHTML() {
+
+    /**
+     * Gets footer for default admin servlet styling
+     * @return the footer html
+     */
+    public static String getFootHTML() {
         String html = "";
         html += "  </body>";
         html += "</html>";

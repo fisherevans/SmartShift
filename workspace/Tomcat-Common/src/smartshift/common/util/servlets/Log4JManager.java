@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.log4j.Level;
@@ -20,7 +21,7 @@ import smartshift.common.util.properties.AppConstants;
  * servlet for configuration log4j levels
  * @author D. Fisher Evans <contact@fisherevans.com>
  */
-public class Log4JManager extends SmartServlet {
+public class Log4JManager extends HttpServlet {
     private static final long serialVersionUID = -6080665311081379494L;
     
     private static SmartLogger thisLogger = new SmartLogger(Log4JManager.class);
@@ -30,7 +31,7 @@ public class Log4JManager extends SmartServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter out = resp.getWriter();
-        out.print(getHeadHTML("Log4J Logger Configuration"));
+        out.print(SmartServletUtil.getHeadHTML("Log4J Logger Configuration"));
         out.print("<script src='/" + AppConstants.CONTEXT_PATH + "/static/script/log4j.js'></script>");
 
         List<Level> levels = getLevels();
@@ -65,7 +66,7 @@ public class Log4JManager extends SmartServlet {
         
         out.println("</table></div>");
         
-        out.print(getFootHTML());
+        out.print(SmartServletUtil.getFootHTML());
     }
 
     /**
